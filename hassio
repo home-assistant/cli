@@ -36,7 +36,7 @@ function call_api() {
         command='GET'
     fi
 
-    if ! api_ret="$(curl -s -X $command "http://hassio/$1/$2")"; then
+    if ! api_ret="$(curl -s -X $command -H "X-HASSIO-KEY: $API_TOKEN" "http://hassio/$1/$2")"; then
         echo "API error: $api_ret"
         return 1
     fi
