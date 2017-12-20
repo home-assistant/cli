@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strings"
+	//"gopkg.in/resty.v1"
 )
 
 // HASSIO_SERVER uri to connect to hass.io with
@@ -34,13 +35,15 @@ func CreateJSONData(data string) map[string]string {
 	return jsonData
 }
 
-func RestCall(basepath string, endpoint string, get bool, payload string) map[string]interface{} {
+func RestCall(basepath string, endpoint string, get bool, payload string) string {
 	uri := GenerateUri(basepath, endpoint)
 	var response *http.Response
+	//var response *resty.Response
 	var err error
 
 	if get {
 		response, err = http.Get(uri)
+		//response, err = resty.R().Get(uri)
 	} else {
 		jsonData := CreateJSONData(payload)
 		jsonValue, _ := json.Marshal(jsonData)
@@ -51,16 +54,21 @@ func RestCall(basepath string, endpoint string, get bool, payload string) map[st
 		fmt.Printf("The HTTP request failed with the error: %s\n", err)
 	} else {
 		data, _ := ioutil.ReadAll(response.Body)
-		var f interface{}
-		err := json.Unmarshal(data, &f)
-		if err != nil {
-			fmt.Printf("Error decoding json %s", err)
-			return nil
-		}
-		res := f.(map[string]interface{})
-		return res
+		return string(data)
 	}
-	return nil
+	return ""
+}
+
+func strToMap(data string) map[string]interface{} {
+	var b = []byte(data)
+	var f interface{}
+	err := json.Unmarshal(b, &f)
+	if err != nil {
+		fmt.Printf("Error decoding json %s", err)
+		return nil
+	}
+	res := f.(map[string]interface{})
+	return res
 }
 
 func DisplayOutput(data string, json bool) {
@@ -78,6 +86,13 @@ func MapToJSON(data map[string]interface{}) string {
 	return s
 }
 
-func FilterProperties(data string, filter []string) []string {
-	return nil
+func FilterProperties(data string, filter []string) map[string]string {
+	mymap := strToMap(data)
+	newmap := make(map[string]string)
+	for _, value := range filter {
+		if val, ok := mymap[value]; ok {
+			newmap[value] = val.(string)
+		}
+	}
+	return newmap
 }
