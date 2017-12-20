@@ -21,16 +21,17 @@ func GenerateUri(basepath string, endpoint string) string {
 	return uri.String()
 }
 
-func RestCall(basepath string, endpoint string, payload string) string {
+func RestCall(basepath string, endpoint string, get bool, payload string) string {
 	uri := GenerateUri(basepath, endpoint)
 	var response *http.Response
 	var err error
 
-	if payload == "" {
+	if get {
 		response, err = http.Get(uri)
 	} else {
-		jsonData := map[string]string{"firstname": "Nic", "lastname": "Raboy"}
+		jsonData := map[string]string{"dummydata": ""}
 		jsonValue, _ := json.Marshal(jsonData)
+		//response, err = http.Post(uri, "application/json", bytes.NewBuffer(payload))
 		response, err = http.Post(uri, "application/json", bytes.NewBuffer(jsonValue))
 	}
 
@@ -42,4 +43,12 @@ func RestCall(basepath string, endpoint string, payload string) string {
 		return strData
 	}
 	return ""
+}
+
+func DisplayOutput(data string, json bool) {
+	if !(json) {
+		// Make data pretty
+		//fmt.Println(data)
+	}
+	fmt.Println(data)
 }
