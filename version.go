@@ -1,4 +1,4 @@
 package main
 
-const Name string = "hassio-cli"
+const Name string = "hassiocli"
 const Version string = "0.1.0"
