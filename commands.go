@@ -26,13 +26,23 @@ var Commands = []cli.Command{
 		Name:   "supervisor",
 		Usage:  "",
 		Action: command.CmdSupervisor,
-		Flags:  []cli.Flag{},
+		Flags:  []cli.Flag{
+			cli.BoolFlag{
+				Name: "json",
+				Usage: "Returns the output in JSON format",
+			},
+		},
 	},
 	{
 		Name:   "host",
 		Usage:  "",
 		Action: command.CmdHost,
-		Flags:  []cli.Flag{},
+		Flags:  []cli.Flag{
+			cli.BoolFlag{
+				Name: "json",
+				Usage: "Returns the output in JSON format",
+			},
+		},
 	},
 }
 
