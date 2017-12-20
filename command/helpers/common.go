@@ -6,10 +6,11 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strings"
 )
 
 // HASSIO_SERVER uri to connect to hass.io with
-const HASSIO_SERVER string = "http://hassio"
+const HASSIO_SERVER = "http://hassio"
 
 func GenerateUri(basepath string, endpoint string) string {
 	var uri bytes.Buffer
@@ -21,6 +22,18 @@ func GenerateUri(basepath string, endpoint string) string {
 	return uri.String()
 }
 
+func CreateJSONData(data string) map[string]string {
+	var jsonData map[string]string
+	var ss []string
+	ss = strings.Split(data, ",")
+	jsonData = make(map[string]string)
+	for _, pair := range ss {
+		z := strings.Split(pair, "=")
+		jsonData[z[0]] = z[1]
+	}
+	return jsonData
+}
+
 func RestCall(basepath string, endpoint string, get bool, payload string) string {
 	uri := GenerateUri(basepath, endpoint)
 	var response *http.Response
@@ -29,9 +42,8 @@ func RestCall(basepath string, endpoint string, get bool, payload string) string
 	if get {
 		response, err = http.Get(uri)
 	} else {
-		jsonData := map[string]string{"dummydata": ""}
+		jsonData := CreateJSONData(payload)
 		jsonValue, _ := json.Marshal(jsonData)
-		//response, err = http.Post(uri, "application/json", bytes.NewBuffer(payload))
 		response, err = http.Post(uri, "application/json", bytes.NewBuffer(jsonValue))
 	}
 
