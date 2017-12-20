@@ -34,7 +34,7 @@ func CreateJSONData(data string) map[string]string {
 	return jsonData
 }
 
-func RestCall(basepath string, endpoint string, get bool, payload string) string {
+func RestCall(basepath string, endpoint string, get bool, payload string) map[string]interface{} {
 	uri := GenerateUri(basepath, endpoint)
 	var response *http.Response
 	var err error
@@ -48,13 +48,19 @@ func RestCall(basepath string, endpoint string, get bool, payload string) string
 	}
 
 	if err != nil {
-		fmt.Printf("The HTTP request failed with error %s\n", err)
+		fmt.Printf("The HTTP request failed with the error: %s\n", err)
 	} else {
 		data, _ := ioutil.ReadAll(response.Body)
-		strData := string(data)
-		return strData
+		var f interface{}
+		err := json.Unmarshal(data, &f)
+		if err != nil {
+			fmt.Printf("Error decoding json %s", err)
+			return nil
+		}
+		res := f.(map[string]interface{})
+		return res
 	}
-	return ""
+	return nil
 }
 
 func DisplayOutput(data string, json bool) {
@@ -63,4 +69,15 @@ func DisplayOutput(data string, json bool) {
 		//fmt.Println(data)
 	}
 	fmt.Println(data)
+}
+
+func MapToJSON(data map[string]interface{}) string {
+	b, _ := json.Marshal(data)
+	// Convert bytes to string.
+	s := string(b)
+	return s
+}
+
+func FilterProperties(data string, filter []string) []string {
+	return nil
 }
