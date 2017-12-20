@@ -7,9 +7,8 @@ import (
 	"github.com/urfave/cli"
 )
 
-const HASSIO_BASE_PATH string = "homeassistant"
-
 func CmdHomeassistant(c *cli.Context) {
+	const HASSIO_BASE_PATH = "homeassistant"
 	action := ""
 	endpoint := ""
 	payload := ""
@@ -23,14 +22,14 @@ func CmdHomeassistant(c *cli.Context) {
 
 	switch action {
 	case "info",      // GET
-		 "logs":      // GET
+		 "logs":
 		endpoint = action
 		get = true
 	case "check",     // POST
-	     "restart",   // POST
-	     "start",     // POST
-	     "stop",      // POST
-	     "update":    // POST
+	     "restart",
+	     "start",
+	     "stop",
+	     "update":
 		endpoint = action
 	default:
 		fmt.Println("No action detected")
