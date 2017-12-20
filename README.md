@@ -27,8 +27,9 @@ $ go get -d github.com/home-assistant/hassio-cli
 
 ## Building
 ```bash
-gox -osarch="linux/arm" -ldflags="-s -w"
-upx --brute hassio-cli_linux_arm
+go test ./...
+gox -osarch="linux/arm" -ldflags="-s -w" -output="hassiocli"
+upx --brute hassiocli
 ```
 
 ## Author
