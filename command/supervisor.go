@@ -34,6 +34,6 @@ func CmdSupervisor(c *cli.Context) {
 	if endpoint != "" {
 		response := helpers.RestCall(HASSIO_BASE_PATH, endpoint, get, payload)
 
-		helpers.DisplayOutput(helpers.MapToJSON(response), c.Bool("json"))
+		helpers.DisplayOutput(response, c.Bool("json"))
 	}
 }
