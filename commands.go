@@ -15,7 +15,12 @@ var Commands = []cli.Command{
 		Name:   "homeassistant",
 		Usage:  "",
 		Action: command.CmdHomeassistant,
-		Flags:  []cli.Flag{},
+		Flags:  []cli.Flag{
+			cli.BoolFlag{
+				Name: "json",
+				Usage: "Returns the output in JSON format",
+			},
+		},
 	},
 	{
 		Name:   "supervisor",
