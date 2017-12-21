@@ -7,7 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strings"
-	//"gopkg.in/resty.v1"
+	"os"
 )
 
 // HASSIO_SERVER uri to connect to hass.io with
@@ -35,15 +35,13 @@ func CreateJSONData(data string) map[string]string {
 	return jsonData
 }
 
-func RestCall(basepath string, endpoint string, get bool, payload string) string {
+func RestCall(basepath string, endpoint string, bGet bool, payload string) string {
 	uri := GenerateUri(basepath, endpoint)
 	var response *http.Response
-	//var response *resty.Response
 	var err error
 
-	if get {
+	if bGet {
 		response, err = http.Get(uri)
-		//response, err = resty.R().Get(uri)
 	} else {
 		jsonData := CreateJSONData(payload)
 		jsonValue, _ := json.Marshal(jsonData)
@@ -51,32 +49,32 @@ func RestCall(basepath string, endpoint string, get bool, payload string) string
 	}
 
 	if err != nil {
-		fmt.Printf("The HTTP request failed with the error: %s\n", err)
-	} else {
-		data, _ := ioutil.ReadAll(response.Body)
-		return string(data)
+		fmt.Fprintf(os.Stderr, "The HTTP request failed with the error: %s\n", err)
+		os.Exit(1)
 	}
-	return ""
+	data, _ := ioutil.ReadAll(response.Body)
+	return string(data)
 }
 
-func strToMap(data string) map[string]interface{} {
+func StrToMap(data string) map[string]interface{} {
 	var b = []byte(data)
 	var f interface{}
 	err := json.Unmarshal(b, &f)
 	if err != nil {
-		fmt.Printf("Error decoding json %s", err)
-		return nil
+		fmt.Fprintf(os.Stderr, "Error decoding json %s: %s", err, data)
+		os.Exit(4)
 	}
 	res := f.(map[string]interface{})
 	return res
 }
 
 func DisplayOutput(data string, json bool) {
-	if !(json) {
-		// Make data pretty
-		//fmt.Println(data)
+	if json {
+		fmt.Println(data)
+	} else {
+		outMap := StrToMap(data)
+		fmt.Println("%s\n", outMap)
 	}
-	fmt.Println(data)
 }
 
 func MapToJSON(data map[string]interface{}) string {
@@ -87,7 +85,7 @@ func MapToJSON(data map[string]interface{}) string {
 }
 
 func FilterProperties(data string, filter []string) map[string]string {
-	mymap := strToMap(data)
+	mymap := StrToMap(data)
 	newmap := make(map[string]string)
 	for _, value := range filter {
 		if val, ok := mymap[value]; ok {

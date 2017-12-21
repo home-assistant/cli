@@ -1,10 +1,23 @@
-# hassio-cli
-
+# hassiocli
 
 
 ## Description
 
+Commandline interface to facilitate interaction with hass.io server
+
 ## Usage
+
+`hassiocli <subcommand> <action> [<options>]`
+
+E.g.
+
+- `hassiocli homeassistant --json info`
+
+would return the info from hass.io in JSON format.
+
+To send data to an endpoint, in this case to goto a specific version of hass.io:
+
+- `hassiocli homeassistant update --payload="version=0.60"`
 
 ## Install
 
