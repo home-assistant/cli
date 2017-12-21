@@ -20,6 +20,10 @@ var Commands = []cli.Command{
 				Name: "json",
 				Usage: "Returns the output in JSON format",
 			},
+			cli.StringFlag{
+				Name: "payload",
+				Usage: "holds data for POST in format key=val,key2=val2",
+			},
 		},
 	},
 	{
@@ -31,6 +35,10 @@ var Commands = []cli.Command{
 				Name: "json",
 				Usage: "Returns the output in JSON format",
 			},
+			cli.StringFlag{
+				Name: "payload",
+				Usage: "holds data for POST in format key=val,key2=val2",
+			},
 		},
 	},
 	{
@@ -41,6 +49,10 @@ var Commands = []cli.Command{
 			cli.BoolFlag{
 				Name: "json",
 				Usage: "Returns the output in JSON format",
+			},
+			cli.StringFlag{
+				Name: "payload",
+				Usage: "holds data for POST in format key=val,key2=val2",
 			},
 		},
 	},

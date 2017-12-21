@@ -4,6 +4,7 @@ import (
 	"github.com/urfave/cli"
 	"fmt"
 	"github.com/home-assistant/hassio-cli/command/helpers"
+	"os"
 )
 
 func CmdSupervisor(c *cli.Context) {
@@ -28,7 +29,8 @@ func CmdSupervisor(c *cli.Context) {
 		"update":
 		endpoint = action
 	default:
-		fmt.Println("No action detected")
+		fmt.Fprintf(os.Stderr, "No valid action detected")
+		os.Exit(3)
 	}
 
 	if endpoint != "" {
