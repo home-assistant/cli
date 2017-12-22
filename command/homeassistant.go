@@ -6,6 +6,7 @@ import (
 	"github.com/home-assistant/hassio-cli/command/helpers"
 	"github.com/urfave/cli"
 	"os"
+	"strings"
 )
 
 func CmdHomeassistant(c *cli.Context) {
@@ -35,6 +36,18 @@ func CmdHomeassistant(c *cli.Context) {
 
 	if endpoint != "" {
 		response := helpers.RestCall(HASSIO_BASE_PATH, endpoint, get, c.String("options"))
-		helpers.DisplayOutput(response, c.Bool("rawjson"))
+
+		if c.String("filter") == "" {
+			helpers.DisplayOutput(response, c.Bool("rawjson"))
+		} else {
+			filter := strings.Split(c.String("filter"), ",")
+			data := helpers.FilterProperties(response, filter)
+			helpers.DisplayOutput(data, c.Bool("rawjson"))
+		}
+		responseMap := helpers.ByteArrayToMap(response)
+		result := responseMap["result"]
+		if result != "ok" {
+			os.Exit(10)
+		}
 	}
 }

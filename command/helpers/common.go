@@ -35,7 +35,7 @@ func CreateJSONData(data string) map[string]string {
 	return jsonData
 }
 
-func RestCall(basepath string, endpoint string, bGet bool, payload string) string {
+func RestCall(basepath string, endpoint string, bGet bool, payload string) []byte {
 	uri := GenerateUri(basepath, endpoint)
 	var response *http.Response
 	var err error
@@ -53,47 +53,40 @@ func RestCall(basepath string, endpoint string, bGet bool, payload string) strin
 		os.Exit(1)
 	}
 	data, _ := ioutil.ReadAll(response.Body)
-	return string(data)
+	return data
 }
 
-func StrToMap(data string) map[string]interface{} {
-	var b = []byte(data)
+func ByteArrayToMap(data []byte) map[string]interface{} {
 	var f interface{}
-	err := json.Unmarshal(b, &f)
+	err := json.Unmarshal(data, &f)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error decoding json %s: %s", err, data)
+		fmt.Fprintf(os.Stderr, "Error decoding json %s: %s", err, string(data))
 		os.Exit(4)
 	}
 	res := f.(map[string]interface{})
 	return res
 }
 
-func DisplayOutput(data string, rawjson bool) {
+func DisplayOutput(data []byte, rawjson bool) {
 	if rawjson {
-		fmt.Println(data)
+		fmt.Println(string(data))
 	} else {
-		b := []byte(data)
 		x := bytes.Buffer{}
-		json.Indent(&x, b, "", "    ")
+		json.Indent(&x, data, "", "    ")
 		fmt.Println(string(x.Bytes()))
 	}
 }
 
-func MapToJSON(data map[string]interface{}) string {
-	b, _ := json.Marshal(data)
-	// Convert bytes to string.
-	s := string(b)
-	return s
-}
-
-func FilterProperties(data string, filter []string) map[string]string {
-	mymap := StrToMap(data)
-	newmap := make(map[string]string)
+func FilterProperties(data []byte, filter []string) []byte {
+	mymap := ByteArrayToMap(data)
+	mymapdata := mymap["data"].(map[string]interface{})
+	newmap := make(map[string]interface{})
 	for _, value := range filter {
-		if val, ok := mymap[value]; ok {
-			newmap[value] = val.(string)
+		if val, ok := mymapdata[value]; ok {
+			newmap[value] = fmt.Sprintf("%v",val)
 		}
 	}
-	return newmap
+	rawjson, _ := json.Marshal(newmap)
+	return rawjson
 }
 
