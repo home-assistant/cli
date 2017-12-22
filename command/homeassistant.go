@@ -34,7 +34,7 @@ func CmdHomeassistant(c *cli.Context) {
 	}
 
 	if endpoint != "" {
-		response := helpers.RestCall(HASSIO_BASE_PATH, endpoint, get, c.String("payload"))
+		response := helpers.RestCall(HASSIO_BASE_PATH, endpoint, get, c.String("options"))
 		helpers.DisplayOutput(response, c.Bool("rawjson"))
 	}
 }

@@ -11,13 +11,9 @@ func CmdSupervisor(c *cli.Context) {
 	const HASSIO_BASE_PATH = "supervisor"
 	action := ""
 	endpoint := ""
-	payload := ""
 	get := false
 	if c.NArg() > 0 {
 		action = c.Args()[0]
-	}
-	if c.NArg() == 2 {
-		payload = c.Args()[1]
 	}
 
 	switch action {
@@ -34,8 +30,7 @@ func CmdSupervisor(c *cli.Context) {
 	}
 
 	if endpoint != "" {
-		response := helpers.RestCall(HASSIO_BASE_PATH, endpoint, get, payload)
-
+		response := helpers.RestCall(HASSIO_BASE_PATH, endpoint, get,  c.String("options"))
 		helpers.DisplayOutput(response, c.Bool("rawjson"))
 	}
 }
