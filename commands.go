@@ -1,5 +1,5 @@
 package main
-
+// https://github.com/home-assistant/hassio/blob/dev/API.md
 import (
 	"fmt"
 	"os"
@@ -17,7 +17,7 @@ var Commands = []cli.Command{
 		Action: command.CmdHomeassistant,
 		Flags:  []cli.Flag{
 			cli.BoolFlag{
-				Name: "json",
+				Name: "rawjson",
 				Usage: "Returns the output in JSON format",
 			},
 			cli.StringFlag{
@@ -32,7 +32,7 @@ var Commands = []cli.Command{
 		Action: command.CmdSupervisor,
 		Flags:  []cli.Flag{
 			cli.BoolFlag{
-				Name: "json",
+				Name: "rawjson",
 				Usage: "Returns the output in JSON format",
 			},
 			cli.StringFlag{
@@ -47,7 +47,7 @@ var Commands = []cli.Command{
 		Action: command.CmdHost,
 		Flags:  []cli.Flag{
 			cli.BoolFlag{
-				Name: "json",
+				Name: "rawjson",
 				Usage: "Returns the output in JSON format",
 			},
 			cli.StringFlag{

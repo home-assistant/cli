@@ -68,12 +68,14 @@ func StrToMap(data string) map[string]interface{} {
 	return res
 }
 
-func DisplayOutput(data string, json bool) {
-	if json {
+func DisplayOutput(data string, rawjson bool) {
+	if rawjson {
 		fmt.Println(data)
 	} else {
-		outMap := StrToMap(data)
-		fmt.Println("%s\n", outMap)
+		b := []byte(data)
+		x := bytes.Buffer{}
+		json.Indent(&x, b, "", "    ")
+		fmt.Println(string(x.Bytes()))
 	}
 }
 
