@@ -96,3 +96,4 @@ func FilterProperties(data string, filter []string) map[string]string {
 	}
 	return newmap
 }
+

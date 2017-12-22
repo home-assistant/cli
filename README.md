@@ -6,18 +6,41 @@
 Commandline interface to facilitate interaction with hass.io server
 
 ## Usage
-
-`hassiocli <subcommand> <action> [<options>]`
+- `hassiocli help`
+- `hassiocli <subcommand> <action> [<options>]`
 
 E.g.
 
-- `hassiocli homeassistant --json info`
+- `hassiocli homeassistant info --rawjson`   
 
-would return the info from hass.io in JSON format.
+## Supported endpoints
+### homeassistant
+- info
+- logs
+- restart
+- start
+- stop
+- update
 
-To send data to an endpoint, in this case to goto a specific version of hass.io:
+### supervisor
+- info
+- logs
+- reload
+- update
 
-- `hassiocli homeassistant update --payload="version=0.60"`
+### host
+- hardware
+- reboot
+- shutdown
+- update
+
+
+## Supported modifiers
+- --rawjson,-j -> Will return the data in JSON format on a 
+                    single line (useful for passing to other 
+                    programs to parse / utilise)
+- --options,-o -> Used to send commands to hass.io `hassiocli homeassistant update --options "version=0.60"`
+- --filter,-f  -> Used to filter the data returned from hass.io so only the specified properties are output
 
 ## Install
 
