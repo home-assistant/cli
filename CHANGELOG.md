@@ -4,7 +4,10 @@ Initial release
 
 ### Added
 
-- Add Fundamental features
+- Code parity with hassio bash script
+- Added info action for homeassistant subcommand
+- Added option to Filter selected properties in output
+- Added option to output in JSON format 
 
 ### Deprecated
 
@@ -17,3 +20,7 @@ Initial release
 ### Fixed
 
 - Nothing
+
+### Known Issues / Limitations
+
+- None 
