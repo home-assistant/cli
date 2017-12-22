@@ -23,4 +23,5 @@ Initial release
 
 ### Known Issues / Limitations
 
-- None 
+- Filter cannot return "result"
+- All FILTERED results are "{<string>:<string>}" currently 
