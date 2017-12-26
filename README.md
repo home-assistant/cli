@@ -1,5 +1,12 @@
 # hassiocli
 
+<p align="center">
+<a href="https://travis-ci.org/home-assistant/hassio-cli">
+        <img src="https://travis-ci.org/home-assistant/hassio-cli.svg?branch=master"
+            alt="build status"></a>
+</p>
+
+
 
 ## Description
 
