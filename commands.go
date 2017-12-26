@@ -71,6 +71,26 @@ var Commands = []cli.Command{
 			},
 		},
 	},
+  {
+		Name:   "network",
+		Usage:  "",
+		Aliases: []string{"net"},
+		Action: command.CmdNetwork,
+		Flags:  []cli.Flag{
+			cli.BoolFlag{
+				Name: "rawjson, j",
+				Usage: "Returns the output in JSON format",
+			},
+			cli.StringFlag{
+				Name: "options, o",
+				Usage: "holds data for POST in format `key=val,key2=val2`",
+			},
+			cli.StringFlag{
+				Name: "filter, f",
+				Usage: "properties to extract from returned data `prop1,prop2`",
+			},
+		},
+	},
 }
 
 func CommandNotFound(c *cli.Context, command string) {

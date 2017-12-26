@@ -13,9 +13,13 @@ import (
 // HASSIO_SERVER uri to connect to hass.io with
 const HASSIO_SERVER = "http://hassio"
 
-func GenerateUri(basepath string, endpoint string) string {
+func GenerateUri(basepath string, endpoint string, serverOverride string) string {
 	var uri bytes.Buffer
-	uri.WriteString(HASSIO_SERVER)
+  if serverOverride != "" {
+    uri.WriteString(serverOverride)
+  } else {
+	   uri.WriteString(HASSIO_SERVER)
+  }
 	uri.WriteString("/")
 	uri.WriteString(basepath)
 	uri.WriteString("/")
@@ -35,8 +39,7 @@ func CreateJSONData(data string) map[string]string {
 	return jsonData
 }
 
-func RestCall(basepath string, endpoint string, bGet bool, payload string) []byte {
-	uri := GenerateUri(basepath, endpoint)
+func RestCall(uri string, bGet bool, payload string) []byte {
 	var response *http.Response
 	var err error
 
@@ -89,4 +92,3 @@ func FilterProperties(data []byte, filter []string) []byte {
 	rawjson, _ := json.Marshal(newmap)
 	return rawjson
 }
-

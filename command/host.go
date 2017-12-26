@@ -12,6 +12,7 @@ func CmdHost(c *cli.Context) {
 	const HASSIO_BASE_PATH = "host"
 	action := ""
 	endpoint := ""
+  serverOverride := ""
 	get := false
 	if c.NArg() > 0 {
 		action = c.Args()[0]
@@ -31,7 +32,8 @@ func CmdHost(c *cli.Context) {
 	}
 
 	if endpoint != "" {
-		response := helpers.RestCall(HASSIO_BASE_PATH, endpoint, get, c.String("options"))
+    uri := helpers.GenerateUri(HASSIO_BASE_PATH, endpoint, serverOverride)
+		response := helpers.RestCall(uri, get,  c.String("options"))
 
 		if c.String("filter") == "" {
 			helpers.DisplayOutput(response, c.Bool("rawjson"))
