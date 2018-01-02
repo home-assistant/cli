@@ -8,8 +8,10 @@ import (
 	"github.com/urfave/cli"
 )
 
+// GlobalFlags Used to hold global flags
 var GlobalFlags = []cli.Flag{}
 
+// Commands holds the commands that are supported by the CLI
 var Commands = []cli.Command{
 	{
 		Name:   "homeassistant",
@@ -73,6 +75,7 @@ var Commands = []cli.Command{
 	},
 }
 
+// CommandNotFound used to display if a user enters a non-existant command
 func CommandNotFound(c *cli.Context, command string) {
 	fmt.Fprintf(os.Stderr, "%s: '%s' is not a %s command. See '%s --help'.", c.App.Name, command, c.App.Name, c.App.Name)
 	os.Exit(2)
