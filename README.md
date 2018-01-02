@@ -35,6 +35,7 @@ E.g.
 - update
 
 ### network
+- info
 - options
 
 
