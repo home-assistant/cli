@@ -1,7 +1,14 @@
 language: go
 go_import_path: github.com/home-assistant/hassio-cli
-go:
-  - 1.x
-  - 1.6
-  - 1.7.x
-  - master
+matrix:
+  fast_finish: true
+  include:
+    - go: "1.x"
+    - go: "1.6"
+    - go: "1.6"
+      env: LINT=True
+      install: go get -u github.com/golang/lint/golint
+      language: bash
+      script: golint -set_exit_status
+    - go: "1.7.x"
+    - go: "master"
