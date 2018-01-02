@@ -19,11 +19,11 @@ func CmdNetwork(c *cli.Context) {
 	}
 
 	switch action {
-	case "info":        // GET
-	    endpoint = action
-	    get = true
+	case "info":      // GET
+		endpoint = action
+		get = true
 	case "options":     // POST
-        serverOverride = "http://172.17.0.2"
+    serverOverride = "http://172.17.0.2"
 		endpoint = action
 	default:
 		fmt.Fprintf(os.Stderr, "No valid action detected")
