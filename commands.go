@@ -111,6 +111,10 @@ var Commands = []cli.Command{
                 Name: "filter, f",
                 Usage: "properties to extract from returned data `prop1,prop2`",
             },
+            cli.StringFlag{
+                Name: "snapname, name, sn",
+                Usage: "used with 'info|remove|restore|full' actions to return info on a specific snapshot `nameofsnapshot`",
+            },
         },
     },
 }

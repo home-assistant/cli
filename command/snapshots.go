@@ -13,6 +13,7 @@ func CmdSnapshots(c *cli.Context) {
     action := ""
     endpoint := ""
     serverOverride := ""
+    options := c.String("options")
     get := false
     if c.NArg() > 0 {
         action = c.Args()[0]
@@ -21,11 +22,28 @@ func CmdSnapshots(c *cli.Context) {
     switch action {
     case "list":       // GET
         get = true
-        action = ""
+    case "info":
+        get = true
+        endpoint = c.String("snapname") + "/info"
     case "reload":     // POST
         endpoint = action
     case "new":
-        endpoint = action
+        endpoint = "new/full"
+        if c.String("snapname") != "" {
+            options = "name=" + c.String("snapname")
+        }
+    case "restore":
+        if c.String("snapname") == "" {
+            fmt.Fprintf(os.Stderr, "-snapname is required. See '%s --help'.", c.App.Name)
+            os.Exit(11)
+        }
+        endpoint = c.String("snapname") + "/restore/full"
+    case "remove":
+        if c.String("snapname") == "" {
+            fmt.Fprintf(os.Stderr, "-snapname is required. See '%s --help'.", c.App.Name)
+            os.Exit(11)
+        }
+        endpoint = c.String("snapname") + "/remove"
     default:
         fmt.Fprintf(os.Stderr, "No valid action detected")
         os.Exit(3)
@@ -33,7 +51,7 @@ func CmdSnapshots(c *cli.Context) {
 
     if endpoint != "" || action == "list" {
         uri := helpers.GenerateUri(HASSIO_BASE_PATH, endpoint, serverOverride)
-        response := helpers.RestCall(uri, get,  c.String("options"))
+        response := helpers.RestCall(uri, get,  options)
 
         if c.String("filter") == "" {
             helpers.DisplayOutput(response, c.Bool("rawjson"))

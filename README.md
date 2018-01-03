@@ -16,7 +16,7 @@ Commandline interface to facilitate interaction with hass.io server
 - `hassio help`
 - `hassio <subcommand> <action> [<options>]`
 
-E.
+E.g.
 - `hassio homeassistant info --rawjson`   
 
 ## Supported endpoints
@@ -43,6 +43,14 @@ E.
 ### network
 - info
 - options
+
+## snapshots
+- list
+- info
+- reload
+- new
+- restore
+- remove
 
 
 ## Supported modifiers
