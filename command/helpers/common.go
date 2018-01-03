@@ -41,15 +41,24 @@ func CreateJSONData(data string) map[string]string {
 
 func RestCall(uri string, bGet bool, payload string) []byte {
     var response *http.Response
+    var request *http.Request
     var err error
+    var client = &http.Client{}
 
     if bGet {
-        response, err = http.Get(uri)
+        request, err = http.NewRequest("GET", uri, nil)
+        request.Header.Add("X_HASSIO_KEY", os.Getenv("X-HASSIO-KEY"))
     } else {
         jsonData := CreateJSONData(payload)
         jsonValue, _ := json.Marshal(jsonData)
-        response, err = http.Post(uri, "application/json", bytes.NewBuffer(jsonValue))
+
+        request, err = http.NewRequest("POST", uri, bytes.NewBuffer(jsonValue))
+        request.Header.Add("X-HASSIO-KEY", os.Getenv("X-HASSIO-KEY"))
+        request.Header.Add("contentType", "application/json")
     }
+
+    response, err = client.Do(request)
+    defer response.Body.Close()
 
     if err != nil {
         fmt.Fprintf(os.Stderr, "The HTTP request failed with the error: %s\n", err)
