@@ -41,6 +41,10 @@ E.g.
 - shutdown
 - update
 
+### network
+- info
+- options
+
 
 ## Supported modifiers
 - --rawjson,-j -> Will return the data in JSON format on a 
