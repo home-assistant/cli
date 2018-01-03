@@ -8,8 +8,8 @@ import (
     "strings"
 )
 
-func CmdSupervisor(c *cli.Context) {
-    const HASSIO_BASE_PATH = "supervisor"
+func CmdNetwork(c *cli.Context) {
+    const HASSIO_BASE_PATH = "network"
     action := ""
     endpoint := ""
     serverOverride := ""
@@ -19,12 +19,11 @@ func CmdSupervisor(c *cli.Context) {
     }
 
     switch action {
-    case "info",      // GET
-        "logs":
+    case "info":        // GET
         endpoint = action
         get = true
-    case "reload",     // POST
-        "update":
+    case "options":     // POST
+        serverOverride = "http://172.17.0.2"
         endpoint = action
     default:
         fmt.Fprintf(os.Stderr, "No valid action detected")
