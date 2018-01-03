@@ -13,12 +13,11 @@
 Commandline interface to facilitate interaction with hass.io server
 
 ## Usage
-- `hassiocli help`
-- `hassiocli <subcommand> <action> [<options>]`
+- `hassio help`
+- `hassio <subcommand> <action> [<options>]`
 
-E.g.
-
-- `hassiocli homeassistant info --rawjson`   
+E.
+- `hassio homeassistant info --rawjson`   
 
 ## Supported endpoints
 ### homeassistant
@@ -50,7 +49,7 @@ E.g.
 - --rawjson,-j -> Will return the data in JSON format on a 
                     single line (useful for passing to other 
                     programs to parse / utilise)
-- --options,-o -> Used to send commands to hass.io `hassiocli homeassistant update --options "version=0.60"`
+- --options,-o -> Used to send commands to hass.io `hassio homeassistant update --options "version=0.60"`
 - --filter,-f  -> Used to filter the data returned from hass.io so only the specified properties are output
 
 ## Install
@@ -75,8 +74,8 @@ $ go get -d github.com/home-assistant/hassio-cli
 ## Building
 ```bash
 go test ./...
-gox -osarch="linux/arm" -ldflags="-s -w" -output="hassiocli"
-upx --brute hassiocli
+gox -osarch="linux/arm" -ldflags="-s -w" -output="hassio"
+upx --brute hassio
 ```
 
 ## Author
