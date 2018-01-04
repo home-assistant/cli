@@ -3,7 +3,6 @@ go_import_path: github.com/home-assistant/hassio-cli
 matrix:
   fast_finish: true
   include:
-  - go: 1.x
   - go: '1.6'
   - go: '1.6'
     env: LINT=True
