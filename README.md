@@ -16,11 +16,11 @@ Commandline interface to facilitate interaction with hass.io server
 - `hassio help`
 - `hassio <subcommand> <action> [<options>]`
 
-E.
+E.g.
 - `hassio homeassistant info --rawjson`   
 
 ## Supported endpoints
-### homeassistant
+#### homeassistant
 - info
 - logs
 - restart
@@ -28,29 +28,36 @@ E.
 - stop
 - update
 
-### supervisor
+#### supervisor
 - info
 - logs
 - reload
 - update
 
-### host
+#### host
 - hardware
 - reboot
 - shutdown
 - update
 
-### network
+#### network
 - info
 - options
 
 
-## Supported modifiers
+### Supported modifiers
 - --rawjson,-j -> Will return the data in JSON format on a 
                     single line (useful for passing to other 
                     programs to parse / utilise)
 - --options,-o -> Used to send commands to hass.io `hassio homeassistant update --options "version=0.60"`
 - --filter,-f  -> Used to filter the data returned from hass.io so only the specified properties are output
+
+## Supported builds
+
+1. i386
+1. x64
+1. arm
+1. arm64
 
 ## Install
 
