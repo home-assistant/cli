@@ -67,6 +67,7 @@ func RestCall(uri string, bGet bool, payload string) []byte {
             jsonData := CreateJSONData(payload)
             jsonValue, _ = json.Marshal(jsonData)
         }
+
         request, err = http.NewRequest("POST", uri, bytes.NewBuffer(jsonValue))
         request.Header.Add("X-HASSIO-KEY", os.Getenv("X-HASSIO-KEY"))
         request.Header.Add("contentType", "application/json")
