@@ -128,7 +128,7 @@ func FilterProperties(data []byte, filter []string) []byte {
     return rawjson
 }
 
-// Used to execute the remote calls for each of the managing commands
+// ExecCommand Used to execute the remote calls for each of the managing commands
 func ExecCommand(basepath string, endpoint string, serverOverride string, get bool, Options string, Filter string, RawJSON bool) {
     uri := GenerateURI(basepath, endpoint, serverOverride)
     response := RestCall(uri, get,  Options)
