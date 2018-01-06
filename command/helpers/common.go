@@ -13,8 +13,8 @@ import (
 // HassioServer uri to connect to hass.io with
 const HassioServer = "http://hassio"
 
-// GenerateUri Creates the API URI from the server and the endpoint
-func GenerateUri(basepath string, endpoint string, serverOverride string) string {
+// GenerateURI Creates the API URI from the server and the endpoint
+func GenerateURI(basepath string, endpoint string, serverOverride string) string {
     var uri bytes.Buffer
     if serverOverride != "" {
         uri.WriteString(serverOverride)
