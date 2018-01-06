@@ -11,7 +11,7 @@ func TestRestCall(t *testing.T) {
 
 func TestGenerateUri(t *testing.T) {
     expectedURI := "http://hassio/api/endpoint"
-    uri := GenerateUri("api", "endpoint", "")
+    uri := GenerateURI("api", "endpoint", "")
     if uri != expectedURI {
         t.Errorf("URI incorrect, got: %s, want: %s.", uri, expectedURI)
     }
@@ -19,7 +19,7 @@ func TestGenerateUri(t *testing.T) {
 
 func TestGenerateUriOverride(t *testing.T) {
     expectedURI := "http://testme/api/endpoint"
-    uri := GenerateUri("api", "endpoint", "http://testme")
+    uri := GenerateURI("api", "endpoint", "http://testme")
     if uri != expectedURI {
         t.Errorf("URI incorrect, got: %s, want: %s.", uri, expectedURI)
     }
