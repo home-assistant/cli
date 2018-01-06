@@ -5,13 +5,13 @@ matrix:
   include:
   - go: '1.6'
   - go: '1.6'
-    env: LINT=True
+    env: LINTER
     install: go get -u github.com/golang/lint/golint
     language: bash
     script: golint -set_exit_status
   - go: 1.7.x
   - go: 1.7.x
-    env: DEPLOY:True
+    env: DEPLOYMENT
     addons:
       apt:
         packages:
