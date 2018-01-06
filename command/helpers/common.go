@@ -12,6 +12,7 @@ import (
 
 // HassioServer uri to connect to hass.io with
 const HassioServer = "http://hassio"
+// DebugEnabled set by global --debug (-d) flag
 var DebugEnabled = false
 
 // GenerateURI Creates the API URI from the server and the endpoint
