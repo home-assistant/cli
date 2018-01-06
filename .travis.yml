@@ -17,7 +17,8 @@ matrix:
         packages:
         - golang-go-linux-arm
     before_deploy:
-    - go build -ldflags="-s -w" -o "hassio_x64"
+    - GOARCH=386 go build -ldflags="-s -w" -o "hassio_i386"
+    - GOARCH=amd64 go build -ldflags="-s -w" -o "hassio_x64"
     - GOARCH=arm go build -ldflags="-s -w" -o "hassio_arm"
     - GOARCH=arm64 go build -ldflags="-s -w" -o "hassio_arm64"
     deploy:
