@@ -30,6 +30,6 @@ matrix:
       skip_cleanup: true
       on:
         tags: true
-        repo: home-assistant/hassio-cli
-        branch: master
+#        repo: home-assistant/hassio-cli
+#        branch: master
   - go: master
