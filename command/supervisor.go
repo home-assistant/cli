@@ -5,15 +5,20 @@ import (
     "fmt"
     "github.com/home-assistant/hassio-cli/command/helpers"
     "os"
-    "strings"
 )
 
+// CmdSupervisor All supervisor endpoints for hass.io
 func CmdSupervisor(c *cli.Context) {
     const HassioBasePath = "supervisor"
     action := ""
     endpoint := ""
     serverOverride := ""
     get := false
+    DebugEnabled := c.GlobalBool("debug")
+    helpers.DebugEnabled = DebugEnabled
+    Options := c.String("options")
+    RawJSON := c.Bool("rawjson")
+    Filter := c.String("filter")
     if c.NArg() > 0 {
         action = c.Args()[0]
     }
@@ -32,20 +37,6 @@ func CmdSupervisor(c *cli.Context) {
     }
 
     if endpoint != "" {
-        uri := helpers.GenerateURI(HassioBasePath, endpoint, serverOverride)
-        response := helpers.RestCall(uri, get,  c.String("options"))
-
-        if c.String("filter") == "" {
-            helpers.DisplayOutput(response, c.Bool("rawjson"))
-        } else {
-            filter := strings.Split(c.String("filter"), ",")
-            data := helpers.FilterProperties(response, filter)
-            helpers.DisplayOutput(data, c.Bool("rawjson"))
-        }
-        responseMap := helpers.ByteArrayToMap(response)
-        result := responseMap["result"]
-        if result != "ok" {
-            os.Exit(10)
-        }
+        helpers.ExecCommand(HassioBasePath, endpoint, serverOverride, get,  Options, Filter, RawJSON)
     }
 }

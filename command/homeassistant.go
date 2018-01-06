@@ -2,19 +2,24 @@ package command
 
 import (
     "fmt"
-
     "github.com/home-assistant/hassio-cli/command/helpers"
     "github.com/urfave/cli"
     "os"
-    "strings"
 )
 
+
+// CmdHomeassistant All home-assistant endpoints for hass.io
 func CmdHomeassistant(c *cli.Context) {
     const HassioBasePath = "homeassistant"
     action := ""
     endpoint := ""
     serverOverride := ""
     get := false
+    DebugEnabled := c.GlobalBool("debug")
+    helpers.DebugEnabled = DebugEnabled
+    Options := c.String("options")
+    RawJSON := c.Bool("rawjson")
+    Filter := c.String("filter")
     if c.NArg() > 0 {
         action = c.Args()[0]
     }
@@ -31,25 +36,15 @@ func CmdHomeassistant(c *cli.Context) {
         "update":
         endpoint = action
     default:
-        fmt.Fprintf(os.Stderr, "No valid action detected")
+        fmt.Fprintf(os.Stdout, "No valid action detected")
         os.Exit(3)
     }
 
+    if DebugEnabled {
+        fmt.Fprintf(os.Stdout, "DEBUG [CmdHomeassistant]: action->'%s', endpoint='%s', serverOverride->'%s', GET->'%t', options->'%s', rawjson->'%t', filter->'%s'\n",
+            action, endpoint, serverOverride, get, Options, RawJSON, Filter )
+    }
     if endpoint != "" {
-        uri := helpers.GenerateURI(HassioBasePath, endpoint, serverOverride)
-        response := helpers.RestCall(uri, get,  c.String("options"))
-
-        if c.String("filter") == "" {
-            helpers.DisplayOutput(response, c.Bool("rawjson"))
-        } else {
-            filter := strings.Split(c.String("filter"), ",")
-            data := helpers.FilterProperties(response, filter)
-            helpers.DisplayOutput(data, c.Bool("rawjson"))
-        }
-        responseMap := helpers.ByteArrayToMap(response)
-        result := responseMap["result"]
-        if result != "ok" {
-            os.Exit(10)
-        }
+        helpers.ExecCommand(HassioBasePath, endpoint, serverOverride, get,  Options, Filter, RawJSON)
     }
 }
