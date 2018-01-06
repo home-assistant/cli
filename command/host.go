@@ -36,9 +36,12 @@ func CmdHost(c *cli.Context) {
         os.Exit(3)
     }
 
+    if DebugEnabled {
+        fmt.Fprintf(os.Stdout, "DEBUG [CmdHost]: action->'%s', endpoint='%s', serverOverride->'%s', GET->'%t', options->'%s', rawjson->'%t', filter->'%s'\n",
+            action, endpoint, serverOverride, get, Options, RawJSON, Filter )
+    }
+
     if endpoint != "" {
-        if endpoint != "" {
-            helpers.ExecCommand(HassioBasePath, endpoint, serverOverride, get,  Options, Filter, RawJSON)
-        }
+        helpers.ExecCommand(HassioBasePath, endpoint, serverOverride, get,  Options, Filter, RawJSON)
     }
 }
