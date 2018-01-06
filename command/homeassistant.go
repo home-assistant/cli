@@ -10,7 +10,7 @@ import (
 )
 
 func CmdHomeassistant(c *cli.Context) {
-    const HASSIO_BASE_PATH = "homeassistant"
+    const HassioBasePath = "homeassistant"
     action := ""
     endpoint := ""
     serverOverride := ""
@@ -36,7 +36,7 @@ func CmdHomeassistant(c *cli.Context) {
     }
 
     if endpoint != "" {
-        uri := helpers.GenerateUri(HASSIO_BASE_PATH, endpoint, serverOverride)
+        uri := helpers.GenerateUri(HassioBasePath, endpoint, serverOverride)
         response := helpers.RestCall(uri, get,  c.String("options"))
 
         if c.String("filter") == "" {

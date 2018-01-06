@@ -9,7 +9,7 @@ import (
 )
 
 func CmdHost(c *cli.Context) {
-    const HASSIO_BASE_PATH = "host"
+    const HassioBasePath = "host"
     action := ""
     endpoint := ""
     serverOverride := ""
@@ -32,7 +32,7 @@ func CmdHost(c *cli.Context) {
     }
 
     if endpoint != "" {
-        uri := helpers.GenerateUri(HASSIO_BASE_PATH, endpoint, serverOverride)
+        uri := helpers.GenerateUri(HassioBasePath, endpoint, serverOverride)
         response := helpers.RestCall(uri, get,  c.String("options"))
 
         if c.String("filter") == "" {

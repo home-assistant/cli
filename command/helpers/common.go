@@ -10,15 +10,16 @@ import (
     "os"
 )
 
-// HASSIO_SERVER uri to connect to hass.io with
-const HASSIO_SERVER = "http://hassio"
+// HassioServer uri to connect to hass.io with
+const HassioServer = "http://hassio"
 
+// GenerateUri Creates the API URI from the server and the endpoint
 func GenerateUri(basepath string, endpoint string, serverOverride string) string {
     var uri bytes.Buffer
     if serverOverride != "" {
         uri.WriteString(serverOverride)
     } else {
-        uri.WriteString(HASSIO_SERVER)
+        uri.WriteString(HassioServer)
     }
     uri.WriteString("/")
     uri.WriteString(basepath)
@@ -39,6 +40,7 @@ func CreateJSONData(data string) map[string]string {
     return jsonData
 }
 
+// RestCall Makes the Call to the API
 func RestCall(uri string, bGet bool, payload string) []byte {
     var response *http.Response
     var request *http.Request

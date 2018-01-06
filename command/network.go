@@ -8,8 +8,9 @@ import (
     "strings"
 )
 
+// CmdNetwork All network endpoints for hass.io
 func CmdNetwork(c *cli.Context) {
-    const HASSIO_BASE_PATH = "network"
+    const HassioBasePath = "network"
     action := ""
     endpoint := ""
     serverOverride := ""
@@ -30,7 +31,7 @@ func CmdNetwork(c *cli.Context) {
     }
 
     if endpoint != "" {
-        uri := helpers.GenerateUri(HASSIO_BASE_PATH, endpoint, serverOverride)
+        uri := helpers.GenerateUri(HassioBasePath, endpoint, serverOverride)
         response := helpers.RestCall(uri, get,  c.String("options"))
 
         if c.String("filter") == "" {
