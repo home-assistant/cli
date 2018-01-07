@@ -130,11 +130,21 @@ func FilterProperties(data []byte, filter []string) []byte {
 
 // ExecCommand Used to execute the remote calls for each of the managing commands
 func ExecCommand(basepath string, endpoint string, serverOverride string, get bool, Options string, Filter string, RawJSON bool) {
+    if DebugEnabled {
+        fmt.Fprintf(os.Stdout, "DEBUG [ExecCommand]: basepath->'%s', endpoint->'%s', serverOverride->'%s', get->'%t', Options->'%s', Filter->'%s', RawJSON->'%t'\n",
+            basepath, endpoint, serverOverride, get, Options, Filter, RawJSON)
+    }
     uri := GenerateURI(basepath, endpoint, serverOverride)
     response := RestCall(uri, get,  Options)
     if Filter == "" {
+        if DebugEnabled {
+            fmt.Fprintf(os.Stdout, "DEBUG [ExecCommand]: No Filter\n")
+        }
         DisplayOutput(response, RawJSON)
     } else {
+        if DebugEnabled {
+            fmt.Fprintf(os.Stdout, "DEBUG [ExecCommand]: Filtering\n")
+        }
         filter := strings.Split(Filter, ",")
         data := FilterProperties(response, filter)
         DisplayOutput(data, RawJSON)
