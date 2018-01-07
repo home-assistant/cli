@@ -1,4 +1,4 @@
-## 0.1.0 (2017-12-20)
+## 1.0.0 (2018-01-07)
 
 Initial release
 
@@ -8,6 +8,7 @@ Initial release
 - Added info action for homeassistant subcommand
 - Added option to Filter selected properties in output
 - Added option to output in JSON format 
+- Added network options support (change hostname)
 
 ### Deprecated
 
