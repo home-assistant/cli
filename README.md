@@ -46,12 +46,20 @@ E.g.
 
 
 ### Supported modifiers
+#### Global
+- --debug,-d -> Enables debug output
+
+#### SubCommand
 - --rawjson,-j -> Will return the data in JSON format on a 
                     single line (useful for passing to other 
                     programs to parse / utilise)
 - --options,-o -> Used to send commands to hass.io `hassio homeassistant update --options "version=0.60"`
 - --filter,-f  -> Used to filter the data returned from hass.io so only the specified properties are output
 
+*Note:* Modifer order is important.
+
+`hassio <GlobalModifier> <SubCommand> <Action> <SubCommandModifier>`
+ 
 ## Supported builds
 
 1. i386

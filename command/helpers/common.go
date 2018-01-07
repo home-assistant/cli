@@ -12,9 +12,14 @@ import (
 
 // HassioServer uri to connect to hass.io with
 const HassioServer = "http://hassio"
+// DebugEnabled set by global --debug (-d) flag
+var DebugEnabled = false
 
 // GenerateURI Creates the API URI from the server and the endpoint
 func GenerateURI(basepath string, endpoint string, serverOverride string) string {
+    if DebugEnabled {
+        fmt.Fprintf(os.Stdout, "DEBUG [GenerateURI]: basepath->'%s', endpoint->'%s', serverOverride->'%s'\n", basepath, endpoint, serverOverride)
+    }
     var uri bytes.Buffer
     if serverOverride != "" {
         uri.WriteString(serverOverride)
@@ -29,6 +34,9 @@ func GenerateURI(basepath string, endpoint string, serverOverride string) string
 }
 
 func CreateJSONData(data string) map[string]string {
+    if DebugEnabled {
+        fmt.Fprintf(os.Stdout, "DEBUG [CreateJSONData]: data->'%s'\n", data)
+    }
     var jsonData map[string]string
     var ss []string
     ss = strings.Split(data, ",")
@@ -46,6 +54,10 @@ func RestCall(uri string, bGet bool, payload string) []byte {
     var request *http.Request
     var err error
     var client = &http.Client{}
+
+    if DebugEnabled {
+        fmt.Fprintf(os.Stdout, "DEBUG [RestCall]: data->'%s', GET->'%t', payload->'%s'\n", uri, bGet, payload)
+    }
 
     if bGet {
         request, err = http.NewRequest("GET", uri, nil)
@@ -70,6 +82,9 @@ func RestCall(uri string, bGet bool, payload string) []byte {
         os.Exit(1)
     }
     data, _ := ioutil.ReadAll(response.Body)
+    if DebugEnabled {
+        fmt.Fprintf(os.Stdout, "DEBUG [RestCall]: ResponseBody->'%s'\n", string(data))
+    }
     return data
 }
 
@@ -95,6 +110,9 @@ func DisplayOutput(data []byte, rawjson bool) {
 }
 
 func FilterProperties(data []byte, filter []string) []byte {
+    if DebugEnabled {
+        fmt.Fprintf(os.Stdout, "DEBUG [FilterProperties]: indata->'%s', filter->'%s'\n", string(data), filter)
+    }
     mymap := ByteArrayToMap(data)
     mymapdata := mymap["data"].(map[string]interface{})
     newmap := make(map[string]interface{})
@@ -104,5 +122,26 @@ func FilterProperties(data []byte, filter []string) []byte {
         }
     }
     rawjson, _ := json.Marshal(newmap)
+    if DebugEnabled {
+        fmt.Fprintf(os.Stdout, "DEBUG [FilterProperties]: outdata->'%s'\n", string(rawjson))
+    }
     return rawjson
+}
+
+// ExecCommand Used to execute the remote calls for each of the managing commands
+func ExecCommand(basepath string, endpoint string, serverOverride string, get bool, Options string, Filter string, RawJSON bool) {
+    uri := GenerateURI(basepath, endpoint, serverOverride)
+    response := RestCall(uri, get,  Options)
+    if Filter == "" {
+        DisplayOutput(response, RawJSON)
+    } else {
+        filter := strings.Split(Filter, ",")
+        data := FilterProperties(response, filter)
+        DisplayOutput(data, RawJSON)
+    }
+    responseMap := ByteArrayToMap(response)
+    result := responseMap["result"]
+    if result != "ok" {
+        os.Exit(10)
+    }
 }
