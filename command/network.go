@@ -7,9 +7,9 @@ import (
     "os"
 )
 
-// CmdSupervisor All supervisor endpoints for hass.io
-func CmdSupervisor(c *cli.Context) {
-    const HassioBasePath = "supervisor"
+// CmdNetwork All network endpoints for hass.io
+func CmdNetwork(c *cli.Context) {
+    const HassioBasePath = "network"
     action := ""
     endpoint := ""
     serverOverride := ""
@@ -24,12 +24,10 @@ func CmdSupervisor(c *cli.Context) {
     }
 
     switch action {
-    case "info",      // GET
-        "logs":
+    case "info":        // GET
         endpoint = action
         get = true
-    case "reload",     // POST
-        "update":
+    case "options":     // POST
         endpoint = action
     default:
         fmt.Fprintf(os.Stderr, "No valid action detected")
@@ -37,7 +35,7 @@ func CmdSupervisor(c *cli.Context) {
     }
 
     if DebugEnabled {
-        fmt.Fprintf(os.Stdout, "DEBUG [CmdSupervisor]: action->'%s', endpoint='%s', serverOverride->'%s', GET->'%t', options->'%s', rawjson->'%t', filter->'%s'\n",
+        fmt.Fprintf(os.Stdout, "DEBUG [CmdNetwork]: action->'%s', endpoint='%s', serverOverride->'%s', GET->'%t', options->'%s', rawjson->'%t', filter->'%s'\n",
             action, endpoint, serverOverride, get, Options, RawJSON, Filter )
     }
 

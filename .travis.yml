@@ -1,7 +1,35 @@
 language: go
 go_import_path: github.com/home-assistant/hassio-cli
-go:
-  - 1.x
-  - 1.6
-  - 1.7.x
-  - master
+matrix:
+  fast_finish: true
+  include:
+  - go: '1.6'
+  - go: '1.6'
+    env: LINTER
+    install: go get -u github.com/golang/lint/golint
+    language: bash
+    script: golint -set_exit_status
+  - go: 1.7.x
+  - go: 1.7.x
+    env: DEPLOYMENT
+    addons:
+      apt:
+        packages:
+        - golang-go-linux-arm
+    before_deploy:
+    - GOARCH=386 go build -ldflags="-s -w" -o "hassio_i386"
+    - GOARCH=amd64 go build -ldflags="-s -w" -o "hassio_amd64"
+    - GOARCH=arm go build -ldflags="-s -w" -o "hassio_armhf"
+    - GOARCH=arm64 go build -ldflags="-s -w" -o "hassio_aarch64"
+    deploy:
+      provider: releases
+      api_key:
+        secure: dY8Op3J69dLMTd0AS5f5gsSsUdW0dQspf7BMZL4O1YzIHT40e1ndiVm+Ey+K09S3W4AkpneLbg9GOHHCmokGxbE/xKEvXzfnfw4mZJG0m4xygqp1cnZRgWYLE2mRG8z8Z2nfe/9EsAGGBJWyevHXB49wCwViLQ4y4KrYlCnb2Gi1uK/G939yLMIfiqOOjG32Bd9W13JJ6lYbiHaCXEZwKYxmsQd0z8YXfiSPqqoh9iuU08/RPTc5vgORrXTnPyovXZVOjUHXOgp5nKWihYyuXw/xk70ord8cOp2F2u5ySNxQSTpet7zAKRWhL6rTS/HauJ3yvcU9+Q+dkFdEZ1G930xfO5VlL7BqdaRUiRCDM+WjC7ENS8lX1hJkIpKSLQiX2iZxfrI3q1Ox2E3lx5OasvAjXjG+64eyLRHslUa6n3NpwR9xKWVSmcWm3iquKmA8UoxwFsI8psLUv5XZIdrc45ijVZKDWT2931RnmmbEiYdCMO3MkHsxNU4VuoDVLNgo3sHCQNhKGWGP6ii19GfIw7FJlhitCKja7gwBU5HipBjHyAo+2PJY15xy/Cfz/6qQXneNuKbeUh3gmHTrLiS50dEwpYxm0T7rMMoQQv+gTOZhU9xdyK9Qf9OXucoVcIJtFhWDAmZr13Vxa2KoH/ORYfdNhTUDkkecJ9Ze3beznfw=
+      file_glob: true
+      file: hassio_*
+      skip_cleanup: true
+      on:
+        tags: true
+        repo: home-assistant/hassio-cli
+        branch: master
+  - go: master
