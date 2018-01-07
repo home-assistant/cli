@@ -75,7 +75,6 @@ func RestCall(uri string, bGet bool, payload string) []byte {
     }
 
     response, err = client.Do(request)
-    defer response.Body.Close()
 
     if err != nil {
         fmt.Fprintf(os.Stderr, "The HTTP request failed with the error: %s\n", err)
@@ -85,6 +84,8 @@ func RestCall(uri string, bGet bool, payload string) []byte {
     if DebugEnabled {
         fmt.Fprintf(os.Stdout, "DEBUG [RestCall]: ResponseBody->'%s'\n", string(data))
     }
+
+    defer response.Body.Close()
     return data
 }
 
