@@ -17,10 +17,10 @@ matrix:
         packages:
         - golang-go-linux-arm
     before_deploy:
-    - GOARCH=386 go build -ldflags="-s -w" -o "hassio_i386"
-    - GOARCH=amd64 go build -ldflags="-s -w" -o "hassio_amd64"
-    - GOARCH=arm go build -ldflags="-s -w" -o "hassio_armhf"
-    - GOARCH=arm64 go build -ldflags="-s -w" -o "hassio_aarch64"
+    - CGO_ENABLED=0 GOARCH=386 go build -ldflags="-s -w" -o "hassio_i386"
+    - CGO_ENABLED=0 GOARCH=amd64 go build -ldflags="-s -w" -o "hassio_amd64"
+    - CGO_ENABLED=0 GOARCH=arm go build -ldflags="-s -w" -o "hassio_armhf"
+    - CGO_ENABLED=0 GOARCH=arm64 go build -ldflags="-s -w" -o "hassio_aarch64" 
     deploy:
       provider: releases
       api_key:
