@@ -19,7 +19,7 @@ func TestGenerateUri(t *testing.T) {
 
 func TestGenerateUriOverride(t *testing.T) {
     expectedURI := "http://testme/api/endpoint"
-    uri := GenerateURI("api", "endpoint", "http://testme")
+    uri := GenerateURI("api", "endpoint", "testme")
     if uri != expectedURI {
         t.Errorf("URI incorrect, got: %s, want: %s.", uri, expectedURI)
     }
