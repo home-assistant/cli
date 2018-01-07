@@ -9,7 +9,12 @@ import (
 )
 
 // GlobalFlags Used to hold global flags
-var GlobalFlags = []cli.Flag{}
+var GlobalFlags = []cli.Flag{
+    cli.BoolFlag{
+        Name: "debug, d",
+        Usage: "Prints Debug information",
+    },
+}
 
 // Commands holds the commands that are supported by the CLI
 var Commands = []cli.Command{
