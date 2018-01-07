@@ -21,7 +21,7 @@ var Commands = []cli.Command{
     {
         Name:   "homeassistant",
         Aliases:     []string{"ha"},
-        Usage:  "",
+        Usage:  "info, logs, check, restart, start, stop, update",
         Action: command.CmdHomeassistant,
         Flags:  []cli.Flag{
             cli.BoolFlag{
@@ -40,7 +40,7 @@ var Commands = []cli.Command{
     },
     {
         Name:   "supervisor",
-        Usage:  "",
+        Usage:  "info, logs, reload, update",
         Aliases: []string{"s"},
         Action: command.CmdSupervisor,
         Flags:  []cli.Flag{
@@ -60,7 +60,7 @@ var Commands = []cli.Command{
     },
     {
         Name:   "host",
-        Usage:  "",
+        Usage:  "hardware, reboot, shutdown, update",
         Aliases: []string{"ho"},
         Action: command.CmdHost,
         Flags:  []cli.Flag{
@@ -80,7 +80,7 @@ var Commands = []cli.Command{
     },
     {
         Name:   "network",
-        Usage:  "",
+        Usage:  "info, options",
         Aliases: []string{"net"},
         Action: command.CmdNetwork,
         Flags:  []cli.Flag{
