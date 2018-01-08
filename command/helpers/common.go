@@ -137,14 +137,8 @@ func ExecCommand(basepath string, endpoint string, serverOverride string, get bo
     uri := GenerateURI(basepath, endpoint, serverOverride)
     response := RestCall(uri, get,  Options)
     if Filter == "" {
-        if DebugEnabled {
-            fmt.Fprintf(os.Stdout, "DEBUG [ExecCommand]: No Filter\n")
-        }
         DisplayOutput(response, RawJSON)
     } else {
-        if DebugEnabled {
-            fmt.Fprintf(os.Stdout, "DEBUG [ExecCommand]: Filtering\n")
-        }
         filter := strings.Split(Filter, ",")
         data := FilterProperties(response, filter)
         DisplayOutput(data, RawJSON)
