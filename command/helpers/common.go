@@ -24,8 +24,8 @@ func GenerateURI(basepath string, endpoint string, serverOverride string) string
     uri.WriteString("http://")
     if serverOverride != "" {
         uri.WriteString(serverOverride)
-    } else if os.Getenv("HASSIO_SERVER") != "" {
-        uri.WriteString(os.Getenv("HASSIO_SERVER"))
+    } else if os.Getenv("HASSIO") != "" {
+        uri.WriteString(os.Getenv("HASSIO"))
     } else {
         uri.WriteString(HassioServer)
     }
