@@ -1,4 +1,4 @@
-# hassiocli
+# Hass.io CLI
 
 <p align="center">
 <a href="https://travis-ci.org/home-assistant/hassio-cli">
