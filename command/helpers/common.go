@@ -11,7 +11,7 @@ import (
 )
 
 // HassioServer uri to connect to hass.io with
-const HassioServer = "http://hassio"
+const HassioServer = "hassio"
 // DebugEnabled set by global --debug (-d) flag
 var DebugEnabled = false
 
@@ -21,8 +21,11 @@ func GenerateURI(basepath string, endpoint string, serverOverride string) string
         fmt.Fprintf(os.Stdout, "DEBUG [GenerateURI]: basepath->'%s', endpoint->'%s', serverOverride->'%s'\n", basepath, endpoint, serverOverride)
     }
     var uri bytes.Buffer
+    uri.WriteString("http://")
     if serverOverride != "" {
         uri.WriteString(serverOverride)
+    } else if os.Getenv("HASSIO") != "" {
+        uri.WriteString(os.Getenv("HASSIO"))
     } else {
         uri.WriteString(HassioServer)
     }
@@ -54,6 +57,7 @@ func RestCall(uri string, bGet bool, payload string) []byte {
     var request *http.Request
     var err error
     var client = &http.Client{}
+    var XHassioKey = os.Getenv("API_TOKEN")
 
     if DebugEnabled {
         fmt.Fprintf(os.Stdout, "DEBUG [RestCall]: data->'%s', GET->'%t', payload->'%s'\n", uri, bGet, payload)
@@ -61,7 +65,7 @@ func RestCall(uri string, bGet bool, payload string) []byte {
 
     if bGet {
         request, err = http.NewRequest("GET", uri, nil)
-        request.Header.Add("X_HASSIO_KEY", os.Getenv("X-HASSIO-KEY"))
+        request.Header.Add("X-HASSIO-KEY", XHassioKey)
     } else {
         jsonValue := []byte("")
         if payload != "" {
@@ -70,12 +74,11 @@ func RestCall(uri string, bGet bool, payload string) []byte {
         }
 
         request, err = http.NewRequest("POST", uri, bytes.NewBuffer(jsonValue))
-        request.Header.Add("X-HASSIO-KEY", os.Getenv("X-HASSIO-KEY"))
+        request.Header.Add("X-HASSIO-KEY", XHassioKey)
         request.Header.Add("contentType", "application/json")
     }
 
     response, err = client.Do(request)
-    defer response.Body.Close()
 
     if err != nil {
         fmt.Fprintf(os.Stderr, "The HTTP request failed with the error: %s\n", err)
@@ -85,6 +88,8 @@ func RestCall(uri string, bGet bool, payload string) []byte {
     if DebugEnabled {
         fmt.Fprintf(os.Stdout, "DEBUG [RestCall]: ResponseBody->'%s'\n", string(data))
     }
+
+    defer response.Body.Close()
     return data
 }
 
@@ -130,6 +135,10 @@ func FilterProperties(data []byte, filter []string) []byte {
 
 // ExecCommand Used to execute the remote calls for each of the managing commands
 func ExecCommand(basepath string, endpoint string, serverOverride string, get bool, Options string, Filter string, RawJSON bool) {
+    if DebugEnabled {
+        fmt.Fprintf(os.Stdout, "DEBUG [ExecCommand]: basepath->'%s', endpoint->'%s', serverOverride->'%s', get->'%t', Options->'%s', Filter->'%s', RawJSON->'%t'\n",
+            basepath, endpoint, serverOverride, get, Options, Filter, RawJSON)
+    }
     uri := GenerateURI(basepath, endpoint, serverOverride)
     response := RestCall(uri, get,  Options)
     if Filter == "" {
