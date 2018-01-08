@@ -57,6 +57,7 @@ func RestCall(uri string, bGet bool, payload string) []byte {
     var request *http.Request
     var err error
     var client = &http.Client{}
+    var XHassioKey = os.Getenv("API_TOKEN")
 
     if DebugEnabled {
         fmt.Fprintf(os.Stdout, "DEBUG [RestCall]: data->'%s', GET->'%t', payload->'%s'\n", uri, bGet, payload)
@@ -64,7 +65,7 @@ func RestCall(uri string, bGet bool, payload string) []byte {
 
     if bGet {
         request, err = http.NewRequest("GET", uri, nil)
-        request.Header.Add("X_HASSIO_KEY", os.Getenv("X-HASSIO-KEY"))
+        request.Header.Add("X-HASSIO-KEY", XHassioKey)
     } else {
         jsonValue := []byte("")
         if payload != "" {
@@ -73,12 +74,11 @@ func RestCall(uri string, bGet bool, payload string) []byte {
         }
 
         request, err = http.NewRequest("POST", uri, bytes.NewBuffer(jsonValue))
-        request.Header.Add("X-HASSIO-KEY", os.Getenv("X-HASSIO-KEY"))
+        request.Header.Add("X-HASSIO-KEY", XHassioKey)
         request.Header.Add("contentType", "application/json")
     }
 
     response, err = client.Do(request)
-    defer response.Body.Close()
 
     if err != nil {
         fmt.Fprintf(os.Stderr, "The HTTP request failed with the error: %s\n", err)
@@ -88,6 +88,8 @@ func RestCall(uri string, bGet bool, payload string) []byte {
     if DebugEnabled {
         fmt.Fprintf(os.Stdout, "DEBUG [RestCall]: ResponseBody->'%s'\n", string(data))
     }
+
+    defer response.Body.Close()
     return data
 }
 
