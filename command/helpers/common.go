@@ -11,7 +11,7 @@ import (
 )
 
 // HassioServer uri to connect to hass.io with
-const HassioServer = "http://hassio"
+const HassioServer = "hassio"
 // DebugEnabled set by global --debug (-d) flag
 var DebugEnabled = false
 
@@ -21,8 +21,11 @@ func GenerateURI(basepath string, endpoint string, serverOverride string) string
         fmt.Fprintf(os.Stdout, "DEBUG [GenerateURI]: basepath->'%s', endpoint->'%s', serverOverride->'%s'\n", basepath, endpoint, serverOverride)
     }
     var uri bytes.Buffer
+    uri.WriteString("http://")
     if serverOverride != "" {
         uri.WriteString(serverOverride)
+    } else if os.Getenv("HASSIO") != "" {
+        uri.WriteString(os.Getenv("HASSIO"))
     } else {
         uri.WriteString(HassioServer)
     }
