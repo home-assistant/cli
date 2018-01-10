@@ -57,7 +57,7 @@ func RestCall(uri string, bGet bool, payload string) []byte {
     var request *http.Request
     var err error
     var client = &http.Client{}
-    var XHassioKey = os.Getenv("API_TOKEN")
+    var XHassioKey = os.Getenv("HASSIO_TOKEN")
 
     if DebugEnabled {
         fmt.Fprintf(os.Stdout, "DEBUG [RestCall]: data->'%s', GET->'%t', payload->'%s'\n", uri, bGet, payload)
