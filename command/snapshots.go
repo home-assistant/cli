@@ -9,12 +9,16 @@ import (
 )
 
 func CmdSnapshots(c *cli.Context) {
-    const HASSIO_BASE_PATH = "snapshots"
+    const HassioBasePath = "snapshots"
     action := ""
     endpoint := ""
     serverOverride := ""
-    options := c.String("options")
     get := false
+    DebugEnabled := c.GlobalBool("debug")
+    helpers.DebugEnabled = DebugEnabled
+    Options := c.String("options")
+    RawJSON := c.Bool("rawjson")
+    Filter := c.String("filter")
     if c.NArg() > 0 {
         action = c.Args()[0]
     }
@@ -30,7 +34,7 @@ func CmdSnapshots(c *cli.Context) {
     case "new":
         endpoint = "new/full"
         if c.String("snapname") != "" {
-            options = "name=" + c.String("snapname")
+            Options = "name=" + c.String("snapname")
         }
     case "restore":
         if c.String("snapname") == "" {
@@ -49,21 +53,7 @@ func CmdSnapshots(c *cli.Context) {
         os.Exit(3)
     }
 
-    if endpoint != "" || action == "list" {
-        uri := helpers.GenerateUri(HASSIO_BASE_PATH, endpoint, serverOverride)
-        response := helpers.RestCall(uri, get,  options)
-
-        if c.String("filter") == "" {
-            helpers.DisplayOutput(response, c.Bool("rawjson"))
-        } else {
-            filter := strings.Split(c.String("filter"), ",")
-            data := helpers.FilterProperties(response, filter)
-            helpers.DisplayOutput(data, c.Bool("rawjson"))
-        }
-        responseMap := helpers.ByteArrayToMap(response)
-        result := responseMap["result"]
-        if result != "ok" {
-            os.Exit(10)
-        }
+    if endpoint != "" {
+        helpers.ExecCommand(HassioBasePath, endpoint, serverOverride, get,  Options, Filter, RawJSON)
     }
 }
