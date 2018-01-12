@@ -31,8 +31,10 @@ func GenerateURI(basepath string, endpoint string, serverOverride string) string
     }
     uri.WriteString("/")
     uri.WriteString(basepath)
-    uri.WriteString("/")
-    uri.WriteString(endpoint)
+    if endpoint != "" {
+        uri.WriteString("/")
+        uri.WriteString(endpoint)
+    }
     return uri.String()
 }
 

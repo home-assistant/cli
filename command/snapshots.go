@@ -52,7 +52,7 @@ func CmdSnapshots(c *cli.Context) {
         os.Exit(3)
     }
 
-    if endpoint != "" {
+    if endpoint != "" || action == "list" {
         helpers.ExecCommand(HassioBasePath, endpoint, serverOverride, get,  Options, Filter, RawJSON)
     }
 }
