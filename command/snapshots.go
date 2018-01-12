@@ -7,6 +7,7 @@ import (
     "os"
 )
 
+// CmdSnapshots snapshot endpoints for hass.io
 func CmdSnapshots(c *cli.Context) {
     const HassioBasePath = "snapshots"
     action := ""
