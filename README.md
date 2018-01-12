@@ -1,4 +1,4 @@
-# hassiocli
+# Hass.io CLI
 
 <p align="center">
 <a href="https://travis-ci.org/home-assistant/hassio-cli">
@@ -20,7 +20,7 @@ E.g.
 - `hassio homeassistant info --rawjson`   
 
 ## Supported endpoints
-### homeassistant
+#### homeassistant
 - info
 - logs
 - restart
@@ -28,19 +28,19 @@ E.g.
 - stop
 - update
 
-### supervisor
+#### supervisor
 - info
 - logs
 - reload
 - update
 
-### host
+#### host
 - hardware
 - reboot
 - shutdown
 - update
 
-### network
+#### network
 - info
 - options
 
@@ -53,12 +53,27 @@ E.g.
 - remove
 
 
-## Supported modifiers
+### Supported modifiers
+#### Global
+- --debug,-d -> Enables debug output
+
+#### SubCommand
 - --rawjson,-j -> Will return the data in JSON format on a 
                     single line (useful for passing to other 
                     programs to parse / utilise)
 - --options,-o -> Used to send commands to hass.io `hassio homeassistant update --options "version=0.60"`
 - --filter,-f  -> Used to filter the data returned from hass.io so only the specified properties are output
+
+*Note:* Modifer order is important.
+
+`hassio <GlobalModifier> <SubCommand> <Action> <SubCommandModifier>`
+ 
+## Supported builds
+
+1. i386
+1. x64
+1. arm
+1. arm64
 
 ## Install
 

@@ -5,15 +5,20 @@ import (
     "fmt"
     "github.com/home-assistant/hassio-cli/command/helpers"
     "os"
-    "strings"
 )
 
+// CmdHost All host endpoints for hass.io
 func CmdHost(c *cli.Context) {
-    const HASSIO_BASE_PATH = "host"
+    const HassioBasePath = "host"
     action := ""
     endpoint := ""
     serverOverride := ""
     get := false
+    DebugEnabled := c.GlobalBool("debug")
+    helpers.DebugEnabled = DebugEnabled
+    Options := c.String("options")
+    RawJSON := c.Bool("rawjson")
+    Filter := c.String("filter")
     if c.NArg() > 0 {
         action = c.Args()[0]
     }
@@ -31,21 +36,12 @@ func CmdHost(c *cli.Context) {
         os.Exit(3)
     }
 
-    if endpoint != "" {
-        uri := helpers.GenerateUri(HASSIO_BASE_PATH, endpoint, serverOverride)
-        response := helpers.RestCall(uri, get,  c.String("options"))
+    if DebugEnabled {
+        fmt.Fprintf(os.Stdout, "DEBUG [CmdHost]: action->'%s', endpoint='%s', serverOverride->'%s', GET->'%t', options->'%s', rawjson->'%t', filter->'%s'\n",
+            action, endpoint, serverOverride, get, Options, RawJSON, Filter )
+    }
 
-        if c.String("filter") == "" {
-            helpers.DisplayOutput(response, c.Bool("rawjson"))
-        } else {
-            filter := strings.Split(c.String("filter"), ",")
-            data := helpers.FilterProperties(response, filter)
-            helpers.DisplayOutput(data, c.Bool("rawjson"))
-        }
-        responseMap := helpers.ByteArrayToMap(response)
-        result := responseMap["result"]
-        if result != "ok" {
-            os.Exit(10)
-        }
+    if endpoint != "" {
+        helpers.ExecCommand(HassioBasePath, endpoint, serverOverride, get,  Options, Filter, RawJSON)
     }
 }

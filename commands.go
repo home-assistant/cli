@@ -9,14 +9,19 @@ import (
 )
 
 // GlobalFlags Used to hold global flags
-var GlobalFlags = []cli.Flag{}
+var GlobalFlags = []cli.Flag{
+    cli.BoolFlag{
+        Name: "debug, d",
+        Usage: "Prints Debug information",
+    },
+}
 
 // Commands holds the commands that are supported by the CLI
 var Commands = []cli.Command{
     {
         Name:   "homeassistant",
         Aliases:     []string{"ha"},
-        Usage:  "",
+        Usage:  "info, logs, check, restart, start, stop, update",
         Action: command.CmdHomeassistant,
         Flags:  []cli.Flag{
             cli.BoolFlag{
@@ -35,7 +40,7 @@ var Commands = []cli.Command{
     },
     {
         Name:   "supervisor",
-        Usage:  "",
+        Usage:  "info, logs, reload, update",
         Aliases: []string{"s"},
         Action: command.CmdSupervisor,
         Flags:  []cli.Flag{
@@ -55,7 +60,7 @@ var Commands = []cli.Command{
     },
     {
         Name:   "host",
-        Usage:  "",
+        Usage:  "hardware, reboot, shutdown, update",
         Aliases: []string{"ho"},
         Action: command.CmdHost,
         Flags:  []cli.Flag{
@@ -75,7 +80,7 @@ var Commands = []cli.Command{
     },
     {
         Name:   "network",
-        Usage:  "",
+        Usage:  "info, options",
         Aliases: []string{"net"},
         Action: command.CmdNetwork,
         Flags:  []cli.Flag{
