@@ -100,7 +100,7 @@ var Commands = []cli.Command{
     },
     {
         Name:   "snapshots",
-        Usage:  "",
+        Usage:  "list, info, reload, new, restore, remove",
         Aliases: []string{"snap"},
         Action: command.CmdSnapshots,
         Flags:  []cli.Flag{
