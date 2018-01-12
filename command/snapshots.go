@@ -5,7 +5,6 @@ import (
     "fmt"
     "github.com/home-assistant/hassio-cli/command/helpers"
     "os"
-    "strings"
 )
 
 func CmdSnapshots(c *cli.Context) {
