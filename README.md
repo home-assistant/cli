@@ -44,7 +44,7 @@ E.g.
 - info
 - options
 
-## snapshots
+#### snapshots
 - list
 - info
 - reload
