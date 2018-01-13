@@ -44,6 +44,14 @@ E.g.
 - info
 - options
 
+## snapshots
+- list
+- info
+- reload
+- new
+- restore
+- remove
+
 
 ### Supported modifiers
 #### Global
