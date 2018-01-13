@@ -122,6 +122,30 @@ var Commands = []cli.Command{
             },
         },
     },
+    {
+        Name:   "addons",
+        Usage:  "list, info, logo, changelog, logs, stats, reload",
+        Aliases: []string{"ad"},
+        Action: command.CmdAddons,
+        Flags:  []cli.Flag{
+            cli.BoolFlag{
+                Name: "rawjson, j",
+                Usage: "Returns the output in JSON format",
+            },
+            cli.StringFlag{
+                Name: "options, o",
+                Usage: "holds data for POST in format `key=val,key2=val2`",
+            },
+            cli.StringFlag{
+                Name: "filter, f",
+                Usage: "properties to extract from returned data `prop1,prop2`",
+            },
+            cli.StringFlag{
+                Name: "addonname, name, an",
+                Usage: "used with 'info' actions to return info on a specific addon `nameofaddon`",
+            },
+        },
+    },
 }
 
 // CommandNotFound used to display if a user enters a non-existant command
