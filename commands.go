@@ -124,7 +124,7 @@ var Commands = []cli.Command{
     },
     {
         Name:   "addons",
-        Usage:  "list, info, logo, changelog, logs, stats, reload",
+        Usage:  "list, info, logo, changelog, logs, stats,\n reload, start, stop, install, uninstall, update",
         Aliases: []string{"ad"},
         Action: command.CmdAddons,
         Flags:  []cli.Flag{
