@@ -32,7 +32,7 @@ func CmdAddons(c *cli.Context) {
     case "info",
          "logo",
          "changelog",
-         "logs",
+         "logs",  // Fix as not JSON format for output
          "stats":
         if AddonName == "" {
             fmt.Fprintf(os.Stderr, "-addonname is required. See '%s --help'.", c.App.Name)
@@ -42,6 +42,16 @@ func CmdAddons(c *cli.Context) {
         get = true
     case "reload":     // POST
         endpoint = action
+    case "start",
+         "stop",
+         "install",
+         "uninstall",
+         "update":
+        if AddonName == "" {
+            fmt.Fprintf(os.Stderr, "-addonname is required. See '%s --help'.", c.App.Name)
+            os.Exit(11)
+        }
+        endpoint = AddonName + "/" + action
     default:
         fmt.Fprintf(os.Stdout, "No valid action detected")
         os.Exit(3)
