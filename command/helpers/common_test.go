@@ -25,6 +25,15 @@ func TestGenerateUriOverride(t *testing.T) {
     }
 }
 
+
+func TestGenerateUriEmptyEndpoint(t *testing.T) {
+    expectedURI := "http://testme/api"
+    uri := GenerateURI("api", "", "testme")
+    if uri != expectedURI {
+        t.Errorf("URI incorrect, got: %s, want: %s.", uri, expectedURI)
+    }
+}
+
 func TestCreateJSONData(t *testing.T) {
     expectedVersion := "0.23"
     res := CreateJSONData("version=0.23")
