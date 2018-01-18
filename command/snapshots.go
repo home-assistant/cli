@@ -28,6 +28,10 @@ func CmdSnapshots(c *cli.Context) {
     case "list":       // GET
         get = true
     case "info":
+        if SnapName == "" {
+            fmt.Fprintf(os.Stderr, "-snapname is required. See '%s --help'.", c.App.Name)
+            os.Exit(11)
+        }
         get = true
         endpoint = SnapName + "/info"
     case "reload":     // POST
