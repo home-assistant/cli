@@ -20,7 +20,7 @@ func CmdAddons(c *cli.Context) {
     Options := c.String("options")
     RawJSON := c.Bool("rawjson")
     Filter := c.String("filter")
-    AddonName := c.String("addonname")
+    AddonName := c.String("name")
     if c.NArg() > 0 {
         action = c.Args()[0]
     }
@@ -35,7 +35,7 @@ func CmdAddons(c *cli.Context) {
          "logs",  // Fix as not JSON format for output
          "stats":
         if AddonName == "" {
-            fmt.Fprintf(os.Stderr, "-addonname is required. See '%s --help'.", c.App.Name)
+            fmt.Fprintf(os.Stderr, "-name is required. See '%s --help'.", c.App.Name)
             os.Exit(11)
         }
         endpoint = AddonName + "/" + action
@@ -48,7 +48,7 @@ func CmdAddons(c *cli.Context) {
          "uninstall",
          "update":
         if AddonName == "" {
-            fmt.Fprintf(os.Stderr, "-addonname is required. See '%s --help'.", c.App.Name)
+            fmt.Fprintf(os.Stderr, "-name is required. See '%s --help'.", c.App.Name)
             os.Exit(11)
         }
         endpoint = AddonName + "/" + action

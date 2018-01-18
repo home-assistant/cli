@@ -19,6 +19,7 @@ func CmdSnapshots(c *cli.Context) {
     Options := c.String("options")
     RawJSON := c.Bool("rawjson")
     Filter := c.String("filter")
+    SnapName := c.String("name")
     if c.NArg() > 0 {
         action = c.Args()[0]
     }
@@ -28,26 +29,26 @@ func CmdSnapshots(c *cli.Context) {
         get = true
     case "info":
         get = true
-        endpoint = c.String("snapname") + "/info"
+        endpoint = SnapName + "/info"
     case "reload":     // POST
         endpoint = action
     case "new":
         endpoint = "new/full"
-        if c.String("snapname") != "" {
-            Options = "name=" + c.String("snapname")
+        if SnapName != "" {
+            Options = "name=" + SnapName
         }
     case "restore":
-        if c.String("snapname") == "" {
-            fmt.Fprintf(os.Stderr, "-snapname is required. See '%s --help'.", c.App.Name)
+        if SnapName == "" {
+            fmt.Fprintf(os.Stderr, "-name is required. See '%s --help'.", c.App.Name)
             os.Exit(11)
         }
-        endpoint = c.String("snapname") + "/restore/full"
+        endpoint = SnapName + "/restore/full"
     case "remove":
-        if c.String("snapname") == "" {
-            fmt.Fprintf(os.Stderr, "-snapname is required. See '%s --help'.", c.App.Name)
+        if SnapName == "" {
+            fmt.Fprintf(os.Stderr, "-name is required. See '%s --help'.", c.App.Name)
             os.Exit(11)
         }
-        endpoint = c.String("snapname") + "/remove"
+        endpoint = SnapName + "/remove"
     default:
         fmt.Fprintf(os.Stderr, "No valid action detected")
         os.Exit(3)

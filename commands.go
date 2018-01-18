@@ -117,7 +117,7 @@ var Commands = []cli.Command{
                 Usage: "properties to extract from returned data `prop1,prop2`",
             },
             cli.StringFlag{
-                Name: "snapname, name, sn",
+                Name: "name",
                 Usage: "used with 'info|remove|restore|full' actions to return info on a specific snapshot `nameofsnapshot`",
             },
         },
@@ -141,7 +141,7 @@ var Commands = []cli.Command{
                 Usage: "properties to extract from returned data `prop1,prop2`",
             },
             cli.StringFlag{
-                Name: "addonname, name, an",
+                Name: "name",
                 Usage: "used with 'info' actions to return info on a specific addon `nameofaddon`",
             },
         },
