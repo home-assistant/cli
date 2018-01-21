@@ -31,8 +31,10 @@ func GenerateURI(basepath string, endpoint string, serverOverride string) string
     }
     uri.WriteString("/")
     uri.WriteString(basepath)
-    uri.WriteString("/")
-    uri.WriteString(endpoint)
+    if endpoint != "" {
+        uri.WriteString("/")
+        uri.WriteString(endpoint)
+    }
     return uri.String()
 }
 
@@ -57,7 +59,7 @@ func RestCall(uri string, bGet bool, payload string) []byte {
     var request *http.Request
     var err error
     var client = &http.Client{}
-    var XHassioKey = os.Getenv("API_TOKEN")
+    var XHassioKey = os.Getenv("HASSIO_TOKEN")
 
     if DebugEnabled {
         fmt.Fprintf(os.Stdout, "DEBUG [RestCall]: data->'%s', GET->'%t', payload->'%s'\n", uri, bGet, payload)

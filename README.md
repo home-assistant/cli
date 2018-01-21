@@ -1,4 +1,4 @@
-# hassiocli
+# Hass.io CLI
 
 <p align="center">
 <a href="https://travis-ci.org/home-assistant/hassio-cli">
@@ -43,6 +43,14 @@ E.g.
 #### network
 - info
 - options
+
+#### snapshots
+- list
+- info
+- reload
+- new
+- restore
+- remove
 
 
 ### Supported modifiers
