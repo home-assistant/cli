@@ -19,7 +19,7 @@ matrix:
     before_deploy:
     - CGO_ENABLED=0 GOARCH=386 go build -ldflags="-s -w" -o "hassio_i386"
     - CGO_ENABLED=0 GOARCH=amd64 go build -ldflags="-s -w" -o "hassio_amd64"
-    - CGO_ENABLED=0 GOARCH=arm go build -ldflags="-s -w" -o "hassio_armhf"
+    - CGO_ENABLED=0 GOARM=6 OARCH=arm go build -ldflags="-s -w" -o "hassio_armhf"
     - CGO_ENABLED=0 GOARCH=arm64 go build -ldflags="-s -w" -o "hassio_aarch64"
     deploy:
       provider: releases
