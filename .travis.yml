@@ -19,12 +19,12 @@ matrix:
     before_deploy:
     - CGO_ENABLED=0 GOARCH=386 go build -ldflags="-s -w" -o "hassio_i386"
     - CGO_ENABLED=0 GOARCH=amd64 go build -ldflags="-s -w" -o "hassio_amd64"
-    - CGO_ENABLED=0 GOARCH=arm go build -ldflags="-s -w" -o "hassio_armhf"
+    - CGO_ENABLED=0 GOARM=6 OARCH=arm go build -ldflags="-s -w" -o "hassio_armhf"
     - CGO_ENABLED=0 GOARCH=arm64 go build -ldflags="-s -w" -o "hassio_aarch64"
     deploy:
       provider: releases
       api_key:
-        secure: dY8Op3J69dLMTd0AS5f5gsSsUdW0dQspf7BMZL4O1YzIHT40e1ndiVm+Ey+K09S3W4AkpneLbg9GOHHCmokGxbE/xKEvXzfnfw4mZJG0m4xygqp1cnZRgWYLE2mRG8z8Z2nfe/9EsAGGBJWyevHXB49wCwViLQ4y4KrYlCnb2Gi1uK/G939yLMIfiqOOjG32Bd9W13JJ6lYbiHaCXEZwKYxmsQd0z8YXfiSPqqoh9iuU08/RPTc5vgORrXTnPyovXZVOjUHXOgp5nKWihYyuXw/xk70ord8cOp2F2u5ySNxQSTpet7zAKRWhL6rTS/HauJ3yvcU9+Q+dkFdEZ1G930xfO5VlL7BqdaRUiRCDM+WjC7ENS8lX1hJkIpKSLQiX2iZxfrI3q1Ox2E3lx5OasvAjXjG+64eyLRHslUa6n3NpwR9xKWVSmcWm3iquKmA8UoxwFsI8psLUv5XZIdrc45ijVZKDWT2931RnmmbEiYdCMO3MkHsxNU4VuoDVLNgo3sHCQNhKGWGP6ii19GfIw7FJlhitCKja7gwBU5HipBjHyAo+2PJY15xy/Cfz/6qQXneNuKbeUh3gmHTrLiS50dEwpYxm0T7rMMoQQv+gTOZhU9xdyK9Qf9OXucoVcIJtFhWDAmZr13Vxa2KoH/ORYfdNhTUDkkecJ9Ze3beznfw=
+        secure: TIFDJRlgIeA8AAd7tN+6Mq4FMIDcTDJtjk+a9yzaKvwTKZIWie2vH6pxnF8B3WASxuSnr3cXnzqf0Z7AeEOEQqFIPLaCrTPmXYXQk5eRGLPWZG4DfuasOWu2nKNcnlYb+mFzlWg0CkLEhNj8uMckjwBFL7LaQasgl8ymDrSPFDj/U3KdHPZ0lxMpn4EeH+xjrUcS3LWkoXrKXfjlqqmCgunsPigAXyHLdxWdSGIfGJlG+G0slE3TEF5DlPmlodVb/IHtsty8M8qZUaplkxk3EfF0aYtYWzwdMOp+Kcs3duB+ZxsWNNtg7IuVS2vN9owHT7ico2jWrOg/ZtmAxLSC8wcg5C/7BHzrd3KVntVsZchlF3v/byeIa4UIuAoNPNM7lFbQYgD5HzLZ71xj8YFQSs7uyJkBT1K/2FTNjSi0OIFd/Ffae/7QibAOAPxCo+9Hg044B0CPS8j3Mt7qSaLX0m1PfQsRGhlRETypCTX3kag07cqDwyV8TpvE2WK8b9mtElUrN1V3Rvm2LQy/1rzZ7i3kYOS5m/tjGPsOun2cn6wCMnDdnjL8hZm87GJB0g7HxbHleLlyknkiEBY9Ul5rpLXN1fXGMh/OAMJChCP7mjPDhel57Yer0RlKEuhaBwqqAK264pmAJY83iJ6UmZZweqHIgIpeJnNggtg5IbMPjdw=
       file_glob: true
       file: hassio_*
       skip_cleanup: true
