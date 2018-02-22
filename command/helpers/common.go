@@ -110,9 +110,17 @@ func DisplayOutput(data []byte, rawjson bool) {
     if rawjson {
         fmt.Println(string(data))
     } else {
-        x := bytes.Buffer{}
-        json.Indent(&x, data, "", "    ")
-        fmt.Println(string(x.Bytes()))
+        mymap := ByteArrayToMap(data)
+        if mymap["result"] == "ok" && len(mymap["data"].(map[string]interface{})) == 0 {
+            fmt.Println(mymap["result"])
+        } else if mymap["result"] == "error" {
+            fmt.Println("ERROR\n")
+            fmt.Println(mymap["message"])
+        } else {
+            x := bytes.Buffer{}
+            json.Indent(&x, data, "", "    ")
+            fmt.Println(string(x.Bytes()))
+        }
     }
 }
 
@@ -151,8 +159,7 @@ func ExecCommand(basepath string, endpoint string, serverOverride string, get bo
         DisplayOutput(data, RawJSON)
     }
     responseMap := ByteArrayToMap(response)
-    result := responseMap["result"]
-    if result != "ok" {
+    if responseMap["result"] != "ok" {
         os.Exit(10)
     }
 }
