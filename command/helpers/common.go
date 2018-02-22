@@ -114,7 +114,7 @@ func DisplayOutput(data []byte, rawjson bool) {
         if mymap["result"] == "ok" && len(mymap["data"].(map[string]interface{})) == 0 {
             fmt.Println(mymap["result"])
         } else if mymap["result"] == "error" {
-            fmt.Println("ERROR\n")
+            fmt.Println("ERROR")
             fmt.Println(mymap["message"])
         } else {
             x := bytes.Buffer{}
