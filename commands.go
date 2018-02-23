@@ -41,7 +41,7 @@ var Commands = []cli.Command{
     {
         Name:   "supervisor",
         Usage:  "info, logs, reload, update",
-        Aliases: []string{"s"},
+        Aliases: []string{"su"},
         Action: command.CmdSupervisor,
         Flags:  []cli.Flag{
             cli.BoolFlag{
@@ -81,7 +81,7 @@ var Commands = []cli.Command{
     {
         Name:   "network",
         Usage:  "info, options",
-        Aliases: []string{"net"},
+        Aliases: []string{"ne"},
         Action: command.CmdNetwork,
         Flags:  []cli.Flag{
             cli.BoolFlag{
@@ -101,7 +101,7 @@ var Commands = []cli.Command{
     {
         Name:   "snapshots",
         Usage:  "list, info, reload, new, restore, remove",
-        Aliases: []string{"snap"},
+        Aliases: []string{"sn"},
         Action: command.CmdSnapshots,
         Flags:  []cli.Flag{
             cli.BoolFlag{
