@@ -39,26 +39,26 @@ func CmdSnapshots(c *cli.Context) {
 		endpoint = action
 	case "new":
 		endpoint = "new/full"
-        if c.String("name") != "" {
-            if Options != "" {
-                Options += ","
-            }
-            Options += "name=" + c.String("name")
-        }
-        if c.String("password") != "" {
-            if Options != "" {
-                Options += ","
-            }
-            Options += "password=" + c.String("password")
-        }
+		if c.String("name") != "" {
+			if Options != "" {
+				Options += ","
+			}
+			Options += "name=" + c.String("name")
+		}
+		if c.String("password") != "" {
+			if Options != "" {
+				Options += ","
+			}
+			Options += "password=" + c.String("password")
+		}
 	case "restore":
 		if SnapSlug == "" {
 			fmt.Fprintf(os.Stderr, "-slug is required. See '%s --help'.", c.App.Name)
 			os.Exit(11)
 		}
-        if c.String("password") != "" {
-            Options = "password=" + c.String("password")
-        }
+		if c.String("password") != "" {
+			Options = "password=" + c.String("password")
+		}
 		endpoint = SnapSlug + "/restore/full"
 	case "remove":
 		if SnapSlug == "" {
