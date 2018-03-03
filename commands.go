@@ -121,14 +121,14 @@ var Commands = []cli.Command{
 				Name:  "slug",
 				Usage: "used with 'info|remove|restore|new' actions to return info on a specific snapshot `slugofsnapshot`",
 			},
-            cli.StringFlag{
-                Name:  "name",
-                Usage: "used with 'restore|new' actions to set a name for a snapshot",
-            },
-            cli.StringFlag{
-                Name:  "password",
-                Usage: "used with 'restore|new' actions to set a password on a snapshot",
-            },
+			cli.StringFlag{
+				Name:  "name",
+				Usage: "used with 'restore|new' actions to set a name for a snapshot",
+			},
+			cli.StringFlag{
+				Name:  "password",
+				Usage: "used with 'restore|new' actions to set a password on a snapshot",
+			},
 		},
 	},
 	{
