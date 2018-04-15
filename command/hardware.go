@@ -9,14 +9,14 @@ import (
 
 // CmdHost All host endpoints for hass.io
 func CmdHardware(c *cli.Context) {
-    const HassioBasePath = "host"
+    const HassioBasePath = "hardware"
     action := ""
     endpoint := ""
     serverOverride := ""
     get := false
     DebugEnabled := c.GlobalBool("debug")
     helpers.DebugEnabled = DebugEnabled
-    Options := c.String("options")
+    Options := ""
     RawJSON := c.Bool("rawjson")
     Filter := c.String("filter")
     if c.NArg() > 0 {
