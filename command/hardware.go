@@ -7,7 +7,7 @@ import (
     "os"
 )
 
-// CmdHost All host endpoints for hass.io
+// CmdHardware All hardware endpoints for hass.io
 func CmdHardware(c *cli.Context) {
     const HassioBasePath = "hardware"
     action := ""
@@ -33,7 +33,7 @@ func CmdHardware(c *cli.Context) {
     }
 
     if DebugEnabled {
-        fmt.Fprintf(os.Stdout, "DEBUG [CmdHost]: action->'%s', endpoint='%s', serverOverride->'%s', GET->'%t', options->'%s', rawjson->'%t', filter->'%s'\n",
+        fmt.Fprintf(os.Stdout, "DEBUG [CmdHardware]: action->'%s', endpoint='%s', serverOverride->'%s', GET->'%t', options->'%s', rawjson->'%t', filter->'%s'\n",
             action, endpoint, serverOverride, get, Options, RawJSON, Filter )
     }
 
