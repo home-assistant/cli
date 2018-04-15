@@ -61,7 +61,7 @@ var Commands = []cli.Command{
     },
     {
         Name:    "host",
-        Usage:   "hardware, reboot, shutdown, update",
+        Usage:   "reboot, shutdown, update",
         Aliases: []string{"ho"},
         Action:  command.CmdHost,
         Flags: []cli.Flag{
@@ -72,6 +72,22 @@ var Commands = []cli.Command{
             cli.StringFlag{
                 Name:  "options, o",
                 Usage: "holds data for POST in format `key=val,key2=val2`",
+            },
+            cli.StringFlag{
+                Name:  "filter, f",
+                Usage: "properties to extract from returned data `prop1,prop2`",
+            },
+        },
+    },
+    {
+        Name:    "hardware",
+        Usage:   "info, audio",
+        Aliases: []string{"hw"},
+        Action:  command.CmdHardware,
+        Flags: []cli.Flag{
+            cli.BoolFlag{
+                Name:  "rawjson, j",
+                Usage: "Returns the output in JSON format",
             },
             cli.StringFlag{
                 Name:  "filter, f",
