@@ -8,7 +8,7 @@ import (
 )
 
 // CmdHost All host endpoints for hass.io
-func CmdHost(c *cli.Context) {
+func CmdHardware(c *cli.Context) {
     const HassioBasePath = "host"
     action := ""
     endpoint := ""
@@ -24,9 +24,8 @@ func CmdHost(c *cli.Context) {
     }
 
     switch action {
-    case "reboot",     // POST
-        "update",
-        "shutdown":
+    case "info",       // GET
+        "audio":
         endpoint = action
     default:
         fmt.Fprintf(os.Stderr, "No valid action detected")
