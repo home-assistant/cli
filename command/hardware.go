@@ -7,16 +7,16 @@ import (
     "os"
 )
 
-// CmdHost All host endpoints for hass.io
-func CmdHost(c *cli.Context) {
-    const HassioBasePath = "host"
+// CmdHardware All hardware endpoints for hass.io
+func CmdHardware(c *cli.Context) {
+    const HassioBasePath = "hardware"
     action := ""
     endpoint := ""
     serverOverride := ""
     get := false
     DebugEnabled := c.GlobalBool("debug")
     helpers.DebugEnabled = DebugEnabled
-    Options := c.String("options")
+    Options := ""
     RawJSON := c.Bool("rawjson")
     Filter := c.String("filter")
     if c.NArg() > 0 {
@@ -24,9 +24,8 @@ func CmdHost(c *cli.Context) {
     }
 
     switch action {
-    case "reboot",     // POST
-        "update",
-        "shutdown":
+    case "info",       // GET
+        "audio":
         endpoint = action
     default:
         fmt.Fprintf(os.Stderr, "No valid action detected")
@@ -34,7 +33,7 @@ func CmdHost(c *cli.Context) {
     }
 
     if DebugEnabled {
-        fmt.Fprintf(os.Stdout, "DEBUG [CmdHost]: action->'%s', endpoint='%s', serverOverride->'%s', GET->'%t', options->'%s', rawjson->'%t', filter->'%s'\n",
+        fmt.Fprintf(os.Stdout, "DEBUG [CmdHardware]: action->'%s', endpoint='%s', serverOverride->'%s', GET->'%t', options->'%s', rawjson->'%t', filter->'%s'\n",
             action, endpoint, serverOverride, get, Options, RawJSON, Filter )
     }
 
