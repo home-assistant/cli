@@ -26,6 +26,7 @@ func CmdHardware(c *cli.Context) {
     switch action {
     case "info",       // GET
         "audio":
+        get = true
         endpoint = action
     default:
         fmt.Fprintf(os.Stderr, "No valid action detected")

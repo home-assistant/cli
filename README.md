@@ -34,8 +34,11 @@ E.g.
 - reload
 - update
 
+#### hardware
+- info
+- audio
+
 #### host
-- hardware
 - reboot
 - shutdown
 - update
