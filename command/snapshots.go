@@ -30,7 +30,7 @@ func CmdSnapshots(c *cli.Context) {
             get = true
         case "info":
             if SnapSlug == "" {
-                fmt.Fprintf(os.Stderr, "-snapname is required. See '%s --help'.\n", c.App.Name)
+                fmt.Fprintf(os.Stderr, "--slug is required. See '%s --help'.\n", c.App.Name)
                 os.Exit(11)
             }
             get = true
@@ -53,7 +53,7 @@ func CmdSnapshots(c *cli.Context) {
             }
         case "restore":
             if SnapSlug == "" {
-                fmt.Fprintf(os.Stderr, "-slug is required. See '%s --help'.\n", c.App.Name)
+                fmt.Fprintf(os.Stderr, "--slug is required. See '%s --help'.\n", c.App.Name)
                 os.Exit(11)
             }
             if c.String("password") != "" {
@@ -62,7 +62,7 @@ func CmdSnapshots(c *cli.Context) {
             endpoint = SnapSlug + "/restore/full"
         case "remove":
             if SnapSlug == "" {
-                fmt.Fprintf(os.Stderr, "-slug is required. See '%s --help'.\n", c.App.Name)
+                fmt.Fprintf(os.Stderr, "--slug is required. See '%s --help'.\n", c.App.Name)
                 os.Exit(11)
             }
             endpoint = SnapSlug + "/remove"
