@@ -36,7 +36,7 @@ func CmdHomeassistant(c *cli.Context) {
         "update":
         endpoint = action
     default:
-        fmt.Fprintf(os.Stdout, "No valid action detected")
+        fmt.Fprintf(os.Stdout, "No valid action detected.\n")
         os.Exit(3)
     }
 

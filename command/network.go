@@ -29,12 +29,12 @@ func CmdNetwork(c *cli.Context) {
         get = true
     case "options":     // POST
         if Options == "" {
-            fmt.Fprintf(os.Stderr, "-options is required. See '%s --help'.", c.App.Name)
+            fmt.Fprintf(os.Stderr, "-options is required. See '%s --help'.\n", c.App.Name)
             os.Exit(11)
         }
         endpoint = action
     default:
-        fmt.Fprintf(os.Stderr, "No valid action detected")
+        fmt.Fprintf(os.Stderr, "No valid action detected.\n")
         os.Exit(3)
     }
 
