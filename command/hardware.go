@@ -29,7 +29,7 @@ func CmdHardware(c *cli.Context) {
         get = true
         endpoint = action
     default:
-        fmt.Fprintf(os.Stderr, "No valid action detected")
+        fmt.Fprintf(os.Stderr, "No valid action detected.\n")
         os.Exit(3)
     }
 

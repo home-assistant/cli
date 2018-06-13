@@ -99,7 +99,7 @@ func ByteArrayToMap(data []byte) map[string]interface{} {
     var f interface{}
     err := json.Unmarshal(data, &f)
     if err != nil {
-        fmt.Fprintf(os.Stderr, "Error decoding json %s: %s", err, string(data))
+        fmt.Fprintf(os.Stderr, "Error decoding json %s: %s\n", err, string(data))
         os.Exit(4)
     }
     res := f.(map[string]interface{})
@@ -115,7 +115,7 @@ func DisplayOutput(data []byte, rawjson bool) {
             fmt.Println(mymap["result"])
         } else if mymap["result"] == "error" {
             os.Stderr.WriteString("ERROR\n")
-            fmt.Fprintf(os.Stderr, "%s", mymap["message"].(string))
+            fmt.Fprintf(os.Stderr, "%s\n", mymap["message"].(string))
         } else {
             x := bytes.Buffer{}
             json.Indent(&x, data, "", "    ")
