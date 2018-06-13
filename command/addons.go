@@ -35,7 +35,7 @@ func CmdAddons(c *cli.Context) {
          "logs",  // Fix as not JSON format for output
          "stats":
         if AddonName == "" {
-            fmt.Fprintf(os.Stderr, "-name is required. See '%s --help'.", c.App.Name)
+            fmt.Fprintf(os.Stderr, "--name is required. See '%s --help'.\n", c.App.Name)
             os.Exit(11)
         }
         endpoint = AddonName + "/" + action
@@ -48,12 +48,12 @@ func CmdAddons(c *cli.Context) {
          "uninstall",
          "update":
         if AddonName == "" {
-            fmt.Fprintf(os.Stderr, "-name is required. See '%s --help'.", c.App.Name)
+            fmt.Fprintf(os.Stderr, "--name is required. See '%s --help'.\n", c.App.Name)
             os.Exit(11)
         }
         endpoint = AddonName + "/" + action
     default:
-        fmt.Fprintf(os.Stdout, "No valid action detected")
+        fmt.Fprintf(os.Stdout, "No valid action detected.\n")
         os.Exit(3)
     }
 
