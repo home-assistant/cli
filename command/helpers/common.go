@@ -69,6 +69,7 @@ func RestCall(uri string, bGet bool, payload string) []byte {
         request, err = http.NewRequest("GET", uri, nil)
     } else {
         if payload != "" {
+            jsonValue := []byte("")
             jsonData := CreateJSONData(payload)
             jsonValue, _ = json.Marshal(jsonData)
 
