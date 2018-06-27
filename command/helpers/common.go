@@ -74,8 +74,7 @@ func RestCall(uri string, bGet bool, payload string) []byte {
 
             request, err = http.NewRequest("POST", uri, bytes.NewBuffer(jsonValue))
             request.Header.Add("contentType", "application/json")
-        }
-        else {
+        } else {
             request, err = http.NewRequest("POST", uri, nil)
         }
     }
