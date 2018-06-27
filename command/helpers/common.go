@@ -67,23 +67,20 @@ func RestCall(uri string, bGet bool, payload string) []byte {
 
     if bGet {
         request, err = http.NewRequest("GET", uri, nil)
-        request.Header.Add("X-HASSIO-KEY", XHassioKey)
     } else {
-        data := nil
         if payload != "" {
             jsonData := CreateJSONData(payload)
             jsonValue, _ = json.Marshal(jsonData)
-            data = bytes.NewBuffer(jsonValue)
-        }
 
-        request, err = http.NewRequest("POST", uri, data)
-        request.Header.Add("X-HASSIO-KEY", XHassioKey)
-
-        if data != nil {
+            request, err = http.NewRequest("POST", uri, bytes.NewBuffer(jsonValue))
             request.Header.Add("contentType", "application/json")
+        }
+        else {
+            request, err = http.NewRequest("POST", uri, nil)
         }
     }
 
+    request.Header.Add("X-HASSIO-KEY", XHassioKey)
     response, err = client.Do(request)
 
     if err != nil {
