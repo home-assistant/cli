@@ -62,22 +62,26 @@ func RestCall(uri string, bGet bool, payload string) []byte {
     var XHassioKey = os.Getenv("HASSIO_TOKEN")
 
     if DebugEnabled {
-        fmt.Fprintf(os.Stdout, "DEBUG [RestCall]: data->'%s', GET->'%t', payload->'%s'\n", uri, bGet, payload)
+        fmt.Fprintf(os.Stdout, "DEBUG [RestCall]: url->'%s', GET->'%t', payload->'%s'\n", uri, bGet, payload)
     }
 
     if bGet {
         request, err = http.NewRequest("GET", uri, nil)
         request.Header.Add("X-HASSIO-KEY", XHassioKey)
     } else {
-        jsonValue := []byte("")
+        data := nil
         if payload != "" {
             jsonData := CreateJSONData(payload)
             jsonValue, _ = json.Marshal(jsonData)
+            data = bytes.NewBuffer(jsonValue)
         }
 
-        request, err = http.NewRequest("POST", uri, bytes.NewBuffer(jsonValue))
+        request, err = http.NewRequest("POST", uri, data)
         request.Header.Add("X-HASSIO-KEY", XHassioKey)
-        request.Header.Add("contentType", "application/json")
+
+        if data != nil {
+            request.Header.Add("contentType", "application/json")
+        }
     }
 
     response, err = client.Do(request)
