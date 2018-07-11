@@ -26,7 +26,8 @@ func CmdHost(c *cli.Context) {
     switch action {
     case "reboot",     // POST
         "update",
-        "shutdown":
+        "shutdown",
+        "options":
         endpoint = action
     default:
         fmt.Fprintf(os.Stderr, "No valid action detected.\n")
