@@ -29,7 +29,8 @@ func CmdSupervisor(c *cli.Context) {
         endpoint = action
         get = true
     case "reload",     // POST
-        "update":
+        "update",
+        "options":
         endpoint = action
     default:
         fmt.Fprintf(os.Stderr, "No valid action detected.\n")
