@@ -23,6 +23,7 @@ E.g.
 #### homeassistant
 - info
 - logs
+- check
 - restart
 - start
 - stop
@@ -34,14 +35,14 @@ E.g.
 - reload
 - update
 
-#### hardware
-- info
-- audio
-
 #### host
 - reboot
 - shutdown
 - update
+
+#### hardware
+- info
+- audio
 
 #### network
 - info
@@ -55,6 +56,14 @@ E.g.
 - restore
 - remove
 
+#### addons
+- list
+- info
+- logo
+- changelog
+- logs
+- stats
+
 
 ### Supported modifiers
 #### Global
@@ -64,7 +73,7 @@ E.g.
 - --rawjson,-j -> Will return the data in JSON format on a 
                     single line (useful for passing to other 
                     programs to parse / utilise)
-- --options,-o -> Used to send commands to hass.io `hassio homeassistant update --options "version=0.60"`
+- --options,-o -> Used to send commands to hass.io `hassio homeassistant update --options version=0.60`
 - --filter,-f  -> Used to filter the data returned from hass.io so only the specified properties are output
 
 *Note:* Modifer order is important.
