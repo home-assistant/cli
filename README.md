@@ -63,6 +63,12 @@ E.g.
 - changelog
 - logs
 - stats
+- reload
+- start
+- stop
+- install
+- uninstall
+- uninstall
 
 
 ### Supported modifiers
