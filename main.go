@@ -13,7 +13,7 @@ func main() {
 	app.Version = Version
 	app.Author = "Home-Assistant"
 	app.Email = "hello@home-assistant.io"
-	app.Usage = "Commandline tool to allow interation with hass.io"
+	app.Usage = "Commandline tool to allow interaction with hass.io"
 
 	app.Flags = GlobalFlags
 	app.Commands = Commands
