@@ -115,7 +115,7 @@ func DisplayOutput(data []byte, rawjson bool) {
             fmt.Println(mymap["result"])
         } else if mymap["result"] == "error" {
             os.Stderr.WriteString("ERROR\n")
-            fmt.Fprintf(os.Stderr, "%s\n", mymap["message"].(string))
+            fmt.Fprintf(os.Stderr, "%v\n", mymap["message"])
         } else {
             x := bytes.Buffer{}
             json.Indent(&x, data, "", "    ")
