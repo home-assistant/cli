@@ -60,12 +60,6 @@ _hassio()
                 *)  [[ -z $action ]] && opts=(info audio) ;;
             esac
             ;;
-        network|ne)
-            case $cur in
-                -*) opts=(--rawjson --options --filter --help) ;;
-                *)  [[ -z $action ]] && opts=(info options) ;;
-            esac
-            ;;
         snapshots|sn)
             if [[ $prev =~ ^--name|--password$ ]]; then
                 :  # nothing
