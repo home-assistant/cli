@@ -4,13 +4,15 @@ matrix:
   fast_finish: true
   include:
   - go: '1.6'
-  - go: '1.6'
+  - go: '1.7'
+  - go: '1.9'
+  - go: '1.10'
+  - go: '1.10'
     env: LINTER
     install: go get -u github.com/golang/lint/golint
     language: bash
     script: golint -set_exit_status
-  - go: 1.7.x
-  - go: 1.7.x
+  - go: '1.10'
     env: DEPLOYMENT
     addons:
       apt:
@@ -24,7 +26,7 @@ matrix:
     deploy:
       provider: releases
       api_key:
-        secure: TIFDJRlgIeA8AAd7tN+6Mq4FMIDcTDJtjk+a9yzaKvwTKZIWie2vH6pxnF8B3WASxuSnr3cXnzqf0Z7AeEOEQqFIPLaCrTPmXYXQk5eRGLPWZG4DfuasOWu2nKNcnlYb+mFzlWg0CkLEhNj8uMckjwBFL7LaQasgl8ymDrSPFDj/U3KdHPZ0lxMpn4EeH+xjrUcS3LWkoXrKXfjlqqmCgunsPigAXyHLdxWdSGIfGJlG+G0slE3TEF5DlPmlodVb/IHtsty8M8qZUaplkxk3EfF0aYtYWzwdMOp+Kcs3duB+ZxsWNNtg7IuVS2vN9owHT7ico2jWrOg/ZtmAxLSC8wcg5C/7BHzrd3KVntVsZchlF3v/byeIa4UIuAoNPNM7lFbQYgD5HzLZ71xj8YFQSs7uyJkBT1K/2FTNjSi0OIFd/Ffae/7QibAOAPxCo+9Hg044B0CPS8j3Mt7qSaLX0m1PfQsRGhlRETypCTX3kag07cqDwyV8TpvE2WK8b9mtElUrN1V3Rvm2LQy/1rzZ7i3kYOS5m/tjGPsOun2cn6wCMnDdnjL8hZm87GJB0g7HxbHleLlyknkiEBY9Ul5rpLXN1fXGMh/OAMJChCP7mjPDhel57Yer0RlKEuhaBwqqAK264pmAJY83iJ6UmZZweqHIgIpeJnNggtg5IbMPjdw=
+        secure: TT42Nu/6KLPbuiS1YtXQzcDKcGQ8LL/yt0Ci+2kI2X34NNt+9USGnlaOL6sznEzVTREwLstrz88KfUiVcAWlUOYdiWjrXKVRsIP7bjSlnBbmY789rmERDE9s9aptROUD8tXe3O4O5Rv/Wg5LYClGaoxNS9/bKhQFazaFayPZ4xT7h19EfYuQFszfYhcwuqBD7FOOJ5MYUIZWEdISj2wk32MR6hvUslGk0WYFRaWyIqpoE3wbBveT+v+HK+bgHfFnB0kKvz2PcQX3JklE2xOxTCBP4Ge1SdTLtEv6bzVPuxPLg+DwRHQckIS3BcXHFha72AUwTgaOl7L9IdKY/+JBVWxLnwZfqlRQpcJLnO27bV/SFeo5dezPhCR/Nk6SU7QHuevi9ewx9MRvvCxoR/HYSQr7FcxsYSjXi7kKYrGtMmSeEUowNJIaAKOxpXqe2evqhtsQz2E3DaC3+ZAdOnmqZaqUGUtB5+M+hL7dqV4VSqoHCXTvDK0/0IjBwaXVC5mH8tmNJR8r2gIUVO8+PUGI1EsbV6tXdaGycMNpWbvp5M0tRVS7ttRDeaet9D7c58dGLXyTszPn8XqpHG4lXvUT7sy5SYVAVO0CHoqlF3VdPpOvMffKWdSOBaUzpo+DDB7a75dJ4OeNJlLVueuZMQz3gt/1r3Slgp0etMC1iLqz2xA=
       file_glob: true
       file: hassio_*
       skip_cleanup: true

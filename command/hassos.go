@@ -8,8 +8,8 @@ import (
 	"github.com/urfave/cli"
 )
 
-// CmdHost All host endpoints for hass.io
-func CmdHost(c *cli.Context) {
+// CmdHassOS All host endpoints for hass.io
+func CmdHassOS(c *cli.Context) {
 	const HassioBasePath = "host"
 	action := ""
 	endpoint := ""
@@ -27,10 +27,6 @@ func CmdHost(c *cli.Context) {
 	switch action {
 	case "info": // GET
 		get = true
-		endpoint = action
-	case "reboot", // POST
-		"shutdown",
-		"options":
 		endpoint = action
 	default:
 		fmt.Fprintf(os.Stderr, "No valid action detected.\n")
