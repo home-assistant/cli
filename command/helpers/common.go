@@ -62,24 +62,25 @@ func RestCall(uri string, bGet bool, payload string) []byte {
     var XHassioKey = os.Getenv("HASSIO_TOKEN")
 
     if DebugEnabled {
-        fmt.Fprintf(os.Stdout, "DEBUG [RestCall]: data->'%s', GET->'%t', payload->'%s'\n", uri, bGet, payload)
+        fmt.Fprintf(os.Stdout, "DEBUG [RestCall]: url->'%s', GET->'%t', payload->'%s'\n", uri, bGet, payload)
     }
 
     if bGet {
         request, err = http.NewRequest("GET", uri, nil)
-        request.Header.Add("X-HASSIO-KEY", XHassioKey)
     } else {
-        jsonValue := []byte("")
         if payload != "" {
+            jsonValue := []byte("")
             jsonData := CreateJSONData(payload)
             jsonValue, _ = json.Marshal(jsonData)
-        }
 
-        request, err = http.NewRequest("POST", uri, bytes.NewBuffer(jsonValue))
-        request.Header.Add("X-HASSIO-KEY", XHassioKey)
-        request.Header.Add("contentType", "application/json")
+            request, err = http.NewRequest("POST", uri, bytes.NewBuffer(jsonValue))
+            request.Header.Add("contentType", "application/json")
+        } else {
+            request, err = http.NewRequest("POST", uri, nil)
+        }
     }
 
+    request.Header.Add("X-HASSIO-KEY", XHassioKey)
     response, err = client.Do(request)
 
     if err != nil {
@@ -115,7 +116,9 @@ func DisplayOutput(data []byte, rawjson bool) {
             fmt.Println(mymap["result"])
         } else if mymap["result"] == "error" {
             os.Stderr.WriteString("ERROR\n")
-            fmt.Fprintf(os.Stderr, "%s\n", mymap["message"].(string))
+            if mymap["message"] != nil {
+                fmt.Fprintf(os.Stderr, "%s\n", mymap["message"].(string))
+            }
         } else {
             x := bytes.Buffer{}
             json.Indent(&x, data, "", "    ")
