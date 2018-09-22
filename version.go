@@ -4,4 +4,4 @@ package main
 const Name string = "hassio"
 
 // Version the current version of the CLI
-const Version string = "1.4.0"
+const Version string = "2.0.0"
