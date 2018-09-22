@@ -33,7 +33,8 @@ func CmdHomeassistant(c *cli.Context) {
         "restart",
         "start",
         "stop",
-        "update":
+        "update",
+        "options":
         endpoint = action
     default:
         fmt.Fprintf(os.Stdout, "No valid action detected.\n")
