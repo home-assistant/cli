@@ -6,61 +6,27 @@
             alt="build status"></a>
 </p>
 
-
-
 ## Description
 
 Commandline interface to facilitate interaction with hass.io server
 
 ## Usage
+
 - `hassio help`
 - `hassio <subcommand> <action> [<options>]`
 
-E.g.
-- `hassio homeassistant info --rawjson`   
+E.g.:
 
-## Supported endpoints
-#### homeassistant
-- info
-- logs
-- restart
-- start
-- stop
-- update
+- `hassio homeassistant info --rawjson`
 
-#### supervisor
-- info
-- logs
-- reload
-- update
+### Modifiers
 
-#### hardware
-- info
-- audio
-
-#### host
-- reboot
-- shutdown
-- update
-
-#### network
-- info
-- options
-
-#### snapshots
-- list
-- info
-- reload
-- new
-- restore
-- remove
-
-
-### Supported modifiers
 #### Global
+
 - --debug,-d -> Enables debug output
 
 #### SubCommand
+
 - --rawjson,-j -> Will return the data in JSON format on a 
                     single line (useful for passing to other 
                     programs to parse / utilise)
@@ -70,21 +36,12 @@ E.g.
 *Note:* Modifer order is important.
 
 `hassio <GlobalModifier> <SubCommand> <Action> <SubCommandModifier>`
- 
-## Supported builds
-
-1. i386
-1. x64
-1. arm
-1. arm64
 
 ## Install
 
 To install, use `go get`:
 
-```bash
-$ go get -d github.com/home-assistant/hassio-cli
-```
+`go get -d github.com/home-assistant/hassio-cli`
 
 ## Contribution
 
@@ -96,14 +53,10 @@ $ go get -d github.com/home-assistant/hassio-cli
 1. Run `gofmt -s`
 1. Create a new Pull Request
 
-
 ## Building
+
 ```bash
 go test ./...
 gox -osarch="linux/arm" -ldflags="-s -w" -output="hassio"
 upx --brute hassio
 ```
-
-## Author
-
-[home-assistant](https://github.com/home-assistant)
