@@ -3,9 +3,9 @@ package main
 // https://github.com/home-assistant/hassio/blob/dev/API.md
 import (
 	"fmt"
-	"os"
 
 	"github.com/home-assistant/hassio-cli/command"
+	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 )
 
@@ -175,6 +175,6 @@ var Commands = []cli.Command{
 
 // CommandNotFound used to display if a user enters a non-existant command
 func CommandNotFound(c *cli.Context, command string) {
-	fmt.Fprintf(os.Stderr, "%s: '%s' is not a %s command. See '%s --help'.\n", c.App.Name, command, c.App.Name, c.App.Name)
-	os.Exit(2)
+	errorMessage := fmt.Sprintf("%s: '%s' is not a %s command. See '%s --help'.\n", c.App.Name, command, c.App.Name, c.App.Name)
+	log.Error(errorMessage)
 }

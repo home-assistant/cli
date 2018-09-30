@@ -8,6 +8,8 @@ import (
 	"net/http"
 	"os"
 	"strings"
+
+	log "github.com/sirupsen/logrus"
 )
 
 // HassioServer uri to connect to hass.io with
@@ -19,7 +21,8 @@ var DebugEnabled = false
 // GenerateURI Creates the API URI from the server and the endpoint
 func GenerateURI(basepath string, endpoint string, serverOverride string) string {
 	if DebugEnabled {
-		fmt.Fprintf(os.Stdout, "DEBUG [GenerateURI]: basepath->'%s', endpoint->'%s', serverOverride->'%s'\n", basepath, endpoint, serverOverride)
+		infoMessage := fmt.Sprintf("DEBUG [GenerateURI]: basepath->'%s', endpoint->'%s', serverOverride->'%s'\n", basepath, endpoint, serverOverride)
+		log.Info(infoMessage)
 	}
 	var uri bytes.Buffer
 	uri.WriteString("http://")
@@ -41,7 +44,8 @@ func GenerateURI(basepath string, endpoint string, serverOverride string) string
 
 func CreateJSONData(data string) map[string]string {
 	if DebugEnabled {
-		fmt.Fprintf(os.Stdout, "DEBUG [CreateJSONData]: data->'%s'\n", data)
+		infoMessage := fmt.Sprintf("DEBUG [CreateJSONData]: data->'%s'\n", data)
+		log.Info(infoMessage)
 	}
 	var jsonData map[string]string
 	var ss []string
@@ -63,7 +67,8 @@ func RestCall(uri string, bGet bool, payload string) []byte {
 	var XHassioKey = os.Getenv("HASSIO_TOKEN")
 
 	if DebugEnabled {
-		fmt.Fprintf(os.Stdout, "DEBUG [RestCall]: url->'%s', GET->'%t', payload->'%s'\n", uri, bGet, payload)
+		infoMessage := fmt.Sprintf("DEBUG [RestCall]: url->'%s', GET->'%t', payload->'%s'\n", uri, bGet, payload)
+		log.Info(infoMessage)
 	}
 
 	if bGet {
@@ -85,12 +90,13 @@ func RestCall(uri string, bGet bool, payload string) []byte {
 	response, err = client.Do(request)
 
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "The HTTP request failed with the error: %s\n", err)
-		os.Exit(1)
+		errorMessage := fmt.Sprintf("The HTTP request failed with the error: %s\n", err)
+		log.Error(errorMessage)
 	}
 	data, _ := ioutil.ReadAll(response.Body)
 	if DebugEnabled {
-		fmt.Fprintf(os.Stdout, "DEBUG [RestCall]: ResponseBody->'%s'\n", string(data))
+		errorMessage := fmt.Sprintf("DEBUG [RestCall]: ResponseBody->'%s'\n", string(data))
+		log.Error(errorMessage)
 	}
 
 	defer response.Body.Close()
@@ -101,8 +107,8 @@ func ByteArrayToMap(data []byte) map[string]interface{} {
 	var f interface{}
 	err := json.Unmarshal(data, &f)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error decoding json %s: %s\n", err, string(data))
-		os.Exit(4)
+		errorMessage := fmt.Sprintf("Error decoding json %s: %s\n", err, string(data))
+		log.Error(errorMessage)
 	}
 	res := f.(map[string]interface{})
 	return res
@@ -114,11 +120,12 @@ func DisplayOutput(data []byte, rawjson bool) {
 	} else {
 		mymap := ByteArrayToMap(data)
 		if mymap["result"] == "ok" && len(mymap["data"].(map[string]interface{})) == 0 {
-			fmt.Println(mymap["result"])
+			log.Info(mymap["result"])
 		} else if mymap["result"] == "error" {
 			os.Stderr.WriteString("ERROR\n")
 			if mymap["message"] != nil {
-				fmt.Fprintf(os.Stderr, "%v\n", mymap["message"])
+				errorMessage := fmt.Sprintf("%v\n", mymap["message"])
+				log.Error(errorMessage)
 			}
 		} else {
 			x := bytes.Buffer{}
@@ -130,7 +137,8 @@ func DisplayOutput(data []byte, rawjson bool) {
 
 func FilterProperties(data []byte, filter []string) []byte {
 	if DebugEnabled {
-		fmt.Fprintf(os.Stdout, "DEBUG [FilterProperties]: indata->'%s', filter->'%s'\n", string(data), filter)
+		infoMessage := fmt.Sprintf("DEBUG [FilterProperties]: indata->'%s', filter->'%s'\n", string(data), filter)
+		log.Info(infoMessage)
 	}
 	mymap := ByteArrayToMap(data)
 	mymapdata := mymap["data"].(map[string]interface{})
@@ -142,7 +150,8 @@ func FilterProperties(data []byte, filter []string) []byte {
 	}
 	rawjson, _ := json.Marshal(newmap)
 	if DebugEnabled {
-		fmt.Fprintf(os.Stdout, "DEBUG [FilterProperties]: outdata->'%s'\n", string(rawjson))
+		infoMessage := fmt.Sprintf("DEBUG [FilterProperties]: outdata->'%s'\n", string(rawjson))
+		log.Info(infoMessage)
 	}
 	return rawjson
 }
@@ -150,8 +159,9 @@ func FilterProperties(data []byte, filter []string) []byte {
 // ExecCommand Used to execute the remote calls for each of the managing commands
 func ExecCommand(basepath string, endpoint string, serverOverride string, get bool, Options string, Filter string, RawJSON bool) {
 	if DebugEnabled {
-		fmt.Fprintf(os.Stdout, "DEBUG [ExecCommand]: basepath->'%s', endpoint->'%s', serverOverride->'%s', get->'%t', Options->'%s', Filter->'%s', RawJSON->'%t'\n",
+		infoMessage := fmt.Sprintf("DEBUG [ExecCommand]: basepath->'%s', endpoint->'%s', serverOverride->'%s', get->'%t', Options->'%s', Filter->'%s', RawJSON->'%t'\n",
 			basepath, endpoint, serverOverride, get, Options, Filter, RawJSON)
+		log.Info(infoMessage)
 	}
 	uri := GenerateURI(basepath, endpoint, serverOverride)
 	response := RestCall(uri, get, Options)
