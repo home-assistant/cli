@@ -3,7 +3,7 @@
 _hassio()
 {
     local cur=${COMP_WORDS[COMP_CWORD]} prev=${COMP_WORDS[COMP_CWORD-1]}
-    local -a cmds=(homeassistant supervisor host hardware network snapshots
+    local -a cmds=(homeassistant supervisor host hassos hardware snapshots
                    addons help)
     local -a opts
     local i cmd action
@@ -51,7 +51,13 @@ _hassio()
         host|ho)
             case $cur in
                 -*) opts=(--rawjson --options --filter --help) ;;
-                *)  [[ -z $action ]] && opts=(reboot shutdown update) ;;
+                *)  [[ -z $action ]] && opts=(reboot shutdown) ;;
+            esac
+            ;;
+        hassos|os)
+            case $cur in
+                -*) opts=(--rawjson --options --filter --help) ;;
+                *)  [[ -z $action ]] && opts=(info update) ;;
             esac
             ;;
         hardware|hw)
