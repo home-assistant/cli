@@ -2,9 +2,9 @@ package command
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/home-assistant/hassio-cli/command/helpers"
+	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 )
 
@@ -25,13 +25,14 @@ func CmdSnapshots(c *cli.Context) {
 		action = c.Args()[0]
 	}
 
+	var errorMessage string
 	switch action {
 	case "list": // GET
 		get = true
 	case "info":
 		if SnapSlug == "" {
-			fmt.Fprintf(os.Stderr, "--slug is required. See '%s --help'.\n", c.App.Name)
-			os.Exit(11)
+			errorMessage = fmt.Sprintf("--slug is required. See '%s --help'.\n", c.App.Name)
+			log.Error(errorMessage)
 		}
 		get = true
 		endpoint = SnapSlug + "/info"
@@ -53,8 +54,8 @@ func CmdSnapshots(c *cli.Context) {
 		}
 	case "restore":
 		if SnapSlug == "" {
-			fmt.Fprintf(os.Stderr, "--slug is required. See '%s --help'.\n", c.App.Name)
-			os.Exit(11)
+			errorMessage = fmt.Sprintf("--slug is required. See '%s --help'.\n", c.App.Name)
+			log.Error(errorMessage)
 		}
 		if c.String("password") != "" {
 			Options = "password=" + c.String("password")
@@ -62,13 +63,12 @@ func CmdSnapshots(c *cli.Context) {
 		endpoint = SnapSlug + "/restore/full"
 	case "remove":
 		if SnapSlug == "" {
-			fmt.Fprintf(os.Stderr, "--slug is required. See '%s --help'.\n", c.App.Name)
-			os.Exit(11)
+			errorMessage = fmt.Sprintf("--slug is required. See '%s --help'.\n", c.App.Name)
+			log.Error(errorMessage)
 		}
 		endpoint = SnapSlug + "/remove"
 	default:
-		fmt.Fprintf(os.Stderr, "No valid action detected.\n")
-		os.Exit(3)
+		log.Error("No valid action detected.\n")
 	}
 
 	if endpoint != "" || action == "list" {

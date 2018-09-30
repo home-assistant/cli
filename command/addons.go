@@ -2,9 +2,9 @@ package command
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/home-assistant/hassio-cli/command/helpers"
+	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 )
 
@@ -25,6 +25,7 @@ func CmdAddons(c *cli.Context) {
 		action = c.Args()[0]
 	}
 
+	var errorMessage string
 	switch action {
 	case "list": // GET
 		endpoint = ""
@@ -35,8 +36,8 @@ func CmdAddons(c *cli.Context) {
 		"logs", // Fix as not JSON format for output
 		"stats":
 		if AddonName == "" {
-			fmt.Fprintf(os.Stderr, "--name is required. See '%s --help'.\n", c.App.Name)
-			os.Exit(11)
+			errorMessage = fmt.Sprintf("--name is required. See '%s --help'.\n", c.App.Name)
+			log.Error(errorMessage)
 		}
 		endpoint = AddonName + "/" + action
 		get = true
@@ -48,18 +49,18 @@ func CmdAddons(c *cli.Context) {
 		"uninstall",
 		"update":
 		if AddonName == "" {
-			fmt.Fprintf(os.Stderr, "--name is required. See '%s --help'.\n", c.App.Name)
-			os.Exit(11)
+			errorMessage = fmt.Sprintf("--name is required. See '%s --help'.\n", c.App.Name)
+			log.Error(errorMessage)
 		}
 		endpoint = AddonName + "/" + action
 	default:
-		fmt.Fprintf(os.Stdout, "No valid action detected.\n")
-		os.Exit(3)
+		log.Error("No valid action detected.\n")
 	}
 
 	if DebugEnabled {
-		fmt.Fprintf(os.Stdout, "DEBUG [addons]: action->'%s', endpoint='%s', serverOverride->'%s', GET->'%t', options->'%s', rawjson->'%t', filter->'%s'\n",
+		infoMessage := fmt.Sprintf("DEBUG [addons]: action->'%s', endpoint='%s', serverOverride->'%s', GET->'%t', options->'%s', rawjson->'%t', filter->'%s'\n",
 			action, endpoint, serverOverride, get, Options, RawJSON, Filter)
+		log.Info(infoMessage)
 	}
 	if endpoint != "" || action == "list" {
 		helpers.ExecCommand(HassioBasePath, endpoint, serverOverride, get, Options, Filter, RawJSON)
