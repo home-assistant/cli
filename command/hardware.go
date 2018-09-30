@@ -33,8 +33,15 @@ func CmdHardware(c *cli.Context) {
 		os.Exit(3)
 	}
 
-	log.Debugf("[CmdHardware]: action->'%s', endpoint='%s', serverOverride->'%s', GET->'%t', options->'%s', rawjson->'%t', filter->'%s'\n",
-		action, endpoint, serverOverride, get, Options, RawJSON, Filter)
+	log.WithFields(log.Fields{
+		"action":         action,
+		"endpoint":       endpoint,
+		"serverOverride": serverOverride,
+		"get":            get,
+		"options":        Options,
+		"rawjson":        RawJSON,
+		"filter":         Filter,
+	}).Debug("[CmdHardware]")
 
 	if endpoint != "" {
 		helpers.ExecCommand(HassioBasePath, endpoint, serverOverride, get, Options, Filter, RawJSON)

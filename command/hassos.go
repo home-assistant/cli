@@ -32,8 +32,15 @@ func CmdHassOS(c *cli.Context) {
 		os.Exit(3)
 	}
 
-	log.Debugf("[CmdHost]: action->'%s', endpoint='%s', serverOverride->'%s', GET->'%t', options->'%s', rawjson->'%t', filter->'%s'\n",
-		action, endpoint, serverOverride, get, Options, RawJSON, Filter)
+	log.WithFields(log.Fields{
+		"action":         action,
+		"endpoint":       endpoint,
+		"serverOverride": serverOverride,
+		"get":            get,
+		"options":        Options,
+		"rawjson":        RawJSON,
+		"filter":         Filter,
+	}).Debug("[CmdHost]")
 
 	if endpoint != "" {
 		helpers.ExecCommand(HassioBasePath, endpoint, serverOverride, get, Options, Filter, RawJSON)

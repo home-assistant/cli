@@ -37,8 +37,15 @@ func CmdSupervisor(c *cli.Context) {
 		os.Exit(3)
 	}
 
-	log.Debugf("[CmdSupervisor]: action->'%s', endpoint='%s', serverOverride->'%s', GET->'%t', options->'%s', rawjson->'%t', filter->'%s'\n",
-		action, endpoint, serverOverride, get, Options, RawJSON, Filter)
+	log.WithFields(log.Fields{
+		"action":         action,
+		"endpoint":       endpoint,
+		"serveroverride": serverOverride,
+		"get":            get,
+		"options":        Options,
+		"rawjson":        RawJSON,
+		"filter":         Filter,
+	}).Debugf("[CmdSupervisor]")
 
 	if endpoint != "" {
 		helpers.ExecCommand(HassioBasePath, endpoint, serverOverride, get, Options, Filter, RawJSON)

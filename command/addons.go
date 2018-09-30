@@ -56,8 +56,15 @@ func CmdAddons(c *cli.Context) {
 		os.Exit(3)
 	}
 
-	log.Debugf("[addons]: action->'%s', endpoint='%s', serverOverride->'%s', GET->'%t', options->'%s', rawjson->'%t', filter->'%s'\n",
-		action, endpoint, serverOverride, get, Options, RawJSON, Filter)
+	log.WithFields(log.Fields{
+		"action":         action,
+		"endpoint":       endpoint,
+		"serverOverride": serverOverride,
+		"get":            get,
+		"options":        Options,
+		"rawJSON":        RawJSON,
+		"filter":         Filter,
+	}).Debug("[addons]")
 
 	if endpoint != "" || action == "list" {
 		helpers.ExecCommand(HassioBasePath, endpoint, serverOverride, get, Options, Filter, RawJSON)
