@@ -15,6 +15,10 @@ var GlobalFlags = []cli.Flag{
 		Name:  "debug, d",
 		Usage: "Prints Debug information",
 	},
+	cli.StringFlag{
+		Name:  "log-format",
+		Usage: "log format to use, valid options are text and json. Default is text",
+	},
 }
 
 // Commands holds the commands that are supported by the CLI

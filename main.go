@@ -25,6 +25,13 @@ func main() {
 		if c.GlobalBool("debug") {
 			log.SetLevel(log.DebugLevel)
 		}
+		switch logformat := c.GlobalString("log-format"); logformat {
+		case "json":
+			log.SetFormatter(&log.JSONFormatter{})
+		case "text":
+		default:
+			log.SetFormatter(&log.TextFormatter{})
+		}
 		return nil
 	}
 	app.CommandNotFound = CommandNotFound
