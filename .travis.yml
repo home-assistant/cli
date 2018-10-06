@@ -3,10 +3,10 @@ go_import_path: github.com/home-assistant/hassio-cli
 matrix:
   fast_finish: true
   include:
-  - go: '1.6'
   - go: '1.7'
   - go: '1.9'
   - go: '1.10'
+  - go: '1.11'
   - go: '1.10'
     env: LINTER
     install: go get -u github.com/golang/lint/golint
