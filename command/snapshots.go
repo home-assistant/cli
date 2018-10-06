@@ -15,8 +15,6 @@ func CmdSnapshots(c *cli.Context) {
 	endpoint := ""
 	serverOverride := ""
 	get := false
-	DebugEnabled := c.GlobalBool("debug")
-	helpers.DebugEnabled = DebugEnabled
 	Options := c.String("options")
 	RawJSON := c.Bool("rawjson")
 	Filter := c.String("filter")

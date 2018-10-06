@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/home-assistant/hassio-cli/command/helpers"
+	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 )
 
@@ -15,8 +16,6 @@ func CmdHardware(c *cli.Context) {
 	endpoint := ""
 	serverOverride := ""
 	get := false
-	DebugEnabled := c.GlobalBool("debug")
-	helpers.DebugEnabled = DebugEnabled
 	Options := ""
 	RawJSON := c.Bool("rawjson")
 	Filter := c.String("filter")
@@ -34,10 +33,15 @@ func CmdHardware(c *cli.Context) {
 		os.Exit(3)
 	}
 
-	if DebugEnabled {
-		fmt.Fprintf(os.Stdout, "DEBUG [CmdHardware]: action->'%s', endpoint='%s', serverOverride->'%s', GET->'%t', options->'%s', rawjson->'%t', filter->'%s'\n",
-			action, endpoint, serverOverride, get, Options, RawJSON, Filter)
-	}
+	log.WithFields(log.Fields{
+		"action":         action,
+		"endpoint":       endpoint,
+		"serverOverride": serverOverride,
+		"get":            get,
+		"options":        Options,
+		"rawjson":        RawJSON,
+		"filter":         Filter,
+	}).Debug("[CmdHardware]")
 
 	if endpoint != "" {
 		helpers.ExecCommand(HassioBasePath, endpoint, serverOverride, get, Options, Filter, RawJSON)
