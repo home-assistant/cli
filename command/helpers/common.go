@@ -6,7 +6,9 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"os"
+	"path"
 	"strings"
 
 	log "github.com/sirupsen/logrus"
@@ -21,9 +23,11 @@ func GenerateURI(basepath string, endpoint string, serverOverride string) string
 		"basepath":       basepath,
 		"endpoint":       endpoint,
 		"serverOverride": serverOverride,
+		"envHASSIO":      os.Getenv("HASSIO"),
 	}).Debug("[GenerateURI]")
+
 	var uri bytes.Buffer
-	uri.WriteString("http://")
+
 	if serverOverride != "" {
 		uri.WriteString(serverOverride)
 	} else if os.Getenv("HASSIO") != "" {
@@ -37,7 +41,21 @@ func GenerateURI(basepath string, endpoint string, serverOverride string) string
 		uri.WriteString("/")
 		uri.WriteString(endpoint)
 	}
-	return uri.String()
+	var url, _ = url.Parse(uri.String())
+
+	if url.Scheme == "" {
+		url.Scheme = "http"
+	}
+	url.Path = path.Clean(url.Path)
+	log.WithFields(log.Fields{
+		"basepath":       basepath,
+		"endpoint":       endpoint,
+		"serverOverride": serverOverride,
+		"uri":            uri,
+		"url":            url,
+	}).Debug("[GenerateURI] Result")
+
+	return url.String()
 }
 
 func CreateJSONData(data string) map[string]string {

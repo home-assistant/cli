@@ -32,6 +32,20 @@ func TestGenerateUriEmptyEndpoint(t *testing.T) {
 		t.Errorf("URI incorrect, got: %s, want: %s.", uri, expectedURI)
 	}
 }
+func TestGenerateUriFullDefinedEndpoint(t *testing.T) {
+	expectedURI := "https://testme:433/api"
+	uri := GenerateURI("api", "", "https://testme:433")
+	if uri != expectedURI {
+		t.Errorf("URI incorrect, got: %s, want: %s.", uri, expectedURI)
+	}
+}
+func TestGenerateUriUncleanEndpoint(t *testing.T) {
+	expectedURI := "http://hassio/endpoint"
+	uri := GenerateURI("api/", "../endpoint", "hassio")
+	if uri != expectedURI {
+		t.Errorf("URI incorrect, got: %s, want: %s.", uri, expectedURI)
+	}
+}
 
 func TestCreateJSONData(t *testing.T) {
 	expectedVersion := "0.23"
