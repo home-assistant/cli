@@ -15,6 +15,7 @@ var rootCmd = &cobra.Command{
 	},
 }
 
+// Execute represents the entrypoint for subcommands associated with "addons"
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
