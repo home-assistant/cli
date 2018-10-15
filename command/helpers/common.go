@@ -175,6 +175,7 @@ func ExecCommand(basepath string, endpoint string, serverOverride string, get bo
 		DisplayOutput(data, RawJSON)
 	}
 	responseMap := ByteArrayToMap(response)
+
 	if responseMap["result"] != "ok" {
 		os.Exit(10)
 	}
