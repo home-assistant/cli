@@ -36,5 +36,8 @@ func main() {
 	}
 	app.CommandNotFound = CommandNotFound
 
-	app.Run(os.Args)
+	err := app.Run(os.Args)
+	if err != nil {
+		log.WithField("error", err).Error("some error occured")
+	}
 }
