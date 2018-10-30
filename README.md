@@ -27,8 +27,8 @@ E.g.:
 
 #### SubCommand
 
-- --rawjson,-j -> Will return the data in JSON format on a 
-                    single line (useful for passing to other 
+- --rawjson,-j -> Will return the data in JSON format on a
+                    single line (useful for passing to other
                     programs to parse / utilise)
 - --options,-o -> Used to send commands to hass.io `hassio homeassistant update --options version=0.60`
 - --filter,-f  -> Used to filter the data returned from hass.io so only the specified properties are output
@@ -42,6 +42,12 @@ E.g.:
 To install, use `go get`:
 
 `go get -d github.com/home-assistant/hassio-cli`
+
+## Setup custom hassio address
+If your setup hassio is not available on `http://hassio` you should set your location in environment variable `HASSIO` for eg.
+```
+export HASSIO=127.0.0.1:8123
+```
 
 ## Contribution
 
