@@ -40,10 +40,10 @@ func GenerateURI(basepath string, endpoint string, serverOverride string) string
 	return uri.String()
 }
 
-func CreateJSONData(data string) map[string]string {
+func createJSONData(data string) map[string]string {
 	log.WithFields(log.Fields{
 		"data": data,
-	}).Debug("[CreateJSONData]")
+	}).Debug("[createJSONData]")
 
 	var jsonData map[string]string
 	var ss []string
@@ -75,7 +75,7 @@ func RestCall(uri string, bGet bool, payload string) []byte {
 	} else {
 		if payload != "" {
 			jsonValue := []byte("")
-			jsonData := CreateJSONData(payload)
+			jsonData := createJSONData(payload)
 			jsonValue, _ = json.Marshal(jsonData)
 
 			request, err = http.NewRequest("POST", uri, bytes.NewBuffer(jsonValue))
@@ -101,7 +101,7 @@ func RestCall(uri string, bGet bool, payload string) []byte {
 	return data
 }
 
-func ByteArrayToMap(data []byte) map[string]interface{} {
+func byteArrayToMap(data []byte) map[string]interface{} {
 	var f interface{}
 	err := json.Unmarshal(data, &f)
 	if err != nil {
@@ -112,11 +112,11 @@ func ByteArrayToMap(data []byte) map[string]interface{} {
 	return res
 }
 
-func DisplayOutput(data []byte, rawjson bool) {
+func displayOutput(data []byte, rawjson bool) {
 	if rawjson {
 		fmt.Println(string(data))
 	} else {
-		mymap := ByteArrayToMap(data)
+		mymap := byteArrayToMap(data)
 		if mymap["result"] == "ok" && len(mymap["data"].(map[string]interface{})) == 0 {
 			fmt.Println(mymap["result"])
 		} else if mymap["result"] == "error" {
@@ -132,13 +132,13 @@ func DisplayOutput(data []byte, rawjson bool) {
 	}
 }
 
-func FilterProperties(data []byte, filter []string) []byte {
+func filterProperties(data []byte, filter []string) []byte {
 	log.WithFields(log.Fields{
 		"indata": string(data),
 		"filter": filter,
 	}).Debug("[FilterProperties]")
 
-	mymap := ByteArrayToMap(data)
+	mymap := byteArrayToMap(data)
 	mymapdata := mymap["data"].(map[string]interface{})
 	newmap := make(map[string]interface{})
 	for _, value := range filter {
@@ -168,13 +168,13 @@ func ExecCommand(basepath string, endpoint string, serverOverride string, get bo
 	uri := GenerateURI(basepath, endpoint, serverOverride)
 	response := RestCall(uri, get, Options)
 	if Filter == "" {
-		DisplayOutput(response, RawJSON)
+		displayOutput(response, RawJSON)
 	} else {
 		filter := strings.Split(Filter, ",")
-		data := FilterProperties(response, filter)
-		DisplayOutput(data, RawJSON)
+		data := filterProperties(response, filter)
+		displayOutput(data, RawJSON)
 	}
-	responseMap := ByteArrayToMap(response)
+	responseMap := byteArrayToMap(response)
 	if responseMap["result"] != "ok" {
 		os.Exit(10)
 	}

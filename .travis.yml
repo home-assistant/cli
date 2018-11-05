@@ -10,8 +10,7 @@ matrix:
   - go: '1.10'
     env: LINTER
     install: go get -u github.com/golang/lint/golint
-    language: bash
-    script: golint -set_exit_status
+    script: golint -set_exit_status ./...
   - go: '1.10'
     env: DEPLOYMENT
     addons:
