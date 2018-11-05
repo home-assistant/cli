@@ -74,8 +74,3 @@ func TestByteArrayToMap(t *testing.T) {
 		t.Errorf("Value mismatch, got: %s, want: %s.", res["TestKey"], expectedStr)
 	}
 }
-
-// host hardware
-//rawdata := []byte(`{"result": "ok", "data": {"serial": ["/dev/ttyACM0", "/dev/ttyAMA0"], "input": [], "disk": [], "gpio": ["gpiochip0"], "audio": {"0": {"name": "bcm2835 - bcm2835 ALSA", "type": "ALSA", "devices": {"0": "digital audio playback", "1": "digital audio playback"}}}}}`)
-// homeassistant info
-//rawdata := []byte(`{"result": "ok", "data": {"version": "0.60", "last_version": "0.60", "image": "homeassistant/raspberrypi2-homeassistant", "devices": [], "custom": false, "boot": true, "port": 8123, "ssl": false, "watchdog": true}}`)
