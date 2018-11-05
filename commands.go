@@ -177,7 +177,7 @@ var Commands = []cli.Command{
 	},
 }
 
-// CommandNotFound used to display if a user enters a non-existant command
+// CommandNotFound used to display if a user enters a non-existent command
 func CommandNotFound(c *cli.Context, command string) {
 	fmt.Fprintf(os.Stderr, "%s: '%s' is not a %s command. See '%s --help'.\n", c.App.Name, command, c.App.Name, c.App.Name)
 	os.Exit(2)
