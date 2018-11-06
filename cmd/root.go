@@ -2,14 +2,17 @@ package cmd
 
 import (
 	"fmt"
-	"os"
+	"strings"
 
 	homedir "github.com/mitchellh/go-homedir"
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
 var cfgFile string
+var endPoint string
+var logLevel string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -17,25 +20,61 @@ var rootCmd = &cobra.Command{
 	Short: "A brief description of your application",
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("hassio")
+
+	},
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+
+		// set loglevel if posible
+		logrusLevel, err := log.ParseLevel(viper.GetString("log-level"))
+
+		if err == nil {
+			log.SetLevel(logrusLevel)
+		}
+		log.WithFields(log.Fields{
+			"cfgFile":  viper.GetString("config"),
+			"endpoint": viper.GetString("endpoint"),
+			"logLevel": viper.GetString("log-level"),
+		}).Debugln("Debug flags")
+
 	},
 }
 
 // Execute represents the entrypoint for when called without any subcommand
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		log.Fatalf("Error while executing rootCmd: %s", err)
 	}
 }
 
 func init() {
+
 	cobra.OnInitialize(initConfig)
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.homeassistant.yaml)")
+	rootCmd.PersistentFlags().StringVar(&endPoint, "endpoint", "", "Endpoint for hassio supervisor ( default is 'hassio' )")
+	rootCmd.PersistentFlags().StringVar(&logLevel, "log-level", "", "Log level defaults to Warn")
+
+	viper.BindPFlag("config", rootCmd.PersistentFlags().Lookup("config"))
+	viper.BindPFlag("endpoint", rootCmd.PersistentFlags().Lookup("endpoint"))
+	viper.BindPFlag("log-level", rootCmd.PersistentFlags().Lookup("log-level"))
+
+	viper.SetDefault("endpoint", "hassio")
+	viper.SetDefault("log-level", "warn")
 }
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
+	viper.SetEnvPrefix("HASSIO")
+	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
+	viper.AutomaticEnv()
+
+	// set loglevel if posible
+	logLevel, err := log.ParseLevel(viper.GetString("log-level"))
+
+	if err == nil {
+		log.SetLevel(logLevel)
+	}
+
 	if cfgFile != "" {
 		// Use config file from the flag.
 		viper.SetConfigFile(cfgFile)
@@ -43,19 +82,19 @@ func initConfig() {
 		// Find home directory.
 		home, err := homedir.Dir()
 		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
+			log.Fatalf("Error while finding home directory: %s", err)
 		}
 
 		// Search config in home directory with name ".homeassistant" (without extension).
 		viper.AddConfigPath(home)
-		viper.SetConfigName(".homeassistant.yaml")
+		log.WithField("homedir", home).Debug("Adding homedir to searchpath")
+		viper.SetConfigName(".homeassistant")
 	}
-
-	viper.AutomaticEnv() // read in environment variables that match
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println("Using config file:", viper.ConfigFileUsed())
+		log.WithField("configfile", viper.ConfigFileUsed()).Info("Using configfile")
+	} else {
+		log.Info("No configfile found")
 	}
 }
