@@ -9,7 +9,7 @@ import (
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "hassio",
+	Use: "hassio",
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("snapshots subcommand")
 	},

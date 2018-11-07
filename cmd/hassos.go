@@ -7,7 +7,7 @@ import (
 
 // hassosCmd represents the hassos command
 var hassosCmd = &cobra.Command{
-	Use:   "hassos",
+	Use:     "hassos",
 	Aliases: []string{"os"},
 	Run: func(cmd *cobra.Command, args []string) {
 		hassos.Execute()

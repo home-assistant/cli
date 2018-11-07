@@ -8,7 +8,7 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "hardware",
+	Use: "hardware",
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("hardware sub-command")
 	},

@@ -7,7 +7,7 @@ import (
 
 // supervisorCmd represents the supervisor command
 var supervisorCmd = &cobra.Command{
-	Use:   "supervisor",
+	Use:     "supervisor",
 	Aliases: []string{"su"},
 	Run: func(cmd *cobra.Command, args []string) {
 		supervisor.Execute()

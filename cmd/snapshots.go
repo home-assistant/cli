@@ -7,7 +7,7 @@ import (
 
 // snapshotsCmd represents the snapshots command
 var snapshotsCmd = &cobra.Command{
-	Use:   "snapshots",
+	Use:     "snapshots",
 	Aliases: []string{"sa"},
 	Run: func(cmd *cobra.Command, args []string) {
 		snapshots.Execute()

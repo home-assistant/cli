@@ -1,13 +1,13 @@
 package cmd
 
 import (
-	"github.com/spf13/cobra"
 	"github.com/home-assistant/hassio-cli/cmd/host"
+	"github.com/spf13/cobra"
 )
 
 // hostCmd represents the host command
 var hostCmd = &cobra.Command{
-	Use:   "host",
+	Use:     "host",
 	Aliases: []string{"ho"},
 	Run: func(cmd *cobra.Command, args []string) {
 		host.Execute()
