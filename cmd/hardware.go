@@ -8,7 +8,7 @@ import (
 // hardwareCmd represents the hardware command
 var hardwareCmd = &cobra.Command{
 	Use:     "hardware",
-	Aliases: []string{"ha"},
+	Aliases: []string{"hw"},
 	Run: func(cmd *cobra.Command, args []string) {
 		hardware.Execute()
 	},
