@@ -10,6 +10,8 @@ import (
 )
 
 var cfgFile string
+var debug bool = false
+var logFormat string = "text"
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -31,6 +33,9 @@ func init() {
 	cobra.OnInitialize(initConfig)
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.homeassistant.yaml)")
+	rootCmd.PersistentFlags().StringVarP(&logFormat, "log-format", "", logFormat, "log format to use, valid options are text and json. Default is text")
+	rootCmd.PersistentFlags().BoolVarP(&debug, "debug", "d", debug, "Prints Debug information")
+
 }
 
 // initConfig reads in config file and ENV variables if set.

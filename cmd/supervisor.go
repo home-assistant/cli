@@ -2,14 +2,20 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/spf13/cobra"
 )
 
+var supervisorOpts string
+var supervisorRawJSON bool = false
+var supervisorFilter string
+
 // supervisorCmd represents the supervisor command
 var supervisorCmd = &cobra.Command{
-	Use:   "supervisor",
-	Short: "A brief description of your command",
+	Use:     "supervisor",
+	Aliases: []string{"su"},
+	Short:   "A brief description of your command",
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Fprintf(os.Stderr, "No valid action detected.\n")
 		os.Exit(3)
@@ -19,13 +25,7 @@ var supervisorCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(supervisorCmd)
 
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// supervisorCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// supervisorCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	supervisorCmd.PersistentFlags().StringVarP(&supervisorOpts, "options", "o", supervisorOpts, "holds data for POST in format `key=val,key2=val2`")
+	supervisorCmd.PersistentFlags().StringVarP(&supervisorFilter, "filter", "f", supervisorFilter, "properties to extract from returned data `prop1,prop2`")
+	supervisorCmd.PersistentFlags().BoolVarP(&supervisorRawJSON, "rawjson", "j", supervisorRawJSON, "Returns the output in JSON format")
 }

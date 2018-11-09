@@ -1,36 +1,34 @@
 package cmd
 
 import (
-	"fmt"
-        "os"
-
-	"github.com/spf13/cobra"
-	log "github.com/sirupsen/logrus"
 	"github.com/home-assistant/hassio-cli/command/helpers"
+	log "github.com/sirupsen/logrus"
+	"github.com/spf13/cobra"
 )
 
-// infoCmd represents the info command
-var infoCmd = &cobra.Command{
+// supervisorInfoCmd represents the info subcommand for supervisor
+var supervisorInfoCmd = &cobra.Command{
 	Use:   "info",
 	Short: "A brief description of your command",
 	Run: func(cmd *cobra.Command, args []string) {
 		basePath := "supervisor"
 		endpoint := "info"
 		get := true
-		
+		serverOverride := ""
+
+		log.WithFields(log.Fields{
+			"basepath":       basePath,
+			"endpoint":       endpoint,
+			"serverOverride": serverOverride,
+			"get":            get,
+			"options":        supervisorOpts,
+			"rawJSON":        supervisorRawJSON,
+			"filter":         supervisorFilter,
+		}).Debug("[CmdSupervisor]")
+		helpers.ExecCommand(basePath, endpoint, serverOverride, get, supervisorOpts, supervisorFilter, supervisorRawJSON)
 	},
 }
 
 func init() {
-	supervisor.AddCommand(infoCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// infoCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// infoCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	supervisorCmd.AddCommand(supervisorInfoCmd)
 }
