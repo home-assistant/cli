@@ -10,8 +10,8 @@ import (
 )
 
 var cfgFile string
-var debug bool = false
-var logFormat string = "text"
+var debug = false
+var logFormat = "text"
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{

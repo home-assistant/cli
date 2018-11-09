@@ -8,7 +8,7 @@ import (
 )
 
 var supervisorOpts string
-var supervisorRawJSON bool = false
+var supervisorRawJSON = false
 var supervisorFilter string
 
 // supervisorCmd represents the supervisor command
