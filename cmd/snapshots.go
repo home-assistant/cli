@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/home-assistant/hassio-cli/cmd/snapshots"
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -9,11 +9,13 @@ import (
 var snapshotsCmd = &cobra.Command{
 	Use:     "snapshots",
 	Aliases: []string{"sa"},
-	Run: func(cmd *cobra.Command, args []string) {
-		snapshots.Execute()
-	},
 }
 
 func init() {
+	log.Debug("Init snapshots")
+	// add subcommands
+	// TODO: add subcommand
+
+	// add cmd to root command
 	rootCmd.AddCommand(snapshotsCmd)
 }

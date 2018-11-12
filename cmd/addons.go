@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/home-assistant/hassio-cli/cmd/addons"
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -9,12 +9,13 @@ import (
 var addonsCmd = &cobra.Command{
 	Use:     "addons",
 	Aliases: []string{"ad"},
-	Run: func(cmd *cobra.Command, args []string) {
-		addons.Execute()
-	},
 }
 
 func init() {
-	rootCmd.AddCommand(addonsCmd)
+	log.Debug("Init addons")
+	// add subcommands
+	// TODO: add subcommand
 
+	// add cmd to root command
+	rootCmd.AddCommand(addonsCmd)
 }

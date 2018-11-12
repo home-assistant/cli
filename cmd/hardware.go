@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/home-assistant/hassio-cli/cmd/hardware"
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -9,11 +9,13 @@ import (
 var hardwareCmd = &cobra.Command{
 	Use:     "hardware",
 	Aliases: []string{"hw"},
-	Run: func(cmd *cobra.Command, args []string) {
-		hardware.Execute()
-	},
 }
 
 func init() {
+	log.Debug("Init hardware")
+	// add subcommands
+	// TODO: add subcommand
+
+	// add cmd to root command
 	rootCmd.AddCommand(hardwareCmd)
 }

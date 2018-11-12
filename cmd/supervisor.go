@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/home-assistant/hassio-cli/cmd/supervisor"
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -9,11 +9,13 @@ import (
 var supervisorCmd = &cobra.Command{
 	Use:     "supervisor",
 	Aliases: []string{"su"},
-	Run: func(cmd *cobra.Command, args []string) {
-		supervisor.Execute()
-	},
 }
 
 func init() {
+	log.Debug("Init supervisor")
+	// add subcommands
+	// TODO: add subcommand
+
+	// add cmd to root command
 	rootCmd.AddCommand(supervisorCmd)
 }
