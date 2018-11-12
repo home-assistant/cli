@@ -1,19 +1,21 @@
 package cmd
 
 import (
-	"github.com/home-assistant/hassio-cli/cmd/homeassistant"
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
-// homeassistantCmd represents the homeassistant command
+// homeassistantCmd represents the homeassistant command when called without any subcommands
 var homeassistantCmd = &cobra.Command{
 	Use:     "homeassistant",
 	Aliases: []string{"ha"},
-	Run: func(cmd *cobra.Command, args []string) {
-		homeassistant.Execute()
-	},
 }
 
 func init() {
+	log.Debug("Init homeassistant")
+	// add subcommands
+	homeassistantCmd.AddCommand(homeassistantInfoCmd)
+
+	// add cmd to root command
 	rootCmd.AddCommand(homeassistantCmd)
 }
