@@ -9,6 +9,7 @@ import (
 var homeassistantCmd = &cobra.Command{
 	Use:     "homeassistant",
 	Aliases: []string{"ha"},
+	Short:   "homeassistant ",
 }
 
 func init() {
