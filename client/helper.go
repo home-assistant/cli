@@ -1,11 +1,14 @@
 package client
 
 import (
+	"encoding/json"
 	"fmt"
+	"os"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	resty "gopkg.in/resty.v1"
+	yaml "gopkg.in/yaml.v2"
 
 	"net/url"
 	"path"
@@ -39,11 +42,8 @@ func URLHelper(base, section, command string) (string, error) {
 
 	url.Path = path.Clean(url.Path)
 	log.WithFields(log.Fields{
-		"base":    base,
-		"section": section,
-		"command": command,
-		"uri":     uri,
-		"url":     url.String(),
+		"uri": uri,
+		"url": url.String(),
 	}).Debug("[GenerateURI] Result")
 	return url.String(), nil
 }
@@ -56,4 +56,36 @@ func GetClient() *resty.Request {
 		SetHeader("Accept", "application/json").
 		SetHeader("X-HASSIO-KEY", apiToken).
 		SetAuthToken(apiToken)
+}
+
+// ShowJSONResponse formats a json response for human readers
+func ShowJSONResponse(body []byte) {
+	var data map[string]interface{}
+
+	if err := json.Unmarshal(body, &data); err != nil {
+		log.Fatal(err)
+	} else {
+		if data["result"] == "ok" {
+			if len(data["data"].(map[string]interface{})) == 0 {
+				fmt.Println("ok")
+			} else {
+				d, err := yaml.Marshal(data["data"])
+				if err != nil {
+					log.Fatalf("error: %v", err)
+				}
+				fmt.Print(string(d))
+			}
+		} else if data["result"] == "error" {
+			os.Stderr.WriteString("ERROR\n")
+			if data["message"] != nil {
+				fmt.Fprintf(os.Stderr, "%v\n", data["message"])
+			}
+		} else {
+			d, err := yaml.Marshal(data)
+			if err != nil {
+				log.Fatalf("error: %v", err)
+			}
+			fmt.Print(string(d))
+		}
+	}
 }

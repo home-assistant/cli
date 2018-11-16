@@ -1,17 +1,14 @@
 package cmd
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
-	"os"
 
 	helper "github.com/home-assistant/hassio-cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	resty "gopkg.in/resty.v1"
-	yaml "gopkg.in/yaml.v2"
 )
 
 // infoCmd represents the info command
@@ -52,34 +49,7 @@ var homeassistantInfoCmd = &cobra.Command{
 			return
 		}
 
-		var data map[string]interface{}
-
-		if err := json.Unmarshal(resp.Body(), &data); err != nil {
-			log.Fatal(err)
-		} else {
-			if data["result"] == "ok" {
-				if len(data["data"].(map[string]interface{})) == 0 {
-					fmt.Println("ok")
-				} else {
-					d, err := yaml.Marshal(data["data"])
-					if err != nil {
-						log.Fatalf("error: %v", err)
-					}
-					fmt.Print(string(d))
-				}
-			} else if data["result"] == "error" {
-				os.Stderr.WriteString("ERROR\n")
-				if data["message"] != nil {
-					fmt.Fprintf(os.Stderr, "%v\n", data["message"])
-				}
-			} else {
-				d, err := yaml.Marshal(data)
-				if err != nil {
-					log.Fatalf("error: %v", err)
-				}
-				fmt.Print(string(d))
-			}
-		}
+		helper.ShowJSONResponse(resp.Body())
 
 		return
 	},
