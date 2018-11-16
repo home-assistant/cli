@@ -16,6 +16,7 @@ func init() {
 	log.Debug("Init homeassistant")
 	// add subcommands
 	homeassistantCmd.AddCommand(homeassistantInfoCmd)
+	homeassistantCmd.AddCommand(homeassistantLogsCmd)
 
 	// add cmd to root command
 	rootCmd.AddCommand(homeassistantCmd)
