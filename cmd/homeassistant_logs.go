@@ -41,7 +41,7 @@ var homeassistantLogsCmd = &cobra.Command{
 			"body":        resp,
 		}).Debug("Response")
 
-		fmt.Print(resp.String())
+		fmt.Println(resp.String())
 		return
 	},
 }
