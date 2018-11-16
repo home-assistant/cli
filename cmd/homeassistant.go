@@ -17,6 +17,7 @@ func init() {
 	// add subcommands
 	homeassistantCmd.AddCommand(homeassistantInfoCmd)
 	homeassistantCmd.AddCommand(homeassistantLogsCmd)
+	homeassistantCmd.AddCommand(homeassistantCheckCmd)
 
 	// add cmd to root command
 	rootCmd.AddCommand(homeassistantCmd)
