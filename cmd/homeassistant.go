@@ -18,6 +18,9 @@ func init() {
 	homeassistantCmd.AddCommand(homeassistantInfoCmd)
 	homeassistantCmd.AddCommand(homeassistantLogsCmd)
 	homeassistantCmd.AddCommand(homeassistantCheckCmd)
+	homeassistantCmd.AddCommand(homeassistantRestartCmd)
+	homeassistantCmd.AddCommand(homeassistantStartCmd)
+	homeassistantCmd.AddCommand(homeassistantStopCmd)
 
 	// add cmd to root command
 	rootCmd.AddCommand(homeassistantCmd)
