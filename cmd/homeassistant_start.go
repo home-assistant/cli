@@ -27,7 +27,7 @@ var homeassistantStartCmd = &cobra.Command{
 			return
 		}
 
-		request := helper.GetRequest()
+		request := helper.GetJSONRequest()
 		resp, err := request.Post(url)
 
 		// returns 200 OK or 400
@@ -35,7 +35,7 @@ var homeassistantStartCmd = &cobra.Command{
 			fmt.Println("Unexpected server response")
 			fmt.Println(resp.String())
 		} else {
-			helper.ShowJSONResponse(resp.Body())
+			helper.ShowJSONResponse(resp.Result().(*helper.Response))
 		}
 
 		return

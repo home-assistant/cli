@@ -1,7 +1,6 @@
 package client
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
 
@@ -16,6 +15,13 @@ import (
 )
 
 var client *resty.Client
+
+// Response is the default json response fromt he home-assistant supervisor
+type Response struct {
+	Result  string                 `json:"result"`
+	Message string                 `json:"message,omitempty"`
+	Data    map[string]interface{} `json:"data,omitempty"`
+}
 
 // URLHelper returns a url build from the arguments
 func URLHelper(base, section, command string) (string, error) {
@@ -50,6 +56,13 @@ func URLHelper(base, section, command string) (string, error) {
 	return url.String(), nil
 }
 
+// GetJSONRequest returns a request prepared for default json resposes
+func GetJSONRequest() *resty.Request {
+	request := GetRequest().
+		SetResult(Response{})
+	return request
+}
+
 // GetRequest returns a resty.Request object prepared for a api call
 func GetRequest() *resty.Request {
 	apiToken := viper.GetString("api-token")
@@ -80,33 +93,27 @@ func GetRequest() *resty.Request {
 }
 
 // ShowJSONResponse formats a json response for human readers
-func ShowJSONResponse(body []byte) {
-	var data map[string]interface{}
-
-	if err := json.Unmarshal(body, &data); err != nil {
-		log.Fatal(err)
-	} else {
-		if data["result"] == "ok" {
-			if len(data["data"].(map[string]interface{})) == 0 {
-				fmt.Println("ok")
-			} else {
-				d, err := yaml.Marshal(data["data"])
-				if err != nil {
-					log.Fatalf("error: %v", err)
-				}
-				fmt.Print(string(d))
-			}
-		} else if data["result"] == "error" {
-			os.Stderr.WriteString("ERROR\n")
-			if data["message"] != nil {
-				fmt.Fprintf(os.Stderr, "%v\n", data["message"])
-			}
+func ShowJSONResponse(data *Response) {
+	if data.Result == "ok" {
+		if len(data.Data) == 0 {
+			fmt.Println("ok")
 		} else {
-			d, err := yaml.Marshal(data)
+			d, err := yaml.Marshal(data.Data)
 			if err != nil {
 				log.Fatalf("error: %v", err)
 			}
 			fmt.Print(string(d))
 		}
+	} else if data.Result == "error" {
+		os.Stderr.WriteString("ERROR\n")
+		if data.Message != "" {
+			fmt.Fprintf(os.Stderr, "%v\n", data.Message)
+		}
+	} else {
+		d, err := yaml.Marshal(data)
+		if err != nil {
+			log.Fatalf("error: %v", err)
+		}
+		fmt.Print(string(d))
 	}
 }

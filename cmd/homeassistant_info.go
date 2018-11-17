@@ -29,7 +29,7 @@ var homeassistantInfoCmd = &cobra.Command{
 			return
 		}
 
-		request := helper.GetRequest()
+		request := helper.GetJSONRequest()
 		resp, err := request.Get(url)
 
 		if !resty.IsJSONType(resp.Header().Get(http.CanonicalHeaderKey("Content-Type"))) {
@@ -38,8 +38,7 @@ var homeassistantInfoCmd = &cobra.Command{
 			return
 		}
 
-		helper.ShowJSONResponse(resp.Body())
-
+		helper.ShowJSONResponse(resp.Result().(*helper.Response))
 		return
 	},
 }
