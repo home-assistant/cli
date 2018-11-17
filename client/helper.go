@@ -15,6 +15,8 @@ import (
 	"strings"
 )
 
+var client *resty.Client
+
 // URLHelper returns a url build from the arguments
 func URLHelper(base, section, command string) (string, error) {
 	log.WithFields(log.Fields{
@@ -52,7 +54,26 @@ func URLHelper(base, section, command string) (string, error) {
 func GetClient() *resty.Request {
 	apiToken := viper.GetString("api-token")
 
-	return resty.R().
+	if client == nil {
+		client = resty.New()
+		// Registering Response Middleware
+		client.OnAfterResponse(func(c *resty.Client, resp *resty.Response) error {
+			// explore response object
+			log.WithFields(log.Fields{
+				"statuscode":  resp.StatusCode(),
+				"status":      resp.Status(),
+				"time":        resp.Time(),
+				"recieved-at": resp.ReceivedAt(),
+				"headers":     resp.Header(),
+				"request":     resp.Request.RawRequest,
+				"body":        resp,
+			}).Debug("Response")
+
+			return nil // if its success otherwise return error
+		})
+	}
+
+	return client.R().
 		SetHeader("Accept", "application/json").
 		SetHeader("X-HASSIO-KEY", apiToken).
 		SetAuthToken(apiToken)

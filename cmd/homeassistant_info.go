@@ -32,17 +32,6 @@ var homeassistantInfoCmd = &cobra.Command{
 		request := helper.GetClient()
 		resp, err := request.Get(url)
 
-		// explore response object
-		log.WithFields(log.Fields{
-			"statuscode":  resp.StatusCode(),
-			"status":      resp.Status(),
-			"time":        resp.Time(),
-			"recieved-at": resp.ReceivedAt(),
-			"headers":     resp.Header(),
-			"request":     resp.Request.RawRequest,
-			"body":        resp,
-		}).Debug("Response")
-
 		if !resty.IsJSONType(resp.Header().Get(http.CanonicalHeaderKey("Content-Type"))) {
 			// TODO: return error
 			fmt.Println("Error: api did not return a json response")

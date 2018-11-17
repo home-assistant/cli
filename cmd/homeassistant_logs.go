@@ -30,17 +30,6 @@ var homeassistantLogsCmd = &cobra.Command{
 		request := helper.GetClient()
 		resp, err := request.SetHeader("Accept", "text/plain").Get(url)
 
-		// explore response object
-		log.WithFields(log.Fields{
-			"statuscode":  resp.StatusCode(),
-			"status":      resp.Status(),
-			"time":        resp.Time(),
-			"recieved-at": resp.ReceivedAt(),
-			"headers":     resp.Header(),
-			"request":     resp.Request.RawRequest,
-			"body":        resp,
-		}).Debug("Response")
-
 		fmt.Println(resp.String())
 		return
 	},

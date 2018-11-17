@@ -30,17 +30,6 @@ var homeassistantCheckCmd = &cobra.Command{
 		request := helper.GetClient()
 		resp, err := request.Post(url)
 
-		// explore response object
-		log.WithFields(log.Fields{
-			"statuscode":  resp.StatusCode(),
-			"status":      resp.Status(),
-			"time":        resp.Time(),
-			"recieved-at": resp.ReceivedAt(),
-			"headers":     resp.Header(),
-			"request":     resp.Request.RawRequest,
-			"body":        resp,
-		}).Debug("Response")
-
 		// returns 200 OK or 400
 		if resp.StatusCode() != 200 && resp.StatusCode() != 400 {
 			fmt.Println("Unexpected server response")
