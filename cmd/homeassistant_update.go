@@ -29,7 +29,7 @@ var homeassistantUpdateCmd = &cobra.Command{
 			return
 		}
 
-		request := helper.GetClient()
+		request := helper.GetRequest()
 
 		// TODO: submit version
 		if version != "" {

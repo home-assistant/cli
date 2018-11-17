@@ -27,7 +27,7 @@ var homeassistantStopCmd = &cobra.Command{
 			return
 		}
 
-		request := helper.GetClient()
+		request := helper.GetRequest()
 		resp, err := request.Post(url)
 
 		// returns 200 OK or 400

@@ -27,7 +27,7 @@ var homeassistantLogsCmd = &cobra.Command{
 			return
 		}
 
-		request := helper.GetClient()
+		request := helper.GetRequest()
 		resp, err := request.SetHeader("Accept", "text/plain").Get(url)
 
 		fmt.Println(resp.String())

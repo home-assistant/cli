@@ -50,8 +50,8 @@ func URLHelper(base, section, command string) (string, error) {
 	return url.String(), nil
 }
 
-// GetClient returns a resty.Request object prepared for a api call
-func GetClient() *resty.Request {
+// GetRequest returns a resty.Request object prepared for a api call
+func GetRequest() *resty.Request {
 	apiToken := viper.GetString("api-token")
 
 	if client == nil {
