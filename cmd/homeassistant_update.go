@@ -9,7 +9,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-var version = ""
+var homeassistantVersion = ""
 
 // updateCmd represents the update command
 var homeassistantUpdateCmd = &cobra.Command{
@@ -32,9 +32,8 @@ var homeassistantUpdateCmd = &cobra.Command{
 		request := helper.GetJSONRequest()
 
 		// TODO: submit version
-		if version != "" {
-
-			request.SetBody(map[string]interface{}{"version": version})
+		if homeassistantVersion != "" {
+			request.SetBody(map[string]interface{}{"version": homeassistantVersion})
 		}
 
 		resp, err := request.Post(url)
@@ -52,6 +51,6 @@ var homeassistantUpdateCmd = &cobra.Command{
 }
 
 func init() {
-	homeassistantUpdateCmd.Flags().StringVarP(&version, "version", "", "", "Version to update to")
+	homeassistantUpdateCmd.Flags().StringVarP(&homeassistantVersion, "version", "", "", "Version to update to")
 	homeassistantCmd.AddCommand(homeassistantUpdateCmd)
 }
