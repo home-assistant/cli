@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -12,10 +11,5 @@ var hassosCmd = &cobra.Command{
 }
 
 func init() {
-	log.Debug("Init hassos")
-	// add subcommands
-	// TODO: add subcommand
-
-	// add cmd to root command
 	rootCmd.AddCommand(hassosCmd)
 }
