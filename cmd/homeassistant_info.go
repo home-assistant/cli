@@ -41,3 +41,7 @@ var homeassistantInfoCmd = &cobra.Command{
 		return
 	},
 }
+
+func init() {
+	homeassistantCmd.AddCommand(homeassistantInfoCmd)
+}

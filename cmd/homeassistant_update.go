@@ -52,7 +52,6 @@ var homeassistantUpdateCmd = &cobra.Command{
 }
 
 func init() {
-	fmt.Println("ha update")
 	homeassistantUpdateCmd.Flags().StringVarP(&version, "version", "", "", "Version to update to")
 	homeassistantCmd.AddCommand(homeassistantUpdateCmd)
 }

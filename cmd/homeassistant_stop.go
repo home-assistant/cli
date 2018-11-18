@@ -41,3 +41,7 @@ var homeassistantStopCmd = &cobra.Command{
 		return
 	},
 }
+
+func init() {
+	homeassistantCmd.AddCommand(homeassistantStopCmd)
+}

@@ -41,3 +41,7 @@ var homeassistantRestartCmd = &cobra.Command{
 		return
 	},
 }
+
+func init() {
+	homeassistantCmd.AddCommand(homeassistantRestartCmd)
+}
