@@ -37,8 +37,7 @@ var homeassistantInfoCmd = &cobra.Command{
 			fmt.Println("Error: api did not return a json response")
 			return
 		}
-
-		helper.ShowJSONResponse(resp.Result().(*helper.Response))
+		helper.ShowJSONResponse(resp)
 		return
 	},
 }

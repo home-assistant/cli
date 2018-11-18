@@ -44,7 +44,7 @@ var homeassistantUpdateCmd = &cobra.Command{
 			fmt.Println("Unexpected server response")
 			fmt.Println(resp.String())
 		} else {
-			helper.ShowJSONResponse(resp.Result().(*helper.Response))
+			helper.ShowJSONResponse(resp)
 		}
 
 		return

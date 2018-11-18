@@ -2,7 +2,6 @@ package client
 
 import (
 	"fmt"
-	"os"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
@@ -59,7 +58,8 @@ func URLHelper(base, section, command string) (string, error) {
 // GetJSONRequest returns a request prepared for default json resposes
 func GetJSONRequest() *resty.Request {
 	request := GetRequest().
-		SetResult(Response{})
+		SetResult(Response{}).
+		SetError(Response{})
 	return request
 }
 
@@ -93,7 +93,13 @@ func GetRequest() *resty.Request {
 }
 
 // ShowJSONResponse formats a json response for human readers
-func ShowJSONResponse(data *Response) {
+func ShowJSONResponse(resp *resty.Response) {
+	var data *Response
+	if resp.IsSuccess() {
+		data = resp.Result().(*Response)
+	} else {
+		data = resp.Error().(*Response)
+	}
 	if data.Result == "ok" {
 		if len(data.Data) == 0 {
 			fmt.Println("ok")
@@ -105,10 +111,7 @@ func ShowJSONResponse(data *Response) {
 			fmt.Print(string(d))
 		}
 	} else if data.Result == "error" {
-		os.Stderr.WriteString("ERROR\n")
-		if data.Message != "" {
-			fmt.Fprintf(os.Stderr, "%v\n", data.Message)
-		}
+		fmt.Printf("Error: %s\n", data.Message)
 	} else {
 		d, err := yaml.Marshal(data)
 		if err != nil {
