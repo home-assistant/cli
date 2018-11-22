@@ -12,7 +12,7 @@ import (
 // startCmd represents the start command
 var homeassistantStartCmd = &cobra.Command{
 	Use:     "start",
-	Aliases: []string{"ch"},
+	Aliases: []string{"st"},
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("homeassistant start")
 

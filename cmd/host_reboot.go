@@ -14,7 +14,7 @@ import (
 // rebootCmd represents the reboot command
 var hostRebootCmd = &cobra.Command{
 	Use:     "reboot",
-	Aliases: []string{"in"},
+	Aliases: []string{"rb"},
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("host reboot")
 

@@ -14,7 +14,7 @@ import (
 // reloadCmd represents the reload command
 var hostReloadCmd = &cobra.Command{
 	Use:     "reload",
-	Aliases: []string{"in"},
+	Aliases: []string{"re"},
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("host reload")
 

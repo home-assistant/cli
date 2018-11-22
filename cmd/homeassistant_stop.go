@@ -12,7 +12,7 @@ import (
 // stopCmd represents the stop command
 var homeassistantStopCmd = &cobra.Command{
 	Use:     "stop",
-	Aliases: []string{"ch"},
+	Aliases: []string{},
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("homeassistant stop")
 

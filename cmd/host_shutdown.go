@@ -14,7 +14,7 @@ import (
 // shutdownCmd represents the shutdown command
 var hostShutdownCmd = &cobra.Command{
 	Use:     "shutdown",
-	Aliases: []string{"in"},
+	Aliases: []string{"sh"},
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("host shutdown")
 

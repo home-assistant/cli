@@ -12,7 +12,7 @@ import (
 // reloadCmd represents the reload command
 var supervisorReloadCmd = &cobra.Command{
 	Use:     "reload",
-	Aliases: []string{"ch"},
+	Aliases: []string{"re"},
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("supervisor reload")
 

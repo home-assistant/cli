@@ -12,7 +12,7 @@ import (
 // restartCmd represents the restart command
 var homeassistantRestartCmd = &cobra.Command{
 	Use:     "restart",
-	Aliases: []string{"ch"},
+	Aliases: []string{"re"},
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("homeassistant restart")
 
