@@ -29,7 +29,6 @@ var supervisorUpdateCmd = &cobra.Command{
 
 		request := helper.GetJSONRequest()
 
-		// TODO: submit version
 		version, err := cmd.Flags().GetString("version")
 		if version != "" {
 			request.SetBody(map[string]interface{}{"version": version})
