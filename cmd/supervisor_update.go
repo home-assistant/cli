@@ -9,8 +9,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-var supervisorVersion = ""
-
 // updateCmd represents the update command
 var supervisorUpdateCmd = &cobra.Command{
 	Use:     "update",
@@ -32,8 +30,9 @@ var supervisorUpdateCmd = &cobra.Command{
 		request := helper.GetJSONRequest()
 
 		// TODO: submit version
-		if supervisorVersion != "" {
-			request.SetBody(map[string]interface{}{"version": supervisorVersion})
+		version, err := cmd.Flags().GetString("version")
+		if version != "" {
+			request.SetBody(map[string]interface{}{"version": version})
 		}
 
 		resp, err := request.Post(url)
@@ -51,6 +50,6 @@ var supervisorUpdateCmd = &cobra.Command{
 }
 
 func init() {
-	supervisorUpdateCmd.Flags().StringVarP(&supervisorVersion, "version", "", "", "Version to update to")
+	supervisorUpdateCmd.Flags().StringP("version", "", "", "Version to update to")
 	supervisorCmd.AddCommand(supervisorUpdateCmd)
 }
