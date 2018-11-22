@@ -34,3 +34,7 @@ var homeassistantLogsCmd = &cobra.Command{
 		return
 	},
 }
+
+func init() {
+	homeassistantCmd.AddCommand(homeassistantLogsCmd)
+}
