@@ -29,7 +29,11 @@ var supervisorOptionsCmd = &cobra.Command{
 
 		options := make(map[string]interface{})
 
-		for _, value := range []string{"hostname", "channel", " timezone"} {
+		for _, value := range []string{
+			"hostname",
+			"channel",
+			"timezone",
+		} {
 			val, err := cmd.Flags().GetString(value)
 			if val != "" && err == nil {
 				options[value] = val
