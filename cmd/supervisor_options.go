@@ -35,13 +35,13 @@ var supervisorOptionsCmd = &cobra.Command{
 			"timezone",
 		} {
 			val, err := cmd.Flags().GetString(value)
-			if val != "" && err == nil {
+			if val != "" && err == nil && cmd.Flags().Changed(value) {
 				options[value] = val
 			}
 		}
 
 		waitboot, err := cmd.Flags().GetInt("wait-boot")
-		if waitboot != 0 {
+		if cmd.Flags().Changed("wait-boot") {
 			options["wait_boot"] = waitboot
 		}
 
