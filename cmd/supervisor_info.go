@@ -19,13 +19,14 @@ var supervisorInfoCmd = &cobra.Command{
 		section := "supervisor"
 		command := "info"
 		base := viper.GetString("endpoint")
-		resp, err := helper.GenericJSONPost(base, section, command, nil)
+
+		resp, err := helper.GenericJSONGet(base, section, command)
 		if err != nil {
 			fmt.Println(err)
 		} else {
 			helper.ShowJSONResponse(resp)
 		}
-		return
+
 	},
 }
 
