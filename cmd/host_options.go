@@ -9,8 +9,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-var hostHostname = ""
-
 // optionsCmd represents the options command
 var hostOptionsCmd = &cobra.Command{
 	Use:     "options",
@@ -22,26 +20,16 @@ var hostOptionsCmd = &cobra.Command{
 		command := "options"
 		base := viper.GetString("endpoint")
 
-		url, err := helper.URLHelper(base, section, command)
+		var options map[string]interface{}
+
+		hostname, err := cmd.Flags().GetString("hostname")
+		if hostname != "" {
+			options = map[string]interface{}{"hostname": hostname}
+		}
+
+		resp, err := helper.GenericJSONPost(base, section, command, options)
 		if err != nil {
-			// TODO: error handler
-			fmt.Printf("Error: %v", err)
-			return
-		}
-
-		request := helper.GetJSONRequest()
-
-		// TODO: submit hostname
-		if hostHostname != "" {
-			request.SetBody(map[string]interface{}{"hostname": hostHostname})
-		}
-
-		resp, err := request.Post(url)
-
-		// returns 200 OK or 400
-		if resp.StatusCode() != 200 && resp.StatusCode() != 400 {
-			fmt.Println("Unexpected server response")
-			fmt.Println(resp.String())
+			fmt.Println(err)
 		} else {
 			helper.ShowJSONResponse(resp)
 		}
@@ -51,6 +39,6 @@ var hostOptionsCmd = &cobra.Command{
 }
 
 func init() {
-	hostOptionsCmd.Flags().StringVarP(&hostHostname, "hostname", "", "", "Hostname to set")
+	hostOptionsCmd.Flags().StringP("hostname", "", "", "Hostname to set")
 	hostCmd.AddCommand(hostOptionsCmd)
 }

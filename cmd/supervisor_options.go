@@ -45,18 +45,9 @@ var supervisorOptionsCmd = &cobra.Command{
 			options["addons_repositories"] = repos
 		}
 
-		request := helper.GetJSONRequest()
-		if len(options) > 0 {
-			log.WithField("options", options).Debug("Sending options")
-			request.SetBody(options)
-		}
-		resp, err := request.Post(url)
-		log.WithField("Request", resp.Request.RawRequest).Debug("Request")
-
-		// returns 200 OK or 400
-		if resp.StatusCode() != 200 && resp.StatusCode() != 400 {
-			fmt.Println("Unexpected server response")
-			fmt.Println(resp.String())
+		resp, err := helper.GenericJSONPost(base, section, command, options)
+		if err != nil {
+			fmt.Println(err)
 		} else {
 			helper.ShowJSONResponse(resp)
 		}

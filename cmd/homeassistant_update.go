@@ -20,26 +20,16 @@ var homeassistantUpdateCmd = &cobra.Command{
 		command := "update"
 		base := viper.GetString("endpoint")
 
-		url, err := helper.URLHelper(base, section, command)
-		if err != nil {
-			// TODO: error handler
-			fmt.Printf("Error: %v", err)
-			return
-		}
-
-		request := helper.GetJSONRequest()
+		var options map[string]interface{}
 
 		version, err := cmd.Flags().GetString("version")
 		if version != "" {
-			request.SetBody(map[string]interface{}{"version": version})
+			options = map[string]interface{}{"version": version}
 		}
 
-		resp, err := request.Post(url)
-
-		// returns 200 OK or 400
-		if resp.StatusCode() != 200 && resp.StatusCode() != 400 {
-			fmt.Println("Unexpected server response")
-			fmt.Println(resp.String())
+		resp, err := helper.GenericJSONPost(base, section, command, options)
+		if err != nil {
+			fmt.Println(err)
 		} else {
 			helper.ShowJSONResponse(resp)
 		}
