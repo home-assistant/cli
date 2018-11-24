@@ -20,13 +20,6 @@ var homeassistantOptionsCmd = &cobra.Command{
 		command := "options"
 		base := viper.GetString("endpoint")
 
-		url, err := helper.URLHelper(base, section, command)
-		if err != nil {
-			// TODO: error handler
-			fmt.Printf("Error: %v", err)
-			return
-		}
-
 		options := make(map[string]interface{})
 
 		for _, value := range []string{

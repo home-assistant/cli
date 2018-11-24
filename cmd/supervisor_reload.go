@@ -20,20 +20,9 @@ var supervisorReloadCmd = &cobra.Command{
 		command := "reload"
 		base := viper.GetString("endpoint")
 
-		url, err := helper.URLHelper(base, section, command)
+		resp, err := helper.GenericJSONPost(base, section, command, nil)
 		if err != nil {
-			// TODO: error handler
-			fmt.Printf("Error: %v", err)
-			return
-		}
-
-		request := helper.GetJSONRequest()
-		resp, err := request.Post(url)
-
-		// returns 200 OK or 400
-		if resp.StatusCode() != 200 && resp.StatusCode() != 400 {
-			fmt.Println("Unexpected server response")
-			fmt.Println(resp.String())
+			fmt.Println(err)
 		} else {
 			helper.ShowJSONResponse(resp)
 		}

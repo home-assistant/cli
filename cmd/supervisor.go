@@ -13,9 +13,5 @@ var supervisorCmd = &cobra.Command{
 
 func init() {
 	log.Debug("Init supervisor")
-	// add subcommands
-	// TODO: add subcommand
-
-	// add cmd to root command
 	rootCmd.AddCommand(supervisorCmd)
 }
