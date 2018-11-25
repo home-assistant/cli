@@ -14,7 +14,7 @@ import (
 
 var snapshotsInfoCmd = &cobra.Command{
 	Use:     "info",
-	Aliases: []string{"re"},
+	Aliases: []string{"in"},
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("snapshots info")
 

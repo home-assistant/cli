@@ -10,8 +10,7 @@ import (
 )
 
 var snapshotsNewCmd = &cobra.Command{
-	Use:     "new",
-	Aliases: []string{"re"},
+	Use: "new",
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("snapshots new")
 
