@@ -9,7 +9,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-// reloadCmd represents the reload command
 var supervisorReloadCmd = &cobra.Command{
 	Use:     "reload",
 	Aliases: []string{"re"},

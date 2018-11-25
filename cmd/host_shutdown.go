@@ -9,7 +9,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-// shutdownCmd represents the shutdown command
 var hostShutdownCmd = &cobra.Command{
 	Use:     "shutdown",
 	Aliases: []string{"sh"},

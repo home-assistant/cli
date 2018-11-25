@@ -9,7 +9,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-// statsCmd represents the info command
 var supervisorStatsCmd = &cobra.Command{
 	Use:     "stats",
 	Aliases: []string{"st"},

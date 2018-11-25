@@ -11,7 +11,6 @@ import (
 	resty "gopkg.in/resty.v1"
 )
 
-// infoCmd represents the info command
 var infoCmd = &cobra.Command{
 	Use:     "info",
 	Aliases: []string{"in"},

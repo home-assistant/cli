@@ -9,7 +9,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-// infoCmd represents the info command
 var homeassistantInfoCmd = &cobra.Command{
 	Use:     "info",
 	Aliases: []string{"in"},

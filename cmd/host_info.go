@@ -9,7 +9,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-// infoCmd represents the info command
 var hostInfoCmd = &cobra.Command{
 	Use:     "info",
 	Aliases: []string{"in"},

@@ -9,7 +9,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-// restartCmd represents the restart command
 var homeassistantRestartCmd = &cobra.Command{
 	Use:     "restart",
 	Aliases: []string{"re"},

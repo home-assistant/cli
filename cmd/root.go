@@ -14,7 +14,6 @@ var endPoint string
 var logLevel string
 var apiToken string
 
-// rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "hassio-cli",
 	Short: "A brief description of your application",

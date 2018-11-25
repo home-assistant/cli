@@ -9,7 +9,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-// startCmd represents the start command
 var homeassistantStartCmd = &cobra.Command{
 	Use:     "start",
 	Aliases: []string{"st"},

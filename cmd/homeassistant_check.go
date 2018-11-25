@@ -9,7 +9,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-// checkCmd represents the check command
 var homeassistantCheckCmd = &cobra.Command{
 	Use:     "check",
 	Aliases: []string{"ch"},

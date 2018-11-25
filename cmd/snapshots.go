@@ -9,7 +9,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-// snapshotsCmd represents the snapshots command
 var snapshotsCmd = &cobra.Command{
 	Use:     "snapshots",
 	Aliases: []string{"sn"},

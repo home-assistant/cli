@@ -9,7 +9,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-// updateCmd represents the update command
 var homeassistantUpdateCmd = &cobra.Command{
 	Use:     "update",
 	Aliases: []string{"up"},

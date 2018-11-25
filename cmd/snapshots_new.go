@@ -9,7 +9,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-// newCmd represents the new command
 var snapshotsNewCmd = &cobra.Command{
 	Use:     "new",
 	Aliases: []string{"re"},

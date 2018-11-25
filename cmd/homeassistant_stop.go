@@ -9,7 +9,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-// stopCmd represents the stop command
 var homeassistantStopCmd = &cobra.Command{
 	Use:     "stop",
 	Aliases: []string{},

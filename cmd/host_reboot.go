@@ -9,7 +9,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-// rebootCmd represents the reboot command
 var hostRebootCmd = &cobra.Command{
 	Use:     "reboot",
 	Aliases: []string{"rb"},

@@ -12,7 +12,6 @@ import (
 	resty "gopkg.in/resty.v1"
 )
 
-// reloadCmd represents the info command
 var snapshotsInfoCmd = &cobra.Command{
 	Use:     "info",
 	Aliases: []string{"re"},

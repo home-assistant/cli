@@ -5,7 +5,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// supervisorCmd represents the supervisor command
 var supervisorCmd = &cobra.Command{
 	Use:     "supervisor",
 	Aliases: []string{"su"},

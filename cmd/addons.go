@@ -5,7 +5,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// addonsCmd represents the addons command
 var addonsCmd = &cobra.Command{
 	Use:     "addons",
 	Aliases: []string{"ad"},
