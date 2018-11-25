@@ -2,14 +2,14 @@ package client
 
 import (
 	"fmt"
+	"net/url"
+	"path"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	resty "gopkg.in/resty.v1"
 	yaml "gopkg.in/yaml.v2"
 
-	"net/url"
-	"path"
 	"strings"
 )
 
@@ -42,17 +42,20 @@ func URLHelper(base, section, command string) (string, error) {
 		command,
 	)
 
-	var url, err = url.Parse(uri)
+	var myurl, err = url.Parse(uri)
 	if err != nil {
 		return "", err
 	}
 
-	url.Path = path.Clean(url.Path)
+	myurl.Path = path.Clean(myurl.Path)
+
+	res, _ := url.PathUnescape(myurl.String())
 	log.WithFields(log.Fields{
-		"uri": uri,
-		"url": url.String(),
+		"uri":         uri,
+		"url":         myurl,
+		"url(string)": res,
 	}).Debug("[GenerateURI] Result")
-	return url.String(), nil
+	return res, nil
 }
 
 // GetJSONRequest returns a request prepared for default json resposes

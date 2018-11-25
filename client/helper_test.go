@@ -21,6 +21,7 @@ var urlTests = []struct {
 	{"hassio", "section", "", "http://hassio/section"},
 	{"hassio", "section/../othersection", "", "http://hassio/othersection"},
 	{"hassio/api/", "section", "command", "http://hassio/api/section/command"},
+	{"hassio/api/", "section", "{slug}/command", "http://hassio/api/section/{slug}/command"},
 }
 
 func TestURLHelper(t *testing.T) {
