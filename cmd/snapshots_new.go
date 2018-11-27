@@ -33,7 +33,7 @@ var snapshotsNewCmd = &cobra.Command{
 		addons, err := cmd.Flags().GetStringArray("addons")
 		log.WithField("addons", addons).Debug("addons")
 
-		if len(addons) >= 0 && err == nil {
+		if len(addons) >= 0 && err == nil && cmd.Flags().Changed("folders") {
 			options["addons"] = addons
 			command = "new/partial"
 		}
@@ -41,7 +41,7 @@ var snapshotsNewCmd = &cobra.Command{
 		folders, err := cmd.Flags().GetStringArray("folders")
 		log.WithField("folders", folders).Debug("folders")
 
-		if len(folders) >= 0 && err == nil {
+		if len(folders) >= 0 && err == nil && cmd.Flags().Changed("folders") {
 			options["folders"] = folders
 			command = "new/partial"
 		}
