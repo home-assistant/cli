@@ -13,7 +13,8 @@ import (
 )
 
 var snapshotsRestoreCmd = &cobra.Command{
-	Use: "restore",
+	Use:  "restore [slug]",
+	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("snapshots restore")
 
@@ -25,7 +26,7 @@ var snapshotsRestoreCmd = &cobra.Command{
 
 		options := make(map[string]interface{})
 
-		slug, _ := cmd.Flags().GetString("slug")
+		slug := args[0]
 
 		request.SetPathParams(map[string]string{
 			"slug": slug,
@@ -94,9 +95,6 @@ var snapshotsRestoreCmd = &cobra.Command{
 }
 
 func init() {
-	snapshotsRestoreCmd.Flags().StringP("slug", "", "", "Slug of the snapshot")
-	snapshotsRestoreCmd.MarkFlagRequired("slug")
-
 	snapshotsRestoreCmd.Flags().StringP("password", "", "", "Password")
 	snapshotsRestoreCmd.Flags().BoolP("homeassistant", "", true, "Restore homeassistant (default true), triggers a partial backup when se to false")
 	snapshotsRestoreCmd.Flags().StringArrayP("addons", "a", []string{}, "addons to restore, triggers a partial backup")

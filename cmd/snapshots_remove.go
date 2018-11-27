@@ -13,8 +13,8 @@ import (
 )
 
 var snapshotsRemoveCmd = &cobra.Command{
-	Use:     "remove",
-	Aliases: []string{"re"},
+	Use:  "remove [slug]",
+	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("snapshots remove")
 
@@ -31,7 +31,7 @@ var snapshotsRemoveCmd = &cobra.Command{
 
 		request := helper.GetJSONRequest()
 
-		slug, _ := cmd.Flags().GetString("slug")
+		slug := args[0]
 
 		request.SetPathParams(map[string]string{
 			"slug": slug,
@@ -61,8 +61,6 @@ var snapshotsRemoveCmd = &cobra.Command{
 }
 
 func init() {
-	snapshotsRemoveCmd.Flags().StringP("slug", "", "", "Slug of the snapshot")
-	snapshotsRemoveCmd.MarkFlagRequired("slug")
 
 	snapshotsCmd.AddCommand(snapshotsRemoveCmd)
 }

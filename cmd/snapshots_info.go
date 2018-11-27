@@ -13,8 +13,9 @@ import (
 )
 
 var snapshotsInfoCmd = &cobra.Command{
-	Use:     "info",
+	Use:     "info [slug]",
 	Aliases: []string{"in"},
+	Args:    cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("snapshots info")
 
@@ -31,7 +32,7 @@ var snapshotsInfoCmd = &cobra.Command{
 
 		request := helper.GetJSONRequest()
 
-		slug, _ := cmd.Flags().GetString("slug")
+		slug := args[0]
 
 		request.SetPathParams(map[string]string{
 			"slug": slug,
@@ -61,8 +62,5 @@ var snapshotsInfoCmd = &cobra.Command{
 }
 
 func init() {
-	snapshotsInfoCmd.Flags().StringP("slug", "", "", "Slug of the snapshot")
-	snapshotsInfoCmd.MarkFlagRequired("slug")
-
 	snapshotsCmd.AddCommand(snapshotsInfoCmd)
 }
