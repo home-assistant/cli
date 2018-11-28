@@ -12,7 +12,7 @@ import (
 	resty "gopkg.in/resty.v1"
 )
 
-var addonsUninstalCmd = &cobra.Command{
+var addonsUninstallCmd = &cobra.Command{
 	Use:  "uninstall [slug]",
 	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
@@ -62,5 +62,5 @@ var addonsUninstalCmd = &cobra.Command{
 
 func init() {
 
-	addonsCmd.AddCommand(addonsUninstalCmd)
+	addonsCmd.AddCommand(addonsUninstallCmd)
 }
