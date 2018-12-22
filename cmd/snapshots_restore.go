@@ -60,7 +60,6 @@ var snapshotsRestoreCmd = &cobra.Command{
 		}
 
 		url, err := helper.URLHelper(base, section, command)
-		fmt.Println(url)
 		if err != nil {
 			fmt.Println(err)
 			return

@@ -23,7 +23,6 @@ var addonsUpdateCmd = &cobra.Command{
 		base := viper.GetString("endpoint")
 
 		url, err := helper.URLHelper(base, section, command)
-		fmt.Println(url)
 		if err != nil {
 			fmt.Println(err)
 			return

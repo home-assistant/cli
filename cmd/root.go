@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/home-assistant/hassio-cli/client"
@@ -77,7 +76,7 @@ func initConfig() {
 	viper.AutomaticEnv()
 
 	// bind to current api token ENV variable
-	fmt.Println(viper.BindEnv("api-token", "HASSIO_TOKEN"))
+	viper.BindEnv("api-token", "HASSIO_TOKEN")
 
 	// set loglevel if posible
 	logLevel, err := log.ParseLevel(viper.GetString("log-level"))
