@@ -2,6 +2,7 @@ package client
 
 import (
 	"fmt"
+	"io/ioutil"
 	"net/url"
 	"path"
 
@@ -63,6 +64,10 @@ func GetJSONRequest() *resty.Request {
 	request := GetRequest().
 		SetResult(Response{}).
 		SetError(Response{})
+	if RawJSON {
+		request.
+			SetDoNotParseResponse(true)
+	}
 	return request
 }
 
@@ -97,6 +102,14 @@ func GetRequest() *resty.Request {
 
 // ShowJSONResponse formats a json response for human readers
 func ShowJSONResponse(resp *resty.Response) {
+	if RawJSON {
+		body := resp.RawBody()
+		defer body.Close()
+		if b, err := ioutil.ReadAll(body); err == nil {
+			fmt.Print(string(b))
+		}
+		return
+	}
 	var data *Response
 	if resp.IsSuccess() {
 		data = resp.Result().(*Response)

@@ -8,6 +8,9 @@ import (
 	resty "gopkg.in/resty.v1"
 )
 
+// RawJSON controles if the client does json handling or outputs it raw
+var RawJSON = false
+
 func genericJSONMethod(get bool, base, section, command string, body map[string]interface{}) (*resty.Response, error) {
 	url, err := URLHelper(base, section, command)
 	if err != nil {

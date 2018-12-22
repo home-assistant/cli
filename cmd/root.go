@@ -3,6 +3,7 @@ package cmd
 import (
 	"strings"
 
+	"github.com/home-assistant/hassio-cli/client"
 	homedir "github.com/mitchellh/go-homedir"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -13,6 +14,7 @@ var cfgFile string
 var endPoint string
 var logLevel string
 var apiToken string
+var rawJSON bool
 
 var rootCmd = &cobra.Command{
 	Use:   "hassio-cli",
@@ -25,11 +27,15 @@ var rootCmd = &cobra.Command{
 		if err == nil {
 			log.SetLevel(logrusLevel)
 		}
+
+		client.RawJSON = viper.GetBool("raw-json")
+
 		log.WithFields(log.Fields{
 			"cfgFile":  viper.GetString("config"),
 			"endpoint": viper.GetString("endpoint"),
 			"logLevel": viper.GetString("log-level"),
 			"apiToken": viper.GetString("api-token"),
+			"rawJSON":  viper.GetBool("raw-json"),
 		}).Debugln("Debug flags")
 
 	},
@@ -50,11 +56,13 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&endPoint, "endpoint", "", "Endpoint for hassio supervisor ( default is 'hassio' )")
 	rootCmd.PersistentFlags().StringVar(&logLevel, "log-level", "", "Log level defaults to Warn")
 	rootCmd.PersistentFlags().StringVar(&apiToken, "api-token", "", "Hassio api token")
+	rootCmd.PersistentFlags().BoolVar(&rawJSON, "raw-json", false, "Output raw json from the API")
 
 	viper.BindPFlag("config", rootCmd.PersistentFlags().Lookup("config"))
 	viper.BindPFlag("endpoint", rootCmd.PersistentFlags().Lookup("endpoint"))
 	viper.BindPFlag("log-level", rootCmd.PersistentFlags().Lookup("log-level"))
 	viper.BindPFlag("api-token", rootCmd.PersistentFlags().Lookup("api-token"))
+	viper.BindPFlag("raw-json", rootCmd.PersistentFlags().Lookup("raw-json"))
 
 	viper.SetDefault("endpoint", "hassio")
 	viper.SetDefault("log-level", "warn")
