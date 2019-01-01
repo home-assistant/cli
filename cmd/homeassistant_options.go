@@ -43,14 +43,19 @@ var homeassistantOptionsCmd = &cobra.Command{
 			options["startup_time"] = startupTime
 		}
 
+		waitBoot, err := cmd.Flags().GetInt("wait_boot")
+		if err == nil && cmd.Flags().Changed("wait_boot") {
+			options["wait_boot"] = waitBoot
+		}
+
 		ssl, err := cmd.Flags().GetBool("ssl")
 		if err == nil && cmd.Flags().Changed("ssl") {
 			options["ssl"] = ssl
 		}
 
-		watchdg, err := cmd.Flags().GetBool("watchdg")
+		watchdog, err := cmd.Flags().GetBool("watchdog")
 		if err == nil && cmd.Flags().Changed("watchdog") {
-			options["watchdg"] = watchdg
+			options["watchdog"] = watchdog
 		}
 
 		resp, err := helper.GenericJSONPost(base, section, command, options)
@@ -73,5 +78,6 @@ func init() {
 	homeassistantOptionsCmd.Flags().String("refresh_token", "", "Refresh token")
 	homeassistantOptionsCmd.Flags().Bool("watchdog", true, "Use watchdog")
 	homeassistantOptionsCmd.Flags().Int("startup_time", 600, "startup time")
+	homeassistantOptionsCmd.Flags().Int("wait_boot", 600, "wait_boot")
 	homeassistantCmd.AddCommand(homeassistantOptionsCmd)
 }
