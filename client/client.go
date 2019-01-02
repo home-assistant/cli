@@ -42,7 +42,7 @@ func genericJSONMethod(get bool, base, section, command string, body map[string]
 			return nil, err
 		}
 	}
-	return resp, nil
+	return resp, err
 }
 
 // GenericJSONGet is a helper for generic empty post request
