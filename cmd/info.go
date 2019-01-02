@@ -23,7 +23,6 @@ var infoCmd = &cobra.Command{
 
 		url, err := helper.URLHelper(base, section, command)
 		if err != nil {
-			// TODO: error handler
 			fmt.Printf("Error: %v", err)
 			return
 		}
@@ -32,8 +31,7 @@ var infoCmd = &cobra.Command{
 		resp, err := request.Get(url)
 
 		if !resty.IsJSONType(resp.Header().Get(http.CanonicalHeaderKey("Content-Type"))) {
-			// TODO: return error
-			fmt.Println("Error: api did not return a json response")
+			fmt.Println("Error: API did not return a JSON response")
 			return
 		}
 		helper.ShowJSONResponse(resp)

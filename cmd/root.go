@@ -53,10 +53,10 @@ func init() {
 	cobra.OnInitialize(initConfig)
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.homeassistant.yaml)")
-	rootCmd.PersistentFlags().StringVar(&endPoint, "endpoint", "", "Endpoint for hassio supervisor ( default is 'hassio' )")
+	rootCmd.PersistentFlags().StringVar(&endPoint, "endpoint", "", "Endpoint for Hass.io Supervisor ( default is 'hassio' )")
 	rootCmd.PersistentFlags().StringVar(&logLevel, "log-level", "", "Log level defaults to Warn")
-	rootCmd.PersistentFlags().StringVar(&apiToken, "api-token", "", "Hassio api token")
-	rootCmd.PersistentFlags().BoolVar(&rawJSON, "raw-json", false, "Output raw json from the API")
+	rootCmd.PersistentFlags().StringVar(&apiToken, "api-token", "", "Hass.io API token")
+	rootCmd.PersistentFlags().BoolVar(&rawJSON, "raw-json", false, "Output raw JSON from the API")
 
 	viper.BindPFlag("config", rootCmd.PersistentFlags().Lookup("config"))
 	viper.BindPFlag("endpoint", rootCmd.PersistentFlags().Lookup("endpoint"))
@@ -75,7 +75,7 @@ func initConfig() {
 	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
 	viper.AutomaticEnv()
 
-	// bind to current api token ENV variable
+	// bind to current API token ENV variable
 	viper.BindEnv("api-token", "HASSIO_TOKEN")
 
 	// set loglevel if posible

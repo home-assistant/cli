@@ -8,7 +8,7 @@
 
 ## Description
 
-Commandline interface to facilitate interaction with hass.io server
+Commandline interface to facilitate interaction with Hass.io server
 
 ## Usage
 
@@ -30,8 +30,8 @@ E.g.:
 - --rawjson,-j -> Will return the data in JSON format on a 
                     single line (useful for passing to other 
                     programs to parse / utilise)
-- --options,-o -> Used to send commands to hass.io `hassio homeassistant update --options version=0.60`
-- --filter,-f  -> Used to filter the data returned from hass.io so only the specified properties are output
+- --options,-o -> Used to send commands to Hass.io `hassio homeassistant update --options version=0.60`
+- --filter,-f  -> Used to filter the data returned from Hass.io so only the specified properties are output
 
 *Note:* Modifer order is important.
 

@@ -31,9 +31,6 @@ var snapshotsCmd = &cobra.Command{
 
 func init() {
 	log.Debug("Init snapshots")
-	// add subcommands
-	// TODO: add subcommand
-
 	// add cmd to root command
 	rootCmd.AddCommand(snapshotsCmd)
 }

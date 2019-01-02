@@ -37,7 +37,7 @@ func genericJSONMethod(get bool, base, section, command string, body map[string]
 			log.Error(err)
 			return nil, err
 		} else if !resty.IsJSONType(resp.Header().Get(http.CanonicalHeaderKey("Content-Type"))) {
-			err = errors.New("api did not return a json response")
+			err = errors.New("API did not return a JSON response")
 			log.Error(err)
 			return nil, err
 		}

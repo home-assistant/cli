@@ -46,7 +46,7 @@ var addonsStatsCmd = &cobra.Command{
 				err = errors.New("Unexpected server response")
 				log.Error(err)
 			} else if !resty.IsJSONType(resp.Header().Get(http.CanonicalHeaderKey("Content-Type"))) {
-				err = errors.New("api did not return a json response")
+				err = errors.New("API did not return a JSON response")
 				log.Error(err)
 			}
 		}

@@ -12,8 +12,6 @@ var hardwareCmd = &cobra.Command{
 
 func init() {
 	log.Debug("Init hardware")
-	// add subcommands
-	// TODO: add subcommand
 
 	// add cmd to root command
 	rootCmd.AddCommand(hardwareCmd)

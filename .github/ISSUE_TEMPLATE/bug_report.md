@@ -15,7 +15,7 @@ A clear and concise description of what the bug is.
 
 2. Output of `hassio --version`
 
-3. Version of hassio / homeassistant
+3. Version of Hassio / Home Assistant
 
 4. Output from executing the command with debug info.
 e.g. `hassio hardware info` should be run as `hassio -d hardware info`

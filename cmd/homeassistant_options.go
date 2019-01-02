@@ -67,9 +67,9 @@ var homeassistantOptionsCmd = &cobra.Command{
 func init() {
 	homeassistantOptionsCmd.Flags().String("image", "", "Optional image")
 	homeassistantOptionsCmd.Flags().String("last_version", "", "Optional for custom image")
-	homeassistantOptionsCmd.Flags().Int("port", 8123, "Port for access hassio")
+	homeassistantOptionsCmd.Flags().Int("port", 8123, "Port for access Hass.io")
 	homeassistantOptionsCmd.Flags().Bool("ssl", false, "Use SSL")
-	homeassistantOptionsCmd.Flags().String("password", "", "Api password")
+	homeassistantOptionsCmd.Flags().String("password", "", "API password")
 	homeassistantOptionsCmd.Flags().String("refresh_token", "", "Refresh token")
 	homeassistantOptionsCmd.Flags().Bool("watchdog", true, "Use watchdog")
 	homeassistantOptionsCmd.Flags().Int("wait_boot", 600, "wait_boot")

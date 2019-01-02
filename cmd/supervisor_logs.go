@@ -21,7 +21,6 @@ var supervisorLogsCmd = &cobra.Command{
 
 		url, err := helper.URLHelper(base, section, command)
 		if err != nil {
-			// TODO: error handler
 			fmt.Printf("Error: %v", err)
 			return
 		}

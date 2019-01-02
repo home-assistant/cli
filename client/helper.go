@@ -16,14 +16,14 @@ import (
 
 var client *resty.Client
 
-// Response is the default json response fromt he home-assistant supervisor
+// Response is the default JSON response from the Home Assistant Supervisor
 type Response struct {
 	Result  string                 `json:"result"`
 	Message string                 `json:"message,omitempty"`
 	Data    map[string]interface{} `json:"data,omitempty"`
 }
 
-// URLHelper returns a url build from the arguments
+// URLHelper returns a URL build from the arguments
 func URLHelper(base, section, command string) (string, error) {
 	log.WithFields(log.Fields{
 		"base":    base,
@@ -59,7 +59,7 @@ func URLHelper(base, section, command string) (string, error) {
 	return res, nil
 }
 
-// GetJSONRequest returns a request prepared for default json resposes
+// GetJSONRequest returns a request prepared for default JSON resposes
 func GetJSONRequest() *resty.Request {
 	request := GetRequest().
 		SetResult(Response{}).
@@ -71,7 +71,7 @@ func GetJSONRequest() *resty.Request {
 	return request
 }
 
-// GetRequest returns a resty.Request object prepared for a api call
+// GetRequest returns a resty.Request object prepared for a API call
 func GetRequest() *resty.Request {
 	apiToken := viper.GetString("api-token")
 
@@ -100,7 +100,7 @@ func GetRequest() *resty.Request {
 		SetAuthToken(apiToken)
 }
 
-// ShowJSONResponse formats a json response for human readers
+// ShowJSONResponse formats a JSON response for human readers
 func ShowJSONResponse(resp *resty.Response) {
 	if RawJSON {
 		body := resp.RawBody()
