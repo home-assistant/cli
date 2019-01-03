@@ -22,8 +22,9 @@ var homeassistantStopCmd = &cobra.Command{
 		resp, err := helper.GenericJSONPost(base, section, command, nil)
 		if err != nil {
 			fmt.Println(err)
+			ExitWithError = true
 		} else {
-			helper.ShowJSONResponse(resp)
+			ExitWithError = !helper.ShowJSONResponse(resp)
 		}
 
 		return

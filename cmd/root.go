@@ -16,6 +16,9 @@ var logLevel string
 var apiToken string
 var rawJSON bool
 
+// ExitWithError is a hint for the called that we want an non-zero exit code
+var ExitWithError = false
+
 var rootCmd = &cobra.Command{
 	Use:   "hassio-cli",
 	Short: "A brief description of your application",
