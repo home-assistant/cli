@@ -25,6 +25,7 @@ var addonsLogoCmd = &cobra.Command{
 
 		if err != nil {
 			fmt.Println(err)
+			ExitWithError = true
 			return
 		}
 
@@ -49,6 +50,7 @@ var addonsLogoCmd = &cobra.Command{
 
 		if err != nil {
 			fmt.Println(err)
+			ExitWithError = true
 		}
 
 		return
