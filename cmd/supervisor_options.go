@@ -47,8 +47,9 @@ var supervisorOptionsCmd = &cobra.Command{
 		resp, err := helper.GenericJSONPost(base, section, command, options)
 		if err != nil {
 			fmt.Println(err)
+			ExitWithError = true
 		} else {
-			helper.ShowJSONResponse(resp)
+			ExitWithError = !helper.ShowJSONResponse(resp)
 		}
 
 		return

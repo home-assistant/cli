@@ -25,6 +25,7 @@ var addonsUpdateCmd = &cobra.Command{
 		url, err := helper.URLHelper(base, section, command)
 		if err != nil {
 			fmt.Println(err)
+			ExitWithError = true
 			return
 		}
 
@@ -51,8 +52,9 @@ var addonsUpdateCmd = &cobra.Command{
 
 		if err != nil {
 			fmt.Println(err)
+			ExitWithError = true
 		} else {
-			helper.ShowJSONResponse(resp)
+			ExitWithError = !helper.ShowJSONResponse(resp)
 		}
 
 		return

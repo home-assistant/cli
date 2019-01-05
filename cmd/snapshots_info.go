@@ -27,6 +27,7 @@ var snapshotsInfoCmd = &cobra.Command{
 
 		if err != nil {
 			fmt.Println(err)
+			ExitWithError = true
 			return
 		}
 
@@ -53,8 +54,9 @@ var snapshotsInfoCmd = &cobra.Command{
 
 		if err != nil {
 			fmt.Println(err)
+			ExitWithError = true
 		} else {
-			helper.ShowJSONResponse(resp)
+			ExitWithError = !helper.ShowJSONResponse(resp)
 		}
 
 		return

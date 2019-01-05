@@ -46,6 +46,7 @@ var addonsChangelogCmd = &cobra.Command{
 
 		if err != nil {
 			fmt.Println(err)
+			ExitWithError = true
 		} else {
 			fmt.Println(string(resp.Body()))
 		}
