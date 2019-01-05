@@ -34,7 +34,7 @@ var infoCmd = &cobra.Command{
 			fmt.Println("Error: API did not return a JSON response")
 			return
 		}
-		helper.ShowJSONResponse(resp)
+		ExitWithError = !helper.ShowJSONResponse(resp)
 		return
 	},
 }

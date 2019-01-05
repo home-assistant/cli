@@ -28,7 +28,12 @@ var supervisorLogsCmd = &cobra.Command{
 		request := helper.GetRequest()
 		resp, err := request.SetHeader("Accept", "text/plain").Get(url)
 
-		fmt.Println(resp.String())
+		if err != nil {
+			fmt.Println(err)
+			ExitWithError = true
+		} else {
+			fmt.Println(resp.String())
+		}
 		return
 	},
 }

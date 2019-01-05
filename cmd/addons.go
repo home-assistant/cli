@@ -22,8 +22,9 @@ var addonsCmd = &cobra.Command{
 		resp, err := helper.GenericJSONGet(base, section, command)
 		if err != nil {
 			fmt.Println(err)
+			ExitWithError = true
 		} else {
-			helper.ShowJSONResponse(resp)
+			ExitWithError = !helper.ShowJSONResponse(resp)
 		}
 		return
 	},

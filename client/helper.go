@@ -101,8 +101,10 @@ func GetRequest() *resty.Request {
 }
 
 // ShowJSONResponse formats a JSON response for human readers
-func ShowJSONResponse(resp *resty.Response) {
+func ShowJSONResponse(resp *resty.Response) (success bool) {
 	if RawJSON {
+		// when we are returning raw JSON, all handling is for the consumer of the JSON
+		success = true
 		body := resp.RawBody()
 		defer body.Close()
 		if b, err := ioutil.ReadAll(body); err == nil {
@@ -117,6 +119,7 @@ func ShowJSONResponse(resp *resty.Response) {
 		data = resp.Error().(*Response)
 	}
 	if data.Result == "ok" {
+		success = true
 		if len(data.Data) == 0 {
 			fmt.Println("ok")
 		} else {
@@ -135,4 +138,5 @@ func ShowJSONResponse(resp *resty.Response) {
 		}
 		fmt.Print(string(d))
 	}
+	return
 }
