@@ -1,10 +1,6 @@
 # Hass.io CLI
 
-<p align="center">
-<a href="https://travis-ci.org/home-assistant/hassio-cli">
-        <img src="https://travis-ci.org/home-assistant/hassio-cli.svg?branch=master"
-            alt="build status"></a>
-</p>
+[![Build Status](https://travis-ci.org/home-assistant/hassio-cli.svg?branch=master)](https://travis-ci.org/home-assistant/hassio-cli)
 
 ## Description
 
@@ -17,25 +13,34 @@ Commandline interface to facilitate interaction with Hass.io server
 
 E.g.:
 
-- `hassio homeassistant info --rawjson`
+- `hassio homeassistant info --raw-json`
 
 ### Modifiers
 
 #### Global
 
-- --debug,-d -> Enables debug output
+- --log-level debug -> will set the log level to debug
+- --api-token string   Hass.io API token
+- --config string      config file (default is $HOME/.homeassistant.yaml)
+- --endpoint string    Endpoint for Hass.io Supervisor ( default is 'hassio' )
+- --log-level string   Log level, defaults to Warn
+- --raw-json           Output raw JSON from the API
+
+all options are also available as `HASSIO_` prefixed environment variables like `HASSIO_LOG_LEVEL`
 
 #### SubCommand
 
-- --rawjson,-j -> Will return the data in JSON format on a 
-                    single line (useful for passing to other 
-                    programs to parse / utilise)
-- --options,-o -> Used to send commands to Hass.io `hassio homeassistant update --options version=0.60`
-- --filter,-f  -> Used to filter the data returned from Hass.io so only the specified properties are output
+Available Commands:
 
-*Note:* Modifer order is important.
-
-`hassio <GlobalModifier> <SubCommand> <Action> <SubCommandModifier>`
+- addons
+- completion    Generates bash completion scripts
+- hardware
+- hassos
+- homeassistant
+- host
+- info
+- snapshots
+- supervisor
 
 ## Install
 
@@ -58,5 +63,4 @@ To install, use `go get`:
 ```bash
 go test ./...
 gox -osarch="linux/arm" -ldflags="-s -w" -output="hassio"
-upx --brute hassio
 ```
