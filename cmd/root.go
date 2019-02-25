@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"os"
+	"path"
 	"strings"
 
 	"github.com/home-assistant/hassio-cli/client"
@@ -20,7 +22,7 @@ var rawJSON bool
 var ExitWithError = false
 
 var rootCmd = &cobra.Command{
-	Use:   "hassio-cli",
+	Use:   path.Base(os.Args[0]),
 	Short: "A brief description of your application",
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 
