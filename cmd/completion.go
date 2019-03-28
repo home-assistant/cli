@@ -16,7 +16,7 @@ var completionCmd = &cobra.Command{
 
 To configure your bash shell to load completions for each session add to your bashrc
 
-# ~/.bashrc or ~/.profile
+# ~/.bashrc , ~/.profile or ~/.zshrc
 . <(hassio-cli completion)
 `,
 	Run: func(cmd *cobra.Command, args []string) {
