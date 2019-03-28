@@ -5,11 +5,12 @@ matrix:
   include:
   - go: '1.10'
   - go: '1.11'
-  - go: '1.11'
+  - go: '1.12'
+  - go: '1.12'
     env: LINTER
     install: go get -u golang.org/x/lint/golint
     script: golint -set_exit_status ./...
-  - go: '1.11'
+  - go: '1.12'
     env: DEPLOYMENT
     addons:
       apt:
