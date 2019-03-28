@@ -7,7 +7,7 @@ matrix:
   - go: '1.11'
   - go: '1.11'
     env: LINTER
-    install: go get -u github.com/golang/lint/golint
+    install: go get -u golang.org/x/lint/golint
     script: golint -set_exit_status ./...
   - go: '1.11'
     env: DEPLOYMENT
