@@ -83,7 +83,7 @@ func initConfig() {
 	// bind to current API token ENV variable
 	viper.BindEnv("api-token", "HASSIO_TOKEN")
 
-	// set loglevel if posible
+	// set loglevel if possible
 	logLevel, err := log.ParseLevel(viper.GetString("log-level"))
 
 	if err == nil {
