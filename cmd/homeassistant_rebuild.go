@@ -11,7 +11,7 @@ import (
 
 var homeassistantRebuildCmd = &cobra.Command{
 	Use:     "rebuild",
-	Aliases: []string{"re"},
+	Aliases: []string{"reb"},
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("homeassistant rebuild")
 
