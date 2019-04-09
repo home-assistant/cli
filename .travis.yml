@@ -1,17 +1,20 @@
 language: go
+env:
+ - GO111MODULE=on
 go_import_path: github.com/home-assistant/hassio-cli
 matrix:
   fast_finish: true
   include:
-  - go: '1.10'
   - go: '1.11'
   - go: '1.12'
   - go: '1.12'
-    env: LINTER
+    name: Linter
     install: go get -u golang.org/x/lint/golint
     script: golint -set_exit_status ./...
   - go: '1.12'
-    env: DEPLOYMENT
+    name: Deployment
+    env:
+     - GO111MODULE=on
     addons:
       apt:
         packages:
