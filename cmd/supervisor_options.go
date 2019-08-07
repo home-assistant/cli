@@ -38,9 +38,9 @@ var supervisorOptionsCmd = &cobra.Command{
 			options["debug"] = debug
 		}
 
-		debug_block, err := cmd.Flags().GetBool("debug_block")
-		if err == nil && cmd.Flags().Changed("debug_block") {
-			options["debug_block"] = debug_block
+		debugBlock, err := cmd.Flags().GetBool("debug-block")
+		if err == nil && cmd.Flags().Changed("debug-block") {
+			options["debug_block"] = debugBlock
 		}
 
 		waitboot, err := cmd.Flags().GetInt("wait-boot")
@@ -74,7 +74,7 @@ func init() {
 	supervisorOptionsCmd.Flags().StringP("logging", "l", "", "Logging: debug|info|warning|error|critical")
 	supervisorOptionsCmd.Flags().IntP("wait-boot", "w", 0, "Seconds to wait after boot")
 	supervisorOptionsCmd.Flags().BoolP("debug", "", false, "Enable debug Modus")
-	supervisorOptionsCmd.Flags().BoolP("debug_block", "", false, "Enable debug Modus with blocking startup")
+	supervisorOptionsCmd.Flags().BoolP("debug-block", "", false, "Enable debug Modus with blocking startup")
 	supervisorOptionsCmd.Flags().StringArrayP("repositories", "r", []string{}, "repositories to track, can be supplied multiple times")
 	supervisorCmd.AddCommand(supervisorOptionsCmd)
 }
