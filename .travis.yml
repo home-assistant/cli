@@ -13,8 +13,6 @@ matrix:
     script: golint -set_exit_status ./...
   - go: '1.12'
     name: Deployment
-    env:
-     - GO111MODULE=on
     before_deploy:
     - CGO_ENABLED=0 GOARCH=386 go build -ldflags="-s -w" -o "hassio_i386"
     - CGO_ENABLED=0 GOARCH=amd64 go build -ldflags="-s -w" -o "hassio_amd64"
