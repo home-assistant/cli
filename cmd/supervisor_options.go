@@ -51,7 +51,7 @@ var supervisorOptionsCmd = &cobra.Command{
 		repos, err := cmd.Flags().GetStringArray("repositories")
 		log.WithField("repositories", repos).Debug("repos")
 
-		if len(repos) >= 0 && err == nil {
+		if len(repos) >= 1 && err == nil {
 			options["addons_repositories"] = repos
 		}
 
