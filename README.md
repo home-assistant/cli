@@ -48,6 +48,20 @@ To install, use `go get`:
 
 `go get -d github.com/home-assistant/hassio-cli`
 
+If running on hassio host just run `hassio-cli`, but if on a remote host you'll need to specify token and endpoint:
+
+```
+hassio-cli --endpoint $HASS_SERVER/api/hassio --api-token $HASS_TOKEN <cmd>
+```
+
+or if you prefer to use environment variables to avoid repetition:
+
+```
+export HASSIO_ENDPOINT=https://hassio.local:8123/api/hassio
+export HASSIO_API_TOKEN=longandsafesecret
+hassio-cli 
+```
+
 ## Contribution
 
 1. Fork ([https://github.com/home-assistant/hassio-cli/fork](https://github.com/home-assistant/hassio-cli/fork))
