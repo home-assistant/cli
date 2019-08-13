@@ -14,7 +14,15 @@ import (
 
 var addonsStatsCmd = &cobra.Command{
 	Use:     "stats [slug]",
-	Aliases: []string{"in"},
+	Aliases: []string{"status", "stat"},
+	Short:   "Provides system usage stats of an Hass.io add-on",
+	Long: `
+Provides insight into the system usage stats of an add-on. It shows you
+how much CPU, memory, disk & network resources it uses.
+`,
+	Example: `
+  hassio addons stats core_ssh
+`,
 	Args:    cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("addons stats")

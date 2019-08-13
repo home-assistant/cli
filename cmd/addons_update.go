@@ -15,6 +15,15 @@ import (
 var addonsUpdateCmd = &cobra.Command{
 	Use:  "update [slug]",
 	Args: cobra.ExactArgs(1),
+	Aliases: []string{"upgrade", "up"},
+	Short:   "Upgrades an Hass.io add-on to the latest version",
+	Long: `
+Using this command you can upgrade an Hass.io add-on to its latest version.
+It is currently not possible to upgrade/downgrade to a specific version.
+`,
+	Example: `
+  hassio addons update core_ssh
+`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("addons update")
 

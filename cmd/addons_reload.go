@@ -11,7 +11,17 @@ import (
 
 var addonsReloadCmd = &cobra.Command{
 	Use:     "reload",
-	Aliases: []string{"re"},
+	Aliases: []string{"refresh", "re"},
+	Short:   "Reloads/Refreshes the Hass.io add-on store",
+	Long: `
+This commands allows you to force a reload/refresh of the Hass.io add-on store.
+Using this, you can force the download of the most recent version information
+of an add-on. This might be helpful when you know a new version of an add-on
+is released, but not yet available as an upgrade on your Hass.io dashboard.
+`,
+	Example: `
+  hassio addons reload
+`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("addons reload")
 

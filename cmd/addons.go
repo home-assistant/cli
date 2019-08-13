@@ -11,7 +11,16 @@ import (
 
 var addonsCmd = &cobra.Command{
 	Use:     "addons",
-	Aliases: []string{"ad"},
+	Aliases: []string{"addon", "add-on", "add-ons", "ad"},
+	Short: "Install, update, remove and configure Hass.io add-ons",
+	Long: `
+The addons command allows you to manage Hass.io add-ons by exposing commands
+for installing, removing, configure and control them. It also provides
+information commands for add-ons.`,
+	Example: `
+  hassio addons logs core_ssh
+  hassio addons install core_ssh
+  hassio addons start core_ssh`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("addons")
 

@@ -15,6 +15,14 @@ import (
 var addonsRestartCmd = &cobra.Command{
 	Use:  "restart [slug]",
 	Args: cobra.ExactArgs(1),
+	Aliases: []string{"reboot"},
+	Short:   "Restarts an Hass.io add-on",
+	Long: `
+Restart an Hass.io add-on
+`,
+	Example: `
+  hassio addons restart core_ssh
+`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("addons restart")
 

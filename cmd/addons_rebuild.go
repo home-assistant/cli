@@ -14,6 +14,17 @@ import (
 
 var addonsRebuildCmd = &cobra.Command{
 	Use:  "rebuild [slug]",
+	Aliases: []string{"rb", "reinstall"},
+	Short:   "Rebuild a locally build Hass.io add-on",
+	Long: `
+Most add-ons provide pre-build images Hass.io can download an use. However,
+some don't. This is usually the case for local or development version of
+add-ons. This command allows you to trigger a rebuild of a locally build
+add-on.
+`,
+	Example: `
+  hassio addons rebuild local_my_addon
+`,
 	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("addons rebuild")
