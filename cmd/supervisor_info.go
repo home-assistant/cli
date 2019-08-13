@@ -11,7 +11,13 @@ import (
 
 var supervisorInfoCmd = &cobra.Command{
 	Use:     "info",
-	Aliases: []string{"in"},
+	Aliases: []string{"in", "inf"},
+	Short:   "Provides information about the running Supervisor",
+	Long: `
+This command provides you a ton of information about everything the
+Supervisor currently knows.`,
+	Example: `
+  hassio supervisor info`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("supervisor info")
 
