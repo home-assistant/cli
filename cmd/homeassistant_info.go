@@ -11,7 +11,13 @@ import (
 
 var homeassistantInfoCmd = &cobra.Command{
 	Use:     "info",
-	Aliases: []string{"in"},
+	Aliases: []string{"in", "inf"},
+	Short:   "Provides about Home Assistant",
+	Long: `
+This command provides information about the running Home Assistant instance
+running on your Hass.io system.`,
+	Example: `
+  hassio homeassistant info`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("homeassistant info")
 

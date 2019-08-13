@@ -12,7 +12,14 @@ import (
 
 var addonsChangelogCmd = &cobra.Command{
 	Use:     "changelog [slug]",
-	Aliases: []string{"in"},
+	Aliases: []string{"cl", "ch"},
+	Short:   "Show changelog of an Hass.io add-on",
+	Long: `
+This command shows the changelog of an add-on. It gives you what has been
+changed in the latest version and tell you about possible breaking changes.`,
+	Example: `
+hassio addons changelog core_ssh
+hassio addons changelog core_mosquitto`,
 	Args:    cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("addons changelog")

@@ -11,7 +11,13 @@ import (
 
 var hostOptionsCmd = &cobra.Command{
 	Use:     "options",
-	Aliases: []string{"op"},
+	Aliases: []string{"option", "opt", "opts", "op"},
+	Short:   "Allow to set options on host system",
+	Long: `
+This command allows you to set configuration options on the host system that 
+your Hass.io is running on.`,
+	Example: `
+  hassio host options --hostname homeassistant.local`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("host options")
 

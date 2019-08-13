@@ -11,7 +11,15 @@ import (
 
 var dnsStatsCmd = &cobra.Command{
 	Use:     "stats",
-	Aliases: []string{"st"},
+	Aliases: []string{"status", "stat"},
+	Short:   "Provides system usage stats of the Hass.io DNS server",
+	Long: `
+Provides insight into the system usage stats of the Hass.io DNS server.
+It shows you how much CPU, memory, disk & network resources it uses.
+`,
+	Example: `
+  hassio dns stats
+`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("dns stats")
 

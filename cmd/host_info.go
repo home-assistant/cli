@@ -11,7 +11,12 @@ import (
 
 var hostInfoCmd = &cobra.Command{
 	Use:     "info",
-	Aliases: []string{"in"},
+	Aliases: []string{"in", "inf"},
+	Short:   "Provides information on the host system",
+	Long: `
+This command provides information on the host system Hass.io is running on`,
+	Example: `
+  hassio host info`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("host info")
 

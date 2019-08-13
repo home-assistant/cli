@@ -11,7 +11,14 @@ import (
 
 var hostReloadCmd = &cobra.Command{
 	Use:     "reload",
-	Aliases: []string{"re"},
+	Aliases: []string{"update", "refresh", "re"},
+	Short:   "Reload information from the host machine",
+	Long: `
+This commands reload the information Hass.io has on the hostmachine.
+If some setting are changed outside of Hass.io, this commands updates the
+internals of Hass.io.`,
+	Example: `
+  hassio host reload`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("host reload")
 

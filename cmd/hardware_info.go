@@ -11,7 +11,15 @@ import (
 
 var hardwareInfoCmd = &cobra.Command{
 	Use:     "info",
-	Aliases: []string{"in"},
+	Aliases: []string{"in", "inf"},
+	Short:   "Provides hardware information about your system",
+	Long: `
+The hardware command provides information about the hardware of your system
+that is running Hass.io. It is useful for finding things like: available 
+serial ports.`,
+	Example: `
+  hassio hardware info`,
+
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("hardware info")
 

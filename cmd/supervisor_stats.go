@@ -11,7 +11,13 @@ import (
 
 var supervisorStatsCmd = &cobra.Command{
 	Use:     "stats",
-	Aliases: []string{"st"},
+	Aliases: []string{"status", "stat", "st"},
+	Short:   "Provides system usage stats of the Hass.io Supervisor",
+	Long: `
+Provides insight into the system usage stats of the Hass.io Supervisor.
+It shows you how much CPU, memory, disk & network resources it uses.`,
+	Example: `
+  hassio supervisor stats`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("supervisor stats")
 

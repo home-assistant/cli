@@ -23,7 +23,10 @@ var ExitWithError = false
 
 var rootCmd = &cobra.Command{
 	Use:   path.Base(os.Args[0]),
-	Short: "A brief description of your application",
+	Short: "A small CLI program to control Hass.io",
+	Long: `
+The Hass.io CLI is a small and simple command line utility that allows you to
+control and configure different aspects of Hass.io`,
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 
 		// set loglevel if posible
@@ -57,9 +60,9 @@ func init() {
 
 	cobra.OnInitialize(initConfig)
 
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.homeassistant.yaml)")
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "Optional config file (default is $HOME/.homeassistant.yaml)")
 	rootCmd.PersistentFlags().StringVar(&endPoint, "endpoint", "", "Endpoint for Hass.io Supervisor ( default is 'hassio' )")
-	rootCmd.PersistentFlags().StringVar(&logLevel, "log-level", "", "Log level defaults to Warn")
+	rootCmd.PersistentFlags().StringVar(&logLevel, "log-level", "", "Log level (defaults to Warn)")
 	rootCmd.PersistentFlags().StringVar(&apiToken, "api-token", "", "Hass.io API token")
 	rootCmd.PersistentFlags().BoolVar(&rawJSON, "raw-json", false, "Output raw JSON from the API")
 

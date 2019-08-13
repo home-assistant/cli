@@ -11,7 +11,12 @@ import (
 
 var hostRebootCmd = &cobra.Command{
 	Use:     "reboot",
-	Aliases: []string{"rb"},
+	Aliases: []string{"restart", "rb"},
+	Short:   "Reboots the host machine",
+	Long: `
+Reboot the machine that your Hass.io is running on.`,
+	Example: `
+  hassio host reboot`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("host reboot")
 

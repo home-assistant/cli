@@ -10,6 +10,7 @@ import (
 var completionCmd = &cobra.Command{
 	Use:   "completion",
 	Short: "Generates bash/zsh completion scripts",
+	Hidden: true,
 	Long: `To load completion run
 
 For Bash: . <(hassio-cli completion)

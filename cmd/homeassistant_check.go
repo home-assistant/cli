@@ -11,7 +11,15 @@ import (
 
 var homeassistantCheckCmd = &cobra.Command{
 	Use:     "check",
-	Aliases: []string{"ch"},
+	Aliases: []string{"validate", "chk", "ch"},
+	Short:   "Validates your Home Assistant configuration",
+	Long: `
+This commands allows you to check/validate your, currently on disk stored,
+Home Assistant configuration. This is helpful when you've made changes and
+want to make sure the configuration is right, before restarting
+Home Assistant.`,
+	Example: `
+  hassio homeassistant check`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("homeassistant check")
 

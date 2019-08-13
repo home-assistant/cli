@@ -11,7 +11,13 @@ import (
 
 var supervisorReloadCmd = &cobra.Command{
 	Use:     "reload",
-	Aliases: []string{"re"},
+	Aliases: []string{"refresh", "re"},
+	Short:   "Reload the Hass.io Supervisor updating information",
+	Long: `
+Reloading the Hass.io Supervisor, triggers the Supervisor to regather all
+data it currently has, including checking for updates.`,
+	Example: `
+  hassio supervisor reload`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("supervisor reload")
 

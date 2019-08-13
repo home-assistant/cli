@@ -11,7 +11,14 @@ import (
 
 var supervisorUpdateCmd = &cobra.Command{
 	Use:     "update",
-	Aliases: []string{"up"},
+	Aliases: []string{"upgrade", "downgrade", "up", "down"},
+	Short:   "Updates the Hass.io Supervisor",
+	Long: `
+Using this command you can upgrade or downgrade the Hass.io Supervisor
+running on your Hass.io system to the latest version or the version specified.`,
+	Example: `
+  hassio supervisor update
+  hassio supervisor update --version 173`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("supervisor update")
 

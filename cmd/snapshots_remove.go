@@ -13,7 +13,14 @@ import (
 )
 
 var snapshotsRemoveCmd = &cobra.Command{
-	Use:  "remove [slug]",
+	Use:     "remove [slug]",
+	Aliases: []string{"delete", "del", "rem", "rm"},
+	Short:   "Deletes a snapshot backup from disk",
+	Long: `
+Snapshots can take quite a bit of diskspace, this command allows you to
+clean snapshots from disk.`,
+	Example: `
+  hassio snapshots remove c1a07617`,
 	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("snapshots remove")

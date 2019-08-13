@@ -11,7 +11,15 @@ import (
 
 var supervisorRepairCmd = &cobra.Command{
 	Use:     "repair",
-	Aliases: []string{"rep"},
+	Aliases: []string{"rep", "fix"},
+	Short:   "Repair Docker issue automatically using the Supervisor (BETA!)",
+	Long: `
+There are cases where the Docker file system running on your Hass.io system,
+encounters issue or corruptions. Running this command, the Hass.io Supervisor
+will try to resolve these.
+WARNING! This command is currently in beta.`,
+	Example: `
+  hassio supervisor repair`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("supervisor repair")
 

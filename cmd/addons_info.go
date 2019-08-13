@@ -14,7 +14,16 @@ import (
 
 var addonsInfoCmd = &cobra.Command{
 	Use:     "info [slug]",
-	Aliases: []string{"in"},
+	Aliases: []string{"in", "info"},
+	Short:   "Show information about available Hass.io add-ons",
+	Long: `
+This command can provide information on all available add-ons or, if a slug
+is provided, information about a specific add-on.
+`,
+	Example: `
+  hassio addons info
+  hassio addons info core_ssh
+`,
 	Args:    cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("addons info")

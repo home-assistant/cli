@@ -11,7 +11,13 @@ import (
 
 var supervisorOptionsCmd = &cobra.Command{
 	Use:     "options",
-	Aliases: []string{"op"},
+	Aliases: []string{"option", "opt", "opts", "op"},
+	Short:   "Allows you to set options on the Hass.io Supervisor",
+	Long: `
+This command allows you to set configuration options for on the Hass.io
+Supervisor running on your Hass.io system.`,
+	Example: `
+  hassio supervisor options --channel beta`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("supervisor options")
 

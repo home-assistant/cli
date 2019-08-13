@@ -12,6 +12,12 @@ import (
 var hostShutdownCmd = &cobra.Command{
 	Use:     "shutdown",
 	Aliases: []string{"sh"},
+	Short:   "Shutdown the host machine",
+	Long: `
+Shuts down the machine that your Hass.io is running on.
+WARNING: This is turning off the computer/device.`,
+	Example: `
+  hassio host shutdown`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("host shutdown")
 

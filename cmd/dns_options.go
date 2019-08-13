@@ -11,7 +11,15 @@ import (
 
 var dnsOptionsCmd = &cobra.Command{
 	Use:     "options",
-	Aliases: []string{"op"},
+	Aliases: []string{"option", "opt", "opts", "op"},
+	Short:   "Allow to set options for the internal Hass.io DNS server",
+	Long: `
+This command allows you to set configuration options for the internally
+running Hass.io DNS server.
+`,
+	Example: `
+  hassio dns options --servers dns://8.8.8.8 --servers dns://1.1.1.1
+`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("dns options")
 

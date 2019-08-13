@@ -10,7 +10,17 @@ import (
 )
 
 var snapshotsNewCmd = &cobra.Command{
-	Use: "new",
+	Use:     "new",
+	Aliases: []string{"create", "backup"},
+	Short:   "Create a new Hass.io snapshot backup",
+	Long: `
+This command can be used to trigger the creation of a new Hass.io snapshot
+containing a backup of your Hass.io system.`,
+	Example: `
+  hassio snapshots new
+  hassio snapshots new --addons core_ssh --addons core_mosquitto
+  hassio snapshots new --folders config
+`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("snapshots new")
 

@@ -11,7 +11,12 @@ import (
 
 var hardwareAudioCmd = &cobra.Command{
 	Use:     "audio",
-	Aliases: []string{"au"},
+	Aliases: []string{"sounds", "snd", "au"},
+	Short:   "Provides information about audio devices on your system",
+	Long: `
+The command provides information about audio devices available on your system.`,
+	Example: `
+  hassio hardware audio`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("hardware info")
 

@@ -14,7 +14,13 @@ import (
 
 var snapshotsInfoCmd = &cobra.Command{
 	Use:     "info [slug]",
-	Aliases: []string{"in"},
+	Aliases: []string{"in", "inf"},
+	Short:   "Provides information about the current available snapshosts",
+	Long: `
+When a hass.io snapshot is created, it will be available for restore.
+This command gives you information about a specific snapshot.`,
+	Example: `
+  hassio snapshots info c1a07617`,
 	Args:    cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("snapshots info")

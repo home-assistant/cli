@@ -15,6 +15,14 @@ import (
 var addonsStartCmd = &cobra.Command{
 	Use:  "start [slug]",
 	Args: cobra.ExactArgs(1),
+	Aliases: []string{"run", "st"},
+	Short:   "Manually start a stopped Hass.io add-on",
+	Long: `
+This command allows you to manually start a stopped Hass.io add-on
+`,
+	Example: `
+  hassio addons start core_ssh
+`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("addons start")
 
