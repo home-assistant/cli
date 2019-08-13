@@ -1,0 +1,16 @@
+{
+	"name": "Hass.io CLI",
+	"dockerFile": "Dockerfile",
+	"runArgs": [
+		"--cap-add=SYS_PTRACE",
+		"--security-opt", "seccomp=unconfined"
+	],
+	"postCreateCommand": "go version",
+	"extensions": [
+		"ms-vscode.go"
+	],
+	"settings": {
+		"go.gopath": "/go",
+		"go.useLanguageServer": true
+	}
+}
