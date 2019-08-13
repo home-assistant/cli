@@ -38,3 +38,6 @@ RUN \
     && apt-get autoremove -y \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
+
+# Restore interactive
+ENV DEBIAN_FRONTEND=interactive
