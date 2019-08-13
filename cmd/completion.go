@@ -9,21 +9,32 @@ import (
 // completionCmd represents the completion command
 var completionCmd = &cobra.Command{
 	Use:   "completion",
-	Short: "Generates bash completion scripts",
+	Short: "Generates bash/zsh completion scripts",
 	Long: `To load completion run
 
-. <(hassio-cli completion)
+For Bash: . <(hassio-cli completion)
+For ZSH: . <(hassio-cli completion --zsh)
 
 To configure your bash shell to load completions for each session add to your bashrc
 
-# ~/.bashrc , ~/.profile or ~/.zshrc
+# ~/.bashrc , ~/.profile
 . <(hassio-cli completion)
+
+# ~/.zshrc
+. <(hassio-cli completion --zsh)
 `,
 	Run: func(cmd *cobra.Command, args []string) {
-		rootCmd.GenBashCompletion(os.Stdout)
+
+		_, err := cmd.Flags().GetBool("zsh")
+		if err == nil && cmd.Flags().Changed("zsh") {
+			rootCmd.GenZshCompletion(os.Stdout)
+		} else {
+			rootCmd.GenBashCompletion(os.Stdout)
+		}
 	},
 }
 
 func init() {
+	completionCmd.Flags().Bool("zsh", false, "Generate ZSH completion script")
 	rootCmd.AddCommand(completionCmd)
 }
