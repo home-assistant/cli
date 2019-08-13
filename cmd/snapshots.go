@@ -11,7 +11,14 @@ import (
 
 var snapshotsCmd = &cobra.Command{
 	Use:     "snapshots",
-	Aliases: []string{"sn"},
+	Aliases: []string{"snapshot", "snap", "shot", "sn"},
+	Short:   "Create, restore and remove snapshot backups",
+	Long: `
+Snapshots are backups of your Hass.io system, which you can create, restore,
+and delete using this command.`,
+	Example: `
+  hassio snapshots
+  hassio snapshots new`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("snapshots")
 

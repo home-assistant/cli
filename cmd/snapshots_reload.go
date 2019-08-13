@@ -11,7 +11,14 @@ import (
 
 var snapshotsReloadCmd = &cobra.Command{
 	Use:     "reload",
-	Aliases: []string{"re"},
+	Aliases: []string{"refresh", "re"},
+	Short:   "Reload the files on disk to check for new or removed snapshots",
+	Long: `
+If a snapshot has been manually placed inside the backup folder, or has been
+removed manually, this command can trigger Hass.io to re-read the files on
+disk`,
+	Example: `
+  hassio snapshots reload`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("snapshots reload")
 

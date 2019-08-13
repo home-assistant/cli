@@ -13,7 +13,15 @@ import (
 )
 
 var snapshotsRestoreCmd = &cobra.Command{
-	Use:  "restore [slug]",
+	Use:     "restore [slug]",
+	Short:   "Restores a Hass.io snapshot backup",
+	Long: `
+When something goes wrong, this command allows you to restore an previously
+take Hass.io snapshot backup on your system.`,
+	Example: `
+  hassio snapshots restore c1a07617
+  hassio snapshots restore c1a07617 --addons core_ssh --addon core_mosquitto
+  hassio snapshots restore c1a07617 --folders config`,
 	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("snapshots restore")
