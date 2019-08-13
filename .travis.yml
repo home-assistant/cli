@@ -5,7 +5,6 @@ go_import_path: github.com/home-assistant/hassio-cli
 matrix:
   fast_finish: true
   include:
-  - go: '1.11'
   - go: '1.12'
   - go: '1.12'
     name: Linter
