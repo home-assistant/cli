@@ -11,7 +11,15 @@ import (
 
 var dnsUpdateCmd = &cobra.Command{
 	Use:     "update",
-	Aliases: []string{"up"},
+	Aliases: []string{"upgrade", "downgrade", "up", "down"},
+	Short:   "Updates the internal Hass.io DNS server",
+	Long: `
+Using this command you can upgrade or downgrade the interal Hass.io DNS server,
+to the latest version or the version specified.
+`,
+	Example: `
+  hassio dns update --version 5
+`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("dns update")
 

@@ -11,7 +11,14 @@ import (
 
 var dnsInfoCmd = &cobra.Command{
 	Use:     "info",
-	Aliases: []string{"in"},
+	Aliases: []string{"in", "inf"},
+	Short:   "Shows information about the internal Hass.io DNS server",
+	Long: `
+Shows information about the internally running Hass.io DNS server
+`,
+	Example: `
+  hassio dns info
+`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("dns info")
 
