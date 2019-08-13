@@ -11,7 +11,15 @@ import (
 
 var hassosImportCmd = &cobra.Command{
 	Use:     "import",
-	Aliases: []string{"im", "sync"},
+	Aliases: []string{"im", "sync", "load"},
+	Short:   "Import configurations from an USB-stick",
+	Long: `
+This commands triggers an import action from a connected USB-stick with
+configuration to load for HassOS.
+`,
+	Example: `
+  hassio hassos import
+`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("hassos import")
 

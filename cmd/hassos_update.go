@@ -11,7 +11,16 @@ import (
 
 var hassosUpdateCmd = &cobra.Command{
 	Use:     "update",
-	Aliases: []string{"up"},
+	Aliases: []string{"upgrade", "downgrade", "up", "down"},
+	Short:   "Updates the HassOS operating system",
+	Long: `
+Using this command you can upgrade or downgrade the HassOS operating system
+to the latest version or the version specified.
+`,
+	Example: `
+  hassio hassos update
+  hassio hassos update --version 5
+`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("hassos update")
 

@@ -11,7 +11,14 @@ import (
 
 var hassosInfoCmd = &cobra.Command{
 	Use:     "info",
-	Aliases: []string{"in"},
+	Aliases: []string{"in", "inf"},
+	Short:   "Provides information about the running HassOS",
+	Long: `
+This command provides general information about the running HassOS system.
+`,
+	Example: `
+  hassio hassos info
+`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("hassos info")
 
