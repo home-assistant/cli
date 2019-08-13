@@ -12,6 +12,12 @@ import (
 var homeassistantStopCmd = &cobra.Command{
 	Use:     "stop",
 	Aliases: []string{},
+	Short:   "Manually stop Home Assistant",
+	Long: `
+This command allows you to manually stop the Home Assistant instance on your
+Hass.io system.`,
+	Example: `
+  hassio homeassistant stop`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("homeassistant stop")
 

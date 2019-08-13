@@ -11,7 +11,12 @@ import (
 
 var homeassistantRestartCmd = &cobra.Command{
 	Use:     "restart",
-	Aliases: []string{"re"},
+	Aliases: []string{"reboot"},
+	Short:   "Restarts Home Assistant",
+	Long: `
+Restart the Home Assistant instance running on your Hass.io system`,
+	Example: `
+  hassio homeassistant restart`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("homeassistant restart")
 

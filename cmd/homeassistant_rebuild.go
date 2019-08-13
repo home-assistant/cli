@@ -11,7 +11,13 @@ import (
 
 var homeassistantRebuildCmd = &cobra.Command{
 	Use:     "rebuild",
-	Aliases: []string{"reb"},
+	Aliases: []string{"rb", "reinstall"},
+	Short:   "Rebuild the Home Assistant instance",
+	Long: `
+This command allows you to trigger a rebuild for your Home Assistant instance
+running on your Hass.io system. Don't worry, this does not delete your config.`,
+	Example: `
+  hassio homeassistant rebuild`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("homeassistant rebuild")
 

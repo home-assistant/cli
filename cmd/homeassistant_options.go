@@ -11,7 +11,13 @@ import (
 
 var homeassistantOptionsCmd = &cobra.Command{
 	Use:     "options",
-	Aliases: []string{"op"},
+	Aliases: []string{"option", "opt", "opts", "op"},
+	Short:   "Allow to set options on Home Assistant instance",
+	Long: `
+This command allows you to set configuration options for the Home Asssistant
+instance running on your Hass.io system.`,
+	Example: `
+  hassio homeassistant options --wait_boot 600`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("homeassistant options")
 

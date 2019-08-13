@@ -11,7 +11,14 @@ import (
 
 var homeassistantUpdateCmd = &cobra.Command{
 	Use:     "update",
-	Aliases: []string{"up"},
+	Aliases: []string{"upgrade", "downgrade", "up", "down"},
+	Short:   "Updates Home Assistant",
+	Long: `
+Using this command you can upgrade or downgrade the Home Assistant instance
+running on your Hass.io system to the latest version or the version specified.`,
+	Example: `
+  hassio homeassistant update
+  hassio homeassistant update --version 0.97.2`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("homeassistant update")
 
