@@ -56,7 +56,9 @@ containing a backup of your Hass.io system.`,
 			command = "new/partial"
 		}
 
+		ProgressSpinner.Start()
 		resp, err := helper.GenericJSONPost(base, section, command, options)
+		ProgressSpinner.Stop()
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true

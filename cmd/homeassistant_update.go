@@ -33,7 +33,9 @@ running on your Hass.io system to the latest version or the version specified.`,
 			options = map[string]interface{}{"version": version}
 		}
 
+		ProgressSpinner.Start()
 		resp, err := helper.GenericJSONPost(base, section, command, options)
+		ProgressSpinner.Stop()
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true

@@ -4,12 +4,15 @@ import (
 	"os"
 	"path"
 	"strings"
+	"time"
+	"io/ioutil"
 
 	"github.com/home-assistant/hassio-cli/client"
 	homedir "github.com/mitchellh/go-homedir"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"github.com/briandowns/spinner"
 )
 
 var cfgFile string
@@ -20,6 +23,9 @@ var rawJSON bool
 
 // ExitWithError is a hint for the called that we want an non-zero exit code
 var ExitWithError = false
+
+// ProgressSpinner is a general spinner that can be used across the CLI
+var ProgressSpinner = spinner.New(spinner.CharSets[11], 100*time.Millisecond)
 
 var rootCmd = &cobra.Command{
 	Use:   path.Base(os.Args[0]),
@@ -45,8 +51,12 @@ control and configure different aspects of Hass.io`,
 			"apiToken": viper.GetString("api-token"),
 			"rawJSON":  viper.GetBool("raw-json"),
 		}).Debugln("Debug flags")
-
 	},
+	PersistentPostRun: func(cmd *cobra.Command, args []string) {
+		if (ProgressSpinner.Active()) {
+			ProgressSpinner.Stop()
+		}
+	},	
 }
 
 // Execute represents the entrypoint for when called without any subcommand
@@ -75,6 +85,17 @@ func init() {
 	viper.SetDefault("endpoint", "hassio")
 	viper.SetDefault("log-level", "warn")
 	viper.SetDefault("api-token", "")
+
+	// Configure global spinner
+	ProgressSpinner.Suffix = " Processing..."
+	ProgressSpinner.FinalMSG = "Processing... Done.\n\n"
+	ProgressSpinner.Writer = ioutil.Discard
+
+	// Only shows spinner output when not in a pipe
+	info, _ := os.Stdin.Stat()
+	if (info.Mode() & os.ModeCharDevice) == os.ModeCharDevice {
+		ProgressSpinner.Writer = os.Stderr
+	}
 }
 
 // initConfig reads in config file and ENV variables if set.

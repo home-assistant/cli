@@ -45,7 +45,9 @@ This command allows you to install a Hass.io add-on from the commandline.
 			"slug": slug,
 		})
 
+		ProgressSpinner.Start()
 		resp, err := request.Post(url)
+		ProgressSpinner.Stop()
 
 		// returns 200 OK or 400, everything else is wrong
 		if err == nil {

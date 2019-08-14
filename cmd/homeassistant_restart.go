@@ -24,7 +24,9 @@ Restart the Home Assistant instance running on your Hass.io system`,
 		command := "restart"
 		base := viper.GetString("endpoint")
 
+		ProgressSpinner.Start()
 		resp, err := helper.GenericJSONPost(base, section, command, nil)
+		ProgressSpinner.Stop()
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true

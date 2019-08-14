@@ -25,7 +25,9 @@ Hass.io system. This, of course, only applies when it has been stopped.`,
 		command := "start"
 		base := viper.GetString("endpoint")
 
+		ProgressSpinner.Start()
 		resp, err := helper.GenericJSONPost(base, section, command, nil)
+		ProgressSpinner.Stop()
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true

@@ -38,7 +38,9 @@ It is currently not possible to upgrade/downgrade to a specific version.
 			return
 		}
 
+		ProgressSpinner.Start()
 		request := helper.GetJSONRequest()
+		ProgressSpinner.Stop()
 
 		slug := args[0]
 
