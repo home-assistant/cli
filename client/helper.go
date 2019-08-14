@@ -5,11 +5,12 @@ import (
 	"io/ioutil"
 	"net/url"
 	"path"
+	"encoding/json"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
-	resty "gopkg.in/resty.v1"
-	yaml "gopkg.in/yaml.v2"
+	resty "github.com/go-resty/resty/v2"
+	yaml "github.com/ghodss/yaml"
 
 	"strings"
 )
@@ -94,7 +95,7 @@ func GetRequest() *resty.Request {
 		})
 	}
 
-	return client.R().
+	return client.R().EnableTrace().
 		SetHeader("Accept", "application/json").
 		SetHeader("X-HASSIO-KEY", apiToken).
 		SetAuthToken(apiToken)
@@ -123,7 +124,12 @@ func ShowJSONResponse(resp *resty.Response) (success bool) {
 		if len(data.Data) == 0 {
 			fmt.Println("ok")
 		} else {
-			d, err := yaml.Marshal(data.Data)
+			j, err := json.Marshal(data.Data)
+			if err != nil {
+				log.Fatalf("error: %v", err)
+			}
+
+			d, err := yaml.JSONToYAML(j)
 			if err != nil {
 				log.Fatalf("error: %v", err)
 			}
