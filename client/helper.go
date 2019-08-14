@@ -95,7 +95,7 @@ func GetRequest() *resty.Request {
 		})
 	}
 
-	return client.R().EnableTrace().
+	return client.R().
 		SetHeader("Accept", "application/json").
 		SetHeader("X-HASSIO-KEY", apiToken).
 		SetAuthToken(apiToken)
