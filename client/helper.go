@@ -122,7 +122,7 @@ func ShowJSONResponse(resp *resty.Response) (success bool) {
 	if data.Result == "ok" {
 		success = true
 		if len(data.Data) == 0 {
-			fmt.Println("ok")
+			fmt.Println("Command completed successfully.")
 		} else {
 			j, err := json.Marshal(data.Data)
 			if err != nil {

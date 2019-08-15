@@ -25,7 +25,9 @@ running on your Hass.io system. Don't worry, this does not delete your config.`,
 		command := "rebuild"
 		base := viper.GetString("endpoint")
 
+		ProgressSpinner.Start()
 		resp, err := helper.GenericJSONPost(base, section, command, nil)
+		ProgressSpinner.Stop()
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true

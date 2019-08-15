@@ -29,7 +29,10 @@ is released, but not yet available as an upgrade on your Hass.io dashboard.
 		command := "reload"
 		base := viper.GetString("endpoint")
 
+		ProgressSpinner.Start()
 		resp, err := helper.GenericJSONPost(base, section, command, nil)
+		ProgressSpinner.Stop()
+
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true

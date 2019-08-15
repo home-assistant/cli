@@ -26,8 +26,11 @@ Home Assistant.`,
 		section := "homeassistant"
 		command := "check"
 		base := viper.GetString("endpoint")
-
+		
+		ProgressSpinner.Start()
 		resp, err := helper.GenericJSONPost(base, section, command, nil)
+		ProgressSpinner.Stop()
+		
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true
