@@ -11,7 +11,7 @@ import (
 
 var snapshotsCmd = &cobra.Command{
 	Use:     "snapshots",
-	Aliases: []string{"snapshot", "snap", "shot", "sn"},
+	Aliases: []string{"snapshot", "snap", "shot", "sn", "backup", "backups", "bk"},
 	Short:   "Create, restore and remove snapshot backups",
 	Long: `
 Snapshots are backups of your Hass.io system, which you can create, restore,
