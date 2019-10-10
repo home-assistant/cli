@@ -5,7 +5,7 @@ go 1.12
 require (
 	github.com/briandowns/spinner v1.6.1
 	github.com/ghodss/yaml v1.0.0
-	github.com/go-resty/resty/v2 v2.0.0
+	github.com/go-resty/resty/v2 v2.1.0
 	github.com/konsorten/go-windows-terminal-sequences v1.0.2 // indirect
 	github.com/magiconair/properties v1.8.1 // indirect
 	github.com/mitchellh/go-homedir v1.1.0
