@@ -1,4 +1,4 @@
-// Originally created by Brian Downs
+// Package spinner Originally created by Brian Downs
 // https://github.com/briandowns/spinner
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
