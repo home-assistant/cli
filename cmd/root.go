@@ -5,15 +5,14 @@ import (
 	"path"
 	"strings"
 	"time"
-	"io/ioutil"
 
-	"github.com/briandowns/spinner"
 	"github.com/home-assistant/hassio-cli/client"
+	"github.com/home-assistant/hassio-cli/spinner"
+	homedir "github.com/mitchellh/go-homedir"
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"golang.org/x/crypto/ssh/terminal"
-	homedir "github.com/mitchellh/go-homedir"
-	log "github.com/sirupsen/logrus"
 )
 
 var cfgFile string
@@ -27,7 +26,7 @@ var noProgress bool
 var ExitWithError = false
 
 // ProgressSpinner is a general spinner that can be used across the CLI
-var ProgressSpinner = spinner.New(spinner.CharSets[11], 100*time.Millisecond)
+var ProgressSpinner = spinner.New(spinner.CharSets[0], 125*time.Millisecond)
 
 var rootCmd = &cobra.Command{
 	Use:   path.Base(os.Args[0]),
@@ -53,19 +52,19 @@ control and configure different aspects of Hass.io`,
 		}
 
 		log.WithFields(log.Fields{
-			"apiToken": viper.GetString("api-token"),
-			"cfgFile":  viper.GetString("config"),
-			"endpoint": viper.GetString("endpoint"),
-			"logLevel": viper.GetString("log-level"),
+			"apiToken":   viper.GetString("api-token"),
+			"cfgFile":    viper.GetString("config"),
+			"endpoint":   viper.GetString("endpoint"),
+			"logLevel":   viper.GetString("log-level"),
 			"noProgress": viper.GetBool("no-progress"),
-			"rawJSON":  viper.GetBool("raw-json"),
+			"rawJSON":    viper.GetBool("raw-json"),
 		}).Debugln("Debug flags")
 	},
 	PersistentPostRun: func(cmd *cobra.Command, args []string) {
-		if (ProgressSpinner.Active()) {
+		if ProgressSpinner.Active() {
 			ProgressSpinner.Stop()
 		}
-	},	
+	},
 }
 
 // Execute represents the entrypoint for when called without any subcommand
@@ -100,7 +99,6 @@ func init() {
 	// Configure global spinner
 	ProgressSpinner.Suffix = " Processing..."
 	ProgressSpinner.FinalMSG = "Processing... Done.\n\n"
-	ProgressSpinner.Writer = ioutil.Discard
 }
 
 // initConfig reads in config file and ENV variables if set.

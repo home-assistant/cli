@@ -3,11 +3,9 @@ module github.com/home-assistant/hassio-cli
 go 1.12
 
 require (
-	github.com/briandowns/spinner v1.8.0
 	github.com/ghodss/yaml v1.0.0
 	github.com/go-resty/resty/v2 v2.1.0
 	github.com/konsorten/go-windows-terminal-sequences v1.0.2 // indirect
-	github.com/magiconair/properties v1.8.1 // indirect
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/pelletier/go-toml v1.4.0 // indirect
 	github.com/sirupsen/logrus v1.4.2
