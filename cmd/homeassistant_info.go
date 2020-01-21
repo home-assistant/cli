@@ -12,7 +12,7 @@ import (
 var homeassistantInfoCmd = &cobra.Command{
 	Use:     "info",
 	Aliases: []string{"in", "inf"},
-	Short:   "Provides about Home Assistant",
+	Short:   "Provides information about Home Assistant",
 	Long: `
 This command provides information about the running Home Assistant instance
 running on your Hass.io system.`,
