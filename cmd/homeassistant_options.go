@@ -14,7 +14,7 @@ var homeassistantOptionsCmd = &cobra.Command{
 	Aliases: []string{"option", "opt", "opts", "op"},
 	Short:   "Allow to set options on Home Assistant instance",
 	Long: `
-This command allows you to set configuration options for the Home Asssistant
+This command allows you to set configuration options for the Home Assistant
 instance running on your Hass.io system.`,
 	Example: `
   hassio homeassistant options --wait_boot 600`,
