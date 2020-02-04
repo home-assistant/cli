@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	helper "github.com/home-assistant/hassio-cli/client"
+	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -12,14 +12,14 @@ import (
 var supervisorRepairCmd = &cobra.Command{
 	Use:     "repair",
 	Aliases: []string{"rep", "fix"},
-	Short:   "Repair Docker issue automatically using the Supervisor (BETA!)",
+	Short:   "Repair Docker issue automatically using the Supervisor",
 	Long: `
-There are cases where the Docker file system running on your Hass.io system,
-encounters issue or corruptions. Running this command, the Hass.io Supervisor
-will try to resolve these.
-WARNING! This command is currently in beta.`,
+There are cases where the Docker file system running on your Home Assistant
+system, encounters issue or corruptions. Running this command,
+the Home Assistant Supervisor will try to resolve these.
+`,
 	Example: `
-  hassio supervisor repair`,
+  ha supervisor repair`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("supervisor repair")
 

@@ -5,23 +5,23 @@ import (
 	"fmt"
 	"net/http"
 
-	helper "github.com/home-assistant/hassio-cli/client"
+	resty "github.com/go-resty/resty/v2"
+	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	resty "github.com/go-resty/resty/v2"
 )
 
 var snapshotsRestoreCmd = &cobra.Command{
-	Use:     "restore [slug]",
-	Short:   "Restores a Hass.io snapshot backup",
+	Use:   "restore [slug]",
+	Short: "Restores a Home Assistant snapshot backup",
 	Long: `
 When something goes wrong, this command allows you to restore an previously
-take Hass.io snapshot backup on your system.`,
+take Home Assistant snapshot backup on your system.`,
 	Example: `
-  hassio snapshots restore c1a07617
-  hassio snapshots restore c1a07617 --addons core_ssh --addon core_mosquitto
-  hassio snapshots restore c1a07617 --folders config`,
+  ha snapshots restore c1a07617
+  ha snapshots restore c1a07617 --addons core_ssh --addon core_mosquitto
+  ha snapshots restore c1a07617 --folders config`,
 	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("snapshots restore")

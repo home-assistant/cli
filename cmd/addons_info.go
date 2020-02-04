@@ -5,26 +5,26 @@ import (
 	"fmt"
 	"net/http"
 
-	helper "github.com/home-assistant/hassio-cli/client"
+	resty "github.com/go-resty/resty/v2"
+	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	resty "github.com/go-resty/resty/v2"
 )
 
 var addonsInfoCmd = &cobra.Command{
 	Use:     "info [slug]",
 	Aliases: []string{"in", "info"},
-	Short:   "Show information about available Hass.io add-ons",
+	Short:   "Show information about available Home Assistant add-ons",
 	Long: `
 This command can provide information on all available add-ons or, if a slug
 is provided, information about a specific add-on.
 `,
 	Example: `
-  hassio addons info
-  hassio addons info core_ssh
+  ha addons info
+  ha addons info core_ssh
 `,
-	Args:    cobra.ExactArgs(1),
+	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("addons info")
 

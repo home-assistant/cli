@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	helper "github.com/home-assistant/hassio-cli/client"
+	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -15,10 +15,10 @@ var snapshotsReloadCmd = &cobra.Command{
 	Short:   "Reload the files on disk to check for new or removed snapshots",
 	Long: `
 If a snapshot has been manually placed inside the backup folder, or has been
-removed manually, this command can trigger Hass.io to re-read the files on
-disk`,
+removed manually, this command can trigger Home Assistant to re-read the files
+on disk`,
 	Example: `
-  hassio snapshots reload`,
+  ha snapshots reload`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("snapshots reload")
 

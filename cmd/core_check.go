@@ -3,34 +3,34 @@ package cmd
 import (
 	"fmt"
 
-	helper "github.com/home-assistant/hassio-cli/client"
+	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
-var homeassistantCheckCmd = &cobra.Command{
+var coreCheckCmd = &cobra.Command{
 	Use:     "check",
 	Aliases: []string{"validate", "chk", "ch"},
-	Short:   "Validates your Home Assistant configuration",
+	Short:   "Validates your Home Assistant Core configuration",
 	Long: `
 This commands allows you to check/validate your, currently on disk stored,
-Home Assistant configuration. This is helpful when you've made changes and
+Home Assistant Core configuration. This is helpful when you've made changes and
 want to make sure the configuration is right, before restarting
-Home Assistant.`,
+Home Assistant Core.`,
 	Example: `
-  hassio homeassistant check`,
+  ha core check`,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("homeassistant check")
+		log.WithField("args", args).Debug("core check")
 
 		section := "homeassistant"
 		command := "check"
 		base := viper.GetString("endpoint")
-		
+
 		ProgressSpinner.Start()
 		resp, err := helper.GenericJSONPost(base, section, command, nil)
 		ProgressSpinner.Stop()
-		
+
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true
@@ -43,5 +43,5 @@ Home Assistant.`,
 }
 
 func init() {
-	homeassistantCmd.AddCommand(homeassistantCheckCmd)
+	coreCmd.AddCommand(coreCheckCmd)
 }

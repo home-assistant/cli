@@ -3,23 +3,23 @@ package cmd
 import (
 	"fmt"
 
-	helper "github.com/home-assistant/hassio-cli/client"
+	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
-var homeassistantOptionsCmd = &cobra.Command{
+var coreOptionsCmd = &cobra.Command{
 	Use:     "options",
 	Aliases: []string{"option", "opt", "opts", "op"},
-	Short:   "Allow to set options on Home Assistant instance",
+	Short:   "Allow to set options on Home Assistant Core instance",
 	Long: `
-This command allows you to set configuration options for the Home Assistant
-instance running on your Hass.io system.`,
+This command allows you to set configuration options for the Home Assistant Core
+instance running on your Home Assistant system.`,
 	Example: `
-  hassio homeassistant options --wait_boot 600`,
+  ha core options --wait_boot 600`,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("homeassistant options")
+		log.WithField("args", args).Debug("core options")
 
 		section := "homeassistant"
 		command := "options"
@@ -72,13 +72,13 @@ instance running on your Hass.io system.`,
 }
 
 func init() {
-	homeassistantOptionsCmd.Flags().String("image", "", "Optional image")
-	homeassistantOptionsCmd.Flags().String("last_version", "", "Optional for custom image")
-	homeassistantOptionsCmd.Flags().Int("port", 8123, "Port for access Hass.io")
-	homeassistantOptionsCmd.Flags().Bool("ssl", false, "Use SSL")
-	homeassistantOptionsCmd.Flags().String("password", "", "API password")
-	homeassistantOptionsCmd.Flags().String("refresh_token", "", "Refresh token")
-	homeassistantOptionsCmd.Flags().Bool("watchdog", true, "Use watchdog")
-	homeassistantOptionsCmd.Flags().Int("wait_boot", 600, "wait_boot")
-	homeassistantCmd.AddCommand(homeassistantOptionsCmd)
+	coreOptionsCmd.Flags().String("image", "", "Optional image")
+	coreOptionsCmd.Flags().String("last_version", "", "Optional for custom image")
+	coreOptionsCmd.Flags().Int("port", 8123, "Port for access Home Assistant")
+	coreOptionsCmd.Flags().Bool("ssl", false, "Use SSL")
+	coreOptionsCmd.Flags().String("password", "", "API password")
+	coreOptionsCmd.Flags().String("refresh_token", "", "Refresh token")
+	coreOptionsCmd.Flags().Bool("watchdog", true, "Use watchdog")
+	coreOptionsCmd.Flags().Int("wait_boot", 600, "wait_boot")
+	coreCmd.AddCommand(coreOptionsCmd)
 }

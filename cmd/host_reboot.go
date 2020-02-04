@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	helper "github.com/home-assistant/hassio-cli/client"
+	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -14,9 +14,9 @@ var hostRebootCmd = &cobra.Command{
 	Aliases: []string{"restart", "rb"},
 	Short:   "Reboots the host machine",
 	Long: `
-Reboot the machine that your Hass.io is running on.`,
+Reboot the machine that your Home Assistant is running on.`,
 	Example: `
-  hassio host reboot`,
+  ha host reboot`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("host reboot")
 

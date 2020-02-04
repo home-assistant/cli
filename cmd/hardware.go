@@ -11,11 +11,11 @@ var hardwareCmd = &cobra.Command{
 	Short:   "Provides hardware information about your system",
 	Long: `
 The hardware command provides information about the hardware of your system
-that is running Hass.io. It is useful for finding things like: available
+that is running Home Assistant. It is useful for finding things like: available
 audio devices and serial ports.`,
 	Example: `
-  hassio hardware info
-  hassio hardware audio`,
+  ha hardware info
+  ha hardware audio`,
 }
 
 func init() {

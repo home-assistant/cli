@@ -9,18 +9,20 @@ import (
 	"github.com/spf13/viper"
 )
 
-var dnsRestartCmd = &cobra.Command{
-	Use:     "restart",
-	Aliases: []string{"reboot"},
-	Short:   "Restarts the internal Home Assistant DNS server",
-	Long:    `Restart the internal Home Assistant DNS server running`,
+var coreStopCmd = &cobra.Command{
+	Use:     "stop",
+	Aliases: []string{},
+	Short:   "Manually stop Home Assistant Core",
+	Long: `
+This command allows you to manually stop the Home Assistant Core instance on
+your system.`,
 	Example: `
-  ha dns restart`,
+  ha core stop`,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("dns restart")
+		log.WithField("args", args).Debug("core stop")
 
-		section := "dns"
-		command := "restart"
+		section := "homeassistant"
+		command := "stop"
 		base := viper.GetString("endpoint")
 
 		ProgressSpinner.Start()
@@ -38,5 +40,5 @@ var dnsRestartCmd = &cobra.Command{
 }
 
 func init() {
-	dnsCmd.AddCommand(dnsRestartCmd)
+	coreCmd.AddCommand(coreStopCmd)
 }

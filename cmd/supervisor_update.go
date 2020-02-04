@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	helper "github.com/home-assistant/hassio-cli/client"
+	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -12,13 +12,14 @@ import (
 var supervisorUpdateCmd = &cobra.Command{
 	Use:     "update",
 	Aliases: []string{"upgrade", "downgrade", "up", "down"},
-	Short:   "Updates the Hass.io Supervisor",
+	Short:   "Updates the Home Assistant Supervisor",
 	Long: `
-Using this command you can upgrade or downgrade the Hass.io Supervisor
-running on your Hass.io system to the latest version or the version specified.`,
+Using this command you can upgrade or downgrade the Home Assistant Supervisor
+running on your Home Assistant  system to the latest version
+or the version specified.`,
 	Example: `
-  hassio supervisor update
-  hassio supervisor update --version 173`,
+  ha supervisor update
+  ha supervisor update --version 173`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("supervisor update")
 

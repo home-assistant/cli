@@ -5,25 +5,25 @@ import (
 	"fmt"
 	"net/http"
 
-	helper "github.com/home-assistant/hassio-cli/client"
+	resty "github.com/go-resty/resty/v2"
+	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	resty "github.com/go-resty/resty/v2"
 )
 
 var addonsStatsCmd = &cobra.Command{
 	Use:     "stats [slug]",
 	Aliases: []string{"status", "stat"},
-	Short:   "Provides system usage stats of an Hass.io add-on",
+	Short:   "Provides system usage stats of an Home Assistant add-on",
 	Long: `
 Provides insight into the system usage stats of an add-on. It shows you
 how much CPU, memory, disk & network resources it uses.
 `,
 	Example: `
-  hassio addons stats core_ssh
+  ha addons stats core_ssh
 `,
-	Args:    cobra.ExactArgs(1),
+	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("addons stats")
 

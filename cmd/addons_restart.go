@@ -5,23 +5,23 @@ import (
 	"fmt"
 	"net/http"
 
-	helper "github.com/home-assistant/hassio-cli/client"
+	resty "github.com/go-resty/resty/v2"
+	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	resty "github.com/go-resty/resty/v2"
 )
 
 var addonsRestartCmd = &cobra.Command{
-	Use:  "restart [slug]",
-	Args: cobra.ExactArgs(1),
+	Use:     "restart [slug]",
+	Args:    cobra.ExactArgs(1),
 	Aliases: []string{"reboot"},
-	Short:   "Restarts an Hass.io add-on",
+	Short:   "Restarts an Home Assistant add-on",
 	Long: `
-Restart an Hass.io add-on
+Restart an Home Assistant add-on
 `,
 	Example: `
-  hassio addons restart core_ssh
+  ha addons restart core_ssh
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("addons restart")

@@ -3,25 +3,25 @@ package cmd
 import (
 	"fmt"
 
-	helper "github.com/home-assistant/hassio-cli/client"
+	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
-var hassosImportCmd = &cobra.Command{
+var osImportCmd = &cobra.Command{
 	Use:     "import",
 	Aliases: []string{"im", "sync", "load"},
 	Short:   "Import configurations from an USB-stick",
 	Long: `
 This commands triggers an import action from a connected USB-stick with
-configuration to load for HassOS.
+configuration to load for the Home Assistant Operating System.
 `,
 	Example: `
-  hassio hassos import
+  ha os import
 `,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("hassos import")
+		log.WithField("args", args).Debug("os import")
 
 		section := "hassos"
 		command := "config/sync"
@@ -38,5 +38,5 @@ configuration to load for HassOS.
 }
 
 func init() {
-	hassosCmd.AddCommand(hassosImportCmd)
+	osCmd.AddCommand(osImportCmd)
 }

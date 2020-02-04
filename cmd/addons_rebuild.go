@@ -5,25 +5,25 @@ import (
 	"fmt"
 	"net/http"
 
-	helper "github.com/home-assistant/hassio-cli/client"
+	resty "github.com/go-resty/resty/v2"
+	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	resty "github.com/go-resty/resty/v2"
 )
 
 var addonsRebuildCmd = &cobra.Command{
-	Use:  "rebuild [slug]",
+	Use:     "rebuild [slug]",
 	Aliases: []string{"rb", "reinstall"},
-	Short:   "Rebuild a locally build Hass.io add-on",
+	Short:   "Rebuild a locally build Home Assistant add-on",
 	Long: `
-Most add-ons provide pre-build images Hass.io can download an use. However,
-some don't. This is usually the case for local or development version of
-add-ons. This command allows you to trigger a rebuild of a locally build
+Most add-ons provide pre-build images Home Assistant can download an use.
+However, some don't. This is usually the case for local or development version
+of add-ons. This command allows you to trigger a rebuild of a locally build
 add-on.
 `,
 	Example: `
-  hassio addons rebuild local_my_addon
+  ha addons rebuild local_my_addon
 `,
 	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {

@@ -5,22 +5,22 @@ import (
 	"fmt"
 	"net/http"
 
-	helper "github.com/home-assistant/hassio-cli/client"
+	resty "github.com/go-resty/resty/v2"
+	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	resty "github.com/go-resty/resty/v2"
 )
 
 var addonsInstalCmd = &cobra.Command{
-	Use:  "install [slug]",
+	Use:     "install [slug]",
 	Aliases: []string{"i", "inst"},
-	Short:   "Installs an Hass.io add-on",
+	Short:   "Installs an Home Assistant add-on",
 	Long: `
-This command allows you to install a Hass.io add-on from the commandline.
+This command allows you to install a Home Assistant add-on from the commandline.
 `,
 	Example: `
-  hassio addons install core_ssh
+  ha addons install core_ssh
 `,
 	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {

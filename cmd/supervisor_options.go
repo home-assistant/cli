@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	helper "github.com/home-assistant/hassio-cli/client"
+	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -12,12 +12,12 @@ import (
 var supervisorOptionsCmd = &cobra.Command{
 	Use:     "options",
 	Aliases: []string{"option", "opt", "opts", "op"},
-	Short:   "Allows you to set options on the Hass.io Supervisor",
+	Short:   "Allows you to set options on the Home Assistant Supervisor",
 	Long: `
-This command allows you to set configuration options for on the Hass.io
-Supervisor running on your Hass.io system.`,
+This command allows you to set configuration options for on the Home Assistant
+Supervisor running on your Home Assistant system.`,
 	Example: `
-  hassio supervisor options --channel beta`,
+  ha supervisor options --channel beta`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("supervisor options")
 

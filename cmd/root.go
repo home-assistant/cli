@@ -6,8 +6,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/home-assistant/hassio-cli/client"
-	"github.com/home-assistant/hassio-cli/spinner"
+	"github.com/home-assistant/cli/client"
+	"github.com/home-assistant/cli/spinner"
 	homedir "github.com/mitchellh/go-homedir"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -30,12 +30,11 @@ var ProgressSpinner = spinner.New(spinner.CharSets[0], 125*time.Millisecond)
 
 var rootCmd = &cobra.Command{
 	Use:   path.Base(os.Args[0]),
-	Short: "A small CLI program to control Hass.io",
+	Short: "A small CLI program to control Home Assistant",
 	Long: `
-The Hass.io CLI is a small and simple command line utility that allows you to
-control and configure different aspects of Hass.io`,
+The Home Assistant CLI is a small and simple command line utility that allows
+you to control and configure different aspects of Home Assistant`,
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-
 		// set loglevel if posible
 		logrusLevel, err := log.ParseLevel(viper.GetString("log-level"))
 
@@ -79,9 +78,9 @@ func init() {
 	cobra.OnInitialize(initConfig)
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "Optional config file (default is $HOME/.homeassistant.yaml)")
-	rootCmd.PersistentFlags().StringVar(&endPoint, "endpoint", "", "Endpoint for Hass.io Supervisor ( default is 'hassio' )")
+	rootCmd.PersistentFlags().StringVar(&endPoint, "endpoint", "", "Endpoint for Home Assistant Supervisor ( default is 'supervisor' )")
 	rootCmd.PersistentFlags().StringVar(&logLevel, "log-level", "", "Log level (defaults to Warn)")
-	rootCmd.PersistentFlags().StringVar(&apiToken, "api-token", "", "Hass.io API token")
+	rootCmd.PersistentFlags().StringVar(&apiToken, "api-token", "", "Home Assistant Supervisor API token")
 	rootCmd.PersistentFlags().BoolVar(&rawJSON, "raw-json", false, "Output raw JSON from the API")
 	rootCmd.PersistentFlags().BoolVar(&noProgress, "no-progress", false, "Disable the progress spinner")
 
@@ -92,7 +91,7 @@ func init() {
 	viper.BindPFlag("raw-json", rootCmd.PersistentFlags().Lookup("raw-json"))
 	viper.BindPFlag("no-progress", rootCmd.PersistentFlags().Lookup("no-progress"))
 
-	viper.SetDefault("endpoint", "hassio")
+	viper.SetDefault("endpoint", "supervisor")
 	viper.SetDefault("log-level", "warn")
 	viper.SetDefault("api-token", "")
 
