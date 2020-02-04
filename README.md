@@ -13,7 +13,7 @@ Commandline interface to facilitate interaction with Home Assistant
 
 E.g.:
 
-- `ha homeassistant info --raw-json`
+- `ha core info --raw-json`
 
 ### Modifiers
 
@@ -26,7 +26,7 @@ E.g.:
 - --log-level string   Log level, defaults to Warn
 - --raw-json           Output raw JSON from the API
 
-all options are also available as `HA_` prefixed environment variables like `HA_LOG_LEVEL`
+all options are also available as `HASSIO_` prefixed environment variables like `HASSIO_LOG_LEVEL`
 
 #### SubCommand
 
