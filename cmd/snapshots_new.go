@@ -43,7 +43,7 @@ containing a backup of your Hass.io system.`,
 		addons, err := cmd.Flags().GetStringArray("addons")
 		log.WithField("addons", addons).Debug("addons")
 
-		if len(addons) >= 0 && err == nil && cmd.Flags().Changed("folders") {
+		if len(addons) >= 0 && err == nil && cmd.Flags().Changed("addons") {
 			options["addons"] = addons
 			command = "new/partial"
 		}
