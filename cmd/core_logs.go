@@ -21,7 +21,7 @@ running on your Home Assistant system.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("core logs")
 
-		section := "homeassistant"
+		section := "core"
 		command := "logs"
 		base := viper.GetString("endpoint")
 

@@ -22,7 +22,7 @@ running on your system to the latest version or the version specified.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("core update")
 
-		section := "homeassistant"
+		section := "core"
 		command := "update"
 		base := viper.GetString("endpoint")
 

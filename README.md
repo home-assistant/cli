@@ -26,21 +26,23 @@ E.g.:
 - --log-level string   Log level, defaults to Warn
 - --raw-json           Output raw JSON from the API
 
-all options are also available as `HASSIO_` prefixed environment variables like `HASSIO_LOG_LEVEL`
+all options are also available as `SUPERVISOR_` prefixed environment variables like `SUPERVISOR_LOG_LEVEL`
 
 #### SubCommand
 
 Available Commands:
 
-- addons
-- completion    Generates bash completion scripts
-- hardware
-- hassos
-- core
-- host
-- info
-- snapshots
-- supervisor
+- addons         Install, update, remove and configure Home Assistant add-ons
+- authentication Authentication for Home Assistant users.
+- core           Provides control of the Home Assistant Core
+- dns            Get information, update or configure the Home Assistant DNS server
+- hardware       Provides hardware information about your system
+- help           Help about any command
+- host           Control the host/system that Home Assistant is running on
+- info           Provides a general Home Assistant information overview
+- os             Operating System specific for updating, info and configuration imports
+- snapshots      Create, restore and remove snapshot backups
+- supervisor     Monitor, control and configure the Home Assistant Supervisor
 
 ## Install
 

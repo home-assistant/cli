@@ -22,7 +22,7 @@ This command provides general information about the running Home Assistant Opera
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("os info")
 
-		section := "hassos"
+		section := "os"
 		command := "info"
 		base := viper.GetString("endpoint")
 

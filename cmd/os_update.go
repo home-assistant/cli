@@ -24,7 +24,7 @@ Operating System to the latest version or the version specified.
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("os update")
 
-		section := "hassos"
+		section := "os"
 		command := "update"
 		base := viper.GetString("endpoint")
 

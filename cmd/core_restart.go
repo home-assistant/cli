@@ -20,7 +20,7 @@ Restart the Home Assistant Core instance running on your system`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("core restart")
 
-		section := "homeassistant"
+		section := "core"
 		command := "restart"
 		base := viper.GetString("endpoint")
 

@@ -23,7 +23,7 @@ Operating System CLI to the latest version or the version specified.
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("os update-cli")
 
-		section := "hassos"
+		section := "os"
 		command := "update/cli"
 		base := viper.GetString("endpoint")
 

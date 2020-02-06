@@ -23,7 +23,7 @@ Home Assistant Core.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("core check")
 
-		section := "homeassistant"
+		section := "core"
 		command := "check"
 		base := viper.GetString("endpoint")
 

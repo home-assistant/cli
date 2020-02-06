@@ -21,7 +21,7 @@ your system. This, of course, only applies when it has been stopped.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("core start")
 
-		section := "homeassistant"
+		section := "core"
 		command := "start"
 		base := viper.GetString("endpoint")
 

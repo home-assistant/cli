@@ -23,7 +23,7 @@ configuration to load for the Home Assistant Operating System.
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("os import")
 
-		section := "hassos"
+		section := "os"
 		command := "config/sync"
 		base := viper.GetString("endpoint")
 

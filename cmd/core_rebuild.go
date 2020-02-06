@@ -22,7 +22,7 @@ Don't worry, this does not delete your config.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("core rebuild")
 
-		section := "homeassistant"
+		section := "core"
 		command := "rebuild"
 		base := viper.GetString("endpoint")
 

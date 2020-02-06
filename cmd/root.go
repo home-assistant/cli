@@ -102,12 +102,12 @@ func init() {
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
-	viper.SetEnvPrefix("HASSIO")
+	viper.SetEnvPrefix("SUPERVISOR")
 	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
 	viper.AutomaticEnv()
 
 	// bind to current API token ENV variable
-	viper.BindEnv("api-token", "HASSIO_TOKEN")
+	viper.BindEnv("api-token", "SUPERVISOR_TOKEN")
 
 	// set loglevel if possible
 	logLevel, err := log.ParseLevel(viper.GetString("log-level"))

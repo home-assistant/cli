@@ -21,7 +21,7 @@ your system.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("core stop")
 
-		section := "homeassistant"
+		section := "core"
 		command := "stop"
 		base := viper.GetString("endpoint")
 
