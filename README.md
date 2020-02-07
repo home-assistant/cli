@@ -59,8 +59,8 @@ ha --endpoint $HA_SERVER/api/hassio --api-token $HA_TOKEN <cmd>
 or if you prefer to use environment variables to avoid repetition:
 
 ```shell
-export HA_ENDPOINT=https://hassio.local:8123/api/hassio
-export HA_API_TOKEN=longandsafesecret
+export SUPERVISOR_ENDPOINT=https://hassio.local:8123/api/hassio
+export SUPERVISOR_API_TOKEN=longandsafesecret
 ha
 ```
 
