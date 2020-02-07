@@ -20,8 +20,10 @@ it provides a command to import configurations from an USB-stick.`,
   ha os info
 	ha os update`,
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		if os.Args[1] != "os" {
-			cmd.PrintErrf("The use of '%s' is deprecated, please use 'os' instead!\n", os.Args[1])
+		for _, arg := range os.Args {
+			if arg == "hassos" {
+				cmd.PrintErrf("The use of '%s' is deprecated, please use 'os' instead!\n", arg)
+			}
 		}
 	},
 }
