@@ -20,7 +20,7 @@ only work on some locations. For example, the Operating System CLI.
 `,
 	Example: `ha authentication reset --username "JohnDoe" --password "123SuperSecret!"`,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("core options")
+		log.WithField("args", args).Debug("auth reset")
 
 		section := "auth"
 		command := "reset"
