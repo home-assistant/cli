@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"net/http"
 
-	helper "github.com/home-assistant/hassio-cli/client"
+	resty "github.com/go-resty/resty/v2"
+	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	resty "github.com/go-resty/resty/v2"
 )
 
 var snapshotsInfoCmd = &cobra.Command{
@@ -17,11 +17,11 @@ var snapshotsInfoCmd = &cobra.Command{
 	Aliases: []string{"in", "inf"},
 	Short:   "Provides information about the current available snapshosts",
 	Long: `
-When a hass.io snapshot is created, it will be available for restore.
+When a Home Assistant snapshot is created, it will be available for restore.
 This command gives you information about a specific snapshot.`,
 	Example: `
-  hassio snapshots info c1a07617`,
-	Args:    cobra.ExactArgs(1),
+  ha snapshots info c1a07617`,
+	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("snapshots info")
 

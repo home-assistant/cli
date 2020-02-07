@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	helper "github.com/home-assistant/hassio-cli/client"
+	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -13,14 +13,14 @@ import (
 var addonsChangelogCmd = &cobra.Command{
 	Use:     "changelog [slug]",
 	Aliases: []string{"cl", "ch"},
-	Short:   "Show changelog of an Hass.io add-on",
+	Short:   "Show changelog of an Home Assistant add-on",
 	Long: `
 This command shows the changelog of an add-on. It gives you what has been
 changed in the latest version and tell you about possible breaking changes.`,
 	Example: `
-hassio addons changelog core_ssh
-hassio addons changelog core_mosquitto`,
-	Args:    cobra.ExactArgs(1),
+ha addons changelog core_ssh
+ha addons changelog core_mosquitto`,
+	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("addons changelog")
 

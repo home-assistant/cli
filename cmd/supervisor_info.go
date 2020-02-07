@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	helper "github.com/home-assistant/hassio-cli/client"
+	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -17,7 +17,7 @@ var supervisorInfoCmd = &cobra.Command{
 This command provides you a ton of information about everything the
 Supervisor currently knows.`,
 	Example: `
-  hassio supervisor info`,
+  ha supervisor info`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("supervisor info")
 

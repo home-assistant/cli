@@ -3,27 +3,27 @@ package cmd
 import (
 	"fmt"
 
-	helper "github.com/home-assistant/hassio-cli/client"
+	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
-var hassosUpdateCliCmd = &cobra.Command{
+var osUpdateCliCmd = &cobra.Command{
 	Use:     "update-cli",
 	Aliases: []string{"up-cli", "upcli", "cli-update", "cli-up", "cliup"},
-	Short:   "Updates the HassOS CLI",
+	Short:   "Updates the Home Assistant Operating System CLI",
 	Long: `
-Using this command you can upgrade or downgrade the HassOS CLI to the latest
-version or the version specified.
+Using this command you can upgrade or downgrade the Home Assistant
+Operating System CLI to the latest version or the version specified.
 `,
 	Example: `
-  hassio hassos update-cli --version 5
+  ha os update-cli --version 5
 `,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("hassos update-cli")
+		log.WithField("args", args).Debug("os update-cli")
 
-		section := "hassos"
+		section := "os"
 		command := "update/cli"
 		base := viper.GetString("endpoint")
 
@@ -49,6 +49,6 @@ version or the version specified.
 }
 
 func init() {
-	hassosUpdateCliCmd.Flags().StringP("version", "", "", "Version to update to")
-	hassosCmd.AddCommand(hassosUpdateCliCmd)
+	osUpdateCliCmd.Flags().StringP("version", "", "", "Version to update to")
+	osCmd.AddCommand(osUpdateCliCmd)
 }

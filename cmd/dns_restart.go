@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	helper "github.com/home-assistant/hassio-cli/client"
+	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -12,11 +12,10 @@ import (
 var dnsRestartCmd = &cobra.Command{
 	Use:     "restart",
 	Aliases: []string{"reboot"},
-	Short:   "Restarts the internal Hass.io DNS server",
-	Long: `
-Restart the internal Hass.io DNS server running on your Hass.io system`,
+	Short:   "Restarts the internal Home Assistant DNS server",
+	Long:    `Restart the internal Home Assistant DNS server running`,
 	Example: `
-  hassio dns restart`,
+  ha dns restart`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("dns restart")
 

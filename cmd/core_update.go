@@ -3,28 +3,26 @@ package cmd
 import (
 	"fmt"
 
-	helper "github.com/home-assistant/hassio-cli/client"
+	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
-var hassosUpdateCmd = &cobra.Command{
+var coreUpdateCmd = &cobra.Command{
 	Use:     "update",
 	Aliases: []string{"upgrade", "downgrade", "up", "down"},
-	Short:   "Updates the HassOS operating system",
+	Short:   "Updates the Home Assistant Core",
 	Long: `
-Using this command you can upgrade or downgrade the HassOS operating system
-to the latest version or the version specified.
-`,
+Using this command you can upgrade or downgrade the Home Assistant Core instance
+running on your system to the latest version or the version specified.`,
 	Example: `
-  hassio hassos update
-  hassio hassos update --version 5
-`,
+  ha core update
+  ha core update --version 0.105.4`,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("hassos update")
+		log.WithField("args", args).Debug("core update")
 
-		section := "hassos"
+		section := "core"
 		command := "update"
 		base := viper.GetString("endpoint")
 
@@ -50,6 +48,6 @@ to the latest version or the version specified.
 }
 
 func init() {
-	hassosUpdateCmd.Flags().StringP("version", "", "", "Version to update to")
-	hassosCmd.AddCommand(hassosUpdateCmd)
+	coreUpdateCmd.Flags().StringP("version", "", "", "Version to update to")
+	coreCmd.AddCommand(coreUpdateCmd)
 }

@@ -3,26 +3,25 @@ package cmd
 import (
 	"fmt"
 
-	helper "github.com/home-assistant/hassio-cli/client"
+	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
-var homeassistantStopCmd = &cobra.Command{
-	Use:     "stop",
-	Aliases: []string{},
-	Short:   "Manually stop Home Assistant",
+var coreRestartCmd = &cobra.Command{
+	Use:     "restart",
+	Aliases: []string{"reboot"},
+	Short:   "Restarts the Home Assistant Core",
 	Long: `
-This command allows you to manually stop the Home Assistant instance on your
-Hass.io system.`,
+Restart the Home Assistant Core instance running on your system`,
 	Example: `
-  hassio homeassistant stop`,
+  ha core restart`,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("homeassistant stop")
+		log.WithField("args", args).Debug("core restart")
 
-		section := "homeassistant"
-		command := "stop"
+		section := "core"
+		command := "restart"
 		base := viper.GetString("endpoint")
 
 		ProgressSpinner.Start()
@@ -40,5 +39,5 @@ Hass.io system.`,
 }
 
 func init() {
-	homeassistantCmd.AddCommand(homeassistantStopCmd)
+	coreCmd.AddCommand(coreRestartCmd)
 }

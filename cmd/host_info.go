@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	helper "github.com/home-assistant/hassio-cli/client"
+	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -14,9 +14,10 @@ var hostInfoCmd = &cobra.Command{
 	Aliases: []string{"in", "inf"},
 	Short:   "Provides information on the host system",
 	Long: `
-This command provides information on the host system Hass.io is running on`,
+This command provides information on the host system Home Assistant is
+running on`,
 	Example: `
-  hassio host info`,
+  ha host info`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("host info")
 

@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	helper "github.com/home-assistant/hassio-cli/client"
+	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -12,12 +12,12 @@ import (
 var supervisorReloadCmd = &cobra.Command{
 	Use:     "reload",
 	Aliases: []string{"refresh", "re"},
-	Short:   "Reload the Hass.io Supervisor updating information",
+	Short:   "Reload the Home Assistant Supervisor updating information",
 	Long: `
-Reloading the Hass.io Supervisor, triggers the Supervisor to regather all
-data it currently has, including checking for updates.`,
+Reloading the Home Assistant Supervisor, triggers the Supervisor to regather
+all data it currently has, including checking for updates.`,
 	Example: `
-  hassio supervisor reload`,
+  ha supervisor reload`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("supervisor reload")
 

@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"net/http"
 
-	helper "github.com/home-assistant/hassio-cli/client"
+	resty "github.com/go-resty/resty/v2"
+	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	resty "github.com/go-resty/resty/v2"
 )
 
 var snapshotsRemoveCmd = &cobra.Command{
@@ -20,7 +20,7 @@ var snapshotsRemoveCmd = &cobra.Command{
 Snapshots can take quite a bit of diskspace, this command allows you to
 clean snapshots from disk.`,
 	Example: `
-  hassio snapshots remove c1a07617`,
+  ha snapshots remove c1a07617`,
 	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("snapshots remove")

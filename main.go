@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/home-assistant/hassio-cli/cmd"
+	"github.com/home-assistant/cli/cmd"
 	log "github.com/sirupsen/logrus"
 )
 

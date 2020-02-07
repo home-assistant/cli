@@ -5,23 +5,23 @@ import (
 	"fmt"
 	"net/http"
 
-	helper "github.com/home-assistant/hassio-cli/client"
+	resty "github.com/go-resty/resty/v2"
+	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	resty "github.com/go-resty/resty/v2"
 )
 
 var addonsUninstallCmd = &cobra.Command{
-	Use:  "uninstall [slug]",
-	Args: cobra.ExactArgs(1),
+	Use:     "uninstall [slug]",
+	Args:    cobra.ExactArgs(1),
 	Aliases: []string{"remove", "delete", "del", "rem", "un", "uninst"},
-	Short:   "Uninstalls an Hass.io add-on",
+	Short:   "Uninstalls an Home Assistant add-on",
 	Long: `
-This command allows you to uninstall a Hass.io add-on from the commandline.
+This command allows you to uninstall a Home Assistant add-on.
 `,
 	Example: `
-  hassio addons uninstall core_ssh
+  ha addons uninstall core_ssh
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("addons uninstall")

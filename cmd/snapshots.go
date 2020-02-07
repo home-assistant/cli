@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	helper "github.com/home-assistant/hassio-cli/client"
+	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -14,11 +14,11 @@ var snapshotsCmd = &cobra.Command{
 	Aliases: []string{"snapshot", "snap", "shot", "sn", "backup", "backups", "bk"},
 	Short:   "Create, restore and remove snapshot backups",
 	Long: `
-Snapshots are backups of your Hass.io system, which you can create, restore,
-and delete using this command.`,
+Snapshots are backups of your Home Assistant system, which you can create,
+restore, and delete using this command.`,
 	Example: `
-  hassio snapshots
-  hassio snapshots new`,
+  ha snapshots
+  ha snapshots new`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("snapshots")
 

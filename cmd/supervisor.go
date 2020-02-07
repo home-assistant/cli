@@ -8,15 +8,16 @@ import (
 var supervisorCmd = &cobra.Command{
 	Use:     "supervisor",
 	Aliases: []string{"super", "su"},
-	Short:   "Monitor, control and configure the Hass.io Supervisor",
+	Short:   "Monitor, control and configure the Home Assistant Supervisor",
 	Long: `
-The Hass.io Supervisor is the core of the Hass.io system. It manages
-your Home Assistant, HassOS, and all the add-ons. It even manages itself!
-This series of command give you control over the Hass.io Supervisor.`,
+The Home Assistant Supervisor is the heart of the Home Assistant system.
+It manages your Home Assistant Core, Operating System, and all the add-ons.
+It even manages itself! This series of command give you control over the
+Home Assistant Supervisor.`,
 	Example: `
-  hassio supervisor reload
-  hassio supervisor update
-  hassio supervisor logs`,
+  ha supervisor reload
+  ha supervisor update
+  ha supervisor logs`,
 }
 
 func init() {

@@ -1,4 +1,4 @@
-module github.com/home-assistant/hassio-cli
+module github.com/home-assistant/cli
 
 go 1.12
 

@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	helper "github.com/home-assistant/hassio-cli/client"
+	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -12,14 +12,14 @@ import (
 var snapshotsNewCmd = &cobra.Command{
 	Use:     "new",
 	Aliases: []string{"create", "backup"},
-	Short:   "Create a new Hass.io snapshot backup",
+	Short:   "Create a new Home Assistant snapshot backup",
 	Long: `
-This command can be used to trigger the creation of a new Hass.io snapshot
-containing a backup of your Hass.io system.`,
+This command can be used to trigger the creation of a new Home Assistant
+snapshot containing a backup of your Home Assistant system.`,
 	Example: `
-  hassio snapshots new
-  hassio snapshots new --addons core_ssh --addons core_mosquitto
-  hassio snapshots new --folders config
+  ha snapshots new
+  ha snapshots new --addons core_ssh --addons core_mosquitto
+  ha snapshots new --folders config
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("snapshots new")

@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	helper "github.com/home-assistant/hassio-cli/client"
+	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -12,12 +12,12 @@ import (
 var dnsInfoCmd = &cobra.Command{
 	Use:     "info",
 	Aliases: []string{"in", "inf"},
-	Short:   "Shows information about the internal Hass.io DNS server",
+	Short:   "Shows information about the internal Home Assistant DNS server",
 	Long: `
-Shows information about the internally running Hass.io DNS server
+Shows information about the internally running Home Assistant DNS server
 `,
 	Example: `
-  hassio dns info
+  ha dns info
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("dns info")

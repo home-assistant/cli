@@ -3,25 +3,26 @@ package cmd
 import (
 	"fmt"
 
-	helper "github.com/home-assistant/hassio-cli/client"
+	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
-var homeassistantInfoCmd = &cobra.Command{
+var osInfoCmd = &cobra.Command{
 	Use:     "info",
 	Aliases: []string{"in", "inf"},
-	Short:   "Provides information about Home Assistant",
+	Short:   "Provides information about the running Home Assistant Operating System",
 	Long: `
-This command provides information about the running Home Assistant instance
-running on your Hass.io system.`,
+This command provides general information about the running Home Assistant Operating System.
+`,
 	Example: `
-  hassio homeassistant info`,
+  ha os info
+`,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("homeassistant info")
+		log.WithField("args", args).Debug("os info")
 
-		section := "homeassistant"
+		section := "os"
 		command := "info"
 		base := viper.GetString("endpoint")
 
@@ -36,5 +37,5 @@ running on your Hass.io system.`,
 }
 
 func init() {
-	homeassistantCmd.AddCommand(homeassistantInfoCmd)
+	osCmd.AddCommand(osInfoCmd)
 }

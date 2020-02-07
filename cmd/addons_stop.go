@@ -5,23 +5,23 @@ import (
 	"fmt"
 	"net/http"
 
-	helper "github.com/home-assistant/hassio-cli/client"
+	resty "github.com/go-resty/resty/v2"
+	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	resty "github.com/go-resty/resty/v2"
 )
 
 var addonsStopCmd = &cobra.Command{
-	Use:  "stop [slug]",
-	Args: cobra.ExactArgs(1),
+	Use:     "stop [slug]",
+	Args:    cobra.ExactArgs(1),
 	Aliases: []string{"halt", "shutdown", "quit"},
-	Short:   "Manually stop a running Hass.io add-on",
+	Short:   "Manually stop a running Home Assistant add-on",
 	Long: `
-This command allows you to manually start a stopped Hass.io add-on
+This command allows you to manually start a stopped Home Assistant add-on
 `,
 	Example: `
-  hassio addons stop core_ssh
+  ha addons stop core_ssh
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("addons stop")

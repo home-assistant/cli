@@ -5,24 +5,24 @@ import (
 	"fmt"
 	"net/http"
 
-	helper "github.com/home-assistant/hassio-cli/client"
+	resty "github.com/go-resty/resty/v2"
+	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	resty "github.com/go-resty/resty/v2"
 )
 
 var addonsUpdateCmd = &cobra.Command{
-	Use:  "update [slug]",
-	Args: cobra.ExactArgs(1),
+	Use:     "update [slug]",
+	Args:    cobra.ExactArgs(1),
 	Aliases: []string{"upgrade", "up"},
-	Short:   "Upgrades an Hass.io add-on to the latest version",
+	Short:   "Upgrades a Home Assistant add-on to the latest version",
 	Long: `
-Using this command you can upgrade an Hass.io add-on to its latest version.
+This command can upgrade a Home Assistant add-on to its latest version.
 It is currently not possible to upgrade/downgrade to a specific version.
 `,
 	Example: `
-  hassio addons update core_ssh
+  ha addons update core_ssh
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("addons update")

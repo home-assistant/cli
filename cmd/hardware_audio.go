@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	helper "github.com/home-assistant/hassio-cli/client"
+	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -15,8 +15,7 @@ var hardwareAudioCmd = &cobra.Command{
 	Short:   "Provides information about audio devices on your system",
 	Long: `
 The command provides information about audio devices available on your system.`,
-	Example: `
-  hassio hardware audio`,
+	Example: `ha hardware audio`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("hardware info")
 

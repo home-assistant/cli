@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	helper "github.com/home-assistant/hassio-cli/client"
+	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -12,13 +12,13 @@ import (
 var dnsStatsCmd = &cobra.Command{
 	Use:     "stats",
 	Aliases: []string{"status", "stat"},
-	Short:   "Provides system usage stats of the Hass.io DNS server",
+	Short:   "Provides system usage stats of the Home Assistant DNS server",
 	Long: `
-Provides insight into the system usage stats of the Hass.io DNS server.
+Provides insight into the system usage stats of the Home Assistant DNS server.
 It shows you how much CPU, memory, disk & network resources it uses.
 `,
 	Example: `
-  hassio dns stats
+  ha dns stats
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("dns stats")

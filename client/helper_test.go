@@ -11,17 +11,17 @@ var urlTests = []struct {
 	command string
 	out     string
 }{
-	{"hassio", "section", "command", "http://hassio/section/command"},
-	{"hassio:80", "section", "command", "http://hassio:80/section/command"},
-	{"hassio.example.org:8080", "section", "command", "http://hassio.example.org:8080/section/command"},
-	{"https://hassio", "section", "command", "https://hassio/section/command"},
-	{"https://hassio:8080", "section", "command", "https://hassio:8080/section/command"},
-	{"https://hassio", "section", "command", "https://hassio/section/command"},
-	{"https://hassio:8080", "section", "command", "https://hassio:8080/section/command"},
-	{"hassio", "section", "", "http://hassio/section"},
-	{"hassio", "section/../othersection", "", "http://hassio/othersection"},
-	{"hassio/api/", "section", "command", "http://hassio/api/section/command"},
-	{"hassio/api/", "section", "{slug}/command", "http://hassio/api/section/{slug}/command"},
+	{"supervisor", "section", "command", "http://supervisor/section/command"},
+	{"supervisor:80", "section", "command", "http://supervisor:80/section/command"},
+	{"supervisor.example.org:8080", "section", "command", "http://supervisor.example.org:8080/section/command"},
+	{"https://supervisor", "section", "command", "https://supervisor/section/command"},
+	{"https://supervisor:8080", "section", "command", "https://supervisor:8080/section/command"},
+	{"https://supervisor", "section", "command", "https://supervisor/section/command"},
+	{"https://supervisor:8080", "section", "command", "https://supervisor:8080/section/command"},
+	{"supervisor", "section", "", "http://supervisor/section"},
+	{"supervisor", "section/../othersection", "", "http://supervisor/othersection"},
+	{"supervisor/api/", "section", "command", "http://supervisor/api/section/command"},
+	{"supervisor/api/", "section", "{slug}/command", "http://supervisor/api/section/{slug}/command"},
 }
 
 func TestURLHelper(t *testing.T) {

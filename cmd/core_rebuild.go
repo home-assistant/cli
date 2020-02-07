@@ -3,25 +3,26 @@ package cmd
 import (
 	"fmt"
 
-	helper "github.com/home-assistant/hassio-cli/client"
+	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
-var homeassistantRebuildCmd = &cobra.Command{
+var coreRebuildCmd = &cobra.Command{
 	Use:     "rebuild",
 	Aliases: []string{"rb", "reinstall"},
-	Short:   "Rebuild the Home Assistant instance",
+	Short:   "Rebuild the Home Assistant Core instance",
 	Long: `
-This command allows you to trigger a rebuild for your Home Assistant instance
-running on your Hass.io system. Don't worry, this does not delete your config.`,
+This command allows you to trigger a rebuild for your Home Assistant Core
+instance running on your Home Assistant system.
+Don't worry, this does not delete your config.`,
 	Example: `
-  hassio homeassistant rebuild`,
+  ha core rebuild`,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("homeassistant rebuild")
+		log.WithField("args", args).Debug("core rebuild")
 
-		section := "homeassistant"
+		section := "core"
 		command := "rebuild"
 		base := viper.GetString("endpoint")
 
@@ -40,5 +41,5 @@ running on your Hass.io system. Don't worry, this does not delete your config.`,
 }
 
 func init() {
-	homeassistantCmd.AddCommand(homeassistantRebuildCmd)
+	coreCmd.AddCommand(coreRebuildCmd)
 }

@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	helper "github.com/home-assistant/hassio-cli/client"
+	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -15,9 +15,9 @@ var hostOptionsCmd = &cobra.Command{
 	Short:   "Allow to set options on host system",
 	Long: `
 This command allows you to set configuration options on the host system that 
-your Hass.io is running on.`,
+your Home Assistant is running on.`,
 	Example: `
-  hassio host options --hostname homeassistant.local`,
+  ha host options --hostname homeassistant.local`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("host options")
 

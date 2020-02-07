@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	helper "github.com/home-assistant/hassio-cli/client"
+	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -14,10 +14,10 @@ var hostShutdownCmd = &cobra.Command{
 	Aliases: []string{"sh"},
 	Short:   "Shutdown the host machine",
 	Long: `
-Shuts down the machine that your Hass.io is running on.
+Shuts down the machine that your Home Assistant is running on.
 WARNING: This is turning off the computer/device.`,
 	Example: `
-  hassio host shutdown`,
+  ha host shutdown`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("host shutdown")
 
