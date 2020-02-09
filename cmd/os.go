@@ -15,7 +15,7 @@ This command set is specifically designed for the Home Assistant Operating Syste
 and only works on those systems. It provides an interface to get information
 about your Home Assistant Operating System, but also provides command to
 upgrade the operating system and the operating system CLI. Finally,
-it provides a command to import configurations from an USB-stick.`,
+it provides a command to import configurations from a USB stick.`,
 	Example: `
   ha os info
 	ha os update`,

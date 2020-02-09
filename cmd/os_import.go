@@ -12,9 +12,9 @@ import (
 var osImportCmd = &cobra.Command{
 	Use:     "import",
 	Aliases: []string{"im", "sync", "load"},
-	Short:   "Import configurations from an USB-stick",
+	Short:   "Import configurations from a USB stick",
 	Long: `
-This commands triggers an import action from a connected USB-stick with
+This commands triggers an import action from a connected USB stick with
 configuration to load for the Home Assistant Operating System.
 `,
 	Example: `

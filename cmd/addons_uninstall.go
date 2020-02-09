@@ -16,7 +16,7 @@ var addonsUninstallCmd = &cobra.Command{
 	Use:     "uninstall [slug]",
 	Args:    cobra.ExactArgs(1),
 	Aliases: []string{"remove", "delete", "del", "rem", "un", "uninst"},
-	Short:   "Uninstalls an Home Assistant add-on",
+	Short:   "Uninstalls a Home Assistant add-on",
 	Long: `
 This command allows you to uninstall a Home Assistant add-on.
 `,

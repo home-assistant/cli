@@ -24,7 +24,7 @@ type Response struct {
 	Data    map[string]interface{} `json:"data,omitempty"`
 }
 
-// URLHelper returns a URL build from the arguments
+// URLHelper returns a URL built from the arguments
 func URLHelper(base, section, command string) (string, error) {
 	log.WithFields(log.Fields{
 		"base":    base,
@@ -72,7 +72,7 @@ func GetJSONRequest() *resty.Request {
 	return request
 }
 
-// GetRequest returns a resty.Request object prepared for a API call
+// GetRequest returns a resty.Request object prepared for an API call
 func GetRequest() *resty.Request {
 	apiToken := viper.GetString("api-token")
 
@@ -85,7 +85,7 @@ func GetRequest() *resty.Request {
 				"statuscode":  resp.StatusCode(),
 				"status":      resp.Status(),
 				"time":        resp.Time(),
-				"recieved-at": resp.ReceivedAt(),
+				"received-at": resp.ReceivedAt(),
 				"headers":     resp.Header(),
 				"request":     resp.Request.RawRequest,
 				"body":        resp,
