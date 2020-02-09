@@ -15,7 +15,7 @@ import (
 var addonsInstalCmd = &cobra.Command{
 	Use:     "install [slug]",
 	Aliases: []string{"i", "inst"},
-	Short:   "Installs an Home Assistant add-on",
+	Short:   "Installs a Home Assistant add-on",
 	Long: `
 This command allows you to install a Home Assistant add-on from the commandline.
 `,

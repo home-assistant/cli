@@ -13,7 +13,7 @@ import (
 var addonsChangelogCmd = &cobra.Command{
 	Use:     "changelog [slug]",
 	Aliases: []string{"cl", "ch"},
-	Short:   "Show changelog of an Home Assistant add-on",
+	Short:   "Show changelog of a Home Assistant add-on",
 	Long: `
 This command shows the changelog of an add-on. It gives you what has been
 changed in the latest version and tell you about possible breaking changes.`,

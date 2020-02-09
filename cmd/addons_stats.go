@@ -15,7 +15,7 @@ import (
 var addonsStatsCmd = &cobra.Command{
 	Use:     "stats [slug]",
 	Aliases: []string{"status", "stat"},
-	Short:   "Provides system usage stats of an Home Assistant add-on",
+	Short:   "Provides system usage stats of a Home Assistant add-on",
 	Long: `
 Provides insight into the system usage stats of an add-on. It shows you
 how much CPU, memory, disk & network resources it uses.

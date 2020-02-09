@@ -16,9 +16,9 @@ var addonsRestartCmd = &cobra.Command{
 	Use:     "restart [slug]",
 	Args:    cobra.ExactArgs(1),
 	Aliases: []string{"reboot"},
-	Short:   "Restarts an Home Assistant add-on",
+	Short:   "Restarts a Home Assistant add-on",
 	Long: `
-Restart an Home Assistant add-on
+Restart a Home Assistant add-on
 `,
 	Example: `
   ha addons restart core_ssh

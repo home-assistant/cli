@@ -16,7 +16,7 @@ var snapshotsRestoreCmd = &cobra.Command{
 	Use:   "restore [slug]",
 	Short: "Restores a Home Assistant snapshot backup",
 	Long: `
-When something goes wrong, this command allows you to restore an previously
+When something goes wrong, this command allows you to restore a previously
 take Home Assistant snapshot backup on your system.`,
 	Example: `
   ha snapshots restore c1a07617

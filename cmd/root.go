@@ -22,7 +22,7 @@ var apiToken string
 var rawJSON bool
 var noProgress bool
 
-// ExitWithError is a hint for the called that we want an non-zero exit code
+// ExitWithError is a hint for the called that we want a non-zero exit code
 var ExitWithError = false
 
 // ProgressSpinner is a general spinner that can be used across the CLI
