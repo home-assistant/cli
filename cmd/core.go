@@ -25,6 +25,7 @@ Home Assistant Core.
   ha core update
 	ha core update --version 0.97.2`,
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		rootCmd.PersistentPreRun(cmd, args)
 		for _, arg := range os.Args {
 			if arg == "homeassistant" || arg == "ha" {
 				cmd.PrintErrf("The use of '%s' is deprecated, please use 'core' instead!\n", arg)
