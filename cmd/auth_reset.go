@@ -40,6 +40,7 @@ only work on some locations. For example, the Operating System CLI.
 
 		resp, err := helper.GenericJSONPost(base, section, command, options)
 		if err != nil {
+			cmd.PrintErrln("this command is limited due to security reasons, and will only work on some locations. For example, the Operating System terminal.")
 			fmt.Println(err)
 			ExitWithError = true
 		} else {
