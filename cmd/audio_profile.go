@@ -33,9 +33,9 @@ This command allows you to set the audio profile on a audio card.`,
 			options["name"] = name
 		}
 
-		profile, err := cmd.Flags().GetString("profile")
-		if name != "" && err == nil && cmd.Flags().Changed("profile") {
-			options["profile"] = profile
+		profile, err := cmd.Flags().GetString("card")
+		if name != "" && err == nil && cmd.Flags().Changed("card") {
+			options["card"] = profile
 		}
 
 		resp, err := helper.GenericJSONPost(base, section, command, options)
@@ -51,9 +51,9 @@ This command allows you to set the audio profile on a audio card.`,
 }
 
 func init() {
-	audioProfileCmd.Flags().String("name", "", "Name of the sound card")
-	audioProfileCmd.Flags().String("profile", "", "Name of the profile")
+	audioProfileCmd.Flags().String("name", "", "Name of the profile")
+	audioProfileCmd.Flags().String("card", "", "The card to set the profile for")
 	audioProfileCmd.MarkFlagRequired("name")
-	audioProfileCmd.MarkFlagRequired("profile")
+	audioProfileCmd.MarkFlagRequired("card")
 	audioCmd.AddCommand(audioProfileCmd)
 }
