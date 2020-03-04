@@ -33,9 +33,9 @@ This command allows you to set the audio profile on a audio card.`,
 			options["name"] = name
 		}
 
-		profile, err := cmd.Flags().GetString("card")
+		card, err := cmd.Flags().GetString("card")
 		if name != "" && err == nil && cmd.Flags().Changed("card") {
-			options["card"] = profile
+			options["card"] = card
 		}
 
 		resp, err := helper.GenericJSONPost(base, section, command, options)
