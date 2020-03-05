@@ -33,6 +33,7 @@ all options are also available as `SUPERVISOR_` prefixed environment variables l
 Available Commands:
 
 - addons         Install, update, remove and configure Home Assistant add-ons
+- audio          Audio device handling.
 - authentication Authentication for Home Assistant users.
 - core           Provides control of the Home Assistant Core
 - dns            Get information, update or configure the Home Assistant DNS server
@@ -46,20 +47,20 @@ Available Commands:
 
 ## Install
 
-To install, use `go get`:
+Download the pre-build executable from the releases page:
 
-`go get -d github.com/home-assistant/cli`
+<https://github.com/home-assistant/cli/releases>
 
 If running on the Home Assistant host just run `ha`, but if on a remote host you'll need to specify token and endpoint:
 
 ```shell
-ha --endpoint $HA_SERVER/api/hassio --api-token $HA_TOKEN <cmd>
+ha --endpoint $HA_SERVER/api/hassio --api-token $SUPERVISOR_TOKEN <cmd>
 ```
 
 or if you prefer to use environment variables to avoid repetition:
 
 ```shell
-export SUPERVISOR_ENDPOINT=https://hassio.local:8123/api/hassio
+export SUPERVISOR_ENDPOINT=https://homeassistant.local:8123/api/hassio
 export SUPERVISOR_API_TOKEN=longandsafesecret
 ha
 ```
