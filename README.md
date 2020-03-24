@@ -22,7 +22,7 @@ E.g.:
 - --log-level debug -> will set the log level to debug
 - --api-token string   Hass.io API token
 - --config string      config file (default is $HOME/.homeassistant.yaml)
-- --endpoint string    Endpoint for Hass.io Supervisor ( default is 'supervisor' )
+- --endpoint string    Endpoint for the Home Assistant Supervisor (default is 'supervisor')
 - --log-level string   Log level, defaults to Warn
 - --raw-json           Output raw JSON from the API
 
@@ -70,7 +70,7 @@ ha
 1. Fork ([https://github.com/home-assistant/cli/fork](https://github.com/home-assistant/cli/fork))
 1. Create a feature branch
 1. Commit your changes
-1. Rebase your local changes against the master branch
+1. Rebase your local changes against the `master` branch
 1. Run test suite with the `go test ./...` command and confirm that it passes
 1. Run `gofmt -s`
 1. Create a new Pull Request
