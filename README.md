@@ -19,31 +19,36 @@ E.g.:
 
 #### Global
 
-- --log-level debug -> will set the log level to debug
-- --api-token string   Hass.io API token
-- --config string      config file (default is $HOME/.homeassistant.yaml)
-- --endpoint string    Endpoint for the Home Assistant Supervisor (default is 'supervisor')
-- --log-level string   Log level, defaults to Warn
-- --raw-json           Output raw JSON from the API
+```text
+      --api-token string   Home Assistant Supervisor API token
+      --config string      Optional config file (default is $HOME/.homeassistant.yaml)
+      --endpoint string    Endpoint for Home Assistant Supervisor (default is 'supervisor')
+  -h, --help               help for ha
+      --log-level string   Log level (defaults to Warn)
+      --no-progress        Disable the progress spinner
+      --raw-json           Output raw JSON from the API
+```
 
-all options are also available as `SUPERVISOR_` prefixed environment variables like `SUPERVISOR_LOG_LEVEL`
+All options are also available as `SUPERVISOR_` prefixed environment variables like `SUPERVISOR_LOG_LEVEL`
 
-#### SubCommand
+#### Subcommands
 
-Available Commands:
+Available commands:
 
-- addons         Install, update, remove and configure Home Assistant add-ons
-- audio          Audio device handling.
-- authentication Authentication for Home Assistant users.
-- core           Provides control of the Home Assistant Core
-- dns            Get information, update or configure the Home Assistant DNS server
-- hardware       Provides hardware information about your system
-- help           Help about any command
-- host           Control the host/system that Home Assistant is running on
-- info           Provides a general Home Assistant information overview
-- os             Operating System specific for updating, info and configuration imports
-- snapshots      Create, restore and remove snapshot backups
-- supervisor     Monitor, control and configure the Home Assistant Supervisor
+```text
+  addons         Install, update, remove and configure Home Assistant add-ons
+  audio          Audio device handling.
+  authentication Authentication for Home Assistant users.
+  core           Provides control of the Home Assistant Core
+  dns            Get information, update or configure the Home Assistant DNS server
+  hardware       Provides hardware information about your system
+  help           Help about any command
+  host           Control the host/system that Home Assistant is running on
+  info           Provides a general Home Assistant information overview
+  os             Operating System specific for updating, info and configuration imports
+  snapshots      Create, restore and remove snapshot backups
+  supervisor     Monitor, control and configure the Home Assistant Supervisor
+```
 
 ## Install
 
