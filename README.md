@@ -4,7 +4,7 @@
 
 ## Description
 
-Commandline interface to facilitate interaction with Home Assistant
+Command line interface to facilitate interaction with the Home Assistant Supervisor.
 
 ## Usage
 
@@ -50,39 +50,58 @@ Available commands:
   supervisor     Monitor, control and configure the Home Assistant Supervisor
 ```
 
-## Install
+## Installation
 
-Download the pre-build executable from the releases page:
+The CLI is provided by the CLI container on Home Assistant systems and is
+available on the device terminal when using the Home Assistant Operating System.
 
-<https://github.com/home-assistant/cli/releases>
+The CLI is automatically updated on those systems.
 
-If running on the Home Assistant host just run `ha`, but if on a remote host you'll need to specify token and endpoint:
+Furthermore, the SSH add-on (available in the add-on store) provides this
+access to this tool and several community add-ons provide it as well (e.g.,
+the Visual Studio Code add-on).
+
+## Developing & contributing
+
+### Prerequisites
+
+The CLI can interact remotely with the Home Assistant Supervisor using the
+`remote_api` add-on from the [developer add-ons repository](https://github.com/home-assistant/hassio-addons-development).
+
+After installing and starting the add-on, a token is shown in the `remote_api`
+add-on log, which is needed for further development.
+
+### Get the source code
+
+Fork ([https://github.com/home-assistant/cli/fork](https://github.com/home-assistant/cli/fork)) or clone this repository.
+
+### Using it in development
 
 ```shell
-ha --endpoint $HA_SERVER/api/hassio --api-token $SUPERVISOR_TOKEN <cmd>
+export SUPERVISOR_ENDPOINT=http://192.168.1.2
+export SUPERVISOR_API_TOKEN=replace_this_with_remote_api_token
+go run main.go info
 ```
 
-or if you prefer to use environment variables to avoid repetition:
+**Note**: Replace the `192.168.1.2` with the IP address of your Home Assistant
+instance running the `remote_api` add-on and use the token provided.
 
-```shell
-export SUPERVISOR_ENDPOINT=https://homeassistant.local:8123/api/hassio
-export SUPERVISOR_API_TOKEN=longandsafesecret
-ha
-```
+### Building
 
-## Contribution
-
-1. Fork ([https://github.com/home-assistant/cli/fork](https://github.com/home-assistant/cli/fork))
-1. Create a feature branch
-1. Commit your changes
-1. Rebase your local changes against the `master` branch
-1. Run test suite with the `go test ./...` command and confirm that it passes
-1. Run `gofmt -s`
-1. Create a new Pull Request
-
-## Building
+We use go modules; an example build below:
 
 ```bash
-go test ./...
-gox -osarch="linux/arm" -ldflags="-s -w" -output="ha"
+GO111MODULE=on CGO_ENABLED=0 go build -ldflags="-s -w" -o "ha"
 ```
+
+For details how we build cross for different architectures,
+please see our [TravisCI file](https://github.com/home-assistant/cli/blob/master/.travis.yml).
+
+### Contributing a change
+
+1. Create a feature branch on your fork/clone of the git repository.
+2. Commit your changes.
+3. Rebase your local changes against the `master` branch.
+4. Run test suite with the `go test ./...` command and confirm that it passes.
+5. Run `gofmt -s` to ensure your code is formatted properly.
+6. Create a new Pull Request.
