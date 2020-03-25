@@ -91,7 +91,7 @@ instance running the `remote_api` add-on and use the token provided.
 We use go modules; an example build below:
 
 ```bash
-GO111MODULE=on CGO_ENABLED=0 go -ldflags="-s -w" -o "ha"
+GO111MODULE=on CGO_ENABLED=0 go build -ldflags="-s -w" -o "ha"
 ```
 
 For details how we build cross architecture, please see our [TravisCI file](https://github.com/home-assistant/cli/blob/master/.travis.yml).
