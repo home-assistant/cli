@@ -94,7 +94,8 @@ We use go modules; an example build below:
 GO111MODULE=on CGO_ENABLED=0 go build -ldflags="-s -w" -o "ha"
 ```
 
-For details how we build cross architecture, please see our [TravisCI file](https://github.com/home-assistant/cli/blob/master/.travis.yml).
+For details how we build cross for different architectures,
+please see our [TravisCI file](https://github.com/home-assistant/cli/blob/master/.travis.yml).
 
 ### Contributing a change
 
