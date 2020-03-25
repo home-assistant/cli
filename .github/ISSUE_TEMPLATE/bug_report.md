@@ -5,15 +5,17 @@ about: Create a report to help us improve
 ---
 
 **Describe the bug**
+
 A clear and concise description of what the bug is.
 
 **Debug info**
+
 1. SSH Addon type:
 - [ ] Community
 - [ ] Core
 - [ ] Custom
 
-2. Output of `ha --version`
+2. Version of the CLI:
 
 3. Version of Home Assistant Core & the Home Assistant Supervisor
 
