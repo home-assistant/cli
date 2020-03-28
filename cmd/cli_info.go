@@ -14,7 +14,7 @@ var cliInfoCmd = &cobra.Command{
 	Aliases: []string{"in", "inf"},
 	Short:   "Shows information about the internal Home Assistant cli backend",
 	Long: `
-Shows information about the internally running Home Assistant cli backend
+Shows information about the internally running Home Assistant CLI backend
 `,
 	Example: `
   ha cli info
