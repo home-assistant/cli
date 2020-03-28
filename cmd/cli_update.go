@@ -15,7 +15,7 @@ var cliUpdateCmd = &cobra.Command{
 	Short:   "Updates the internal Home Assistant CLI backend",
 	Long: `
 Using this command you can upgrade or downgrade the internal Home Assistant 
-cli backend, to the latest version or the version specified.
+CLI backend, to the latest version or the version specified.
 `,
 	Example: `
   ha cli update --version 5
