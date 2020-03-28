@@ -8,7 +8,7 @@ var cliCmd = &cobra.Command{
 	Use:   "cli",
 	Short: "Get information, update or configure the Home Assistant cli backend",
 	Long: `
-The dns command allows you to manage the internal Home Assistant cli backend by
+The cli command allows you to manage the internal Home Assistant CLI backend by
 exposing commands to view, monitor, configure and control it.`,
 	Example: `
   ha cli info
