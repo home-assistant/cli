@@ -14,7 +14,7 @@ var cliStatsCmd = &cobra.Command{
 	Aliases: []string{"status", "stat"},
 	Short:   "Provides system usage stats of the Home Assistant cli backend",
 	Long: `
-Provides insight into the system usage stats of the Home Assistant cli backend.
+Provides insight into the system usage stats of the Home Assistant CLI backend.
 It shows you how much CPU, memory, disk & network resources it uses.
 `,
 	Example: `
