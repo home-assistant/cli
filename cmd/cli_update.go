@@ -9,22 +9,22 @@ import (
 	"github.com/spf13/viper"
 )
 
-var osUpdateCliCmd = &cobra.Command{
-	Use:     "update-cli",
-	Aliases: []string{"up-cli", "upcli", "cli-update", "cli-up", "cliup"},
-	Short:   "Updates the Home Assistant Operating System CLI",
+var cliUpdateCmd = &cobra.Command{
+	Use:     "update",
+	Aliases: []string{"upgrade", "downgrade", "up", "down"},
+	Short:   "Updates the internal Home Assistant CLI backend",
 	Long: `
-Using this command you can upgrade or downgrade the Home Assistant
-Operating System CLI to the latest version or the version specified.
+Using this command you can upgrade or downgrade the internal Home Assistant 
+CLI backend, to the latest version or the version specified.
 `,
 	Example: `
-  ha os update-cli --version 5
+  ha cli update --version 5
 `,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("os update-cli")
+		log.WithField("args", args).Debug("cli update")
 
-		section := "os"
-		command := "update/cli"
+		section := "cli"
+		command := "update"
 		base := viper.GetString("endpoint")
 
 		var options map[string]interface{}
@@ -37,6 +37,7 @@ Operating System CLI to the latest version or the version specified.
 		ProgressSpinner.Start()
 		resp, err := helper.GenericJSONPost(base, section, command, options)
 		ProgressSpinner.Stop()
+
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true
@@ -49,6 +50,6 @@ Operating System CLI to the latest version or the version specified.
 }
 
 func init() {
-	osUpdateCliCmd.Flags().StringP("version", "", "", "Version to update to")
-	osCmd.AddCommand(osUpdateCliCmd)
+	cliUpdateCmd.Flags().StringP("version", "", "", "Version to update to")
+	cliCmd.AddCommand(cliUpdateCmd)
 }
