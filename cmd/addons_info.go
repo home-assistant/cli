@@ -24,7 +24,6 @@ is provided, information about a specific add-on.
   ha addons info
   ha addons info core_ssh
 `,
-	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("addons info")
 
@@ -42,7 +41,10 @@ is provided, information about a specific add-on.
 
 		request := helper.GetJSONRequest()
 
-		slug := args[0]
+		slug := "self"
+		if len(args) > 0 {
+			slug = args[0]
+		}
 
 		request.SetPathParams(map[string]string{
 			"slug": slug,
