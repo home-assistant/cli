@@ -79,8 +79,8 @@ func init() {
 	supervisorOptionsCmd.Flags().StringP("timezone", "t", "", "Timezone")
 	supervisorOptionsCmd.Flags().StringP("logging", "l", "", "Logging: debug|info|warning|error|critical")
 	supervisorOptionsCmd.Flags().IntP("wait-boot", "w", 0, "Seconds to wait after boot")
-	supervisorOptionsCmd.Flags().BoolP("debug", "", false, "Enable debug Modus")
-	supervisorOptionsCmd.Flags().BoolP("debug-block", "", false, "Enable debug Modus with blocking startup")
+	supervisorOptionsCmd.Flags().BoolP("debug", "", false, "Enable debug mode")
+	supervisorOptionsCmd.Flags().BoolP("debug-block", "", false, "Enable debug mode with blocking startup")
 	supervisorOptionsCmd.Flags().StringArrayP("repositories", "r", []string{}, "repositories to track, can be supplied multiple times")
 	supervisorCmd.AddCommand(supervisorOptionsCmd)
 }
