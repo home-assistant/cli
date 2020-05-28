@@ -19,7 +19,7 @@ snapshot containing a backup of your Home Assistant system.`,
 	Example: `
   ha snapshots new
   ha snapshots new --addons core_ssh --addons core_mosquitto
-  ha snapshots new --folders config
+  ha snapshots new --folders homeassistant
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("snapshots new")
