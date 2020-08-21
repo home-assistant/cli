@@ -49,6 +49,11 @@ Supervisor running on your Home Assistant system.`,
 			options["debug_block"] = debugBlock
 		}
 
+		diagnostics, err := cmd.Flags().GetBool("diagnostics")
+		if err == nil && cmd.Flags().Changed("diagnostics") {
+			options["diagnostics"] = diagnostics
+		}
+
 		waitboot, err := cmd.Flags().GetInt("wait-boot")
 		if cmd.Flags().Changed("wait-boot") {
 			options["wait_boot"] = waitboot
@@ -81,6 +86,7 @@ func init() {
 	supervisorOptionsCmd.Flags().IntP("wait-boot", "w", 0, "Seconds to wait after boot")
 	supervisorOptionsCmd.Flags().BoolP("debug", "", false, "Enable debug mode")
 	supervisorOptionsCmd.Flags().BoolP("debug-block", "", false, "Enable debug mode with blocking startup")
+	supervisorOptionsCmd.Flags().BoolP("diagnostics", "", false, "Enable diagnostics mode")
 	supervisorOptionsCmd.Flags().StringArrayP("repositories", "r", []string{}, "repositories to track, can be supplied multiple times")
 	supervisorCmd.AddCommand(supervisorOptionsCmd)
 }
