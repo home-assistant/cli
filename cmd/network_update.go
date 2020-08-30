@@ -1,11 +1,8 @@
 package cmd
 
 import (
-	"errors"
 	"fmt"
-	"net/http"
 
-	resty "github.com/go-resty/resty/v2"
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
