@@ -28,8 +28,8 @@ Shows information about the host network and interfaces or only from a specific 
 		base := viper.GetString("endpoint")
 
 		if len(args) > 0 {
-			interface := args[0]
-			command = interface + "/info"
+			inet := args[0]
+			command = inet + "/info"
 		}
 
 		resp, err := helper.GenericJSONGet(base, section, command)

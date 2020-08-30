@@ -41,10 +41,10 @@ Update network interface settings of a specific adapter.
 
 		request := helper.GetJSONRequest()
 
-		interface := args[0]
+		inet := args[0]
 
 		request.SetPathParams(map[string]string{
-			"interface": interface,
+			"interface": inet,
 		})
 
 		for _, value := range []string{
