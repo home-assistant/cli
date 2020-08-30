@@ -29,15 +29,6 @@ Update network interface settings of a specific adapter.
 
 		options := make(map[string]interface{})
 
-		url, err := helper.URLHelper(base, section, command)
-		if err != nil {
-			fmt.Println(err)
-			ExitWithError = true
-			return
-		}
-
-		request := helper.GetJSONRequest()
-
 		inet := args[0]
 
 		request.SetPathParams(map[string]string{
