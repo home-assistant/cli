@@ -1,8 +1,7 @@
 package cmd
 
 import (
-	"os"
-
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -20,5 +19,6 @@ system network IP address or set connection options or join into a wifi.`,
 }
 
 func init() {
+	log.Debug("Init network")
 	rootCmd.AddCommand(networkCmd)
 }
