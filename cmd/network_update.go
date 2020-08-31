@@ -29,6 +29,7 @@ Update network interface settings of a specific adapter.
 
 		options := make(map[string]interface{})
 
+		request := helper.GetRequest()
 		inet := args[0]
 
 		request.SetPathParams(map[string]string{
