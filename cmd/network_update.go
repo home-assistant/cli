@@ -24,7 +24,7 @@ Update network interface settings of a specific adapter.
 		log.WithField("args", args).Debug("network update")
 
 		section := "network"
-		command := "{interface}/update"
+		command := "interface/{interface}/update"
 		base := viper.GetString("endpoint")
 
 		options := make(map[string]interface{})
