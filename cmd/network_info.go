@@ -29,7 +29,7 @@ Shows information about the host network and interfaces or only from a specific 
 
 		if len(args) > 0 {
 			inet := args[0]
-			command = inet + "/info"
+			command = "interface/" + inet + "/info"
 		}
 
 		resp, err := helper.GenericJSONGet(base, section, command)
