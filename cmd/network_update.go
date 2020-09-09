@@ -1,8 +1,11 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
+	"net/http"
 
+	resty "github.com/go-resty/resty/v2"
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -27,9 +30,17 @@ Update network interface settings of a specific adapter.
 		command := "interface/{interface}/update"
 		base := viper.GetString("endpoint")
 
+		url, err := helper.URLHelper(base, section, command)
+		if err != nil {
+			fmt.Println(err)
+			ExitWithError = true
+			return
+		}
+
 		options := make(map[string]interface{})
 
-		request := helper.GetRequest()
+		request := helper.GetJSONRequest()
+
 		inet := args[0]
 
 		request.SetPathParams(map[string]string{
@@ -52,7 +63,24 @@ Update network interface settings of a specific adapter.
 			options["dns"] = dns
 		}
 
-		resp, err := helper.GenericJSONPost(base, section, command, options)
+		if len(options) > 0 {
+			log.WithField("options", options).Debug("Request body")
+			request.SetBody(options)
+		}
+
+		resp, err := request.Post(url)
+
+		// returns 200 OK or 400, everything else is wrong
+		if err == nil {
+			if resp.StatusCode() != 200 && resp.StatusCode() != 400 {
+				err = errors.New("Unexpected server response")
+				log.Error(err)
+			} else if !resty.IsJSONType(resp.Header().Get(http.CanonicalHeaderKey("Content-Type"))) {
+				err = errors.New("API did not return a JSON response")
+				log.Error(err)
+			}
+		}
+
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true
