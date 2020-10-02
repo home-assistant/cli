@@ -15,7 +15,7 @@ import (
 var snapshotsInfoCmd = &cobra.Command{
 	Use:     "info [slug]",
 	Aliases: []string{"in", "inf"},
-	Short:   "Provides information about the current available snapshosts",
+	Short:   "Provides information about the current available snapshots",
 	Long: `
 When a Home Assistant snapshot is created, it will be available for restore.
 This command gives you information about a specific snapshot.`,
