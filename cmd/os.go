@@ -18,7 +18,7 @@ upgrade the operating system and the operating system CLI. Finally,
 it provides a command to import configurations from a USB stick.`,
 	Example: `
   ha os info
-	ha os update`,
+  ha os update`,
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		for _, arg := range os.Args {
 			if arg == "hassos" {
