@@ -17,7 +17,7 @@ var dockerRegistriesDeleteCmd = &cobra.Command{
 	Aliases: []string{"del", "remove"},
 	Short:   "Delete docker registry login for specific host",
 	Long: `
-Remove login for docker OCI registry server.
+Remove login for the Docker OCI registry server.
 `,
 	Example: `
   ha docker registries delete my-docker.example.com"
