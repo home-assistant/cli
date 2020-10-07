@@ -14,7 +14,7 @@ var dockerRegistriesCmd = &cobra.Command{
 	Aliases: []string{"reg", "re"},
 	Short:   "Manage private OCI docker registry",
 	Long: `
-Manage private OCI registry server on local docker host.
+Manage private OCI registry server on the local Docker host.
 `,
 	Example: `
 	ha docker registries
