@@ -14,7 +14,7 @@ var dockerInfoCmd = &cobra.Command{
 	Aliases: []string{"in", "inf"},
 	Short:   "Shows information about the host docker backend",
 	Long: `
-Shows information about the local docker backend on the host system
+Shows information about the local Docker backend on the host system
 `,
 	Example: `
   ha docker info
