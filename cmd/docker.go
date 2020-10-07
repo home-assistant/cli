@@ -9,8 +9,8 @@ var dockerCmd = &cobra.Command{
 	Aliases: []string{"do"},
 	Short:   "Docker backend specific for info and OCI configuration",
 	Long: `
-The docker command provides commandline tools to control the host docker that
-Home Assistant is running on. It allows you do thing like use private OCI registries.`,
+The docker command provides command-line tools to control the host docker that
+Home Assistant is running on. It allows you to do things like use private OCI registries.`,
 	Example: `
   ha docker info
   ha docker registries`,
