@@ -26,7 +26,7 @@ clean snapshots from disk.`,
 		log.WithField("args", args).Debug("snapshots remove")
 
 		section := "snapshots"
-		command := "{slug}/remove"
+		command := "{slug}"
 		base := viper.GetString("endpoint")
 
 		url, err := helper.URLHelper(base, section, command)
@@ -44,7 +44,7 @@ clean snapshots from disk.`,
 			"slug": slug,
 		})
 
-		resp, err := request.Post(url)
+		resp, err := request.Delete(url)
 
 		// returns 200 OK or 400, everything else is wrong
 		if err == nil {
