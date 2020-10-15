@@ -30,6 +30,7 @@ var ProgressSpinner = spinner.New(spinner.CharSets[0], 125*time.Millisecond)
 
 var rootCmd = &cobra.Command{
 	Use:   path.Base(os.Args[0]),
+	TraverseChildren: true,
 	Short: "A small CLI program to control Home Assistant",
 	Long: `
 The Home Assistant CLI is a small and simple command line utility that allows
