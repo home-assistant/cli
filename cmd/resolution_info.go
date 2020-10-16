@@ -17,7 +17,7 @@ var resolutionInfoCmd = &cobra.Command{
 This command provides general information about the issues, suggestion and the supported state of the system.`,
 	Example: `
   ha resolution
-  ha resolution suggestion apply [ID]`,
+  ha resolution suggestion apply [id]`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("resolution")
 
