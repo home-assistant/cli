@@ -15,7 +15,7 @@ import (
 var resolutionIssueDismissCmd = &cobra.Command{
 	Use:     "dismiss",
 	Aliases: []string{"disable", "remove"},
-	Short:   "Issues dismiss reported by Resolution center",
+	Short:   "Dismiss issues",
 	Long: `
 This command allows dismissing issues reported by the system.`,
 	Example: `
