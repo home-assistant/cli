@@ -12,7 +12,7 @@ import (
 var resolutionInfoCmd = &cobra.Command{
 	Use:     "resolution",
 	Aliases: []string{"resolutions", "res"},
-	Short:   "Show issues and suggested solutions",
+	Short:   "Show issues and suggestions",
 	Long: `
 This command provides general information about the issues, suggestion and supported state of the System.`,
 	Example: `
