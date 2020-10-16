@@ -14,7 +14,7 @@ var resolutionInfoCmd = &cobra.Command{
 	Aliases: []string{"resolutions", "res"},
 	Short:   "Show issues and suggestions",
 	Long: `
-This command provides general information about the issues, suggestion and supported state of the System.`,
+This command provides general information about the issues, suggestion and the supported state of the system.`,
 	Example: `
   ha resolution
   ha resolution suggestion apply [ID]`,
