@@ -9,9 +9,10 @@ var resolutionCmd = &cobra.Command{
 	Aliases: []string{"resolutions", "res"},
 	Short:   "Resolution center of Supervisor, show issues and suggest solutions",
 	Long: `
-The Resolution center provide information about detected issue on the system. It allow also 
-to give suggestion which can fix the issue and can executed by the suggestion command. Othewise
-it's possible to dismiss issues or suggestion. It show also why a system show as not supported.`,
+The Resolution center provides information about detected issues on the system.
+It also gives suggestions that can fix the issue and can be executed by the suggestion command.
+It is possible to dismiss issues or suggestions. 
+If you are running an unsupported system, the reasons for it will also show here`,
 	Example: `
   ha resolution info
   ha resolution suggestion apply [ID]`,
