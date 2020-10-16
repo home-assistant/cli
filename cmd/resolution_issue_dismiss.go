@@ -17,7 +17,7 @@ var resolutionIssueDismissCmd = &cobra.Command{
 	Aliases: []string{"disable", "remove"},
 	Short:   "Issues dismiss reported by Resolution center",
 	Long: `
-This command allow to dismiss issues reported by the System.`,
+This command allows dismissing issues reported by the system.`,
 	Example: `
   ha resolution issue dismiss [id]`,
 	Args: cobra.ExactArgs(1),
