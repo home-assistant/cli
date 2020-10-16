@@ -17,7 +17,7 @@ var resolutionSuggestionDismissCmd = &cobra.Command{
 	Aliases: []string{"disable", "remove"},
 	Short:   "Suggestion dismiss reported by Resolution center",
 	Long: `
-This command allow to dismiss a suggestion reported by the System.`,
+This command allows dismissing a suggestion reported by the system.`,
 	Example: `
   ha resolution suggestion dismiss [id]`,
 	Args: cobra.ExactArgs(1),
