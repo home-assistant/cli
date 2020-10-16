@@ -6,7 +6,7 @@ import (
 
 var resolutionSuggestionCmd = &cobra.Command{
 	Use:     "suggestion",
-	Aliases: []string{"su", "solve"},
+	Aliases: []string{"su", "solution"},
 	Short:   "Suggestion management reported by Resolution center",
 	Long: `
 This command allow to dismiss or apply suggestion reported by the System.`,
