@@ -15,7 +15,7 @@ It is possible to dismiss issues or suggestions.
 If you are running an unsupported system, the reasons for it will also show here`,
 	Example: `
   ha resolution info
-  ha resolution suggestion apply [ID]`,
+  ha resolution suggestion apply [id]`,
 }
 
 func init() {
