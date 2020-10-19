@@ -42,6 +42,7 @@ Available commands:
   cli            Get information, update or configure the Home Assistant cli backend
   core           Provides control of the Home Assistant Core
   dns            Get information, update or configure the Home Assistant DNS server
+  docker         Docker backend specific for info and OCI configuration
   hardware       Provides hardware information about your system
   help           Help about any command
   host           Control the host/system that Home Assistant is running on
@@ -50,6 +51,7 @@ Available commands:
   network        Network specific for updating, info and configuration imports
   observer       Get information, update or configure the Home Assistant observer
   os             Operating System specific for updating, info and configuration imports
+  resolution     Resolution center of Supervisor, show issues and suggest solutions
   snapshots      Create, restore and remove snapshot backups
   supervisor     Monitor, control and configure the Home Assistant Supervisor
 ```
@@ -95,7 +97,7 @@ instance running the `remote_api` add-on and use the token provided.
 We use go modules; an example build below:
 
 ```bash
-GO111MODULE=on CGO_ENABLED=0 go build -ldflags="-s -w" -o "ha"
+CGO_ENABLED=0 go build -ldflags="-s -w" -o "ha"
 ```
 
 For details how we build cross for different architectures,
