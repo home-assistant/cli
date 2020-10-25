@@ -18,7 +18,9 @@ This command allows you to change a password of a Home Assistant user.
 Please note, this command is limited due to security reasons, and will
 only work on some locations. For example, the Operating System CLI.
 `,
-	Example: `ha authentication reset --username "JohnDoe" --password "123SuperSecret!"`,
+	Example: `
+  ha authentication reset --username "JohnDoe" --password "123SuperSecret!"
+`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("auth reset")
 
