@@ -6,6 +6,9 @@ on:
       - master
   pull_request:
 
+env:
+	GOLANG_VERSION: "v1.31"
+
 jobs:
   golangci:
     name: lint
