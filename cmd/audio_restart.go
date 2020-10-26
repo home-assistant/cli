@@ -32,8 +32,6 @@ var audioRestartCmd = &cobra.Command{
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)
 		}
-
-		return
 	},
 }
 

@@ -32,8 +32,6 @@ all data and devices it currently has.`,
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)
 		}
-
-		return
 	},
 }
 

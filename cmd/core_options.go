@@ -66,8 +66,6 @@ instance running on your Home Assistant system.`,
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)
 		}
-
-		return
 	},
 }
 

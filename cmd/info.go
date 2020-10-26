@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"net/http"
 
 	resty "github.com/go-resty/resty/v2"
 	helper "github.com/home-assistant/cli/client"
@@ -37,14 +36,13 @@ issues or when reporting one on GitHub.
 		}
 
 		request := helper.GetJSONRequest()
-		resp, err := request.Get(url)
+		resp, _ := request.Get(url)
 
-		if !resty.IsJSONType(resp.Header().Get(http.CanonicalHeaderKey("Content-Type"))) {
+		if !resty.IsJSONType(resp.Header().Get("Content-Type")) {
 			fmt.Println("Error: API did not return a JSON response")
 			return
 		}
 		ExitWithError = !helper.ShowJSONResponse(resp)
-		return
 	},
 }
 

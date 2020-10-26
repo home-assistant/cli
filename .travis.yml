@@ -5,10 +5,6 @@ matrix:
   include:
     - go: "1.15"
     - go: "1.15"
-      name: Linter
-      install: go get -u golang.org/x/lint/golint
-      script: golint -set_exit_status ./...
-    - go: "1.15"
       name: Deployment
       before_deploy:
         - CGO_ENABLED=0 GOARCH=386 go build -ldflags="-s -w" -o "ha_i386"

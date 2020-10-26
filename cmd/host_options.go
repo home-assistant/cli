@@ -27,7 +27,7 @@ your Home Assistant is running on.`,
 
 		var options map[string]interface{}
 
-		hostname, err := cmd.Flags().GetString("hostname")
+		hostname, _ := cmd.Flags().GetString("hostname")
 		if hostname != "" {
 			options = map[string]interface{}{"hostname": hostname}
 		}
@@ -39,8 +39,6 @@ your Home Assistant is running on.`,
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)
 		}
-
-		return
 	},
 }
 

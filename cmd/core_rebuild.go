@@ -35,8 +35,6 @@ Don't worry, this does not delete your config.`,
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)
 		}
-
-		return
 	},
 }
 

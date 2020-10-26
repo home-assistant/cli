@@ -35,7 +35,6 @@ information commands for add-ons.`,
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)
 		}
-		return
 	},
 }
 

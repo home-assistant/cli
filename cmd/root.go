@@ -45,7 +45,7 @@ you to control and configure different aspects of Home Assistant`,
 		client.RawJSON = viper.GetBool("raw-json")
 
 		// Only shows spinner output when we have a TTY
-		if noProgress == false && terminal.IsTerminal(int(os.Stdout.Fd())) {
+		if !noProgress && terminal.IsTerminal(int(os.Stdout.Fd())) {
 			// Write to Stderr, helps when redirecting output, e.g., to a file
 			ProgressSpinner.Writer = os.Stderr
 		}

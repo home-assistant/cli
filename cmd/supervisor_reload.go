@@ -32,8 +32,6 @@ all data it currently has, including checking for updates.`,
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)
 		}
-
-		return
 	},
 }
 

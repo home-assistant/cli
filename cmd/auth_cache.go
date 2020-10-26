@@ -3,7 +3,6 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"net/http"
 
 	resty "github.com/go-resty/resty/v2"
 	helper "github.com/home-assistant/cli/client"
@@ -45,7 +44,7 @@ This command allows you to reset the internal password cache of a Home Assistant
 			if resp.StatusCode() != 200 && resp.StatusCode() != 400 {
 				err = errors.New("Unexpected server response")
 				log.Error(err)
-			} else if !resty.IsJSONType(resp.Header().Get(http.CanonicalHeaderKey("Content-Type"))) {
+			} else if !resty.IsJSONType(resp.Header().Get("Content-Type")) {
 				err = errors.New("API did not return a JSON response")
 				log.Error(err)
 			}
@@ -57,8 +56,6 @@ This command allows you to reset the internal password cache of a Home Assistant
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)
 		}
-
-		return
 	},
 }
 

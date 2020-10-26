@@ -37,8 +37,6 @@ Home Assistant Core.`,
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)
 		}
-
-		return
 	},
 }
 

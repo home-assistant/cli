@@ -45,8 +45,6 @@ This command allows you to set the audio profile on a audio card.`,
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)
 		}
-
-		return
 	},
 }
 
