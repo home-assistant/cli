@@ -1,16 +1,14 @@
 language: go
-env:
-  - GO111MODULE=on
 go_import_path: github.com/home-assistant/cli
 matrix:
   fast_finish: true
   include:
-    - go: "1.14"
-    - go: "1.14"
+    - go: "1.15"
+    - go: "1.15"
       name: Linter
       install: go get -u golang.org/x/lint/golint
       script: golint -set_exit_status ./...
-    - go: "1.14"
+    - go: "1.15"
       name: Deployment
       before_deploy:
         - CGO_ENABLED=0 GOARCH=386 go build -ldflags="-s -w" -o "ha_i386"
