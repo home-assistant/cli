@@ -1,9 +1,5 @@
 # Home Assistant CLI
 
-[![Build Status](https://travis-ci.org/home-assistant/cli.svg?branch=master)](https://travis-ci.org/home-assistant/cli)
-
-## Description
-
 Command line interface to facilitate interaction with the Home Assistant Supervisor.
 
 ## Usage
