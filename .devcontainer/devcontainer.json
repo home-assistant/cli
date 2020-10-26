@@ -16,7 +16,11 @@
 		"go.useLanguageServer": true,
 		"go.gopath": "/go",
 		"go.goroot": "/usr/local/go",
-		"go.toolsGopath": "/go/bin"
+		"go.toolsGopath": "/go/bin",
+		"go.lintTool":"golangci-lint",
+		"go.lintFlags": [
+			"--fast"
+		]
 	},
 	"extensions": [
 		"golang.Go"
