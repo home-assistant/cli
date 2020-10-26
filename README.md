@@ -101,7 +101,7 @@ CGO_ENABLED=0 go build -ldflags="-s -w" -o "ha"
 ```
 
 For details how we build cross for different architectures,
-please see our [TravisCI file](https://github.com/home-assistant/cli/blob/master/.travis.yml).
+please see our [build action file](https://github.com/home-assistant/cli/blob/master/.github/workflows/build.yml).
 
 ### Contributing a change
 
