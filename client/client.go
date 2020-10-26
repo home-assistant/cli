@@ -19,10 +19,10 @@ func genericJSONMethod(get bool, base, section, command string, body map[string]
 	request := GetJSONRequest()
 	var resp *resty.Response
 
-	if get == true {
+	if get {
 		resp, err = request.Get(url)
 	} else {
-		if body != nil && len(body) > 0 {
+		if len(body) > 0 {
 			log.WithField("body", body).Debug("Request body")
 			request.SetBody(body)
 		}

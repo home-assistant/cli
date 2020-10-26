@@ -170,7 +170,7 @@ func (s *Spinner) erase() {
 		clearString += " "
 	}
 	clearString += "\r"
-	fmt.Fprintf(s.Writer, clearString)
+	fmt.Fprint(s.Writer, clearString)
 	s.lastOutput = ""
 }
 
