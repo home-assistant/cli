@@ -29,7 +29,7 @@ Multicast server, to the latest version or the version specified.
 
 		var options map[string]interface{}
 
-		version, err := cmd.Flags().GetString("version")
+		version, _ := cmd.Flags().GetString("version")
 		if version != "" {
 			options = map[string]interface{}{"version": version}
 		}
@@ -44,8 +44,6 @@ Multicast server, to the latest version or the version specified.
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)
 		}
-
-		return
 	},
 }
 

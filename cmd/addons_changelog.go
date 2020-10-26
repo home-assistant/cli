@@ -57,8 +57,6 @@ ha addons changelog core_mosquitto`,
 		} else {
 			fmt.Println(string(resp.Body()))
 		}
-
-		return
 	},
 }
 

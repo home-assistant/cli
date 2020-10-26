@@ -33,7 +33,6 @@ restore, and delete using this command.`,
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)
 		}
-		return
 	},
 }
 

@@ -34,8 +34,6 @@ your system.`,
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)
 		}
-
-		return
 	},
 }
 

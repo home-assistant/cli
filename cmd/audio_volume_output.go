@@ -70,8 +70,6 @@ output channel or application on your Home Assistant system.`,
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)
 		}
-
-		return
 	},
 }
 

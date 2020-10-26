@@ -39,8 +39,6 @@ an add-on is released, but not yet available as an upgrade in Home Assistant.
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)
 		}
-
-		return
 	},
 }
 

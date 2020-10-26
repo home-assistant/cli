@@ -33,7 +33,6 @@ the internals of Home Assistant.`,
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)
 		}
-		return
 	},
 }
 

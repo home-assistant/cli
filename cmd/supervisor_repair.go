@@ -36,8 +36,6 @@ the Home Assistant Supervisor will try to resolve these.
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)
 		}
-
-		return
 	},
 }
 

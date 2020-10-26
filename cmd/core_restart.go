@@ -33,8 +33,6 @@ Restart the Home Assistant Core instance running on your system`,
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)
 		}
-
-		return
 	},
 }
 

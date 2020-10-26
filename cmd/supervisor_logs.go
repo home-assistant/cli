@@ -40,7 +40,6 @@ Supervisor running on your Home Assistant system.`,
 		} else {
 			fmt.Println(resp.String())
 		}
-		return
 	},
 }
 

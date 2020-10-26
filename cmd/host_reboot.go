@@ -31,7 +31,6 @@ Reboot the machine that your Home Assistant is running on.`,
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)
 		}
-		return
 	},
 }
 

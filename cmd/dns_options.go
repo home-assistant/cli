@@ -43,8 +43,6 @@ running Home Assistant DNS server.
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)
 		}
-
-		return
 	},
 }
 

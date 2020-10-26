@@ -48,8 +48,6 @@ only work on some locations. For example, the Operating System CLI.
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)
 		}
-
-		return
 	},
 }
 

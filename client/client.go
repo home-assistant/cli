@@ -2,10 +2,9 @@ package client
 
 import (
 	"errors"
-	"net/http"
 
-	log "github.com/sirupsen/logrus"
 	resty "github.com/go-resty/resty/v2"
+	log "github.com/sirupsen/logrus"
 )
 
 // RawJSON controls if the client does json handling or outputs it raw
@@ -36,7 +35,7 @@ func genericJSONMethod(get bool, base, section, command string, body map[string]
 			err = errors.New("Unexpected server response")
 			log.Error(err)
 			return nil, err
-		} else if !resty.IsJSONType(resp.Header().Get(http.CanonicalHeaderKey("Content-Type"))) {
+		} else if !resty.IsJSONType(resp.Header().Get("Content-Type")) {
 			err = errors.New("API did not return a JSON response")
 			log.Error(err)
 			return nil, err

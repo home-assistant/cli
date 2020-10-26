@@ -34,8 +34,6 @@ your system. This, of course, only applies when it has been stopped.`,
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)
 		}
-
-		return
 	},
 }
 

@@ -32,7 +32,6 @@ This command provides general information about the issues, suggestion and the s
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)
 		}
-		return
 	},
 }
 

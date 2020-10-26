@@ -41,8 +41,6 @@ Home Assistant Audio on your Home Assistant system.`,
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)
 		}
-
-		return
 	},
 }
 

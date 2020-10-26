@@ -32,7 +32,6 @@ WARNING: This is turning off the computer/device.`,
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)
 		}
-		return
 	},
 }
 

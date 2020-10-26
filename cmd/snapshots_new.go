@@ -65,8 +65,6 @@ snapshot containing a backup of your Home Assistant system.`,
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)
 		}
-
-		return
 	},
 }
 

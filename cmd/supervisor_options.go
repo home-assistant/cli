@@ -54,7 +54,7 @@ Supervisor running on your Home Assistant system.`,
 			options["diagnostics"] = diagnostics
 		}
 
-		waitboot, err := cmd.Flags().GetInt("wait-boot")
+		waitboot, _ := cmd.Flags().GetInt("wait-boot")
 		if cmd.Flags().Changed("wait-boot") {
 			options["wait_boot"] = waitboot
 		}
@@ -73,8 +73,6 @@ Supervisor running on your Home Assistant system.`,
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)
 		}
-
-		return
 	},
 }
 
