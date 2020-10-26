@@ -7,7 +7,7 @@ on:
   pull_request:
 
 env:
-	GOLANG_VERSION: "v1.31"
+  GOLANG_VERSION: "v1.31"
 
 jobs:
   golangci:
