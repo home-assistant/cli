@@ -50,6 +50,7 @@ Update network interface settings of a specific adapter.
 			"address",
 			"gateway",
 			"method",
+			"ip_version",
 		} {
 			val, err := cmd.Flags().GetString(value)
 			if val != "" && err == nil && cmd.Flags().Changed(value) {
@@ -92,7 +93,8 @@ Update network interface settings of a specific adapter.
 func init() {
 	networkUpdateCmd.Flags().StringP("address", "a", "", "IP address for the interface in the 192.168.1.5/24")
 	networkUpdateCmd.Flags().StringP("gateway", "g", "", "The gateway the interface should use")
-	networkUpdateCmd.Flags().StringP("method", "m", "", "Method: static|dhcp")
+	networkUpdateCmd.Flags().StringP("method", "m", "", "Method: static|dhcp|disabled")
+	networkUpdateCmd.Flags().StringP("ip_version", "v", "", "Version: ipv4|ipv6")
 	networkUpdateCmd.Flags().StringArrayP("dns", "d", []string{}, "Upstream DNS servers to use. Use multiple times for multiple servers.")
 	networkCmd.AddCommand(networkUpdateCmd)
 }
