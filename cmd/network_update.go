@@ -20,7 +20,7 @@ var networkUpdateCmd = &cobra.Command{
 Update network interface settings of a specific adapter.
 `,
 	Example: `
-  ha network update eth0 --method dhcp
+  ha network update eth0 --ipv4-method dhcp --ipv6-method disabled
 `,
 	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {

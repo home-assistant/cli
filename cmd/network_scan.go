@@ -13,7 +13,7 @@ import (
 
 var networkScanCmd = &cobra.Command{
 	Use:     "scan [interface]",
-	Aliases: []string{"set", "up"},
+	Aliases: []string{"accesspoints", "wifi"},
 	Short:   "Scan for Access Points on a wireless interface.",
 	Long: `
 Scan for Access Points on a specific wireless interfac.
