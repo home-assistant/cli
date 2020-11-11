@@ -16,8 +16,8 @@ var networkScanCmd = &cobra.Command{
 	Aliases: []string{"accesspoints", "wifi"},
 	Short:   "Scan for Access Points on a wireless interface.",
 	Long: `
-Scan for Access Points on a specific wireless interfac.
-This function work only on a wireless interface!
+Scan for Access Points on a specific wireless interface.
+This function works only on a wireless interface!
 `,
 	Example: `
   ha network scan wlan0

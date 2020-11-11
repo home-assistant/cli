@@ -14,10 +14,10 @@ import (
 var networkVlanCmd = &cobra.Command{
 	Use:     "vlan [interface] [id]",
 	Aliases: []string{},
-	Short:   "Create a new vlan on a ethernet interface interface",
+	Short:   "Create a new VLAN on an ethernet interface interface",
 	Long: `
-Create a new vlan on a ethernet interface. It allow to set a inital IP config.
-This function work only on a ethernet interface!
+Create a new VLAN on an ethernet interface. It allows setting an initial IP config.
+This function works only on an ethernet interface!
 `,
 	Example: `
   ha network vlan eth0 10 --ipv4-method dhcp --ipv6-method disabled
