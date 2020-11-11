@@ -55,7 +55,7 @@ Update network interface settings of a specific adapter.
 		helperWifiConfig(cmd, options)
 
 		enabled, err := cmd.Flags().GetBool("enabled")
-		if err != nil {
+		if err == nil {
 			options["enabled"] = enabled
 		}
 
