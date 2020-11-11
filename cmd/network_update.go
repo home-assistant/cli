@@ -114,7 +114,7 @@ func helperIpConfig(version string, cmd *cobra.Command, options map[string]inter
 	} {
 		val, err := cmd.Flags().GetString(value)
 		if val != "" && err == nil && cmd.Flags().Changed(value) {
-			ipConfig[strings.Split(".", value)[1]] = val
+			ipConfig[strings.Split("-", value)[1]] = val
 		}
 	}
 
@@ -124,7 +124,7 @@ func helperIpConfig(version string, cmd *cobra.Command, options map[string]inter
 	} {
 		val, err := cmd.Flags().GetStringArray(value)
 		if len(val) >= 1 && err == nil && cmd.Flags().Changed(value) {
-			ipConfig[strings.Split(".", value)[1]] = val
+			ipConfig[strings.Split("-", value)[1]] = val
 		}
 	}
 
@@ -144,7 +144,7 @@ func helperWifiConfig(cmd *cobra.Command, options map[string]interface{}) {
 	} {
 		val, err := cmd.Flags().GetString(value)
 		if val != "" && err == nil && cmd.Flags().Changed(value) {
-			wifiConfig[strings.Split(".", value)[1]] = val
+			wifiConfig[strings.Split("-", value)[1]] = val
 		}
 	}
 
