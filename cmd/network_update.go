@@ -86,12 +86,12 @@ Update network interface settings of a specific adapter.
 
 func init() {
 
-	networkUpdateCmd.Flags().StringArray("ip4-address", []string{}, "IPv4 address for the interface in the 192.168.1.5/24")
+	networkUpdateCmd.Flags().StringArray("ipv4-address", []string{}, "IPv4 address for the interface in the 192.168.1.5/24")
 	networkUpdateCmd.Flags().String("ipv4-gateway", "", "The IPv4 gateway the interface should use")
 	networkUpdateCmd.Flags().String("ipv4-method", "", "Method on IPv4: static|auto|disabled")
 	networkUpdateCmd.Flags().StringArray("ipv4-nameserver", []string{}, "Upstream DNS servers to use for IPv4. Use multiple times for multiple servers.")
 
-	networkUpdateCmd.Flags().StringArray("ip6-address", []string{}, "IPv6 address for the interface in the 2001:0db8:85a3:0000:0000:8a2e:0370:7334/64")
+	networkUpdateCmd.Flags().StringArray("ipv6-address", []string{}, "IPv6 address for the interface in the 2001:0db8:85a3:0000:0000:8a2e:0370:7334/64")
 	networkUpdateCmd.Flags().String("ipv6-gateway", "", "The IPv6 gateway the interface should use")
 	networkUpdateCmd.Flags().String("ipv6-method", "", "Method on IPv6: static|auto|disabled")
 	networkUpdateCmd.Flags().StringArray("ipv6-nameserver", []string{}, "Upstream DNS servers to use for IPv6. Use multiple times for multiple servers.")
