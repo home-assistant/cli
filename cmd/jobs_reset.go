@@ -13,7 +13,7 @@ var jobsResetCmd = &cobra.Command{
 	Use:     "reset",
 	Short:   "Resets the internal Home Assistant Job Manager configuration",
 	Long:    `Resets the internal Home Assistant Job Manager configuration.`,
-	Example: `ha dns reset`,
+	Example: `ha jobs reset`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("jobs reset")
 
