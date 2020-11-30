@@ -3,7 +3,6 @@ package cmd
 import (
 	"fmt"
 
-	resty "github.com/go-resty/resty/v2"
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -29,20 +28,13 @@ issues or when reporting one on GitHub.
 		command := ""
 		base := viper.GetString("endpoint")
 
-		url, err := helper.URLHelper(base, section, command)
+		resp, err := helper.GenericJSONGet(base, section, command)
 		if err != nil {
-			fmt.Printf("Error: %v", err)
-			return
+			fmt.Println(err)
+			ExitWithError = true
+		} else {
+			ExitWithError = !helper.ShowJSONResponse(resp)
 		}
-
-		request := helper.GetJSONRequest()
-		resp, _ := request.Get(url)
-
-		if !resty.IsJSONType(resp.Header().Get("Content-Type")) {
-			fmt.Println("Error: API did not return a JSON response")
-			return
-		}
-		ExitWithError = !helper.ShowJSONResponse(resp)
 	},
 }
 
