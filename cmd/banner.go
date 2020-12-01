@@ -108,7 +108,7 @@ var bannerCmd = &cobra.Command{
 		fmt.Printf("  %-25s %s\n", "Home Assistant Core:", (*coreinfo)["version"])
 		fmt.Println()
 		fmt.Printf("  %-25s %s://%s.local:%d\n", "Home Assistant URL:", protocol, hostinfo["hostname"], int(port))
-		fmt.Printf("  %-25s %s://%s.local:%d\n", "Observer URL:", protocol, hostinfo["hostname"], 4357)
+		fmt.Printf("  %-25s http://%s.local:%d\n", "Observer URL:", hostinfo["hostname"], 4357)
 	},
 }
 
