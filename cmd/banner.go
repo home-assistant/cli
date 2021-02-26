@@ -71,26 +71,29 @@ var bannerCmd = &cobra.Command{
 		// Print network address information
 		netinfo := pokeAPI("network", "info")
 		netifaces := (*netinfo)["interfaces"].([]interface{})
+		if (*netinfo)["interfaces"] != nil {
+			for _, netiface := range netifaces {
+				nf := netiface.(map[string]interface{})
+				title_ipv4 := fmt.Sprintf("IPv4 addresses for %s:", nf["interface"])
+				title_ipv6 := fmt.Sprintf("IPv6 addresses for %s:", nf["interface"])
 
-		for _, netiface := range netifaces {
-			nf := netiface.(map[string]interface{})
-			title_ipv4 := fmt.Sprintf("IPv4 addresses for %s:", nf["interface"])
-			title_ipv6 := fmt.Sprintf("IPv6 addresses for %s:", nf["interface"])
+				if nf["ipv4"] == nil {
+					fmt.Printf("  %-25s (no address)\n", title_ipv4)
+				} else {
+					ipv4 := nf["ipv4"].(map[string]interface{})
+					fmt.Printf("  %-25s %s\n", title_ipv4, getAddresses(ipv4["address"].([]interface{})))
+				}
 
-			if nf["ipv4"] == nil {
-				fmt.Printf("  %-25s (no address)\n", title_ipv4)
-			} else {
-				ipv4 := nf["ipv4"].(map[string]interface{})
-				fmt.Printf("  %-25s %s\n", title_ipv4, getAddresses(ipv4["address"].([]interface{})))
-			}
-
-			if nf["ipv6"] != nil {
-				ipv6 := nf["ipv6"].(map[string]interface{})
-				ipv6_addresses := ipv6["address"].([]interface{})
-				if len(ipv6_addresses) > 0 {
-					fmt.Printf("  %-25s %s\n", title_ipv6, getAddresses(ipv6_addresses))
+				if nf["ipv6"] != nil {
+					ipv6 := nf["ipv6"].(map[string]interface{})
+					ipv6_addresses := ipv6["address"].([]interface{})
+					if len(ipv6_addresses) > 0 {
+						fmt.Printf("  %-25s %s\n", title_ipv6, getAddresses(ipv6_addresses))
+					}
 				}
 			}
+		} else {
+			fmt.Printf("  (no networking information)")
 		}
 		fmt.Println()
 
