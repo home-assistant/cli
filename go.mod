@@ -4,7 +4,7 @@ go 1.15
 
 require (
 	github.com/ghodss/yaml v1.0.0
-	github.com/go-resty/resty/v2 v2.4.0
+	github.com/go-resty/resty/v2 v2.5.0
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/pelletier/go-toml v1.8.0 // indirect
 	github.com/sirupsen/logrus v1.8.1
