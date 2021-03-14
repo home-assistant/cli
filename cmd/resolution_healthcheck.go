@@ -11,7 +11,7 @@ import (
 
 var resolutionHealthCheckCmd = &cobra.Command{
 	Use:     "healthcheck",
-	Aliases: []string{"check", "run"},
+	Aliases: []string{"evaluate", "run"},
 	Short:   "Execute system healthcheck and fixups",
 	Long: `
 This command execute a full system check and auto fixups. It check all issues again to see if they
