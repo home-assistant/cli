@@ -43,9 +43,11 @@ This command allow to apply options to an specific check managed by the System.`
 			"check": check,
 		})
 
-		enabled, err := cmd.Flags().GetBool("enabled")
-		if err == nil && cmd.Flags().Changed("enabled") {
-			options["enabled"] = enabled
+		if cmd.Flags().Changed("enable") {
+			options["enabled"] = true
+
+		} else if cmd.Flags().Changed("disable") {
+			options["enabled"] = false
 		}
 
 		if len(options) > 0 {
@@ -75,6 +77,7 @@ This command allow to apply options to an specific check managed by the System.`
 }
 
 func init() {
-	resolutionCheckOptionsCmd.Flags().BoolP("enabled", "", true, "Disable/Enable check on the backend")
+	resolutionCheckOptionsCmd.Flags().BoolP("enable", "", true, "Enable check on the backend")
+	resolutionCheckOptionsCmd.Flags().BoolP("disable", "", true, "Disable check on the backend")
 	resolutionCheckCmd.AddCommand(resolutionCheckOptionsCmd)
 }
