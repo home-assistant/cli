@@ -53,7 +53,7 @@ This function works only on an ethernet interface!
 		helperIpConfig("ipv4", cmd, options)
 		helperIpConfig("ipv6", cmd, options)
 
-		if len(options) >= 1 {
+		if len(options) > 0 {
 			log.WithField("options", options).Debug("Request body")
 			request.SetBody(options)
 		}

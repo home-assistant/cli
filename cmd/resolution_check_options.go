@@ -49,6 +49,7 @@ This command allow to apply options to an specific check managed by the System.`
 		}
 
 		if len(options) > 0 {
+			log.WithField("options", options).Debug("Request body")
 			request.SetBody(options)
 		}
 		resp, err := request.Post(url)
