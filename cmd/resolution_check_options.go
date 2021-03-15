@@ -14,9 +14,9 @@ import (
 var resolutionCheckOptionsCmd = &cobra.Command{
 	Use:     "options",
 	Aliases: []string{"option", "opt", "opts", "op"},
-	Short:   "Options apply to check managed by Resolution center",
+	Short:   "Options apply to checks managed by the Resolution center",
 	Long: `
-This command allow to apply options to an specific check managed by the System.`,
+This command allows to apply options to an specific check managed by the system.`,
 	Example: `
   ha resolution check options [slug]`,
 	Args: cobra.ExactArgs(1),
@@ -75,7 +75,7 @@ This command allow to apply options to an specific check managed by the System.`
 }
 
 func init() {
-	resolutionCheckOptionsCmd.Flags().BoolP("enabled", "", true, "Enable/Disable check on the backend")
+	resolutionCheckOptionsCmd.Flags().BoolP("enabled", "", true, "Enable/Disable check on the system")
 	resolutionCheckOptionsCmd.Flags().Lookup("enabled").NoOptDefVal = "true"
 	resolutionCheckCmd.AddCommand(resolutionCheckOptionsCmd)
 }

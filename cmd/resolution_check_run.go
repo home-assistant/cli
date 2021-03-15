@@ -14,9 +14,9 @@ import (
 var resolutionCheckRunCmd = &cobra.Command{
 	Use:     "run",
 	Aliases: []string{"execute", "ru"},
-	Short:   "Run a specific check by Resolution center",
+	Short:   "Run a specific check at the Resolution center",
 	Long: `
-This command execute an backend check imidently by the System.`,
+This command executes an backend check immediately on the system.`,
 	Example: `
   ha resolution check run [slug]`,
 	Args: cobra.ExactArgs(1),

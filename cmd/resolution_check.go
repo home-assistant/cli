@@ -7,9 +7,9 @@ import (
 var resolutionCheckCmd = &cobra.Command{
 	Use:     "check",
 	Aliases: []string{"checks", "test", "che", "ch"},
-	Short:   "Check management by Resolution center",
+	Short:   "Check management by the Resolution center",
 	Long: `
-This command allows to manage checks they runs by the system.`,
+This command allows to manage checks that are run by the system.`,
 	Example: `
   ha resolution check options [slug]`,
 }
