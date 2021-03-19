@@ -11,7 +11,7 @@ import (
 
 var networkReloadCmd = &cobra.Command{
 	Use:     "reload",
-	Aliases: []string{"re", "update"},
+	Aliases: []string{"re"},
 	Short:   "Reload Network information the host",
 	Long: `
 Reload information about the host network and interfaces.
