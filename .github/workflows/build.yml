@@ -45,3 +45,12 @@ jobs:
         asset_path: "${{ github.workspace }}/${{ matrix.variant.name }}"
         asset_name: ${{ matrix.variant.name }}
         asset_content_type: application/x-binary
+
+    - name: Signing asset
+      if: github.event_name == 'release'
+      uses: home-assistant/actions/helpers/codenotary@master
+      with:
+        source: "${{ github.workspace }}/${{ matrix.variant.name }}"
+        user: ${{ secrets.VCN_USER }}
+        password: ${{ secrets.VCN_PASSWORD }}
+        organisation: ${{ secrets.VCN_ORG }}
