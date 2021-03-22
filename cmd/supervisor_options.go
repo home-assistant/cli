@@ -86,10 +86,10 @@ func init() {
 	supervisorOptionsCmd.Flags().BoolP("diagnostics", "", false, "Enable diagnostics mode")
 	supervisorOptionsCmd.Flags().StringArrayP("repositories", "r", []string{}, "repositories to track, can be supplied multiple times")
 
-	resolutionCheckOptionsCmd.Flags().Lookup("content-trust").NoOptDefVal = "true"
-	resolutionCheckOptionsCmd.Flags().Lookup("debug").NoOptDefVal = "false"
-	resolutionCheckOptionsCmd.Flags().Lookup("debug-block").NoOptDefVal = "false"
-	resolutionCheckOptionsCmd.Flags().Lookup("diagnostics").NoOptDefVal = "false"
+	supervisorOptionsCmd.Flags().Lookup("content-trust").NoOptDefVal = "true"
+	supervisorOptionsCmd.Flags().Lookup("debug").NoOptDefVal = "false"
+	supervisorOptionsCmd.Flags().Lookup("debug-block").NoOptDefVal = "false"
+	supervisorOptionsCmd.Flags().Lookup("diagnostics").NoOptDefVal = "false"
 
 	supervisorCmd.AddCommand(supervisorOptionsCmd)
 }
