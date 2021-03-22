@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"strings"
 
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
@@ -39,19 +40,16 @@ Supervisor running on your Home Assistant system.`,
 			}
 		}
 
-		debug, err := cmd.Flags().GetBool("debug")
-		if err == nil && cmd.Flags().Changed("debug") {
-			options["debug"] = debug
-		}
-
-		debugBlock, err := cmd.Flags().GetBool("debug-block")
-		if err == nil && cmd.Flags().Changed("debug-block") {
-			options["debug_block"] = debugBlock
-		}
-
-		diagnostics, err := cmd.Flags().GetBool("diagnostics")
-		if err == nil && cmd.Flags().Changed("diagnostics") {
-			options["diagnostics"] = diagnostics
+		for _, value := range []string{
+			"debug",
+			"debug-block",
+			"diagnostics",
+			"content-trust",
+		} {
+			data, err := cmd.Flags().GetBool(value)
+			if err == nil && cmd.Flags().Changed(value) {
+				options[strings.Replace(value, "-", "_", -1)] = data
+			}
 		}
 
 		waitboot, _ := cmd.Flags().GetInt("wait-boot")
@@ -82,9 +80,16 @@ func init() {
 	supervisorOptionsCmd.Flags().StringP("timezone", "t", "", "Timezone")
 	supervisorOptionsCmd.Flags().StringP("logging", "l", "", "Logging: debug|info|warning|error|critical")
 	supervisorOptionsCmd.Flags().IntP("wait-boot", "w", 0, "Seconds to wait after boot")
+	supervisorOptionsCmd.Flags().BoolP("content-trust", "", true, "Enable/Disable content-trust on the backend")
 	supervisorOptionsCmd.Flags().BoolP("debug", "", false, "Enable debug mode")
 	supervisorOptionsCmd.Flags().BoolP("debug-block", "", false, "Enable debug mode with blocking startup")
 	supervisorOptionsCmd.Flags().BoolP("diagnostics", "", false, "Enable diagnostics mode")
 	supervisorOptionsCmd.Flags().StringArrayP("repositories", "r", []string{}, "repositories to track, can be supplied multiple times")
+
+	resolutionCheckOptionsCmd.Flags().Lookup("content-trust").NoOptDefVal = "true"
+	resolutionCheckOptionsCmd.Flags().Lookup("debug").NoOptDefVal = "false"
+	resolutionCheckOptionsCmd.Flags().Lookup("debug-block").NoOptDefVal = "false"
+	resolutionCheckOptionsCmd.Flags().Lookup("diagnostics").NoOptDefVal = "false"
+
 	supervisorCmd.AddCommand(supervisorOptionsCmd)
 }
