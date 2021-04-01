@@ -41,6 +41,9 @@ func pokeAPI(section string, command string) (outdata *(map[string]interface{}))
 		} else {
 			outdata = &(data.Data)
 		}
+	} else {
+		fmt.Println("No result from API - Supervisor not (yet) running.")
+		ExitWithError = true
 	}
 	return
 }
@@ -68,11 +71,15 @@ var bannerCmd = &cobra.Command{
 
 		fmt.Println("System information")
 
-		// Print network address information
 		netinfo := pokeAPI("network", "info")
-		netifaces := (*netinfo)["interfaces"].([]interface{})
-		if (*netinfo)["interfaces"] != nil {
-			for _, netiface := range netifaces {
+		if netinfo == nil {
+			return
+		}
+
+		// Print network address information
+		netifaces, exist := (*netinfo)["interfaces"]
+		if exist {
+			for _, netiface := range netifaces.([]interface{}) {
 				nf := netiface.(map[string]interface{})
 				title_ipv4 := fmt.Sprintf("IPv4 addresses for %s:", nf["interface"])
 				title_ipv6 := fmt.Sprintf("IPv6 addresses for %s:", nf["interface"])
@@ -98,8 +105,14 @@ var bannerCmd = &cobra.Command{
 		fmt.Println()
 
 		// Print Host URL
-		hostinfo := *pokeAPI("host", "info")
+		hostinfo := pokeAPI("host", "info")
+		if hostinfo == nil {
+			return
+		}
 		coreinfo := pokeAPI("core", "info")
+		if coreinfo == nil {
+			return
+		}
 
 		protocol := "http"
 		if (*coreinfo)["ssl"] == "true" {
@@ -107,11 +120,11 @@ var bannerCmd = &cobra.Command{
 		}
 
 		port, _ := (*coreinfo)["port"].(float64)
-		fmt.Printf("  %-25s %s\n", "OS Version:", hostinfo["operating_system"])
+		fmt.Printf("  %-25s %s\n", "OS Version:", (*hostinfo)["operating_system"])
 		fmt.Printf("  %-25s %s\n", "Home Assistant Core:", (*coreinfo)["version"])
 		fmt.Println()
-		fmt.Printf("  %-25s %s://%s.local:%d\n", "Home Assistant URL:", protocol, hostinfo["hostname"], int(port))
-		fmt.Printf("  %-25s http://%s.local:%d\n", "Observer URL:", hostinfo["hostname"], 4357)
+		fmt.Printf("  %-25s %s://%s.local:%d\n", "Home Assistant URL:", protocol, (*hostinfo)["hostname"], int(port))
+		fmt.Printf("  %-25s http://%s.local:%d\n", "Observer URL:", (*hostinfo)["hostname"], 4357)
 	},
 }
 
