@@ -11,7 +11,7 @@ var networkCmd = &cobra.Command{
 	Short:   "Network specific for updating, info and configuration imports",
 	Long: `
 The network command provides command line tools to control the host network that
-Home Assistant is running on. It allows you do thing like change the
+Home Assistant is running on. It allows you to do things like change the
 system network IP address, set connection options or join a Wi-Fi network.`,
 	Example: `
   ha network info
