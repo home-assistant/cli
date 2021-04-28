@@ -1,16 +1,17 @@
 package client
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/url"
 	"path"
-	"encoding/json"
+	"time"
 
+	yaml "github.com/ghodss/yaml"
+	resty "github.com/go-resty/resty/v2"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
-	resty "github.com/go-resty/resty/v2"
-	yaml "github.com/ghodss/yaml"
 
 	"strings"
 )
@@ -78,6 +79,12 @@ func GetRequest() *resty.Request {
 
 	if client == nil {
 		client = resty.New()
+
+		// Default is no timeout. This can lead to lockup the CLI
+		// in case the server does not respond. Set a somewhat low
+		// timeout for our local only use case.
+		client.SetTimeout(30 * time.Second)
+
 		// Registering Response Middleware
 		client.OnAfterResponse(func(c *resty.Client, resp *resty.Response) error {
 			// explore response object
