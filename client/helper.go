@@ -78,6 +78,12 @@ func GetRequest() *resty.Request {
 
 	if client == nil {
 		client = resty.New()
+
+		// Default is no timeout. This can lead to lockup the CLI
+		// in case the server does not respond. Set a somewhat low
+		// timeout for our local only use case.
+		client.SetTimeout(30 * time.Second)
+
 		// Registering Response Middleware
 		client.OnAfterResponse(func(c *resty.Client, resp *resty.Response) error {
 			// explore response object
