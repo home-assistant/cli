@@ -1,16 +1,17 @@
 package client
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/url"
 	"path"
-	"encoding/json"
+	"time"
 
+	yaml "github.com/ghodss/yaml"
+	resty "github.com/go-resty/resty/v2"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
-	resty "github.com/go-resty/resty/v2"
-	yaml "github.com/ghodss/yaml"
 
 	"strings"
 )
