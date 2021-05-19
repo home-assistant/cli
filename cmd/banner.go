@@ -79,7 +79,11 @@ var bannerCmd = &cobra.Command{
 				// loaded...
 				netinfo, err := supervisorGet("network", "info")
 				if err == nil && netinfo != nil {
-					break
+
+					netifaces, exist := (*netinfo)["interfaces"]
+					if exist && len(netifaces.([]interface{})) > 0 {
+						break
+					}
 				}
 				if i == 0 {
 					fmt.Println("Waiting for Supervisor to startup...")
