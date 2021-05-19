@@ -16,6 +16,8 @@ import (
 	"strings"
 )
 
+const DefaultTimeout = 30 * time.Second
+
 var client *resty.Client
 
 // Response is the default JSON response from the Home Assistant Supervisor
@@ -62,8 +64,8 @@ func URLHelper(base, section, command string) (string, error) {
 }
 
 // GetJSONRequest returns a request prepared for default JSON resposes
-func GetJSONRequest() *resty.Request {
-	request := GetRequest().
+func GetJSONRequestTimeout(timeout time.Duration) *resty.Request {
+	request := GetRequestTimeout(timeout).
 		SetResult(Response{}).
 		SetError(Response{})
 	if RawJSON {
@@ -73,8 +75,12 @@ func GetJSONRequest() *resty.Request {
 	return request
 }
 
+func GetJSONRequest() *resty.Request {
+	return GetJSONRequestTimeout(DefaultTimeout)
+}
+
 // GetRequest returns a resty.Request object prepared for an API call
-func GetRequest() *resty.Request {
+func GetRequestTimeout(timeout time.Duration) *resty.Request {
 	apiToken := viper.GetString("api-token")
 
 	if client == nil {
@@ -83,7 +89,7 @@ func GetRequest() *resty.Request {
 		// Default is no timeout. This can lead to lockup the CLI
 		// in case the server does not respond. Set a somewhat low
 		// timeout for our local only use case.
-		client.SetTimeout(30 * time.Second)
+		client.SetTimeout(timeout)
 
 		// Registering Response Middleware
 		client.OnAfterResponse(func(c *resty.Client, resp *resty.Response) error {
@@ -151,4 +157,8 @@ func ShowJSONResponse(resp *resty.Response) (success bool) {
 		fmt.Print(string(d))
 	}
 	return
+}
+
+func GetRequest() *resty.Request {
+	return GetRequestTimeout(DefaultTimeout)
 }
