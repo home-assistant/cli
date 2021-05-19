@@ -66,7 +66,7 @@ var bannerCmd = &cobra.Command{
 		fmt.Print(haBanner)
 		fmt.Println()
 
-		nowait, err := cmd.Flags().GetBool("no-wait-for-supervisor")
+		nowait, err := cmd.Flags().GetBool("no-wait")
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true
@@ -163,5 +163,5 @@ var bannerCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(bannerCmd)
-	bannerCmd.Flags().Bool("no-wait-for-supervisor", false, "Don't wait until supervisor is started")
+	bannerCmd.Flags().Bool("no-wait", false, "Don't wait until Supervisor is started")
 }
