@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"time"
 
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
@@ -35,7 +36,7 @@ DNS server, to the latest version or the version specified.
 		}
 
 		ProgressSpinner.Start()
-		resp, err := helper.GenericJSONPost(base, section, command, options)
+		resp, err := helper.GenericJSONPostTimeout(base, section, command, options, 1*time.Hour)
 		ProgressSpinner.Stop()
 
 		if err != nil {

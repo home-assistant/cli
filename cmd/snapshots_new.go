@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"time"
 
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
@@ -57,7 +58,7 @@ snapshot containing a backup of your Home Assistant system.`,
 		}
 
 		ProgressSpinner.Start()
-		resp, err := helper.GenericJSONPost(base, section, command, options)
+		resp, err := helper.GenericJSONPostTimeout(base, section, command, options, 3*time.Hour)
 		ProgressSpinner.Stop()
 		if err != nil {
 			fmt.Println(err)
