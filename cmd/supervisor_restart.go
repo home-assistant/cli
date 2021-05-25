@@ -24,7 +24,7 @@ Restart the Supervisor internal, this can solve healthy issues.`,
 		command := "restart"
 		base := viper.GetString("endpoint")
 
-		resp, err := helper.GenericJSONPost(base, section, command, nil)
+		resp, err := helper.GenericJSONPostTimeout(base, section, command, nil, helper.ContainerOperationTimeout)
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true

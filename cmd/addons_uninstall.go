@@ -36,7 +36,7 @@ This command allows you to uninstall a Home Assistant add-on.
 			return
 		}
 
-		request := helper.GetJSONRequest()
+		request := helper.GetJSONRequestTimeout(helper.ContainerOperationTimeout)
 
 		slug := args[0]
 
