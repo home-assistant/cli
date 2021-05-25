@@ -3,7 +3,6 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"time"
 
 	resty "github.com/go-resty/resty/v2"
 	helper "github.com/home-assistant/cli/client"
@@ -30,7 +29,7 @@ take Home Assistant snapshot backup on your system.`,
 		command := "restore/full"
 		base := viper.GetString("endpoint")
 
-		request := helper.GetJSONRequestTimeout(3 * time.Hour)
+		request := helper.GetJSONRequestTimeout(helper.SnapshotTimeout)
 
 		options := make(map[string]interface{})
 

@@ -25,7 +25,7 @@ Restart the Home Assistant Core instance running on your system`,
 		base := viper.GetString("endpoint")
 
 		ProgressSpinner.Start()
-		resp, err := helper.GenericJSONPost(base, section, command, nil)
+		resp, err := helper.GenericJSONPostTimeout(base, section, command, nil, helper.ContainerOperationTimeout)
 		ProgressSpinner.Stop()
 		if err != nil {
 			fmt.Println(err)

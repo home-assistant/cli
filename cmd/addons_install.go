@@ -36,7 +36,7 @@ This command allows you to install a Home Assistant add-on from the commandline.
 			return
 		}
 
-		request := helper.GetJSONRequest()
+		request := helper.GetJSONRequestTimeout(helper.ContainerDownloadTimeout)
 
 		slug := args[0]
 

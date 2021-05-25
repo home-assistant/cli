@@ -3,7 +3,6 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"time"
 
 	resty "github.com/go-resty/resty/v2"
 	helper "github.com/home-assistant/cli/client"
@@ -40,7 +39,7 @@ add-on.
 			return
 		}
 
-		request := helper.GetJSONRequestTimeout(10 * time.Minute)
+		request := helper.GetJSONRequestTimeout(helper.ContainerOperationTimeout)
 
 		slug := args[0]
 

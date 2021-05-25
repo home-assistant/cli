@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"time"
 
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
@@ -36,7 +35,7 @@ observer, to the latest version or the version specified.
 		}
 
 		ProgressSpinner.Start()
-		resp, err := helper.GenericJSONPostTimeout(base, section, command, options, 1*time.Hour)
+		resp, err := helper.GenericJSONPostTimeout(base, section, command, options, helper.ContainerDownloadTimeout)
 		ProgressSpinner.Stop()
 
 		if err != nil {
