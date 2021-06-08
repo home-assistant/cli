@@ -12,7 +12,7 @@ import (
 
 var backupsCmd = &cobra.Command{
 	Use:     "backups",
-	Aliases: []string{"snapshot", "snap", "shot", "sn", "backup", "backups", "bk"},
+	Aliases: []string{"snapshots", "snapshot", "snap", "shot", "sn", "backup", "backups", "bk"},
 	Short:   "Create, restore and remove backups",
 	Long: `
 Backups of your Home Assistant system, which you can create,
@@ -22,7 +22,7 @@ restore, and delete using this command.`,
   ha backups new`,
   PersistentPreRun: func(cmd *cobra.Command, args []string) {
 	for idx, arg := range os.Args {
-		if idx != 0 && (arg == "snapshot" || arg == "snap" || arg == "shot" || arg == "sn") {
+		if idx != 0 && (arg == "snapshots" || arg == "snapshot" || arg == "snap" || arg == "shot" || arg == "sn") {
 			cmd.PrintErrf("The use of '%s' is deprecated, please use 'backups' instead!\n", arg)
 		}
 	}
