@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"

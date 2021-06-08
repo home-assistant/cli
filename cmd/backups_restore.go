@@ -29,7 +29,7 @@ take Home Assistant backup on your system.`,
 		command := "restore/full"
 		base := viper.GetString("endpoint")
 
-		request := helper.GetJSONRequestTimeout(helper.BackupsTimeout)
+		request := helper.GetJSONRequestTimeout(helper.BackupTimeout)
 
 		options := make(map[string]interface{})
 
@@ -108,5 +108,5 @@ func init() {
 	backupsRestoreCmd.Flags().StringArrayP("addons", "a", []string{}, "addons to restore, triggers a partial backup")
 	backupsRestoreCmd.Flags().StringArrayP("folders", "f", []string{}, "folders to restore, triggers a partial backup")
 
-	snapshotsCmd.AddCommand(backupsRestoreCmd)
+	backupsCmd.AddCommand(backupsRestoreCmd)
 }
