@@ -11,24 +11,25 @@ import (
 	"github.com/spf13/viper"
 )
 
-var snapshotsRemoveCmd = &cobra.Command{
-	Use:     "remove [slug]",
-	Aliases: []string{"delete", "del", "rem", "rm"},
-	Short:   "Deletes a snapshot backup from disk",
+var backupsInfoCmd = &cobra.Command{
+	Use:     "info [slug]",
+	Aliases: []string{"in", "inf"},
+	Short:   "Provides information about the current available backups",
 	Long: `
-Snapshots can take quite a bit of diskspace, this command allows you to
-clean snapshots from disk.`,
+When a Home Assistant backup is created, it will be available for restore.
+This command gives you information about a specific backup.`,
 	Example: `
-  ha snapshots remove c1a07617`,
+  ha backups info c1a07617`,
 	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("snapshots remove")
+		log.WithField("args", args).Debug("backups info")
 
-		section := "snapshots"
-		command := "{slug}"
+		section := "backups"
+		command := "{slug}/info"
 		base := viper.GetString("endpoint")
 
 		url, err := helper.URLHelper(base, section, command)
+
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true
@@ -43,7 +44,7 @@ clean snapshots from disk.`,
 			"slug": slug,
 		})
 
-		resp, err := request.Delete(url)
+		resp, err := request.Get(url)
 
 		// returns 200 OK or 400, everything else is wrong
 		if err == nil {
@@ -66,6 +67,5 @@ clean snapshots from disk.`,
 }
 
 func init() {
-
-	snapshotsCmd.AddCommand(snapshotsRemoveCmd)
+	backupsCmd.AddCommand(backupsInfoCmd)
 }

@@ -9,20 +9,28 @@ import (
 	"github.com/spf13/viper"
 )
 
-var snapshotsCmd = &cobra.Command{
-	Use:     "snapshots",
+var backupsCmd = &cobra.Command{
+	Use:     "backups",
 	Aliases: []string{"snapshot", "snap", "shot", "sn", "backup", "backups", "bk"},
-	Short:   "Create, restore and remove snapshot backups",
+	Short:   "Create, restore and remove backups",
 	Long: `
-Snapshots are backups of your Home Assistant system, which you can create,
+Backups of your Home Assistant system, which you can create,
 restore, and delete using this command.`,
 	Example: `
-  ha snapshots
-  ha snapshots new`,
+  ha backups
+  ha backups new`,
+  PersistentPreRun: func(cmd *cobra.Command, args []string) {
+	for idx, arg := range os.Args {
+		if idx != 0 && (arg == "snapshot" || arg == "snap" || arg == "shot" || arg == "sn") {
+			cmd.PrintErrf("The use of '%s' is deprecated, please use 'backups' instead!\n", arg)
+		}
+	}
+	rootCmd.PersistentPreRun(cmd, args)
+},
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("snapshots")
+		log.WithField("args", args).Debug("backups")
 
-		section := "snapshots"
+		section := "backups"
 		command := ""
 		base := viper.GetString("endpoint")
 
@@ -37,7 +45,7 @@ restore, and delete using this command.`,
 }
 
 func init() {
-	log.Debug("Init snapshots")
+	log.Debug("Init backups")
 	// add cmd to root command
-	rootCmd.AddCommand(snapshotsCmd)
+	rootCmd.AddCommand(backupsCmd)
 }

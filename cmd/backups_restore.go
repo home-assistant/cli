@@ -11,25 +11,25 @@ import (
 	"github.com/spf13/viper"
 )
 
-var snapshotsRestoreCmd = &cobra.Command{
+var backupsRestoreCmd = &cobra.Command{
 	Use:   "restore [slug]",
-	Short: "Restores a Home Assistant snapshot backup",
+	Short: "Restores a Home Assistant backup",
 	Long: `
 When something goes wrong, this command allows you to restore a previously
-take Home Assistant snapshot backup on your system.`,
+take Home Assistant backup on your system.`,
 	Example: `
-  ha snapshots restore c1a07617
-  ha snapshots restore c1a07617 --addons core_ssh --addon core_mosquitto
-  ha snapshots restore c1a07617 --folders config`,
+  ha backups restore c1a07617
+  ha backups restore c1a07617 --addons core_ssh --addon core_mosquitto
+  ha backups restore c1a07617 --folders config`,
 	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("snapshots restore")
+		log.WithField("args", args).Debug("backups restore")
 
-		section := "snapshots/{slug}"
+		section := "backups/{slug}"
 		command := "restore/full"
 		base := viper.GetString("endpoint")
 
-		request := helper.GetJSONRequestTimeout(helper.SnapshotTimeout)
+		request := helper.GetJSONRequestTimeout(helper.BackupsTimeout)
 
 		options := make(map[string]interface{})
 
@@ -103,10 +103,10 @@ take Home Assistant snapshot backup on your system.`,
 }
 
 func init() {
-	snapshotsRestoreCmd.Flags().StringP("password", "", "", "Password")
-	snapshotsRestoreCmd.Flags().BoolP("homeassistant", "", true, "Restore homeassistant (default true), triggers a partial backup when se to false")
-	snapshotsRestoreCmd.Flags().StringArrayP("addons", "a", []string{}, "addons to restore, triggers a partial backup")
-	snapshotsRestoreCmd.Flags().StringArrayP("folders", "f", []string{}, "folders to restore, triggers a partial backup")
+	backupsRestoreCmd.Flags().StringP("password", "", "", "Password")
+	backupsRestoreCmd.Flags().BoolP("homeassistant", "", true, "Restore homeassistant (default true), triggers a partial backup when se to false")
+	backupsRestoreCmd.Flags().StringArrayP("addons", "a", []string{}, "addons to restore, triggers a partial backup")
+	backupsRestoreCmd.Flags().StringArrayP("folders", "f", []string{}, "folders to restore, triggers a partial backup")
 
-	snapshotsCmd.AddCommand(snapshotsRestoreCmd)
+	snapshotsCmd.AddCommand(backupsRestoreCmd)
 }

@@ -9,20 +9,20 @@ import (
 	"github.com/spf13/viper"
 )
 
-var snapshotsReloadCmd = &cobra.Command{
+var backupsReloadCmd = &cobra.Command{
 	Use:     "reload",
 	Aliases: []string{"refresh", "re"},
-	Short:   "Reload the files on disk to check for new or removed snapshots",
+	Short:   "Reload the files on disk to check for new or removed backups",
 	Long: `
-If a snapshot has been manually placed inside the backup folder, or has been
+If a backup has been manually placed inside the backup folder, or has been
 removed manually, this command can trigger Home Assistant to re-read the files
 on disk`,
 	Example: `
-  ha snapshots reload`,
+  ha backups reload`,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("snapshots reload")
+		log.WithField("args", args).Debug("backups reload")
 
-		section := "snapshots"
+		section := "backups"
 		command := "reload"
 		base := viper.GetString("endpoint")
 
@@ -37,5 +37,5 @@ on disk`,
 }
 
 func init() {
-	snapshotsCmd.AddCommand(snapshotsReloadCmd)
+	backupsCmd.AddCommand(backupsReloadCmd)
 }
