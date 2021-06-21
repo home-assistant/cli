@@ -12,7 +12,7 @@ import (
 
 var backupsCmd = &cobra.Command{
 	Use:     "backups",
-	Aliases: []string{"snapshots", "snapshot", "snap", "shot", "sn", "backup", "backups", "bk"},
+	Aliases: []string{"backup", "back", "backups", "bk", "snapshots", "snapshot", "snap", "shot", "sn"},
 	Short:   "Create, restore and remove backups",
 	Long: `
 Backups of your Home Assistant system, which you can create,
@@ -20,14 +20,14 @@ restore, and delete using this command.`,
 	Example: `
   ha backups
   ha backups new`,
-  PersistentPreRun: func(cmd *cobra.Command, args []string) {
-	for idx, arg := range os.Args {
-		if idx != 0 && (arg == "snapshots" || arg == "snapshot" || arg == "snap" || arg == "shot" || arg == "sn") {
-			cmd.PrintErrf("The use of '%s' is deprecated, please use 'backups' instead!\n", arg)
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		for idx, arg := range os.Args {
+			if idx != 0 && (arg == "snapshots" || arg == "snapshot" || arg == "snap" || arg == "shot" || arg == "sn") {
+				cmd.PrintErrf("The use of '%s' is deprecated, please use 'backups' instead!\n", arg)
+			}
 		}
-	}
-	rootCmd.PersistentPreRun(cmd, args)
-},
+		rootCmd.PersistentPreRun(cmd, args)
+	},
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("backups")
 
