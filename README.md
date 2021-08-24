@@ -48,7 +48,7 @@ Available commands:
   observer       Get information, update or configure the Home Assistant observer
   os             Operating System specific for updating, info and configuration imports
   resolution     Resolution center of Supervisor, show issues and suggest solutions
-  snapshots      Create, restore and remove snapshot backups
+  backups        Create, restore and remove backups
   supervisor     Monitor, control and configure the Home Assistant Supervisor
 ```
 
