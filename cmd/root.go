@@ -12,7 +12,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"golang.org/x/crypto/ssh/terminal"
+	"golang.org/x/term"
 )
 
 var cfgFile string
@@ -45,7 +45,7 @@ you to control and configure different aspects of Home Assistant`,
 		client.RawJSON = viper.GetBool("raw-json")
 
 		// Only shows spinner output when we have a TTY
-		if !noProgress && terminal.IsTerminal(int(os.Stdout.Fd())) {
+		if !noProgress && term.IsTerminal(int(os.Stdout.Fd())) {
 			// Write to Stderr, helps when redirecting output, e.g., to a file
 			ProgressSpinner.Writer = os.Stderr
 		}

@@ -9,7 +9,7 @@ on:
     branches: ["master"]
 
 env:
-  GOLANG_VERSION: "1.15"
+  GOLANG_VERSION: "1.16"
 
 jobs:
   build:

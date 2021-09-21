@@ -1,6 +1,6 @@
 module github.com/home-assistant/cli
 
-go 1.15
+go 1.16
 
 require (
 	github.com/ghodss/yaml v1.0.0
@@ -9,5 +9,5 @@ require (
 	github.com/sirupsen/logrus v1.8.1
 	github.com/spf13/cobra v1.2.1
 	github.com/spf13/viper v1.8.1
-	golang.org/x/crypto v0.0.0-20200820211705-5c72a883971a
+	golang.org/x/term v0.0.0-20210916214954-140adaaadfaf
 )
