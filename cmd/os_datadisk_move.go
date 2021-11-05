@@ -6,7 +6,6 @@ import (
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var osDataDiskMoveCmd = &cobra.Command{
@@ -25,12 +24,11 @@ data partition to a new harddisk. The system reboots afterwards!
 
 		section := "os"
 		command := "datadisk/move"
-		base := viper.GetString("endpoint")
 		options := make(map[string]interface{})
 
 		options["device"] = args[0]
 
-		resp, err := helper.GenericJSONPost(base, section, command, options)
+		resp, err := helper.GenericJSONPost(section, command, options)
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true

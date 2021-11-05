@@ -8,7 +8,6 @@ import (
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var addonsStatsCmd = &cobra.Command{
@@ -28,9 +27,8 @@ how much CPU, memory, disk & network resources it uses.
 
 		section := "addons"
 		command := "{slug}/stats"
-		base := viper.GetString("endpoint")
 
-		url, err := helper.URLHelper(base, section, command)
+		url, err := helper.URLHelper(section, command)
 
 		if err != nil {
 			fmt.Println(err)

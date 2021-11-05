@@ -6,7 +6,6 @@ import (
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var cliStatsCmd = &cobra.Command{
@@ -25,9 +24,8 @@ It shows you how much CPU, memory, disk & network resources it uses.
 
 		section := "cli"
 		command := "stats"
-		base := viper.GetString("endpoint")
 
-		resp, err := helper.GenericJSONGet(base, section, command)
+		resp, err := helper.GenericJSONGet(section, command)
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true

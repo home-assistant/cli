@@ -8,7 +8,6 @@ import (
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var addonsUninstallCmd = &cobra.Command{
@@ -27,9 +26,8 @@ This command allows you to uninstall a Home Assistant add-on.
 
 		section := "addons"
 		command := "{slug}/uninstall"
-		base := viper.GetString("endpoint")
 
-		url, err := helper.URLHelper(base, section, command)
+		url, err := helper.URLHelper(section, command)
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true

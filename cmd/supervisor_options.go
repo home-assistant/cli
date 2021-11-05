@@ -7,7 +7,6 @@ import (
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var supervisorOptionsCmd = &cobra.Command{
@@ -24,7 +23,6 @@ Supervisor running on your Home Assistant system.`,
 
 		section := "supervisor"
 		command := "options"
-		base := viper.GetString("endpoint")
 
 		options := make(map[string]interface{})
 
@@ -65,7 +63,7 @@ Supervisor running on your Home Assistant system.`,
 			options["addons_repositories"] = repos
 		}
 
-		resp, err := helper.GenericJSONPost(base, section, command, options)
+		resp, err := helper.GenericJSONPost(section, command, options)
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true

@@ -8,7 +8,6 @@ import (
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var resolutionSuggestionDismissCmd = &cobra.Command{
@@ -25,9 +24,8 @@ This command allows dismissing a suggestion reported by the system.`,
 
 		section := "resolution"
 		command := "suggestion/{suggestion}"
-		base := viper.GetString("endpoint")
 
-		url, err := helper.URLHelper(base, section, command)
+		url, err := helper.URLHelper(section, command)
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true

@@ -12,8 +12,8 @@ import (
 // RawJSON controls if the client does json handling or outputs it raw
 var RawJSON = false
 
-func genericJSONMethod(get bool, base, section, command string, body map[string]interface{}, timeout time.Duration) (*resty.Response, error) {
-	url, err := URLHelper(base, section, command)
+func genericJSONMethod(get bool, section, command string, body map[string]interface{}, timeout time.Duration) (*resty.Response, error) {
+	url, err := URLHelper(section, command)
 	if err != nil {
 		return nil, err
 	}
@@ -47,19 +47,19 @@ func genericJSONMethod(get bool, base, section, command string, body map[string]
 }
 
 // GenericJSONGet is a helper for generic empty post request
-func GenericJSONGet(base, section, command string) (*resty.Response, error) {
-	return genericJSONMethod(true, base, section, command, nil, DefaultTimeout)
+func GenericJSONGet(section, command string) (*resty.Response, error) {
+	return genericJSONMethod(true, section, command, nil, DefaultTimeout)
 }
 
-func GenericJSONGetTimeout(base, section, command string, timeout time.Duration) (*resty.Response, error) {
-	return genericJSONMethod(true, base, section, command, nil, timeout)
+func GenericJSONGetTimeout(section, command string, timeout time.Duration) (*resty.Response, error) {
+	return genericJSONMethod(true, section, command, nil, timeout)
 }
 
 // GenericJSONPost is a helper for generic empty post request
-func GenericJSONPost(base, section, command string, body map[string]interface{}) (*resty.Response, error) {
-	return genericJSONMethod(false, base, section, command, body, DefaultTimeout)
+func GenericJSONPost(section, command string, body map[string]interface{}) (*resty.Response, error) {
+	return genericJSONMethod(false, section, command, body, DefaultTimeout)
 }
 
-func GenericJSONPostTimeout(base, section, command string, body map[string]interface{}, timeout time.Duration) (*resty.Response, error) {
-	return genericJSONMethod(false, base, section, command, body, timeout)
+func GenericJSONPostTimeout(section, command string, body map[string]interface{}, timeout time.Duration) (*resty.Response, error) {
+	return genericJSONMethod(false, section, command, body, timeout)
 }

@@ -6,7 +6,6 @@ import (
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var addonsReloadCmd = &cobra.Command{
@@ -27,10 +26,9 @@ an add-on is released, but not yet available as an upgrade in Home Assistant.
 
 		section := "addons"
 		command := "reload"
-		base := viper.GetString("endpoint")
 
 		ProgressSpinner.Start()
-		resp, err := helper.GenericJSONPost(base, section, command, nil)
+		resp, err := helper.GenericJSONPost(section, command, nil)
 		ProgressSpinner.Stop()
 
 		if err != nil {

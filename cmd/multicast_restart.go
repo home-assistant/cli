@@ -6,7 +6,6 @@ import (
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var multicastRestartCmd = &cobra.Command{
@@ -21,10 +20,9 @@ var multicastRestartCmd = &cobra.Command{
 
 		section := "multicast"
 		command := "restart"
-		base := viper.GetString("endpoint")
 
 		ProgressSpinner.Start()
-		resp, err := helper.GenericJSONPostTimeout(base, section, command, nil, helper.ContainerOperationTimeout)
+		resp, err := helper.GenericJSONPostTimeout(section, command, nil, helper.ContainerOperationTimeout)
 		ProgressSpinner.Stop()
 		if err != nil {
 			fmt.Println(err)

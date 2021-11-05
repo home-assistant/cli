@@ -6,7 +6,6 @@ import (
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var networkInfoCmd = &cobra.Command{
@@ -25,14 +24,13 @@ Shows information about the host network and interfaces or only from a specific 
 
 		section := "network"
 		command := "info"
-		base := viper.GetString("endpoint")
 
 		if len(args) > 0 {
 			inet := args[0]
 			command = "interface/" + inet + "/info"
 		}
 
-		resp, err := helper.GenericJSONGet(base, section, command)
+		resp, err := helper.GenericJSONGet(section, command)
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true

@@ -8,7 +8,6 @@ import (
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var backupsRestoreCmd = &cobra.Command{
@@ -27,7 +26,6 @@ take Home Assistant backup on your system.`,
 
 		section := "backups/{slug}"
 		command := "restore/full"
-		base := viper.GetString("endpoint")
 
 		request := helper.GetJSONRequestTimeout(helper.BackupTimeout)
 
@@ -66,7 +64,7 @@ take Home Assistant backup on your system.`,
 			command = "restore/partial"
 		}
 
-		url, err := helper.URLHelper(base, section, command)
+		url, err := helper.URLHelper(section, command)
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true

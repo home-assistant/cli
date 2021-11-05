@@ -8,7 +8,6 @@ import (
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 const haBanner = `
@@ -22,9 +21,7 @@ Welcome to the Home Assistant command line.
 `
 
 func supervisorGet(section string, command string) (outdata *(map[string]interface{}), err error) {
-	base := viper.GetString("endpoint")
-
-	resp, err := helper.GenericJSONGet(base, section, command)
+	resp, err := helper.GenericJSONGet(section, command)
 	if err != nil {
 		return nil, err
 	}

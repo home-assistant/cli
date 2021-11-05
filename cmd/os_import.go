@@ -6,7 +6,6 @@ import (
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var osImportCmd = &cobra.Command{
@@ -25,9 +24,8 @@ configuration to load for the Home Assistant Operating System.
 
 		section := "os"
 		command := "config/sync"
-		base := viper.GetString("endpoint")
 
-		resp, err := helper.GenericJSONPost(base, section, command, nil)
+		resp, err := helper.GenericJSONPost(section, command, nil)
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true

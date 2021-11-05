@@ -6,7 +6,6 @@ import (
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var audioVolumeInputCmd = &cobra.Command{
@@ -30,7 +29,6 @@ input channel or application on your Home Assistant system.`,
 
 		section := "audio"
 		command := "volume/input"
-		base := viper.GetString("endpoint")
 
 		options := make(map[string]interface{})
 
@@ -63,7 +61,7 @@ input channel or application on your Home Assistant system.`,
 			command = "volume/input/application"
 		}
 
-		resp, err := helper.GenericJSONPost(base, section, command, options)
+		resp, err := helper.GenericJSONPost(section, command, options)
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true

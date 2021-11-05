@@ -6,7 +6,6 @@ import (
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var supervisorLogsCmd = &cobra.Command{
@@ -23,9 +22,8 @@ Supervisor running on your Home Assistant system.`,
 
 		section := "supervisor"
 		command := "logs"
-		base := viper.GetString("endpoint")
 
-		url, err := helper.URLHelper(base, section, command)
+		url, err := helper.URLHelper(section, command)
 		if err != nil {
 			fmt.Printf("Error: %v", err)
 			return

@@ -6,7 +6,6 @@ import (
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var coreOptionsCmd = &cobra.Command{
@@ -23,7 +22,6 @@ instance running on your Home Assistant system.`,
 
 		section := "core"
 		command := "options"
-		base := viper.GetString("endpoint")
 
 		options := make(map[string]interface{})
 
@@ -59,7 +57,7 @@ instance running on your Home Assistant system.`,
 			options["watchdog"] = watchdog
 		}
 
-		resp, err := helper.GenericJSONPost(base, section, command, options)
+		resp, err := helper.GenericJSONPost(section, command, options)
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true
