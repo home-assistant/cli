@@ -19,6 +19,7 @@ import (
 const DefaultTimeout = 30 * time.Second
 const ContainerOperationTimeout = 10 * time.Minute
 const ContainerDownloadTimeout = 1 * time.Hour
+const OsDownloadTimeout = 1 * time.Hour
 const BackupTimeout = 3 * time.Hour
 
 var client *resty.Client

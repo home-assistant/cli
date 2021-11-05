@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"time"
 
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
@@ -29,7 +28,7 @@ Home Assistant Core.`,
 		base := viper.GetString("endpoint")
 
 		ProgressSpinner.Start()
-		resp, err := helper.GenericJSONPostTimeout(base, section, command, nil, 1*time.Hour)
+		resp, err := helper.GenericJSONPostTimeout(base, section, command, nil, helper.ContainerOperationTimeout)
 		ProgressSpinner.Stop()
 
 		if err != nil {
