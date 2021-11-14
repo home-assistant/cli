@@ -104,7 +104,7 @@ take Home Assistant backup on your system.`,
 
 func init() {
 	backupsRestoreCmd.Flags().StringP("password", "", "", "Password")
-	backupsRestoreCmd.Flags().BoolP("homeassistant", "", true, "Restore homeassistant (default true), triggers a partial backup when se to false")
+	backupsRestoreCmd.Flags().BoolP("homeassistant", "", true, "Restore homeassistant (default true), triggers a partial backup when set to false")
 	backupsRestoreCmd.Flags().StringArrayP("addons", "a", []string{}, "addons to restore, triggers a partial backup")
 	backupsRestoreCmd.Flags().StringArrayP("folders", "f", []string{}, "folders to restore, triggers a partial backup")
 
