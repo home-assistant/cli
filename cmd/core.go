@@ -23,7 +23,7 @@ Home Assistant Core.
   ha core check
   ha core restart
   ha core update
-	ha core update --version 0.97.2`,
+	ha core update --version 2021.11.5`,
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		for idx, arg := range os.Args {
 			if idx != 0 && (arg == "homeassistant" || arg == "ha") {
