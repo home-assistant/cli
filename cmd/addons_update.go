@@ -47,6 +47,19 @@ It is currently not possible to upgrade/downgrade to a specific version.
 			"slug": slug,
 		})
 
+		options := make(map[string]interface{})
+
+		backup, _ := cmd.Flags().GetBool("backup")
+		if cmd.Flags().Changed("backup") {
+			request.SetBody(options)
+			options["backup"] = backup
+		}
+
+		if len(options) > 0 {
+			log.WithField("options", options).Debug("Request body")
+			request.SetBody(options)
+		}
+
 		resp, err := request.Post(url)
 
 		// returns 200 OK or 400, everything else is wrong
@@ -70,6 +83,6 @@ It is currently not possible to upgrade/downgrade to a specific version.
 }
 
 func init() {
-
+	addonsUpdateCmd.Flags().Bool("backup", false, "Create partial backup before update")
 	addonsCmd.AddCommand(addonsUpdateCmd)
 }

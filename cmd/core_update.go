@@ -26,11 +26,16 @@ running on your system to the latest version or the version specified.`,
 		command := "update"
 		base := viper.GetString("endpoint")
 
-		var options map[string]interface{}
+		options := make(map[string]interface{})
 
 		version, _ := cmd.Flags().GetString("version")
 		if version != "" {
-			options = map[string]interface{}{"version": version}
+			options["version"] = version
+		}
+
+		backup, _ := cmd.Flags().GetBool("backup")
+		if cmd.Flags().Changed("backup") {
+			options["backup"] = backup
 		}
 
 		ProgressSpinner.Start()
@@ -47,5 +52,6 @@ running on your system to the latest version or the version specified.`,
 
 func init() {
 	coreUpdateCmd.Flags().StringP("version", "", "", "Version to update to")
+	coreUpdateCmd.Flags().Bool("backup", false, "Create partial backup before update")
 	coreCmd.AddCommand(coreUpdateCmd)
 }
