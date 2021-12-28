@@ -6,7 +6,6 @@ import (
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var supervisorAvailableUpdatesCmd = &cobra.Command{
@@ -22,9 +21,8 @@ This command provides you information about available updates.`,
 
 		section := "supervisor"
 		command := "available_updates"
-		base := viper.GetString("endpoint")
 
-		resp, err := helper.GenericJSONGet(base, section, command)
+		resp, err := helper.GenericJSONGet(section, command)
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true
