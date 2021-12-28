@@ -22,9 +22,8 @@ This command provides you information about available updates.`,
 
 		section := "supervisor"
 		command := "available_updates"
-		base := viper.GetString("endpoint")
 
-		resp, err := helper.GenericJSONGet(base, section, command)
+		resp, err := helper.GenericJSONGet(section, command)
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true
