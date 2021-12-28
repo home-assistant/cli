@@ -8,7 +8,6 @@ import (
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var dockerRegistriesAddCmd = &cobra.Command{
@@ -27,9 +26,8 @@ Add new login for the Docker OCI registry server.
 
 		section := "docker"
 		command := "registries"
-		base := viper.GetString("endpoint")
 
-		url, err := helper.URLHelper(base, section, command)
+		url, err := helper.URLHelper(section, command)
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true

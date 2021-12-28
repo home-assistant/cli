@@ -6,7 +6,6 @@ import (
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var supervisorRestartCmd = &cobra.Command{
@@ -22,9 +21,8 @@ Restart the Supervisor internal, this can solve healthy issues.`,
 
 		section := "supervisor"
 		command := "restart"
-		base := viper.GetString("endpoint")
 
-		resp, err := helper.GenericJSONPostTimeout(base, section, command, nil, helper.ContainerOperationTimeout)
+		resp, err := helper.GenericJSONPostTimeout(section, command, nil, helper.ContainerOperationTimeout)
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true

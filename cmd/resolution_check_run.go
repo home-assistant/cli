@@ -8,7 +8,6 @@ import (
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var resolutionCheckRunCmd = &cobra.Command{
@@ -25,9 +24,8 @@ This command executes an backend check immediately on the system.`,
 
 		section := "resolution"
 		command := "check/{check}/run"
-		base := viper.GetString("endpoint")
 
-		url, err := helper.URLHelper(base, section, command)
+		url, err := helper.URLHelper(section, command)
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true

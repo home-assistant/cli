@@ -8,7 +8,6 @@ import (
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var addonsInfoCmd = &cobra.Command{
@@ -28,9 +27,8 @@ is provided, information about a specific add-on.
 
 		section := "addons"
 		command := "{slug}/info"
-		base := viper.GetString("endpoint")
 
-		url, err := helper.URLHelper(base, section, command)
+		url, err := helper.URLHelper(section, command)
 
 		if err != nil {
 			fmt.Println(err)

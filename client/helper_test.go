@@ -3,6 +3,8 @@ package client
 import (
 	"fmt"
 	"testing"
+
+	"github.com/spf13/viper"
 )
 
 var urlTests = []struct {
@@ -27,7 +29,8 @@ var urlTests = []struct {
 func TestURLHelper(t *testing.T) {
 	for _, tt := range urlTests {
 		t.Run(fmt.Sprintf("[%s][%s][%s]", tt.base, tt.section, tt.command), func(t *testing.T) {
-			s, _ := URLHelper(tt.base, tt.section, tt.command)
+			viper.SetDefault("endpoint", tt.base)
+			s, _ := URLHelper(tt.section, tt.command)
 			if s != tt.out {
 				t.Errorf("got %q, want %q", s, tt.out)
 			}

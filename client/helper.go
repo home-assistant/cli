@@ -32,7 +32,8 @@ type Response struct {
 }
 
 // URLHelper returns a URL built from the arguments
-func URLHelper(base, section, command string) (string, error) {
+func URLHelper(section, command string) (string, error) {
+	base := viper.GetString("endpoint")
 	log.WithFields(log.Fields{
 		"base":    base,
 		"section": section,

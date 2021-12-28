@@ -6,7 +6,6 @@ import (
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var authResetCmd = &cobra.Command{
@@ -26,7 +25,6 @@ only work on some locations. For example, the Operating System CLI.
 
 		section := "auth"
 		command := "reset"
-		base := viper.GetString("endpoint")
 
 		options := make(map[string]interface{})
 
@@ -40,7 +38,7 @@ only work on some locations. For example, the Operating System CLI.
 			}
 		}
 
-		resp, err := helper.GenericJSONPost(base, section, command, options)
+		resp, err := helper.GenericJSONPost(section, command, options)
 		if err != nil {
 			cmd.PrintErrln("this command is limited due to security reasons, and will only work on some locations. For example, the Operating System terminal.")
 			fmt.Println(err)

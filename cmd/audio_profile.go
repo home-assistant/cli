@@ -6,7 +6,6 @@ import (
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var audioProfileCmd = &cobra.Command{
@@ -24,7 +23,6 @@ This command allows you to set the audio profile on a audio card.`,
 
 		section := "audio"
 		command := "profile"
-		base := viper.GetString("endpoint")
 
 		options := make(map[string]interface{})
 
@@ -38,7 +36,7 @@ This command allows you to set the audio profile on a audio card.`,
 			options["card"] = card
 		}
 
-		resp, err := helper.GenericJSONPost(base, section, command, options)
+		resp, err := helper.GenericJSONPost(section, command, options)
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true

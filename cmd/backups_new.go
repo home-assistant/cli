@@ -6,7 +6,6 @@ import (
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var backupsNewCmd = &cobra.Command{
@@ -26,7 +25,6 @@ backup.`,
 
 		section := "backups"
 		command := "new/full"
-		base := viper.GetString("endpoint")
 
 		options := make(map[string]interface{})
 
@@ -57,7 +55,7 @@ backup.`,
 		}
 
 		ProgressSpinner.Start()
-		resp, err := helper.GenericJSONPostTimeout(base, section, command, options, helper.BackupTimeout)
+		resp, err := helper.GenericJSONPostTimeout(section, command, options, helper.BackupTimeout)
 		ProgressSpinner.Stop()
 		if err != nil {
 			fmt.Println(err)

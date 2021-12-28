@@ -6,7 +6,6 @@ import (
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var resolutionHealthCheckCmd = &cobra.Command{
@@ -23,10 +22,9 @@ are still around and try to fix it again.`,
 
 		section := "resolution"
 		command := "healthcheck"
-		base := viper.GetString("endpoint")
 
 		ProgressSpinner.Start()
-		resp, err := helper.GenericJSONPost(base, section, command, nil)
+		resp, err := helper.GenericJSONPost(section, command, nil)
 		ProgressSpinner.Stop()
 
 		if err != nil {

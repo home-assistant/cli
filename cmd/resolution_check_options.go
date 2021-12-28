@@ -8,7 +8,6 @@ import (
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var resolutionCheckOptionsCmd = &cobra.Command{
@@ -25,10 +24,9 @@ This command allows to apply options to an specific check managed by the system.
 
 		section := "resolution"
 		command := "check/{check}/options"
-		base := viper.GetString("endpoint")
 		options := make(map[string]interface{})
 
-		url, err := helper.URLHelper(base, section, command)
+		url, err := helper.URLHelper(section, command)
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true

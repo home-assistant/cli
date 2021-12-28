@@ -9,7 +9,6 @@ import (
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var networkUpdateCmd = &cobra.Command{
@@ -28,9 +27,8 @@ Update network interface settings of a specific adapter.
 
 		section := "network"
 		command := "interface/{interface}/update"
-		base := viper.GetString("endpoint")
 
-		url, err := helper.URLHelper(base, section, command)
+		url, err := helper.URLHelper(section, command)
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true
