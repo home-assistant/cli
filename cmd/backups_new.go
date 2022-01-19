@@ -19,6 +19,7 @@ backup.`,
   ha backups new
   ha backups new --addons core_ssh --addons core_mosquitto
   ha backups new --folders homeassistant
+  ha backups new --uncompressed
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("backups new")
@@ -54,6 +55,16 @@ backup.`,
 			command = "new/partial"
 		}
 
+		compressed, err := cmd.Flags().GetBool("compressed")
+		if err == nil && cmd.Flags().Changed("compressed") {
+			options["compressed"] = compressed
+		}
+
+		uncompressed, err := cmd.Flags().GetBool("uncompressed")
+		if err == nil && cmd.Flags().Changed("uncompressed") {
+			options["compressed"] = !uncompressed
+		}
+
 		ProgressSpinner.Start()
 		resp, err := helper.GenericJSONPostTimeout(section, command, options, helper.BackupTimeout)
 		ProgressSpinner.Stop()
@@ -69,6 +80,8 @@ backup.`,
 func init() {
 	backupsNewCmd.Flags().StringP("name", "", "", "Name of the backup")
 	backupsNewCmd.Flags().StringP("password", "", "", "Password")
+	backupsNewCmd.Flags().Bool("compressed", false, "Use compressed archives")
+	backupsNewCmd.Flags().Bool("uncompressed", false, "Use Uncompressed archives")
 	backupsNewCmd.Flags().StringArrayP("addons", "a", []string{}, "addons to backup, triggers a partial backup")
 	backupsNewCmd.Flags().StringArrayP("folders", "f", []string{}, "folders to backup, triggers a partial backup")
 
