@@ -52,9 +52,9 @@ Update network interface settings of a specific adapter.
 		// Wifi
 		helperWifiConfig(cmd, options)
 
-		enabled, err := cmd.Flags().GetBool("enabled")
+		disabled, err := cmd.Flags().GetBool("disabled")
 		if err == nil {
-			options["enabled"] = enabled
+			options["enabled"] = !disabled
 		}
 
 		log.WithField("options", options).Debug("Request body")
@@ -99,7 +99,7 @@ func init() {
 	networkUpdateCmd.Flags().String("wifi-auth", "", "Used authentication: open, wep, wpa-psk")
 	networkUpdateCmd.Flags().String("wifi-psk", "", "Shared authentication key for wep or wpa")
 
-	networkUpdateCmd.Flags().BoolP("enabled", "e", true, "Enable or disable interface")
+	networkUpdateCmd.Flags().BoolP("disabled", "e", false, "Disable interface")
 	networkCmd.AddCommand(networkUpdateCmd)
 }
 
