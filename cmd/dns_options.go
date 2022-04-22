@@ -34,6 +34,11 @@ running Home Assistant DNS server.
 			options["servers"] = servers
 		}
 
+		data, err := cmd.Flags().GetBool("fallback")
+		if err == nil && cmd.Flags().Changed("fallback") {
+			options["fallback"] = data
+		}
+
 		resp, err := helper.GenericJSONPost(section, command, options)
 		if err != nil {
 			fmt.Println(err)
@@ -46,5 +51,9 @@ running Home Assistant DNS server.
 
 func init() {
 	dnsOptionsCmd.Flags().StringArrayP("servers", "r", []string{}, "Upstream DNS servers to use. Use multiple times for multiple servers.")
+	dnsOptionsCmd.Flags().BoolP("fallback", "", true, "Enable/Disable fallback DNS (Cloudflare DoT)")
+
+	dnsOptionsCmd.Flags().Lookup("fallback").NoOptDefVal = "true"
+
 	dnsCmd.AddCommand(dnsOptionsCmd)
 }
