@@ -55,14 +55,8 @@ backup.`,
 			command = "new/partial"
 		}
 
-		compressed, err := cmd.Flags().GetBool("compressed")
-		if err == nil && cmd.Flags().Changed("compressed") {
-			options["compressed"] = compressed
-		}
-
-		uncompressed, err := cmd.Flags().GetBool("uncompressed")
-		if err == nil && cmd.Flags().Changed("uncompressed") {
-			options["compressed"] = !uncompressed
+		if cmd.Flags().Changed("uncompressed") {
+			options["compressed"] = false
 		}
 
 		ProgressSpinner.Start()
@@ -80,10 +74,11 @@ backup.`,
 func init() {
 	backupsNewCmd.Flags().StringP("name", "", "", "Name of the backup")
 	backupsNewCmd.Flags().StringP("password", "", "", "Password")
-	backupsNewCmd.Flags().Bool("compressed", false, "Use compressed archives")
 	backupsNewCmd.Flags().Bool("uncompressed", false, "Use Uncompressed archives")
 	backupsNewCmd.Flags().StringArrayP("addons", "a", []string{}, "addons to backup, triggers a partial backup")
 	backupsNewCmd.Flags().StringArrayP("folders", "f", []string{}, "folders to backup, triggers a partial backup")
+
+	backupsNewCmd.Flags().Lookup("uncompressed").NoOptDefVal = "false"
 
 	backupsCmd.AddCommand(backupsNewCmd)
 }
