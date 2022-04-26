@@ -50,7 +50,5 @@ jobs:
       if: github.event_name == 'release'
       uses: home-assistant/actions/helpers/codenotary@master
       with:
-        source: "${{ github.workspace }}/${{ matrix.variant.name }}"
-        user: ${{ secrets.VCN_USER }}
-        password: ${{ secrets.VCN_PASSWORD }}
-        organisation: ${{ secrets.VCN_ORG }}
+        source: "file://${{ github.workspace }}/${{ matrix.variant.name }}"
+        token: ${{ secrets.CAS_TOKEN }}
