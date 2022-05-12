@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var addonsReloadCmd = &cobra.Command{
+var storeReloadCmd = &cobra.Command{
 	Use:     "reload",
 	Aliases: []string{"refresh", "re"},
 	Short:   "Reloads/Refreshes the Home Assistant add-on store",
@@ -19,12 +19,12 @@ information of an add-on. This might be helpful when you know a new version of
 an add-on is released, but not yet available as an upgrade in Home Assistant.
 `,
 	Example: `
-  ha addons reload
+  ha store reload
 `,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("addons reload")
+		log.WithField("args", args).Debug("store reload")
 
-		section := "addons"
+		section := "store"
 		command := "reload"
 
 		ProgressSpinner.Start()
@@ -41,5 +41,5 @@ an add-on is released, but not yet available as an upgrade in Home Assistant.
 }
 
 func init() {
-	addonsCmd.AddCommand(addonsReloadCmd)
+	storeCmd.AddCommand(storeReloadCmd)
 }
