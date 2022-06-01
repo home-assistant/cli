@@ -46,11 +46,6 @@ instance running on your Home Assistant system.`,
 			options["port"] = port
 		}
 
-		waitBoot, err := cmd.Flags().GetInt("wait_boot")
-		if err == nil && cmd.Flags().Changed("wait_boot") {
-			options["wait_boot"] = waitBoot
-		}
-
 		for _, value := range []string{
 			"boot",
 			"ssl",
@@ -78,7 +73,6 @@ func init() {
 	coreOptionsCmd.Flags().Int("port", 8123, "Port to access Home Assistant Core")
 	coreOptionsCmd.Flags().Bool("ssl", false, "Use SSL")
 	coreOptionsCmd.Flags().Bool("watchdog", true, "Use watchdog")
-	coreOptionsCmd.Flags().Int("wait_boot", 600, "Time to wait for Core to startup")
 	coreOptionsCmd.Flags().String("refresh_token", "", "Refresh token")
 	coreOptionsCmd.Flags().String("audio_input", "", "Profile name for audio input")
 	coreOptionsCmd.Flags().String("audio_output", "", "Profile name for audio output")
