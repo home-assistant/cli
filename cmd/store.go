@@ -19,6 +19,7 @@ for managing stores that provide later add-ons.`,
 	Example: `
   ha store addons install core_ssh
   ha store add https://github.com/home-assistant/addons-example
+  ha store delete 94cfad5a 
   ha store reload`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("store")
