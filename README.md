@@ -59,7 +59,7 @@ available on the device terminal when using the Home Assistant Operating System.
 
 The CLI is automatically updated on those systems.
 
-Furthermore, the SSH add-on (available in the add-on store) provides this
+Furthermore, the SSH add-on (available in the add-on store) provides
 access to this tool and several community add-ons provide it as well (e.g.,
 the Visual Studio Code add-on).
 
