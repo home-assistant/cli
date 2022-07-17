@@ -85,7 +85,13 @@ func init() {
 	rootCmd.PersistentFlags().BoolVar(&noProgress, "no-progress", false, "Disable the progress spinner")
 
 	rootCmd.RegisterFlagCompletionFunc("endpoint", cobra.NoFileCompletions)
-	rootCmd.RegisterFlagCompletionFunc("log-level", cobra.NoFileCompletions)
+	rootCmd.RegisterFlagCompletionFunc("log-level", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		vals := make([]string, 0, len(log.AllLevels))
+		for _, lvl := range log.AllLevels {
+			vals = append(vals, lvl.String())
+		}
+		return vals, cobra.ShellCompDirectiveNoFileComp
+	})
 	rootCmd.RegisterFlagCompletionFunc("api-token", cobra.NoFileCompletions)
 	rootCmd.RegisterFlagCompletionFunc("raw-json", boolCompletions)
 	rootCmd.RegisterFlagCompletionFunc("no-progress", boolCompletions)
