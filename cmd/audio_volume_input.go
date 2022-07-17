@@ -81,7 +81,7 @@ func init() {
 	audioVolumeInputCmd.MarkFlagRequired("index")
 	audioVolumeInputCmd.RegisterFlagCompletionFunc("application", boolCompletions)
 	audioVolumeInputCmd.RegisterFlagCompletionFunc("index", cobra.NoFileCompletions)
-	audioVolumeInputCmd.RegisterFlagCompletionFunc("volume", cobra.NoFileCompletions)
+	audioVolumeInputCmd.RegisterFlagCompletionFunc("volume", volumePercentCompletions)
 	audioVolumeInputCmd.RegisterFlagCompletionFunc("mute", boolCompletions)
 	audioVolumeInputCmd.RegisterFlagCompletionFunc("unmute", boolCompletions)
 	audioVolumeCmd.AddCommand(audioVolumeInputCmd)

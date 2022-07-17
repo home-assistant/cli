@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -24,4 +25,12 @@ func init() {
 	log.Debug("Init audio volume")
 
 	audioCmd.AddCommand(audioVolumeCmd)
+}
+
+func volumePercentCompletions(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+	vals := make([]string, 0, 101)
+	for i := 0; i <= 100; i++ {
+		vals = append(vals, fmt.Sprint(i))
+	}
+	return vals, cobra.ShellCompDirectiveNoFileComp
 }
