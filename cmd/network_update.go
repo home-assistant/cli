@@ -112,9 +112,13 @@ func init() {
 	networkUpdateCmd.RegisterFlagCompletionFunc("ipv6-method", ipMethodCompletions)
 	networkUpdateCmd.RegisterFlagCompletionFunc("ipv6-nameserver", cobra.NoFileCompletions)
 
-	networkUpdateCmd.RegisterFlagCompletionFunc("wifi-mode", cobra.NoFileCompletions)
+	networkUpdateCmd.RegisterFlagCompletionFunc("wifi-mode", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		return []string{"infrastructure", "adhoc", "mesh", "ap"}, cobra.ShellCompDirectiveNoFileComp
+	})
 	networkUpdateCmd.RegisterFlagCompletionFunc("wifi-ssid", cobra.NoFileCompletions)
-	networkUpdateCmd.RegisterFlagCompletionFunc("wifi-auth", cobra.NoFileCompletions)
+	networkUpdateCmd.RegisterFlagCompletionFunc("wifi-auth", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		return []string{"open", "wep", "wpa-psk"}, cobra.ShellCompDirectiveNoFileComp
+	})
 	networkUpdateCmd.RegisterFlagCompletionFunc("wifi-psk", cobra.NoFileCompletions)
 
 	networkUpdateCmd.RegisterFlagCompletionFunc("disabled", boolCompletions)
