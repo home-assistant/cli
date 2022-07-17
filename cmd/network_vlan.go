@@ -13,7 +13,7 @@ import (
 var networkVlanCmd = &cobra.Command{
 	Use:     "vlan [interface] [id]",
 	Aliases: []string{},
-	Short:   "Create a new VLAN on an ethernet interface interface",
+	Short:   "Create a new VLAN on an ethernet interface",
 	Long: `
 Create a new VLAN on an ethernet interface. It allows setting an initial IP config.
 This function works only on an ethernet interface!
