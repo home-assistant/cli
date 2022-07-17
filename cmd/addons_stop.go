@@ -12,7 +12,6 @@ import (
 
 var addonsStopCmd = &cobra.Command{
 	Use:     "stop [slug]",
-	Args:    cobra.ExactArgs(1),
 	Aliases: []string{"halt", "shutdown", "quit"},
 	Short:   "Manually stop a running Home Assistant add-on",
 	Long: `
@@ -21,6 +20,7 @@ This command allows you to manually start a stopped Home Assistant add-on
 	Example: `
   ha addons stop core_ssh
 `,
+	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("addons stop")
 
