@@ -84,6 +84,12 @@ func init() {
 	rootCmd.PersistentFlags().BoolVar(&rawJSON, "raw-json", false, "Output raw JSON from the API")
 	rootCmd.PersistentFlags().BoolVar(&noProgress, "no-progress", false, "Disable the progress spinner")
 
+	rootCmd.RegisterFlagCompletionFunc("endpoint", cobra.NoFileCompletions)
+	rootCmd.RegisterFlagCompletionFunc("log-level", cobra.NoFileCompletions)
+	rootCmd.RegisterFlagCompletionFunc("api-token", cobra.NoFileCompletions)
+	rootCmd.RegisterFlagCompletionFunc("raw-json", cobra.NoFileCompletions)
+	rootCmd.RegisterFlagCompletionFunc("no-progress", cobra.NoFileCompletions)
+
 	viper.BindPFlag("config", rootCmd.PersistentFlags().Lookup("config"))
 	viper.BindPFlag("endpoint", rootCmd.PersistentFlags().Lookup("endpoint"))
 	viper.BindPFlag("log-level", rootCmd.PersistentFlags().Lookup("log-level"))

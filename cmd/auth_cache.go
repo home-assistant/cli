@@ -20,7 +20,8 @@ This command allows you to reset the internal password cache of a Home Assistant
 	Example: `
   ha authentication cache
 `,
-	Args: cobra.NoArgs,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("auth cache")
 

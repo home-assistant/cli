@@ -18,7 +18,8 @@ Home Assistant Audio on your Home Assistant system.`,
 	Example: `
 	ha audio default output --name "..."
 `,
-	Args: cobra.NoArgs,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("audio default output")
 
@@ -45,5 +46,6 @@ Home Assistant Audio on your Home Assistant system.`,
 func init() {
 	audioDefaultOutputCmd.Flags().String("name", "", "The name of the audio device")
 	audioDefaultOutputCmd.MarkFlagRequired("name")
+	audioDefaultOutputCmd.RegisterFlagCompletionFunc("name", cobra.NoFileCompletions)
 	audioDefaultCmd.AddCommand(audioDefaultOutputCmd)
 }

@@ -18,7 +18,8 @@ Shows information about the internally running Home Assistant CLI backend
 	Example: `
   ha cli info
 `,
-	Args: cobra.NoArgs,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("cli info")
 

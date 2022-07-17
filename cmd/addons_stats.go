@@ -21,7 +21,8 @@ how much CPU, memory, disk & network resources it uses.
 	Example: `
   ha addons stats core_ssh
 `,
-	Args: cobra.ExactArgs(1),
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("addons stats")
 

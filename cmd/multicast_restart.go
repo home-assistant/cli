@@ -15,7 +15,8 @@ var multicastRestartCmd = &cobra.Command{
 	Long:    `Restart the internal Home Assistant Multicast server running`,
 	Example: `
   ha multicast restart`,
-	Args: cobra.NoArgs,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("multicast restart")
 

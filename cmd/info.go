@@ -20,7 +20,8 @@ issues or when reporting one on GitHub.
 	Example: `
   ha info
 	`,
-	Args: cobra.NoArgs,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("info")
 

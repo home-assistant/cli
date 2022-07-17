@@ -20,7 +20,8 @@ Add new login for the Docker OCI registry server.
 	Example: `
   ha docker registries add my-docker.example.com --username "test" --password "example"
 `,
-	Args: cobra.ExactArgs(1),
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("registries add")
 
@@ -81,5 +82,7 @@ Add new login for the Docker OCI registry server.
 func init() {
 	dockerRegistriesAddCmd.Flags().StringP("username", "u", "", "Username for OCI auth")
 	dockerRegistriesAddCmd.Flags().StringP("password", "p", "", "Password for OCI auth")
+	dockerRegistriesAddCmd.RegisterFlagCompletionFunc("username", cobra.NoFileCompletions)
+	dockerRegistriesAddCmd.RegisterFlagCompletionFunc("password", cobra.NoFileCompletions)
 	dockerRegistriesCmd.AddCommand(dockerRegistriesAddCmd)
 }

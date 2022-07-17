@@ -18,7 +18,8 @@ This command provides general information about the Home Assistant Job backend.
 	Example: `
   ha jobs info
 `,
-	Args: cobra.NoArgs,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("jobs info")
 

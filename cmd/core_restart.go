@@ -16,7 +16,8 @@ var coreRestartCmd = &cobra.Command{
 Restart the Home Assistant Core instance running on your system`,
 	Example: `
   ha core restart`,
-	Args: cobra.NoArgs,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("core restart")
 

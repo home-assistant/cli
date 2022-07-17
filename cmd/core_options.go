@@ -17,7 +17,8 @@ This command allows you to set configuration options for the Home Assistant Core
 instance running on your Home Assistant system.`,
 	Example: `
   ha core options --wait_boot 600`,
-	Args: cobra.NoArgs,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("core options")
 
@@ -77,5 +78,13 @@ func init() {
 	coreOptionsCmd.Flags().String("refresh_token", "", "Refresh token")
 	coreOptionsCmd.Flags().String("audio_input", "", "Profile name for audio input")
 	coreOptionsCmd.Flags().String("audio_output", "", "Profile name for audio output")
+	coreOptionsCmd.RegisterFlagCompletionFunc("boot", cobra.NoFileCompletions)
+	coreOptionsCmd.RegisterFlagCompletionFunc("image", cobra.NoFileCompletions)
+	coreOptionsCmd.RegisterFlagCompletionFunc("port", cobra.NoFileCompletions)
+	coreOptionsCmd.RegisterFlagCompletionFunc("ssl", cobra.NoFileCompletions)
+	coreOptionsCmd.RegisterFlagCompletionFunc("watchdog", cobra.NoFileCompletions)
+	coreOptionsCmd.RegisterFlagCompletionFunc("refresh_token", cobra.NoFileCompletions)
+	coreOptionsCmd.RegisterFlagCompletionFunc("audio_input", cobra.NoFileCompletions)
+	coreOptionsCmd.RegisterFlagCompletionFunc("audio_output", cobra.NoFileCompletions)
 	coreCmd.AddCommand(coreOptionsCmd)
 }

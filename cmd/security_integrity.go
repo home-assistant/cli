@@ -17,7 +17,8 @@ This command execute a full system integrity check.
 This need content trust to be enabled.`,
 	Example: `
   ha security integrity`,
-	Args: cobra.NoArgs,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("security")
 

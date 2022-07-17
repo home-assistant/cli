@@ -21,7 +21,8 @@ It is currently not possible to upgrade/downgrade to a specific version.
 	Example: `
   ha addons update core_ssh
 `,
-	Args: cobra.ExactArgs(1),
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("addons update")
 
@@ -82,5 +83,6 @@ It is currently not possible to upgrade/downgrade to a specific version.
 
 func init() {
 	addonsUpdateCmd.Flags().Bool("backup", false, "Create partial backup before update")
+	addonsUpdateCmd.RegisterFlagCompletionFunc("backup", cobra.NoFileCompletions)
 	addonsCmd.AddCommand(addonsUpdateCmd)
 }

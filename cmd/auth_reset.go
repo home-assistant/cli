@@ -20,7 +20,8 @@ only work on some locations. For example, the Operating System CLI.
 	Example: `
   ha authentication reset --username "JohnDoe" --password "123SuperSecret!"
 `,
-	Args: cobra.NoArgs,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("auth reset")
 
@@ -55,5 +56,7 @@ func init() {
 	authResetCmd.Flags().String("password", "", "The new password to assign")
 	cobra.MarkFlagRequired(authResetCmd.Flags(), "username")
 	cobra.MarkFlagRequired(authResetCmd.Flags(), "password")
+	authResetCmd.RegisterFlagCompletionFunc("username", cobra.NoFileCompletions)
+	authResetCmd.RegisterFlagCompletionFunc("password", cobra.NoFileCompletions)
 	authCmd.AddCommand(authResetCmd)
 }

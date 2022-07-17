@@ -19,7 +19,8 @@ Multicast server, to the latest version or the version specified.
 	Example: `
   ha multicast update --version 5
 `,
-	Args: cobra.NoArgs,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("multicast update")
 
@@ -48,5 +49,6 @@ Multicast server, to the latest version or the version specified.
 
 func init() {
 	multicastUpdateCmd.Flags().StringP("version", "", "", "Version to update to")
+	multicastUpdateCmd.RegisterFlagCompletionFunc("version", cobra.NoFileCompletions)
 	multicastCmd.AddCommand(multicastUpdateCmd)
 }

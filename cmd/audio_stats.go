@@ -17,7 +17,8 @@ Provides insight into the system usage stats of Home Assistant Audio.
 It shows you how much CPU, memory, disk & network resources it uses.`,
 	Example: `
   ha audio stats`,
-	Args: cobra.NoArgs,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("audio stats")
 

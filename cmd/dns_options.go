@@ -19,7 +19,8 @@ running Home Assistant DNS server.
 	Example: `
   ha dns options --servers dns://8.8.8.8 --servers dns://1.1.1.1
 `,
-	Args: cobra.NoArgs,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("dns options")
 
@@ -55,6 +56,9 @@ func init() {
 	dnsOptionsCmd.Flags().BoolP("fallback", "", true, "Enable/Disable fallback DNS (Cloudflare DoT)")
 
 	dnsOptionsCmd.Flags().Lookup("fallback").NoOptDefVal = "true"
+
+	dnsOptionsCmd.RegisterFlagCompletionFunc("servers", cobra.NoFileCompletions)
+	dnsOptionsCmd.RegisterFlagCompletionFunc("fallback", cobra.NoFileCompletions)
 
 	dnsCmd.AddCommand(dnsOptionsCmd)
 }

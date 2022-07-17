@@ -18,7 +18,8 @@ This command allows you to set configuration options for on the Home Assistant
 Supervisor running on your Home Assistant system.`,
 	Example: `
   ha supervisor options --channel beta`,
-	Args: cobra.NoArgs,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("supervisor options")
 
@@ -88,6 +89,16 @@ func init() {
 	supervisorOptionsCmd.Flags().Lookup("debug").NoOptDefVal = "false"
 	supervisorOptionsCmd.Flags().Lookup("debug-block").NoOptDefVal = "false"
 	supervisorOptionsCmd.Flags().Lookup("diagnostics").NoOptDefVal = "false"
+
+	supervisorOptionsCmd.RegisterFlagCompletionFunc("hostname", cobra.NoFileCompletions)
+	supervisorOptionsCmd.RegisterFlagCompletionFunc("channel", cobra.NoFileCompletions)
+	supervisorOptionsCmd.RegisterFlagCompletionFunc("timezone", cobra.NoFileCompletions)
+	supervisorOptionsCmd.RegisterFlagCompletionFunc("logging", cobra.NoFileCompletions)
+	supervisorOptionsCmd.RegisterFlagCompletionFunc("wait-boot", cobra.NoFileCompletions)
+	supervisorOptionsCmd.RegisterFlagCompletionFunc("debug", cobra.NoFileCompletions)
+	supervisorOptionsCmd.RegisterFlagCompletionFunc("debug-block", cobra.NoFileCompletions)
+	supervisorOptionsCmd.RegisterFlagCompletionFunc("diagnostics", cobra.NoFileCompletions)
+	supervisorOptionsCmd.RegisterFlagCompletionFunc("repositories", cobra.NoFileCompletions)
 
 	supervisorCmd.AddCommand(supervisorOptionsCmd)
 }

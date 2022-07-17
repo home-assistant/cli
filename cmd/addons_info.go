@@ -22,7 +22,8 @@ is provided, information about a specific add-on.
   ha addons info
   ha addons info core_ssh
 `,
-	Args: cobra.MaximumNArgs(1),
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.MaximumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("addons info")
 

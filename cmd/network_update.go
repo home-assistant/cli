@@ -21,7 +21,8 @@ Update network interface settings of a specific adapter.
 	Example: `
   ha network update eth0 --ipv4-method auto --ipv6-method disabled
 `,
-	Args: cobra.ExactArgs(1),
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("network update")
 
@@ -100,6 +101,24 @@ func init() {
 	networkUpdateCmd.Flags().String("wifi-psk", "", "Shared authentication key for wep or wpa")
 
 	networkUpdateCmd.Flags().BoolP("disabled", "e", false, "Disable interface")
+
+	networkUpdateCmd.RegisterFlagCompletionFunc("ipv4-address", cobra.NoFileCompletions)
+	networkUpdateCmd.RegisterFlagCompletionFunc("ipv4-gateway", cobra.NoFileCompletions)
+	networkUpdateCmd.RegisterFlagCompletionFunc("ipv4-method", cobra.NoFileCompletions)
+	networkUpdateCmd.RegisterFlagCompletionFunc("ipv4-nameserver", cobra.NoFileCompletions)
+
+	networkUpdateCmd.RegisterFlagCompletionFunc("ipv6-address", cobra.NoFileCompletions)
+	networkUpdateCmd.RegisterFlagCompletionFunc("ipv6-gateway", cobra.NoFileCompletions)
+	networkUpdateCmd.RegisterFlagCompletionFunc("ipv6-method", cobra.NoFileCompletions)
+	networkUpdateCmd.RegisterFlagCompletionFunc("ipv6-nameserver", cobra.NoFileCompletions)
+
+	networkUpdateCmd.RegisterFlagCompletionFunc("wifi-mode", cobra.NoFileCompletions)
+	networkUpdateCmd.RegisterFlagCompletionFunc("wifi-ssid", cobra.NoFileCompletions)
+	networkUpdateCmd.RegisterFlagCompletionFunc("wifi-auth", cobra.NoFileCompletions)
+	networkUpdateCmd.RegisterFlagCompletionFunc("wifi-psk", cobra.NoFileCompletions)
+
+	networkUpdateCmd.RegisterFlagCompletionFunc("disabled", cobra.NoFileCompletions)
+
 	networkCmd.AddCommand(networkUpdateCmd)
 }
 

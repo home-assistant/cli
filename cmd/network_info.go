@@ -19,7 +19,8 @@ Shows information about the host network and interfaces or only from a specific 
   ha network info
   ha network info eth0
 `,
-	Args: cobra.MaximumNArgs(1),
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.MaximumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("network info")
 

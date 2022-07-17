@@ -17,7 +17,8 @@ This command provides information about the running Home Assistant Core instance
 running on your Home Assistant system.`,
 	Example: `
   ha core info`,
-	Args: cobra.NoArgs,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("core info")
 

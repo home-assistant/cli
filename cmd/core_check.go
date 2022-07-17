@@ -19,7 +19,8 @@ want to make sure the configuration is right, before restarting
 Home Assistant Core.`,
 	Example: `
   ha core check`,
-	Args: cobra.NoArgs,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("core check")
 

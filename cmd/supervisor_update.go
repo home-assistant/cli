@@ -19,7 +19,8 @@ or the version specified.`,
 	Example: `
   ha supervisor update
   ha supervisor update --version 173`,
-	Args: cobra.NoArgs,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("supervisor update")
 
@@ -47,5 +48,6 @@ or the version specified.`,
 
 func init() {
 	supervisorUpdateCmd.Flags().StringP("version", "", "", "Version to update to")
+	supervisorUpdateCmd.RegisterFlagCompletionFunc("version", cobra.NoFileCompletions)
 	supervisorCmd.AddCommand(supervisorUpdateCmd)
 }

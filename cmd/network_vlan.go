@@ -21,7 +21,8 @@ This function works only on an ethernet interface!
 	Example: `
   ha network vlan eth0 10 --ipv4-method auto --ipv6-method disabled
 `,
-	Args: cobra.ExactArgs(2),
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.ExactArgs(2),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("network vlan")
 
@@ -89,6 +90,16 @@ func init() {
 	networkVlanCmd.Flags().String("ipv6-gateway", "", "The IPv6 gateway the interface should use")
 	networkVlanCmd.Flags().String("ipv6-method", "", "Method on IPv6: static|auto|disabled")
 	networkVlanCmd.Flags().StringArray("ipv6-nameserver", []string{}, "Upstream DNS servers to use for IPv6. Use multiple times for multiple servers.")
+
+	networkVlanCmd.RegisterFlagCompletionFunc("ipv4-address", cobra.NoFileCompletions)
+	networkVlanCmd.RegisterFlagCompletionFunc("ipv4-gateway", cobra.NoFileCompletions)
+	networkVlanCmd.RegisterFlagCompletionFunc("ipv4-method", cobra.NoFileCompletions)
+	networkVlanCmd.RegisterFlagCompletionFunc("ipv4-nameserver", cobra.NoFileCompletions)
+
+	networkVlanCmd.RegisterFlagCompletionFunc("ipv6-address", cobra.NoFileCompletions)
+	networkVlanCmd.RegisterFlagCompletionFunc("ipv6-gateway", cobra.NoFileCompletions)
+	networkVlanCmd.RegisterFlagCompletionFunc("ipv6-method", cobra.NoFileCompletions)
+	networkVlanCmd.RegisterFlagCompletionFunc("ipv6-nameserver", cobra.NoFileCompletions)
 
 	networkCmd.AddCommand(networkVlanCmd)
 }

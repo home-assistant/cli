@@ -18,7 +18,8 @@ Shows information about the internally running Home Assistant Multicast server
 	Example: `
   ha multicast info
 `,
-	Args: cobra.NoArgs,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("multicast info")
 

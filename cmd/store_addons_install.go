@@ -20,7 +20,8 @@ This command allows you to install a Home Assistant add-on from the commandline.
 	Example: `
   ha store addons install core_ssh
 `,
-	Args: cobra.ExactArgs(1),
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("store addons install")
 

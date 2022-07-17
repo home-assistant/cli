@@ -18,7 +18,8 @@ Shows information about the local Docker backend on the host system
 	Example: `
   ha docker info
 `,
-	Args: cobra.NoArgs,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("docker info")
 
