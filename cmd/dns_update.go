@@ -19,6 +19,7 @@ DNS server, to the latest version or the version specified.
 	Example: `
   ha dns update --version 5
 `,
+	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("dns update")
 

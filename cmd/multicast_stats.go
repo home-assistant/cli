@@ -19,6 +19,7 @@ It shows you how much CPU, memory, disk & network resources it uses.
 	Example: `
   ha multicast stats
 `,
+	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("multicast stats")
 

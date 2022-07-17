@@ -19,6 +19,7 @@ Home Assistant Job Manager.
 	Example: `
   ha jobs options --ignore-conditions healthy
 `,
+	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("jobs options")
 

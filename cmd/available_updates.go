@@ -18,6 +18,7 @@ This command provides information about the currently pending updates on the sys
 	Example: `
   ha available-updates
 	`,
+	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("available_updates")
 

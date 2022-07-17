@@ -13,6 +13,7 @@ var dnsResetCmd = &cobra.Command{
 	Short:   "Resets the internal Home Assistant DNS server configuration",
 	Long:    `Resets the internal Home Assistant DNS server configuration.`,
 	Example: `ha dns reset`,
+	Args:    cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("dns reset")
 

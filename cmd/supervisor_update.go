@@ -19,6 +19,7 @@ or the version specified.`,
 	Example: `
   ha supervisor update
   ha supervisor update --version 173`,
+	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("supervisor update")
 

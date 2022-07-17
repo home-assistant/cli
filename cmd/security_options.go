@@ -20,6 +20,7 @@ Home Assistant Security backend.
 	Example: `
   ha security options --force-security=True
 `,
+	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("security options")
 

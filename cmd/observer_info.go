@@ -18,6 +18,7 @@ Shows information about the internally running Home Assistant observer
 	Example: `
   ha observer info
 `,
+	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("observer info")
 

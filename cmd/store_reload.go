@@ -21,6 +21,7 @@ an add-on is released, but not yet available as an upgrade in Home Assistant.
 	Example: `
   ha store reload
 `,
+	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("store reload")
 

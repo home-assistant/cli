@@ -18,6 +18,7 @@ running on your system to the latest version or the version specified.`,
 	Example: `
   ha core update
   ha core update --version 0.105.4`,
+	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("core update")
 

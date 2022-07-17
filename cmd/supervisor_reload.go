@@ -17,6 +17,7 @@ Reloading the Home Assistant Supervisor, triggers the Supervisor to regather
 all data it currently has, including checking for updates.`,
 	Example: `
   ha supervisor reload`,
+	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("supervisor reload")
 

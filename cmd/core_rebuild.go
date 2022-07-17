@@ -18,6 +18,7 @@ instance running on your Home Assistant system.
 Don't worry, this does not delete your config.`,
 	Example: `
   ha core rebuild`,
+	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("core rebuild")
 

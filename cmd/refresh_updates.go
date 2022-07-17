@@ -18,6 +18,7 @@ This command reloads information about add-on repositories and fetches new versi
 	Example: `
   ha refresh-update
 	`,
+	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("refresh_updates")
 

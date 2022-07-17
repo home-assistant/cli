@@ -17,6 +17,7 @@ This command allows you to set configuration options on the host system that
 your Home Assistant is running on.`,
 	Example: `
   ha host options --hostname homeassistant.local`,
+	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("host options")
 

@@ -15,6 +15,7 @@ var hardwareAudioCmd = &cobra.Command{
 	Long: `
 The command provides information about audio devices available on your system.`,
 	Example: `ha hardware audio`,
+	Args:    cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("hardware info")
 

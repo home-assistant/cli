@@ -17,6 +17,7 @@ This command allows you to set configuration options for the Home Assistant Core
 instance running on your Home Assistant system.`,
 	Example: `
   ha core options --wait_boot 600`,
+	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("core options")
 

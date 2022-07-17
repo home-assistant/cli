@@ -17,6 +17,7 @@ Shuts down the machine that your Home Assistant is running on.
 WARNING: This is turning off the computer/device.`,
 	Example: `
   ha host shutdown`,
+	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("host shutdown")
 

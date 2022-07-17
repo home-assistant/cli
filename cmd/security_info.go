@@ -18,6 +18,7 @@ This command provides general information about the Home Assistant Security back
 	Example: `
   ha jobs info
 `,
+	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("security info")
 

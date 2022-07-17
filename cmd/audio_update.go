@@ -18,6 +18,7 @@ instance running on your system to the latest version or the version specified.`
 	Example: `
   ha audio update
   ha audio update --version 6`,
+	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("audio update")
 

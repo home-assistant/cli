@@ -18,6 +18,7 @@ This command provides general information about available Harddisk for using wit
 	Example: `
   ha os datadisk list
 `,
+	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("os datadisk list")
 

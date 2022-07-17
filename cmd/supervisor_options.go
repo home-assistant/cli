@@ -18,6 +18,7 @@ This command allows you to set configuration options for on the Home Assistant
 Supervisor running on your Home Assistant system.`,
 	Example: `
   ha supervisor options --channel beta`,
+	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("supervisor options")
 

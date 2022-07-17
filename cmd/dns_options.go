@@ -19,6 +19,7 @@ running Home Assistant DNS server.
 	Example: `
   ha dns options --servers dns://8.8.8.8 --servers dns://1.1.1.1
 `,
+	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("dns options")
 

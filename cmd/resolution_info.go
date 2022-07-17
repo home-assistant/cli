@@ -17,6 +17,7 @@ This command provides general information about the issues, suggestion and the s
 	Example: `
   ha resolution
   ha resolution suggestion apply [id]`,
+	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("resolution")
 

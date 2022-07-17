@@ -17,6 +17,7 @@ This command allows you to manually stop the Home Assistant Core instance on
 your system.`,
 	Example: `
   ha core stop`,
+	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("core stop")
 

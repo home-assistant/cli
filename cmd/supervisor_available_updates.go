@@ -16,6 +16,7 @@ var supervisorAvailableUpdatesCmd = &cobra.Command{
 This command provides you information about available updates.`,
 	Example: `
   ha supervisor available_updates`,
+	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("supervisor available_updates")
 

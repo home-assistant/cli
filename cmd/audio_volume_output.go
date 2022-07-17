@@ -23,7 +23,7 @@ output channel or application on your Home Assistant system.`,
 	ha audio volume output --index 1 --unmute --application
 	ha audio volume output --index 2 --volume 50 --application
 `,
-
+	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("audio volume output")
 

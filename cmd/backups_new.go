@@ -21,6 +21,7 @@ backup.`,
   ha backups new --folders homeassistant
   ha backups new --uncompressed
 `,
+	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("backups new")
 

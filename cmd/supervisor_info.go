@@ -17,6 +17,7 @@ This command provides you a ton of information about everything the
 Supervisor currently knows.`,
 	Example: `
   ha supervisor info`,
+	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("supervisor info")
 

@@ -17,7 +17,7 @@ This command allows you to set the audio profile on a audio card.`,
 	Example: `
 	ha audio profile --card "..." --name "..."
 `,
-
+	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("audio profile")
 

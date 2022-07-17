@@ -17,6 +17,7 @@ Reloading the Home Assistant Audio, triggers the to regather
 all data and devices it currently has.`,
 	Example: `
   ha audio reload`,
+	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("audio reload")
 
