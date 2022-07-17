@@ -54,6 +54,6 @@ func init() {
 	coreUpdateCmd.Flags().StringP("version", "", "", "Version to update to")
 	coreUpdateCmd.Flags().Bool("backup", false, "Create partial backup before update")
 	coreUpdateCmd.RegisterFlagCompletionFunc("version", cobra.NoFileCompletions)
-	coreUpdateCmd.RegisterFlagCompletionFunc("backup", cobra.NoFileCompletions)
+	coreUpdateCmd.RegisterFlagCompletionFunc("backup", boolCompletions)
 	coreCmd.AddCommand(coreUpdateCmd)
 }

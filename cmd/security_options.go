@@ -60,9 +60,9 @@ func init() {
 	securityOptionsCmd.Flags().Lookup("content-trust").NoOptDefVal = "true"
 	securityOptionsCmd.Flags().Lookup("force-security").NoOptDefVal = "false"
 
-	securityOptionsCmd.RegisterFlagCompletionFunc("pwned", cobra.NoFileCompletions)
-	securityOptionsCmd.RegisterFlagCompletionFunc("content-trust", cobra.NoFileCompletions)
-	securityOptionsCmd.RegisterFlagCompletionFunc("force-security", cobra.NoFileCompletions)
+	securityOptionsCmd.RegisterFlagCompletionFunc("pwned", boolCompletions)
+	securityOptionsCmd.RegisterFlagCompletionFunc("content-trust", boolCompletions)
+	securityOptionsCmd.RegisterFlagCompletionFunc("force-security", boolCompletions)
 
 	securityCmd.AddCommand(securityOptionsCmd)
 }

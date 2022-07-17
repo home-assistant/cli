@@ -95,9 +95,9 @@ func init() {
 	supervisorOptionsCmd.RegisterFlagCompletionFunc("timezone", cobra.NoFileCompletions)
 	supervisorOptionsCmd.RegisterFlagCompletionFunc("logging", cobra.NoFileCompletions)
 	supervisorOptionsCmd.RegisterFlagCompletionFunc("wait-boot", cobra.NoFileCompletions)
-	supervisorOptionsCmd.RegisterFlagCompletionFunc("debug", cobra.NoFileCompletions)
-	supervisorOptionsCmd.RegisterFlagCompletionFunc("debug-block", cobra.NoFileCompletions)
-	supervisorOptionsCmd.RegisterFlagCompletionFunc("diagnostics", cobra.NoFileCompletions)
+	supervisorOptionsCmd.RegisterFlagCompletionFunc("debug", boolCompletions)
+	supervisorOptionsCmd.RegisterFlagCompletionFunc("debug-block", boolCompletions)
+	supervisorOptionsCmd.RegisterFlagCompletionFunc("diagnostics", boolCompletions)
 	supervisorOptionsCmd.RegisterFlagCompletionFunc("repositories", cobra.NoFileCompletions)
 
 	supervisorCmd.AddCommand(supervisorOptionsCmd)

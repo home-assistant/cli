@@ -107,7 +107,7 @@ func init() {
 	backupsRestoreCmd.Flags().StringArrayP("addons", "a", []string{}, "addons to restore, triggers a partial backup")
 	backupsRestoreCmd.Flags().StringArrayP("folders", "f", []string{}, "folders to restore, triggers a partial backup")
 	backupsRestoreCmd.RegisterFlagCompletionFunc("password", cobra.NoFileCompletions)
-	backupsRestoreCmd.RegisterFlagCompletionFunc("homeassistant", cobra.NoFileCompletions)
+	backupsRestoreCmd.RegisterFlagCompletionFunc("homeassistant", boolCompletions)
 	backupsRestoreCmd.RegisterFlagCompletionFunc("addons", cobra.NoFileCompletions)
 	backupsRestoreCmd.RegisterFlagCompletionFunc("folders", cobra.NoFileCompletions)
 	backupsCmd.AddCommand(backupsRestoreCmd)

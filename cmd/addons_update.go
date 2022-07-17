@@ -83,6 +83,6 @@ It is currently not possible to upgrade/downgrade to a specific version.
 
 func init() {
 	addonsUpdateCmd.Flags().Bool("backup", false, "Create partial backup before update")
-	addonsUpdateCmd.RegisterFlagCompletionFunc("backup", cobra.NoFileCompletions)
+	addonsUpdateCmd.RegisterFlagCompletionFunc("backup", boolCompletions)
 	addonsCmd.AddCommand(addonsUpdateCmd)
 }

@@ -58,7 +58,7 @@ func init() {
 	dnsOptionsCmd.Flags().Lookup("fallback").NoOptDefVal = "true"
 
 	dnsOptionsCmd.RegisterFlagCompletionFunc("servers", cobra.NoFileCompletions)
-	dnsOptionsCmd.RegisterFlagCompletionFunc("fallback", cobra.NoFileCompletions)
+	dnsOptionsCmd.RegisterFlagCompletionFunc("fallback", boolCompletions)
 
 	dnsCmd.AddCommand(dnsOptionsCmd)
 }

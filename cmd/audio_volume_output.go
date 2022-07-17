@@ -79,10 +79,10 @@ func init() {
 	audioVolumeOuputCmd.Flags().Bool("mute", false, "Mute the channel")
 	audioVolumeOuputCmd.Flags().Bool("unmute", false, "Unmute the channel")
 	audioVolumeOuputCmd.MarkFlagRequired("index")
-	audioVolumeOuputCmd.RegisterFlagCompletionFunc("application", cobra.NoFileCompletions)
+	audioVolumeOuputCmd.RegisterFlagCompletionFunc("application", boolCompletions)
 	audioVolumeOuputCmd.RegisterFlagCompletionFunc("index", cobra.NoFileCompletions)
 	audioVolumeOuputCmd.RegisterFlagCompletionFunc("volume", cobra.NoFileCompletions)
-	audioVolumeOuputCmd.RegisterFlagCompletionFunc("mute", cobra.NoFileCompletions)
-	audioVolumeOuputCmd.RegisterFlagCompletionFunc("unmute", cobra.NoFileCompletions)
+	audioVolumeOuputCmd.RegisterFlagCompletionFunc("mute", boolCompletions)
+	audioVolumeOuputCmd.RegisterFlagCompletionFunc("unmute", boolCompletions)
 	audioVolumeCmd.AddCommand(audioVolumeOuputCmd)
 }

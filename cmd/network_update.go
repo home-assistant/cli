@@ -117,7 +117,7 @@ func init() {
 	networkUpdateCmd.RegisterFlagCompletionFunc("wifi-auth", cobra.NoFileCompletions)
 	networkUpdateCmd.RegisterFlagCompletionFunc("wifi-psk", cobra.NoFileCompletions)
 
-	networkUpdateCmd.RegisterFlagCompletionFunc("disabled", cobra.NoFileCompletions)
+	networkUpdateCmd.RegisterFlagCompletionFunc("disabled", boolCompletions)
 
 	networkCmd.AddCommand(networkUpdateCmd)
 }

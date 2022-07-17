@@ -84,7 +84,7 @@ func init() {
 
 	backupsNewCmd.RegisterFlagCompletionFunc("name", cobra.NoFileCompletions)
 	backupsNewCmd.RegisterFlagCompletionFunc("password", cobra.NoFileCompletions)
-	backupsNewCmd.RegisterFlagCompletionFunc("uncompressed", cobra.NoFileCompletions)
+	backupsNewCmd.RegisterFlagCompletionFunc("uncompressed", boolCompletions)
 	backupsNewCmd.RegisterFlagCompletionFunc("addons", cobra.NoFileCompletions)
 	backupsNewCmd.RegisterFlagCompletionFunc("folders", cobra.NoFileCompletions)
 

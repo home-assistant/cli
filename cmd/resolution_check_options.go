@@ -76,6 +76,6 @@ This command allows to apply options to an specific check managed by the system.
 func init() {
 	resolutionCheckOptionsCmd.Flags().BoolP("enabled", "", true, "Enable/Disable check on the system")
 	resolutionCheckOptionsCmd.Flags().Lookup("enabled").NoOptDefVal = "true"
-	resolutionCheckOptionsCmd.RegisterFlagCompletionFunc("enabled", cobra.NoFileCompletions)
+	resolutionCheckOptionsCmd.RegisterFlagCompletionFunc("enabled", boolCompletions)
 	resolutionCheckCmd.AddCommand(resolutionCheckOptionsCmd)
 }

@@ -87,8 +87,8 @@ func init() {
 	rootCmd.RegisterFlagCompletionFunc("endpoint", cobra.NoFileCompletions)
 	rootCmd.RegisterFlagCompletionFunc("log-level", cobra.NoFileCompletions)
 	rootCmd.RegisterFlagCompletionFunc("api-token", cobra.NoFileCompletions)
-	rootCmd.RegisterFlagCompletionFunc("raw-json", cobra.NoFileCompletions)
-	rootCmd.RegisterFlagCompletionFunc("no-progress", cobra.NoFileCompletions)
+	rootCmd.RegisterFlagCompletionFunc("raw-json", boolCompletions)
+	rootCmd.RegisterFlagCompletionFunc("no-progress", boolCompletions)
 
 	viper.BindPFlag("config", rootCmd.PersistentFlags().Lookup("config"))
 	viper.BindPFlag("endpoint", rootCmd.PersistentFlags().Lookup("endpoint"))
@@ -144,4 +144,8 @@ func initConfig() {
 	} else {
 		log.Info("No configfile found")
 	}
+}
+
+func boolCompletions(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+	return []string{"true", "false"}, cobra.ShellCompDirectiveNoFileComp
 }
