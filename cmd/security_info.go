@@ -16,7 +16,7 @@ var securityInfoCmd = &cobra.Command{
 This command provides general information about the Home Assistant Security backend.
 `,
 	Example: `
-  ha jobs info
+  ha security info
 `,
 	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {

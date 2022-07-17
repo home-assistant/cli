@@ -18,7 +18,7 @@ var storeRepositoriesDeleteCmd = &cobra.Command{
 Remove a repository of add-ons that isn't in use from the Home Assistant store.
 `,
 	Example: `
-ha store delete 94cfad5a
+ha repositories delete 94cfad5a
 `,
 	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
