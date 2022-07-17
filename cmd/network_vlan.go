@@ -93,12 +93,12 @@ func init() {
 
 	networkVlanCmd.RegisterFlagCompletionFunc("ipv4-address", cobra.NoFileCompletions)
 	networkVlanCmd.RegisterFlagCompletionFunc("ipv4-gateway", cobra.NoFileCompletions)
-	networkVlanCmd.RegisterFlagCompletionFunc("ipv4-method", cobra.NoFileCompletions)
+	networkVlanCmd.RegisterFlagCompletionFunc("ipv4-method", ipMethodCompletions)
 	networkVlanCmd.RegisterFlagCompletionFunc("ipv4-nameserver", cobra.NoFileCompletions)
 
 	networkVlanCmd.RegisterFlagCompletionFunc("ipv6-address", cobra.NoFileCompletions)
 	networkVlanCmd.RegisterFlagCompletionFunc("ipv6-gateway", cobra.NoFileCompletions)
-	networkVlanCmd.RegisterFlagCompletionFunc("ipv6-method", cobra.NoFileCompletions)
+	networkVlanCmd.RegisterFlagCompletionFunc("ipv6-method", ipMethodCompletions)
 	networkVlanCmd.RegisterFlagCompletionFunc("ipv6-nameserver", cobra.NoFileCompletions)
 
 	networkCmd.AddCommand(networkVlanCmd)

@@ -104,12 +104,12 @@ func init() {
 
 	networkUpdateCmd.RegisterFlagCompletionFunc("ipv4-address", cobra.NoFileCompletions)
 	networkUpdateCmd.RegisterFlagCompletionFunc("ipv4-gateway", cobra.NoFileCompletions)
-	networkUpdateCmd.RegisterFlagCompletionFunc("ipv4-method", cobra.NoFileCompletions)
+	networkUpdateCmd.RegisterFlagCompletionFunc("ipv4-method", ipMethodCompletions)
 	networkUpdateCmd.RegisterFlagCompletionFunc("ipv4-nameserver", cobra.NoFileCompletions)
 
 	networkUpdateCmd.RegisterFlagCompletionFunc("ipv6-address", cobra.NoFileCompletions)
 	networkUpdateCmd.RegisterFlagCompletionFunc("ipv6-gateway", cobra.NoFileCompletions)
-	networkUpdateCmd.RegisterFlagCompletionFunc("ipv6-method", cobra.NoFileCompletions)
+	networkUpdateCmd.RegisterFlagCompletionFunc("ipv6-method", ipMethodCompletions)
 	networkUpdateCmd.RegisterFlagCompletionFunc("ipv6-nameserver", cobra.NoFileCompletions)
 
 	networkUpdateCmd.RegisterFlagCompletionFunc("wifi-mode", cobra.NoFileCompletions)
