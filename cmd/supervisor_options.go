@@ -91,9 +91,13 @@ func init() {
 	supervisorOptionsCmd.Flags().Lookup("diagnostics").NoOptDefVal = "false"
 
 	supervisorOptionsCmd.RegisterFlagCompletionFunc("hostname", cobra.NoFileCompletions)
-	supervisorOptionsCmd.RegisterFlagCompletionFunc("channel", cobra.NoFileCompletions)
+	supervisorOptionsCmd.RegisterFlagCompletionFunc("channel", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		return []string{"stable", "beta", "dev"}, cobra.ShellCompDirectiveNoFileComp
+	})
 	supervisorOptionsCmd.RegisterFlagCompletionFunc("timezone", cobra.NoFileCompletions)
-	supervisorOptionsCmd.RegisterFlagCompletionFunc("logging", cobra.NoFileCompletions)
+	supervisorOptionsCmd.RegisterFlagCompletionFunc("logging", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		return []string{"debug", "info", "warning", "error", "critical"}, cobra.ShellCompDirectiveNoFileComp
+	})
 	supervisorOptionsCmd.RegisterFlagCompletionFunc("wait-boot", cobra.NoFileCompletions)
 	supervisorOptionsCmd.RegisterFlagCompletionFunc("debug", boolCompletions)
 	supervisorOptionsCmd.RegisterFlagCompletionFunc("debug-block", boolCompletions)
