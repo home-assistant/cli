@@ -1,6 +1,6 @@
 module github.com/home-assistant/cli
 
-go 1.18
+go 1.19
 
 require (
 	github.com/ghodss/yaml v1.0.0
