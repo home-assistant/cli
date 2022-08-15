@@ -44,6 +44,7 @@ Supervisor running on your Home Assistant system.`,
 			"diagnostics",
 			"content-trust",
 			"force-security",
+			"auto-update",
 		} {
 			data, err := cmd.Flags().GetBool(value)
 			if err == nil && cmd.Flags().Changed(value) {
@@ -82,11 +83,13 @@ func init() {
 	supervisorOptionsCmd.Flags().BoolP("debug", "", false, "Enable debug mode")
 	supervisorOptionsCmd.Flags().BoolP("debug-block", "", false, "Enable debug mode with blocking startup")
 	supervisorOptionsCmd.Flags().BoolP("diagnostics", "", false, "Enable diagnostics mode")
+	supervisorOptionsCmd.Flags().BoolP("auto-update", "", true, "Enable/disable supervisor auto update")
 	supervisorOptionsCmd.Flags().StringArrayP("repositories", "r", []string{}, "repositories to track, can be supplied multiple times")
 
 	supervisorOptionsCmd.Flags().Lookup("debug").NoOptDefVal = "false"
 	supervisorOptionsCmd.Flags().Lookup("debug-block").NoOptDefVal = "false"
 	supervisorOptionsCmd.Flags().Lookup("diagnostics").NoOptDefVal = "false"
+	supervisorOptionsCmd.Flags().Lookup("auto-update").NoOptDefVal = "true"
 
 	supervisorCmd.AddCommand(supervisorOptionsCmd)
 }
