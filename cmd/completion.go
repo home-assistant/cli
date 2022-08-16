@@ -42,7 +42,7 @@ To configure your bash shell to load completions for each session add to your ba
 				),
 			)
 		} else {
-			rootCmd.GenBashCompletion(os.Stdout)
+			rootCmd.GenBashCompletionV2(os.Stdout, true)
 		}
 	},
 }
