@@ -23,7 +23,7 @@ add-on.
 	Example: `
   ha addons rebuild local_my_addon
 `,
-	ValidArgsFunction: cobra.NoFileCompletions,
+	ValidArgsFunction: addonsCompletions,
 	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("addons rebuild")
