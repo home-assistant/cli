@@ -19,6 +19,8 @@ the Home Assistant Supervisor will try to resolve these.
 `,
 	Example: `
   ha supervisor repair`,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("supervisor repair")
 

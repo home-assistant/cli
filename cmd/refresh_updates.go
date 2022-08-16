@@ -16,8 +16,10 @@ var refreshUpdatesCmd = &cobra.Command{
 This command reloads information about add-on repositories and fetches new version files.
 	`,
 	Example: `
-  ha refresh-update
+  ha refresh-updates
 	`,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("refresh_updates")
 

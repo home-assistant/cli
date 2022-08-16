@@ -17,7 +17,8 @@ This command allows you to set the audio profile on a audio card.`,
 	Example: `
 	ha audio profile --card "..." --name "..."
 `,
-
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("audio profile")
 
@@ -51,5 +52,7 @@ func init() {
 	audioProfileCmd.Flags().String("card", "", "The card to set the profile for")
 	audioProfileCmd.MarkFlagRequired("name")
 	audioProfileCmd.MarkFlagRequired("card")
+	audioProfileCmd.RegisterFlagCompletionFunc("name", cobra.NoFileCompletions)
+	audioProfileCmd.RegisterFlagCompletionFunc("card", cobra.NoFileCompletions)
 	audioCmd.AddCommand(audioProfileCmd)
 }

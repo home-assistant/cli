@@ -20,7 +20,8 @@ Add new repository of add-ons to the Home Assistant store.
 	Example: `
 ha store add https://github.com/home-assistant/addons-example
 `,
-	Args: cobra.ExactArgs(1),
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("store add")
 

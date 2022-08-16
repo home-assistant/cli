@@ -16,8 +16,9 @@ var hardwareInfoCmd = &cobra.Command{
 The hardware command provides information about the hardware of your system
 that is running Home Assistant. It is useful for finding things like: available 
 serial ports.`,
-	Example: `ha hardware info`,
-
+	Example:           `ha hardware info`,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("hardware info")
 

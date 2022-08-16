@@ -9,15 +9,17 @@ import (
 )
 
 var supervisorAvailableUpdatesCmd = &cobra.Command{
-	Use:     "available_updates",
-	Aliases: []string{"updates"},
+	Use:     "available-updates",
+	Aliases: []string{"available_updates", "updates"},
 	Short:   "Provides information about available updates",
 	Long: `
 This command provides you information about available updates.`,
 	Example: `
-  ha supervisor available_updates`,
+  ha supervisor available-updates`,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("supervisor available_updates")
+		log.WithField("args", args).Debug("supervisor available-updates")
 
 		section := "supervisor"
 		command := "available_updates"

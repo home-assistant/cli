@@ -2,10 +2,12 @@ package cmd
 
 import (
 	"fmt"
+	"strings"
 
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
+	"github.com/spf13/pflag"
 )
 
 var coreOptionsCmd = &cobra.Command{
@@ -17,6 +19,8 @@ This command allows you to set configuration options for the Home Assistant Core
 instance running on your Home Assistant system.`,
 	Example: `
   ha core options --wait_boot 600`,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("core options")
 
@@ -27,9 +31,9 @@ instance running on your Home Assistant system.`,
 
 		for _, value := range []string{
 			"image",
-			"refresh_token",
-			"audio_output",
-			"audio_input",
+			"refresh-token",
+			"audio-output",
+			"audio-input",
 		} {
 			val, err := cmd.Flags().GetString(value)
 			if err == nil && cmd.Flags().Changed(value) {
@@ -73,8 +77,19 @@ func init() {
 	coreOptionsCmd.Flags().Int("port", 8123, "Port to access Home Assistant Core")
 	coreOptionsCmd.Flags().Bool("ssl", false, "Use SSL")
 	coreOptionsCmd.Flags().Bool("watchdog", true, "Use watchdog")
-	coreOptionsCmd.Flags().String("refresh_token", "", "Refresh token")
-	coreOptionsCmd.Flags().String("audio_input", "", "Profile name for audio input")
-	coreOptionsCmd.Flags().String("audio_output", "", "Profile name for audio output")
+	coreOptionsCmd.Flags().String("refresh-token", "", "Refresh token")
+	coreOptionsCmd.Flags().String("audio-input", "", "Profile name for audio input")
+	coreOptionsCmd.Flags().String("audio-output", "", "Profile name for audio output")
+	coreOptionsCmd.Flags().SetNormalizeFunc(func(set *pflag.FlagSet, name string) pflag.NormalizedName { // backwards compatibility
+		return pflag.NormalizedName(strings.ReplaceAll(name, "_", "-"))
+	})
+	coreOptionsCmd.RegisterFlagCompletionFunc("boot", boolCompletions)
+	coreOptionsCmd.RegisterFlagCompletionFunc("image", cobra.NoFileCompletions)
+	coreOptionsCmd.RegisterFlagCompletionFunc("port", cobra.NoFileCompletions)
+	coreOptionsCmd.RegisterFlagCompletionFunc("ssl", boolCompletions)
+	coreOptionsCmd.RegisterFlagCompletionFunc("watchdog", boolCompletions)
+	coreOptionsCmd.RegisterFlagCompletionFunc("refresh-token", cobra.NoFileCompletions)
+	coreOptionsCmd.RegisterFlagCompletionFunc("audio-input", cobra.NoFileCompletions)
+	coreOptionsCmd.RegisterFlagCompletionFunc("audio-output", cobra.NoFileCompletions)
 	coreCmd.AddCommand(coreOptionsCmd)
 }

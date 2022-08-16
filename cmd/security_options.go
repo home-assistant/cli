@@ -20,6 +20,8 @@ Home Assistant Security backend.
 	Example: `
   ha security options --force-security=True
 `,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("security options")
 
@@ -57,6 +59,10 @@ func init() {
 	securityOptionsCmd.Flags().Lookup("pwned").NoOptDefVal = "true"
 	securityOptionsCmd.Flags().Lookup("content-trust").NoOptDefVal = "true"
 	securityOptionsCmd.Flags().Lookup("force-security").NoOptDefVal = "false"
+
+	securityOptionsCmd.RegisterFlagCompletionFunc("pwned", boolCompletions)
+	securityOptionsCmd.RegisterFlagCompletionFunc("content-trust", boolCompletions)
+	securityOptionsCmd.RegisterFlagCompletionFunc("force-security", boolCompletions)
 
 	securityCmd.AddCommand(securityOptionsCmd)
 }

@@ -20,7 +20,8 @@ take Home Assistant backup on your system.`,
   ha backups restore c1a07617
   ha backups restore c1a07617 --addons core_ssh --addons core_mosquitto
   ha backups restore c1a07617 --folders config`,
-	Args: cobra.ExactArgs(1),
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("backups restore")
 
@@ -105,6 +106,9 @@ func init() {
 	backupsRestoreCmd.Flags().BoolP("homeassistant", "", true, "Restore homeassistant (default true), triggers a partial backup when set to false")
 	backupsRestoreCmd.Flags().StringArrayP("addons", "a", []string{}, "addons to restore, triggers a partial backup")
 	backupsRestoreCmd.Flags().StringArrayP("folders", "f", []string{}, "folders to restore, triggers a partial backup")
-
+	backupsRestoreCmd.RegisterFlagCompletionFunc("password", cobra.NoFileCompletions)
+	backupsRestoreCmd.RegisterFlagCompletionFunc("homeassistant", boolCompletions)
+	backupsRestoreCmd.RegisterFlagCompletionFunc("addons", cobra.NoFileCompletions)
+	backupsRestoreCmd.RegisterFlagCompletionFunc("folders", cobra.NoFileCompletions)
 	backupsCmd.AddCommand(backupsRestoreCmd)
 }

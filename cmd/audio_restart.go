@@ -15,6 +15,8 @@ var audioRestartCmd = &cobra.Command{
 	Long:    `Restart the internal Home Assistant Audio`,
 	Example: `
   ha audio restart`,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("audio restart")
 

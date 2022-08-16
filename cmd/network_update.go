@@ -21,7 +21,8 @@ Update network interface settings of a specific adapter.
 	Example: `
   ha network update eth0 --ipv4-method auto --ipv6-method disabled
 `,
-	Args: cobra.ExactArgs(1),
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("network update")
 
@@ -100,6 +101,28 @@ func init() {
 	networkUpdateCmd.Flags().String("wifi-psk", "", "Shared authentication key for wep or wpa")
 
 	networkUpdateCmd.Flags().BoolP("disabled", "e", false, "Disable interface")
+
+	networkUpdateCmd.RegisterFlagCompletionFunc("ipv4-address", cobra.NoFileCompletions)
+	networkUpdateCmd.RegisterFlagCompletionFunc("ipv4-gateway", cobra.NoFileCompletions)
+	networkUpdateCmd.RegisterFlagCompletionFunc("ipv4-method", ipMethodCompletions)
+	networkUpdateCmd.RegisterFlagCompletionFunc("ipv4-nameserver", cobra.NoFileCompletions)
+
+	networkUpdateCmd.RegisterFlagCompletionFunc("ipv6-address", cobra.NoFileCompletions)
+	networkUpdateCmd.RegisterFlagCompletionFunc("ipv6-gateway", cobra.NoFileCompletions)
+	networkUpdateCmd.RegisterFlagCompletionFunc("ipv6-method", ipMethodCompletions)
+	networkUpdateCmd.RegisterFlagCompletionFunc("ipv6-nameserver", cobra.NoFileCompletions)
+
+	networkUpdateCmd.RegisterFlagCompletionFunc("wifi-mode", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		return []string{"infrastructure", "adhoc", "mesh", "ap"}, cobra.ShellCompDirectiveNoFileComp
+	})
+	networkUpdateCmd.RegisterFlagCompletionFunc("wifi-ssid", cobra.NoFileCompletions)
+	networkUpdateCmd.RegisterFlagCompletionFunc("wifi-auth", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		return []string{"open", "wep", "wpa-psk"}, cobra.ShellCompDirectiveNoFileComp
+	})
+	networkUpdateCmd.RegisterFlagCompletionFunc("wifi-psk", cobra.NoFileCompletions)
+
+	networkUpdateCmd.RegisterFlagCompletionFunc("disabled", boolCompletions)
+
 	networkCmd.AddCommand(networkUpdateCmd)
 }
 

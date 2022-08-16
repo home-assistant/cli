@@ -18,6 +18,8 @@ Reload information about the host network and interfaces.
 	Example: `
   ha network reload
 `,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("network reload")
 

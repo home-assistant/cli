@@ -84,6 +84,18 @@ func init() {
 	rootCmd.PersistentFlags().BoolVar(&rawJSON, "raw-json", false, "Output raw JSON from the API")
 	rootCmd.PersistentFlags().BoolVar(&noProgress, "no-progress", false, "Disable the progress spinner")
 
+	rootCmd.RegisterFlagCompletionFunc("endpoint", cobra.NoFileCompletions)
+	rootCmd.RegisterFlagCompletionFunc("log-level", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		vals := make([]string, 0, len(log.AllLevels))
+		for _, lvl := range log.AllLevels {
+			vals = append(vals, lvl.String())
+		}
+		return vals, cobra.ShellCompDirectiveNoFileComp
+	})
+	rootCmd.RegisterFlagCompletionFunc("api-token", cobra.NoFileCompletions)
+	rootCmd.RegisterFlagCompletionFunc("raw-json", boolCompletions)
+	rootCmd.RegisterFlagCompletionFunc("no-progress", boolCompletions)
+
 	viper.BindPFlag("config", rootCmd.PersistentFlags().Lookup("config"))
 	viper.BindPFlag("endpoint", rootCmd.PersistentFlags().Lookup("endpoint"))
 	viper.BindPFlag("log-level", rootCmd.PersistentFlags().Lookup("log-level"))
@@ -138,4 +150,8 @@ func initConfig() {
 	} else {
 		log.Info("No configfile found")
 	}
+}
+
+func boolCompletions(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+	return []string{"true", "false"}, cobra.ShellCompDirectiveNoFileComp
 }

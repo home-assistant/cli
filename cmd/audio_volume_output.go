@@ -23,7 +23,8 @@ output channel or application on your Home Assistant system.`,
 	ha audio volume output --index 1 --unmute --application
 	ha audio volume output --index 2 --volume 50 --application
 `,
-
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("audio volume output")
 
@@ -78,5 +79,10 @@ func init() {
 	audioVolumeOuputCmd.Flags().Bool("mute", false, "Mute the channel")
 	audioVolumeOuputCmd.Flags().Bool("unmute", false, "Unmute the channel")
 	audioVolumeOuputCmd.MarkFlagRequired("index")
+	audioVolumeOuputCmd.RegisterFlagCompletionFunc("application", boolCompletions)
+	audioVolumeOuputCmd.RegisterFlagCompletionFunc("index", cobra.NoFileCompletions)
+	audioVolumeOuputCmd.RegisterFlagCompletionFunc("volume", volumePercentCompletions)
+	audioVolumeOuputCmd.RegisterFlagCompletionFunc("mute", boolCompletions)
+	audioVolumeOuputCmd.RegisterFlagCompletionFunc("unmute", boolCompletions)
 	audioVolumeCmd.AddCommand(audioVolumeOuputCmd)
 }

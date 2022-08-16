@@ -12,7 +12,6 @@ import (
 
 var addonsRestartCmd = &cobra.Command{
 	Use:     "restart [slug]",
-	Args:    cobra.ExactArgs(1),
 	Aliases: []string{"reboot"},
 	Short:   "Restarts a Home Assistant add-on",
 	Long: `
@@ -21,6 +20,8 @@ Restart a Home Assistant add-on
 	Example: `
   ha addons restart core_ssh
 `,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("addons restart")
 

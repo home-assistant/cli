@@ -18,6 +18,8 @@ This command allows you to set configuration options for on the Home Assistant
 Supervisor running on your Home Assistant system.`,
 	Example: `
   ha supervisor options --channel beta`,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("supervisor options")
 
@@ -90,6 +92,20 @@ func init() {
 	supervisorOptionsCmd.Flags().Lookup("debug-block").NoOptDefVal = "false"
 	supervisorOptionsCmd.Flags().Lookup("diagnostics").NoOptDefVal = "false"
 	supervisorOptionsCmd.Flags().Lookup("auto-update").NoOptDefVal = "true"
+
+	supervisorOptionsCmd.RegisterFlagCompletionFunc("hostname", cobra.NoFileCompletions)
+	supervisorOptionsCmd.RegisterFlagCompletionFunc("channel", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		return []string{"stable", "beta", "dev"}, cobra.ShellCompDirectiveNoFileComp
+	})
+	supervisorOptionsCmd.RegisterFlagCompletionFunc("timezone", cobra.NoFileCompletions)
+	supervisorOptionsCmd.RegisterFlagCompletionFunc("logging", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		return []string{"debug", "info", "warning", "error", "critical"}, cobra.ShellCompDirectiveNoFileComp
+	})
+	supervisorOptionsCmd.RegisterFlagCompletionFunc("wait-boot", cobra.NoFileCompletions)
+	supervisorOptionsCmd.RegisterFlagCompletionFunc("debug", boolCompletions)
+	supervisorOptionsCmd.RegisterFlagCompletionFunc("debug-block", boolCompletions)
+	supervisorOptionsCmd.RegisterFlagCompletionFunc("diagnostics", boolCompletions)
+	supervisorOptionsCmd.RegisterFlagCompletionFunc("repositories", cobra.NoFileCompletions)
 
 	supervisorCmd.AddCommand(supervisorOptionsCmd)
 }

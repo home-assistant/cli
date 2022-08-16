@@ -16,6 +16,8 @@ var hostRebootCmd = &cobra.Command{
 Reboot the machine that your Home Assistant is running on.`,
 	Example: `
   ha host reboot`,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("host reboot")
 

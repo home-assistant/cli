@@ -18,6 +18,8 @@ removed manually, this command can trigger Home Assistant to re-read the files
 on disk`,
 	Example: `
   ha backups reload`,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("backups reload")
 

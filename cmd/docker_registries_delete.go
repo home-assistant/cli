@@ -20,7 +20,8 @@ Remove login for the Docker OCI registry server.
 	Example: `
   ha docker registries delete my-docker.example.com"
 `,
-	Args: cobra.ExactArgs(1),
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("registries delete")
 

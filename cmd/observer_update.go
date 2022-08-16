@@ -19,6 +19,8 @@ observer, to the latest version or the version specified.
 	Example: `
   ha observer update --version 5
 `,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("observer update")
 
@@ -47,5 +49,6 @@ observer, to the latest version or the version specified.
 
 func init() {
 	observerUpdateCmd.Flags().StringP("version", "", "", "Version to update to")
+	observerUpdateCmd.RegisterFlagCompletionFunc("version", cobra.NoFileCompletions)
 	observerCmd.AddCommand(observerUpdateCmd)
 }

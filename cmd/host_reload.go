@@ -18,6 +18,8 @@ If some setting are changed outside of Home Assistant, this commands updates
 the internals of Home Assistant.`,
 	Example: `
   ha host reload`,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("host reload")
 

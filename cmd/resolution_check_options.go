@@ -18,7 +18,8 @@ var resolutionCheckOptionsCmd = &cobra.Command{
 This command allows to apply options to an specific check managed by the system.`,
 	Example: `
   ha resolution check options [slug]`,
-	Args: cobra.ExactArgs(1),
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("check options")
 
@@ -75,5 +76,6 @@ This command allows to apply options to an specific check managed by the system.
 func init() {
 	resolutionCheckOptionsCmd.Flags().BoolP("enabled", "", true, "Enable/Disable check on the system")
 	resolutionCheckOptionsCmd.Flags().Lookup("enabled").NoOptDefVal = "true"
+	resolutionCheckOptionsCmd.RegisterFlagCompletionFunc("enabled", boolCompletions)
 	resolutionCheckCmd.AddCommand(resolutionCheckOptionsCmd)
 }

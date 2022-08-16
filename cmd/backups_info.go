@@ -19,7 +19,8 @@ When a Home Assistant backup is created, it will be available for restore.
 This command gives you information about a specific backup.`,
 	Example: `
   ha backups info c1a07617`,
-	Args: cobra.ExactArgs(1),
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("backups info")
 

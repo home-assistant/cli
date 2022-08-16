@@ -19,6 +19,8 @@ Home Assistant Job Manager.
 	Example: `
   ha jobs options --ignore-conditions healthy
 `,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("jobs options")
 
@@ -44,5 +46,6 @@ Home Assistant Job Manager.
 
 func init() {
 	jobsOptionsCmd.Flags().StringArrayP("ignore-conditions", "i", []string{}, "Conditions to ignore on Job Manager. Use multiple times for ignored conditions.")
+	jobsOptionsCmd.RegisterFlagCompletionFunc("ignore-conditions", cobra.NoFileCompletions)
 	jobsCmd.AddCommand(jobsOptionsCmd)
 }

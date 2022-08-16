@@ -17,6 +17,8 @@ This command execute a full system check and auto fixups. It check all issues ag
 are still around and try to fix it again.`,
 	Example: `
   ha resolution healthcheck`,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("resolution")
 

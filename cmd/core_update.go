@@ -18,6 +18,8 @@ running on your system to the latest version or the version specified.`,
 	Example: `
   ha core update
   ha core update --version 0.105.4`,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("core update")
 
@@ -51,5 +53,7 @@ running on your system to the latest version or the version specified.`,
 func init() {
 	coreUpdateCmd.Flags().StringP("version", "", "", "Version to update to")
 	coreUpdateCmd.Flags().Bool("backup", false, "Create partial backup before update")
+	coreUpdateCmd.RegisterFlagCompletionFunc("version", cobra.NoFileCompletions)
+	coreUpdateCmd.RegisterFlagCompletionFunc("backup", boolCompletions)
 	coreCmd.AddCommand(coreUpdateCmd)
 }

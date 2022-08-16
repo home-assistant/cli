@@ -17,6 +17,8 @@ This command provides information on the host system Home Assistant is
 running on`,
 	Example: `
   ha host info`,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("host info")
 

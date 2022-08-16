@@ -22,3 +22,7 @@ func init() {
 	log.Debug("Init network")
 	rootCmd.AddCommand(networkCmd)
 }
+
+func ipMethodCompletions(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+	return []string{"static", "auto", "disabled"}, cobra.ShellCompDirectiveNoFileComp
+}

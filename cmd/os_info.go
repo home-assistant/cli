@@ -18,6 +18,8 @@ This command provides general information about the running Home Assistant Opera
 	Example: `
   ha os info
 `,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("os info")
 

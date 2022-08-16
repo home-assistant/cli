@@ -17,6 +17,8 @@ This command provides information about the running Home Assistant Audio instanc
 running on your Home Assistant system, including its devices.`,
 	Example: `
   ha audio info`,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("audio info")
 

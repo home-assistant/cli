@@ -15,6 +15,8 @@ var dnsRestartCmd = &cobra.Command{
 	Long:    `Restart the internal Home Assistant DNS server running`,
 	Example: `
   ha dns restart`,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("dns restart")
 

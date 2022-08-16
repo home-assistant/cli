@@ -18,7 +18,8 @@ var resolutionIssueDismissCmd = &cobra.Command{
 This command allows dismissing issues reported by the system.`,
 	Example: `
   ha resolution issue dismiss [id]`,
-	Args: cobra.ExactArgs(1),
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("issue dismiss")
 

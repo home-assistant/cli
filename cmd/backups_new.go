@@ -21,6 +21,8 @@ backup.`,
   ha backups new --folders homeassistant
   ha backups new --uncompressed
 `,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("backups new")
 
@@ -79,6 +81,12 @@ func init() {
 	backupsNewCmd.Flags().StringArrayP("folders", "f", []string{}, "folders to backup, triggers a partial backup")
 
 	backupsNewCmd.Flags().Lookup("uncompressed").NoOptDefVal = "false"
+
+	backupsNewCmd.RegisterFlagCompletionFunc("name", cobra.NoFileCompletions)
+	backupsNewCmd.RegisterFlagCompletionFunc("password", cobra.NoFileCompletions)
+	backupsNewCmd.RegisterFlagCompletionFunc("uncompressed", boolCompletions)
+	backupsNewCmd.RegisterFlagCompletionFunc("addons", cobra.NoFileCompletions)
+	backupsNewCmd.RegisterFlagCompletionFunc("folders", cobra.NoFileCompletions)
 
 	backupsCmd.AddCommand(backupsNewCmd)
 }

@@ -12,7 +12,6 @@ import (
 
 var addonsUninstallCmd = &cobra.Command{
 	Use:     "uninstall [slug]",
-	Args:    cobra.ExactArgs(1),
 	Aliases: []string{"remove", "delete", "del", "rem", "un", "uninst"},
 	Short:   "Uninstalls a Home Assistant add-on",
 	Long: `
@@ -21,6 +20,8 @@ This command allows you to uninstall a Home Assistant add-on.
 	Example: `
   ha addons uninstall core_ssh
 `,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("addons uninstall")
 
