@@ -3,6 +3,7 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"strings"
 
 	resty "github.com/go-resty/resty/v2"
 	helper "github.com/home-assistant/cli/client"
@@ -20,7 +21,7 @@ Remove a repository of add-ons that isn't in use from the Home Assistant store.
 	Example: `
 ha repositories delete 94cfad5a
 `,
-	ValidArgsFunction: cobra.NoFileCompletions,
+	ValidArgsFunction: storeRepositoriesDeleteCompletions,
 	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("store delete")
@@ -66,4 +67,42 @@ ha repositories delete 94cfad5a
 
 func init() {
 	storeCmd.AddCommand(storeRepositoriesDeleteCmd)
+}
+
+func storeRepositoriesDeleteCompletions(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+	if len(args) != 0 {
+		return nil, cobra.ShellCompDirectiveNoFileComp
+	}
+	resp, err := helper.GenericJSONGet("store", "")
+	if err != nil || !resp.IsSuccess() {
+		return nil, cobra.ShellCompDirectiveNoFileComp
+	}
+	var ret []string
+	data := resp.Result().(*helper.Response)
+	if data.Result == "ok" && data.Data["repositories"] != nil {
+		if repos, ok := data.Data["repositories"].([]interface{}); ok {
+			for _, repo := range repos {
+				var m map[string]interface{}
+				if m, ok = repo.(map[string]interface{}); !ok {
+					continue
+				}
+				var s string
+				if s, ok = m["slug"].(string); !ok {
+					continue
+				}
+				ret = append(ret, s)
+				var ds []string
+				if s, ok = m["name"].(string); ok && s != "" {
+					ds = append(ds, s)
+				}
+				if s, ok = m["url"].(string); ok && s != "" {
+					ds = append(ds, s)
+				}
+				if len(ds) != 0 {
+					ret[len(ret)-1] += "\t" + strings.Join(ds, ", ")
+				}
+			}
+		}
+	}
+	return ret, cobra.ShellCompDirectiveNoFileComp
 }
