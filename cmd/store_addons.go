@@ -22,7 +22,7 @@ commands for installing or update them.`,
 		log.WithField("args", args).Debug("store")
 
 		section := "store"
-		command := "addons"
+		command := ""
 
 		resp, err := helper.GenericJSONGet(section, command)
 		if err != nil {
