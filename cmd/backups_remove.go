@@ -19,7 +19,7 @@ Backups can take quite a bit of diskspace, this command allows you to
 clean backups from disk.`,
 	Example: `
   ha backups remove c1a07617`,
-	ValidArgsFunction: cobra.NoFileCompletions,
+	ValidArgsFunction: backupsCompletions,
 	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("backups remove")
