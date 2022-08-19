@@ -57,6 +57,8 @@ var bannerCmd = &cobra.Command{
 	Example: `
   ha banner
 	`,
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("info")
 
