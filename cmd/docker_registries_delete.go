@@ -20,7 +20,7 @@ Remove login for the Docker OCI registry server.
 	Example: `
   ha docker registries delete my-docker.example.com"
 `,
-	ValidArgsFunction: cobra.NoFileCompletions,
+	ValidArgsFunction: dockerRegistriesDeleteCompletions,
 	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("registries delete")
@@ -67,4 +67,24 @@ Remove login for the Docker OCI registry server.
 
 func init() {
 	dockerRegistriesCmd.AddCommand(dockerRegistriesDeleteCmd)
+}
+
+func dockerRegistriesDeleteCompletions(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+	if len(args) != 0 {
+		return nil, cobra.ShellCompDirectiveNoFileComp
+	}
+	resp, err := helper.GenericJSONGet("docker", "registries")
+	if err != nil || !resp.IsSuccess() {
+		return nil, cobra.ShellCompDirectiveNoFileComp
+	}
+	var ret []string
+	data := resp.Result().(*helper.Response)
+	if data.Result == "ok" && data.Data["registries"] != nil {
+		if registries, ok := data.Data["registries"].(map[string]interface{}); ok {
+			for k := range registries {
+				ret = append(ret, k)
+			}
+		}
+	}
+	return ret, cobra.ShellCompDirectiveNoFileComp
 }
