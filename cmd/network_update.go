@@ -21,7 +21,7 @@ Update network interface settings of a specific adapter.
 	Example: `
   ha network update eth0 --ipv4-method auto --ipv6-method disabled
 `,
-	ValidArgsFunction: cobra.NoFileCompletions,
+	ValidArgsFunction: networkInterfaceCompletions,
 	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("network update")

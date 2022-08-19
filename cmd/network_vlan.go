@@ -21,7 +21,7 @@ This function works only on an ethernet interface!
 	Example: `
   ha network vlan eth0 10 --ipv4-method auto --ipv6-method disabled
 `,
-	ValidArgsFunction: cobra.NoFileCompletions,
+	ValidArgsFunction: networkInterfaceCompletions,
 	Args:              cobra.ExactArgs(2),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("network vlan")
