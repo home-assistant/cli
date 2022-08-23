@@ -13,11 +13,11 @@ import (
 var addonsRebuildCmd = &cobra.Command{
 	Use:     "rebuild [slug]",
 	Aliases: []string{"rb", "reinstall"},
-	Short:   "Rebuild a locally build Home Assistant add-on",
+	Short:   "Rebuild a locally built Home Assistant add-on",
 	Long: `
-Most add-ons provide pre-build images Home Assistant can download an use.
+Most add-ons provide pre-built images Home Assistant can download and use.
 However, some don't. This is usually the case for local or development version
-of add-ons. This command allows you to trigger a rebuild of a locally build
+of add-ons. This command allows you to trigger a rebuild of a locally built
 add-on.
 `,
 	Example: `

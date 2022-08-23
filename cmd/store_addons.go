@@ -11,7 +11,7 @@ import (
 var storeAddonsCmd = &cobra.Command{
 	Use:     "addons",
 	Aliases: []string{"add-on", "addon", "add-ons"},
-	Short:   "Install and update Home Asistant add-ons",
+	Short:   "Install and update Home Assistant add-ons",
 	Long: `
 The store command allows you to manage Home Assistant add-ons by exposing
 commands for installing or update them.`,
