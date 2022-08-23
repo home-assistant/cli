@@ -20,7 +20,7 @@ take Home Assistant backup on your system.`,
   ha backups restore c1a07617
   ha backups restore c1a07617 --addons core_ssh --addons core_mosquitto
   ha backups restore c1a07617 --folders config`,
-	ValidArgsFunction: cobra.NoFileCompletions,
+	ValidArgsFunction: backupsCompletions,
 	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("backups restore")

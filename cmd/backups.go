@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
@@ -47,4 +48,45 @@ func init() {
 	log.Debug("Init backups")
 	// add cmd to root command
 	rootCmd.AddCommand(backupsCmd)
+}
+
+func backupsCompletions(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+	if len(args) != 0 {
+		return nil, cobra.ShellCompDirectiveNoFileComp
+	}
+	resp, err := helper.GenericJSONGet("backups", "")
+	if err != nil || !resp.IsSuccess() {
+		return nil, cobra.ShellCompDirectiveNoFileComp
+	}
+	var ret []string
+	data := resp.Result().(*helper.Response)
+	if data.Result == "ok" && data.Data["backups"] != nil {
+		if backups, ok := data.Data["backups"].([]interface{}); ok {
+			for _, backup := range backups {
+				var m map[string]interface{}
+				if m, ok = backup.(map[string]interface{}); !ok {
+					continue
+				}
+				var s string
+				if s, ok = m["slug"].(string); !ok {
+					continue
+				}
+				ret = append(ret, s)
+				var ds []string
+				if s, ok = m["name"].(string); ok && s != "" {
+					ds = append(ds, s)
+				}
+				if s, ok = m["date"].(string); ok && s != "" {
+					ds = append(ds, s)
+				}
+				if s, ok = m["type"].(string); ok && s != "" {
+					ds = append(ds, s)
+				}
+				if len(ds) != 0 {
+					ret[len(ret)-1] += "\t" + strings.Join(ds, ", ")
+				}
+			}
+		}
+	}
+	return ret, cobra.ShellCompDirectiveNoFileComp
 }

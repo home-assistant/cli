@@ -19,7 +19,7 @@ changed in the latest version and tell you about possible breaking changes.`,
 	Example: `
 ha addons changelog core_ssh
 ha addons changelog core_mosquitto`,
-	ValidArgsFunction: cobra.NoFileCompletions,
+	ValidArgsFunction: addonsCompletions,
 	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("addons changelog")
