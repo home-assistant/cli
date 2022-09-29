@@ -32,7 +32,7 @@ restore, and delete using this command.`,
 		log.WithField("args", args).Debug("backups")
 
 		section := "backups"
-		command := ""
+		command := "info"
 
 		resp, err := helper.GenericJSONGet(section, command)
 		if err != nil {
