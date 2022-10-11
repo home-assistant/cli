@@ -3,6 +3,7 @@ package client
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net/url"
 	"path"
@@ -166,4 +167,22 @@ func ShowJSONResponse(resp *resty.Response) (success bool) {
 
 func GetRequest() *resty.Request {
 	return GetRequestTimeout(DefaultTimeout)
+}
+
+// Streams out a text response, like ones from /host/logs
+func StreamTextResponse(resp *resty.Response) (success bool) {
+	success = true
+	for {
+		p := make([]byte, 4096)
+		n, err := resp.RawBody().Read(p)
+		if err == io.EOF {
+			break
+		} else if err != nil {
+			fmt.Println(err)
+			success = false
+			break
+		}
+		fmt.Print(string(p[:n]))
+	}
+	return
 }
