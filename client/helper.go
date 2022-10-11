@@ -175,14 +175,15 @@ func StreamTextResponse(resp *resty.Response) (success bool) {
 	for {
 		p := make([]byte, 4096)
 		n, err := resp.RawBody().Read(p)
-		if err == io.EOF {
-			break
-		} else if err != nil {
+		if err != nil && err != io.EOF {
 			fmt.Println(err)
 			success = false
 			break
 		}
 		fmt.Print(string(p[:n]))
+		if err == io.EOF {
+			break
+		}
 	}
 	return
 }

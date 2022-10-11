@@ -75,7 +75,9 @@ across services and boots.
 
 		lines, _ := cmd.Flags().GetInt32("lines")
 		if lines > 0 {
-			request.SetHeader("Range", fmt.Sprintf("entries=:%d:", -(lines-1)))
+			rangeHeader := fmt.Sprintf("entries=:%d:", -(lines - 1))
+			log.WithField("value", rangeHeader).Debug("Range header")
+			request.SetHeader("Range", rangeHeader)
 		}
 
 		if err != nil {
