@@ -64,5 +64,5 @@ This command returns suggestions which resolve an issue when applied.`,
 }
 
 func init() {
-	resolutionCmd.AddCommand(resolutionIssueSuggestionsCmd)
+	resolutionIssueCmd.AddCommand(resolutionIssueSuggestionsCmd)
 }
