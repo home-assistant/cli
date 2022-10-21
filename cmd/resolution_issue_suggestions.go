@@ -18,7 +18,7 @@ var resolutionIssueSuggestionsCmd = &cobra.Command{
 This command returns suggestions which resolve an issue when applied.`,
 	Example: `
   ha resolution issue suggestions [id]`,
-	ValidArgsFunction: cobra.NoFileCompletions,
+	ValidArgsFunction: resolutionIssueCompletions,
 	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("issue suggestions")

@@ -95,6 +95,7 @@ func init() {
 	rootCmd.RegisterFlagCompletionFunc("api-token", cobra.NoFileCompletions)
 	rootCmd.RegisterFlagCompletionFunc("raw-json", boolCompletions)
 	rootCmd.RegisterFlagCompletionFunc("no-progress", boolCompletions)
+	rootCmd.MarkPersistentFlagFilename("config", "yaml", "yml")
 
 	viper.BindPFlag("config", rootCmd.PersistentFlags().Lookup("config"))
 	viper.BindPFlag("endpoint", rootCmd.PersistentFlags().Lookup("endpoint"))
