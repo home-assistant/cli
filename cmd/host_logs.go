@@ -27,27 +27,6 @@ across services and boots.
 		section := "host"
 		command := "logs"
 
-		listIdentifiers, _ := cmd.Flags().GetBool("list-identifiers")
-		listBoots, _ := cmd.Flags().GetBool("list-boots")
-
-		if listIdentifiers || listBoots {
-			if listIdentifiers {
-				command += "/identifiers"
-			} else {
-				command += "/boots"
-			}
-
-			resp, err := helper.GenericJSONGet(section, command)
-			if err != nil {
-				fmt.Println(err)
-				ExitWithError = true
-			} else {
-				ExitWithError = !helper.ShowJSONResponse(resp)
-			}
-
-			return
-		}
-
 		identifier, _ := cmd.Flags().GetString("identifier")
 		boot, _ := cmd.Flags().GetString("boot")
 		if len(boot) > 0 {
@@ -106,12 +85,7 @@ func init() {
 	hostLogsCmd.Flags().Int32P("lines", "n", 0, "Number of log entries to show")
 	hostLogsCmd.Flags().StringP("identifier", "t", "", "Show entries with the specified syslog identifier")
 	hostLogsCmd.Flags().StringP("boot", "b", "", "Logs of particular boot ID")
-	hostLogsCmd.Flags().Bool("list-identifiers", false, "Show all syslog identifiers")
-	hostLogsCmd.Flags().Bool("list-boots", false, "Show all boot IDs by offset")
-
 	hostLogsCmd.Flags().Lookup("follow").NoOptDefVal = "true"
-	hostLogsCmd.Flags().Lookup("list-identifiers").NoOptDefVal = "true"
-	hostLogsCmd.Flags().Lookup("list-boots").NoOptDefVal = "true"
 
 	hostCmd.AddCommand(hostLogsCmd)
 }
