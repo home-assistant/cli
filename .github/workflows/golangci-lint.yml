@@ -6,9 +6,6 @@ on:
       - master
   pull_request:
 
-env:
-  GOLANG_LINT_VERSION: "v1.42"
-
 jobs:
   golangci:
     name: lint
@@ -18,5 +15,5 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3.3.1
         with:
-          version: ${{ env.GOLANG_LINT_VERSION }}
+          version: latest
           args: -D errcheck
