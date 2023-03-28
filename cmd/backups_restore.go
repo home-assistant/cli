@@ -19,7 +19,7 @@ take Home Assistant backup on your system.`,
 	Example: `
   ha backups restore c1a07617
   ha backups restore c1a07617 --addons core_ssh --addons core_mosquitto
-  ha backups restore c1a07617 --folders config`,
+  ha backups restore c1a07617 --folders homeassistant`,
 	ValidArgsFunction: backupsCompletions,
 	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
