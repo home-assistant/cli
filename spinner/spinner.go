@@ -21,7 +21,6 @@ package spinner
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
 	"sync"
 	"time"
 	"unicode/utf8"
@@ -48,7 +47,7 @@ func New(cs []string, d time.Duration, options ...Option) *Spinner {
 		Delay:    d,
 		chars:    cs,
 		lock:     &sync.RWMutex{},
-		Writer:   ioutil.Discard,
+		Writer:   io.Discard,
 		active:   false,
 		stopChan: make(chan struct{}, 1),
 	}
