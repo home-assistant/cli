@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/url"
 	"path"
 	"time"
@@ -126,7 +125,7 @@ func ShowJSONResponse(resp *resty.Response) (success bool) {
 		success = true
 		body := resp.RawBody()
 		defer body.Close()
-		if b, err := ioutil.ReadAll(body); err == nil {
+		if b, err := io.ReadAll(body); err == nil {
 			fmt.Print(string(b))
 		}
 		return
