@@ -68,7 +68,7 @@ the Visual Studio Code add-on).
 ### Prerequisites
 
 The CLI can interact remotely with the Home Assistant Supervisor using the
-`remote_api` add-on from the [developer add-ons repository](https://github.com/home-assistant/hassio-addons-development).
+`remote_api` add-on from the [developer add-ons repository](https://github.com/home-assistant/addons-development).
 
 After installing and starting the add-on, a token is shown in the `remote_api`
 add-on log, which is needed for further development.
