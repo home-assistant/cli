@@ -36,7 +36,7 @@ func addMountFlags(cmd *cobra.Command) {
 	cmd.Flags().StringP("server", "s", "", "IP address or hostname of network share server")
 	cmd.Flags().IntP("port", "o", 0, "Port to use if network share is exposed on non-standard port for the type")
 	cmd.Flags().StringP("share", "r", "", "Share to mount (cifs mounts only)")
-	cmd.Flags().StringP("username", "u", "", "Username to use for authentication (cifs mounts only)")
+	cmd.Flags().StringP("username", "n", "", "Username to use for authentication (cifs mounts only)")
 	cmd.Flags().StringP("password", "p", "", "Password to use for authentication (cifs mounts only)")
 	cmd.Flags().StringP("path", "h", "", "Path to mount (nfs mounts only)")
 
