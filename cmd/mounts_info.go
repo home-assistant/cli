@@ -37,5 +37,5 @@ Shows information about the currently configured mounts in Supervisor
 }
 
 func init() {
-	multicastCmd.AddCommand(mountsInfoCmd)
+	mountsCmd.AddCommand(mountsInfoCmd)
 }

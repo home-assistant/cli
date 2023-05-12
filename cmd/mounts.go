@@ -11,7 +11,7 @@ var mountsCmd = &cobra.Command{
 	Aliases: []string{"mount", "mnts", "mnt"},
 	Short:   "Get information, update or configure mounts in Supervisor",
 	Long: `
-The multicast command allows you to manage mounts in Supervisor by exposing
+The mounts command allows you to manage mounts in Supervisor by exposing
 commands to view, mount, update or remove mounts such as network shares.`,
 	Example: `
   ha mounts info
@@ -38,7 +38,7 @@ func addMountFlags(cmd *cobra.Command) {
 	cmd.Flags().StringP("share", "r", "", "Share to mount (cifs mounts only)")
 	cmd.Flags().StringP("username", "n", "", "Username to use for authentication (cifs mounts only)")
 	cmd.Flags().StringP("password", "p", "", "Password to use for authentication (cifs mounts only)")
-	cmd.Flags().StringP("path", "h", "", "Path to mount (nfs mounts only)")
+	cmd.Flags().StringP("path", "a", "", "Path to mount (nfs mounts only)")
 
 	cmd.RegisterFlagCompletionFunc("type", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		return []string{"cifs", "nfs"}, cobra.ShellCompDirectiveNoFileComp
