@@ -20,7 +20,7 @@ Update or change the configuration of an existing mount in Supervisor.
 	Example: `
   ha mounts update my_share --usage media --type cifs --server server.local --share media
 `,
-	ValidArgsFunction: cobra.NoFileCompletions,
+	ValidArgsFunction: mountsCompletions,
 	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("mounts update")

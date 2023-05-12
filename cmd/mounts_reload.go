@@ -21,7 +21,7 @@ the same configuration.
 	Example: `
   ha mounts reload my_share
 `,
-	ValidArgsFunction: cobra.NoFileCompletions,
+	ValidArgsFunction: mountsCompletions,
 	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("mounts reload")
