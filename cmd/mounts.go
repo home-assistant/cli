@@ -11,7 +11,7 @@ var mountsCmd = &cobra.Command{
 	Aliases: []string{"mount", "mnts", "mnt"},
 	Short:   "Get information, update or configure mounts in Supervisor",
 	Long: `
-The multicast command allows you to manage mounts in Supervisor by exposing
+The mounts command allows you to manage mounts in Supervisor by exposing
 commands to view, mount, update or remove mounts such as network shares.`,
 	Example: `
   ha mounts info
