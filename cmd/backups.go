@@ -90,3 +90,51 @@ func backupsCompletions(cmd *cobra.Command, args []string, toComplete string) ([
 	}
 	return ret, cobra.ShellCompDirectiveNoFileComp
 }
+
+func backupsLocationsCompletions(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+	if len(args) != 0 {
+		return nil, cobra.ShellCompDirectiveNoFileComp
+	}
+	resp, err := helper.GenericJSONGet("mounts", "")
+	if err != nil || !resp.IsSuccess() {
+		return nil, cobra.ShellCompDirectiveNoFileComp
+	}
+	var ret []string
+	ret = append(ret, "\tLocal storage, /backups")
+	data := resp.Result().(*helper.Response)
+	if data.Result == "ok" && data.Data["mounts"] != nil {
+		if mounts, ok := data.Data["mounts"].([]interface{}); ok {
+			for _, mount := range mounts {
+				var m map[string]interface{}
+				if m, ok = mount.(map[string]interface{}); !ok {
+					continue
+				}
+				var s string
+				if s, ok = m["usage"].(string); !ok || s != "backup" {
+					continue
+				}
+				if s, ok = m["state"].(string); !ok || s != "active" {
+					continue
+				}
+				if s, ok = m["name"].(string); !ok {
+					continue
+				}
+				ret = append(ret, s)
+				var ds []string
+				if s, ok = m["server"].(string); ok && s != "" {
+					ds = append(ds, s)
+				}
+				if s, ok = m["share"].(string); ok && s != "" {
+					ds = append(ds, s)
+				}
+				if s, ok = m["path"].(string); ok && s != "" {
+					ds = append(ds, s)
+				}
+				if len(ds) != 0 {
+					ret[len(ret)-1] += "\t" + strings.Join(ds, ", ")
+				}
+			}
+		}
+	}
+	return ret, cobra.ShellCompDirectiveNoFileComp
+}

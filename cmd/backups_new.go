@@ -61,6 +61,15 @@ backup.`,
 			options["compressed"] = false
 		}
 
+		location, err := cmd.Flags().GetString("location")
+		if err == nil && cmd.Flags().Changed("location") {
+			if location == "" {
+				options["location"] = nil
+			} else {
+				options["location"] = location
+			}
+		}
+
 		ProgressSpinner.Start()
 		resp, err := helper.GenericJSONPostTimeout(section, command, options, helper.BackupTimeout)
 		ProgressSpinner.Stop()
@@ -79,14 +88,17 @@ func init() {
 	backupsNewCmd.Flags().Bool("uncompressed", false, "Use Uncompressed archives")
 	backupsNewCmd.Flags().StringArrayP("addons", "a", []string{}, "addons to backup, triggers a partial backup")
 	backupsNewCmd.Flags().StringArrayP("folders", "f", []string{}, "folders to backup, triggers a partial backup")
+	backupsNewCmd.Flags().StringP("location", "l", "", "where to put backup file (backup mount or local)")
 
 	backupsNewCmd.Flags().Lookup("uncompressed").NoOptDefVal = "false"
+	backupsNewCmd.Flags().Lookup("location").NoOptDefVal = ""
 
 	backupsNewCmd.RegisterFlagCompletionFunc("name", cobra.NoFileCompletions)
 	backupsNewCmd.RegisterFlagCompletionFunc("password", cobra.NoFileCompletions)
 	backupsNewCmd.RegisterFlagCompletionFunc("uncompressed", boolCompletions)
 	backupsNewCmd.RegisterFlagCompletionFunc("addons", cobra.NoFileCompletions)
 	backupsNewCmd.RegisterFlagCompletionFunc("folders", cobra.NoFileCompletions)
+	backupsNewCmd.RegisterFlagCompletionFunc("location", backupsLocationsCompletions)
 
 	backupsCmd.AddCommand(backupsNewCmd)
 }

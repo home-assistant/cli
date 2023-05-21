@@ -20,7 +20,7 @@ Unmount and delete an existing mount from Supervisor.
 	Example: `
   ha mounts delete my_share
 `,
-	ValidArgsFunction: cobra.NoFileCompletions,
+	ValidArgsFunction: mountsCompletions,
 	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("mounts delete")
