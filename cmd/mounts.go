@@ -46,7 +46,7 @@ func addMountFlags(cmd *cobra.Command) {
 		return []string{"cifs", "nfs"}, cobra.ShellCompDirectiveNoFileComp
 	})
 	cmd.RegisterFlagCompletionFunc("usage", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
-		return []string{"backup", "media"}, cobra.ShellCompDirectiveNoFileComp
+		return []string{"backup", "media", "share"}, cobra.ShellCompDirectiveNoFileComp
 	})
 	cmd.RegisterFlagCompletionFunc("server", cobra.NoFileCompletions)
 	cmd.RegisterFlagCompletionFunc("port", portCompletions)
