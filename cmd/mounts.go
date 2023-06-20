@@ -67,16 +67,12 @@ func mountFlagsToOptions(cmd *cobra.Command, options map[string]interface{}) {
 		"path",
 		"username",
 		"password",
+		"version",
 	} {
 		val, err := cmd.Flags().GetString(value)
 		if val != "" && err == nil {
 			options[value] = val
 		}
-	}
-
-	cifs_version, err := cmd.Flags().GetString("version")
-	if cifs_version != "" && err == nil {
-		options["cifs_version"] = cifs_version
 	}
 
 	val, err := cmd.Flags().GetInt("port")
