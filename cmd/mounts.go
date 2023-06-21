@@ -40,6 +40,7 @@ func addMountFlags(cmd *cobra.Command) {
 	cmd.Flags().StringP("share", "r", "", "Share to mount (cifs mounts only)")
 	cmd.Flags().StringP("username", "n", "", "Username to use for authentication (cifs mounts only)")
 	cmd.Flags().StringP("password", "p", "", "Password to use for authentication (cifs mounts only)")
+	cmd.Flags().StringP("version", "v", "", "Version to use for the mount (cifs mounts only)")
 	cmd.Flags().StringP("path", "a", "", "Path to mount (nfs mounts only)")
 
 	cmd.RegisterFlagCompletionFunc("type", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -53,6 +54,7 @@ func addMountFlags(cmd *cobra.Command) {
 	cmd.RegisterFlagCompletionFunc("share", cobra.NoFileCompletions)
 	cmd.RegisterFlagCompletionFunc("username", cobra.NoFileCompletions)
 	cmd.RegisterFlagCompletionFunc("password", cobra.NoFileCompletions)
+	cmd.RegisterFlagCompletionFunc("version", cobra.NoFileCompletions)
 	cmd.RegisterFlagCompletionFunc("path", cobra.NoFileCompletions)
 }
 
@@ -65,6 +67,7 @@ func mountFlagsToOptions(cmd *cobra.Command, options map[string]interface{}) {
 		"path",
 		"username",
 		"password",
+		"version",
 	} {
 		val, err := cmd.Flags().GetString(value)
 		if val != "" && err == nil {
