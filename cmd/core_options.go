@@ -38,9 +38,9 @@ instance running on your Home Assistant system.`,
 			val, err := cmd.Flags().GetString(value)
 			if err == nil && cmd.Flags().Changed(value) {
 				if val == "" {
-					options[value] = nil
+					options[strings.Replace(value, "-", "_", -1)] = nil
 				} else {
-					options[value] = val
+					options[strings.Replace(value, "-", "_", -1)] = val
 				}
 			}
 		}
@@ -54,10 +54,11 @@ instance running on your Home Assistant system.`,
 			"boot",
 			"ssl",
 			"watchdog",
+			"backups-exclude-database",
 		} {
 			val, err := cmd.Flags().GetBool(value)
 			if err == nil && cmd.Flags().Changed(value) {
-				options[value] = val
+				options[strings.Replace(value, "-", "_", -1)] = val
 			}
 		}
 
@@ -80,6 +81,8 @@ func init() {
 	coreOptionsCmd.Flags().String("refresh-token", "", "Refresh token")
 	coreOptionsCmd.Flags().String("audio-input", "", "Profile name for audio input")
 	coreOptionsCmd.Flags().String("audio-output", "", "Profile name for audio output")
+	coreOptionsCmd.Flags().Bool("backups-exclude-database", false, "Backups exclude Home Assistant database file by default")
+	coreOptionsCmd.Flags().Lookup("backups-exclude-database").NoOptDefVal = "false"
 	coreOptionsCmd.Flags().SetNormalizeFunc(func(set *pflag.FlagSet, name string) pflag.NormalizedName { // backwards compatibility
 		return pflag.NormalizedName(strings.ReplaceAll(name, "_", "-"))
 	})
@@ -91,5 +94,6 @@ func init() {
 	coreOptionsCmd.RegisterFlagCompletionFunc("refresh-token", cobra.NoFileCompletions)
 	coreOptionsCmd.RegisterFlagCompletionFunc("audio-input", cobra.NoFileCompletions)
 	coreOptionsCmd.RegisterFlagCompletionFunc("audio-output", cobra.NoFileCompletions)
+	coreOptionsCmd.RegisterFlagCompletionFunc("backups-exclude-database", boolCompletions)
 	coreCmd.AddCommand(coreOptionsCmd)
 }

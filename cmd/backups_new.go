@@ -70,6 +70,11 @@ backup.`,
 			}
 		}
 
+		ExcludeDB, err := cmd.Flags().GetBool("homeassistant-exclude-database")
+		if err == nil && cmd.Flags().Changed("homeassistant-exclude-database") {
+			options["homeassistant-exclude-database"] = ExcludeDB
+		}
+
 		ProgressSpinner.Start()
 		resp, err := helper.GenericJSONPostTimeout(section, command, options, helper.BackupTimeout)
 		ProgressSpinner.Stop()
@@ -89,9 +94,11 @@ func init() {
 	backupsNewCmd.Flags().StringArrayP("addons", "a", []string{}, "addons to backup, triggers a partial backup")
 	backupsNewCmd.Flags().StringArrayP("folders", "f", []string{}, "folders to backup, triggers a partial backup")
 	backupsNewCmd.Flags().StringP("location", "l", "", "where to put backup file (backup mount or local)")
+	backupsNewCmd.Flags().Bool("homeassistant-exclude-database", false, "Exclude the Home Assistant database file from backup")
 
 	backupsNewCmd.Flags().Lookup("uncompressed").NoOptDefVal = "false"
 	backupsNewCmd.Flags().Lookup("location").NoOptDefVal = ""
+	backupsNewCmd.Flags().Lookup("homeassistant-exclude-database").NoOptDefVal = "false"
 
 	backupsNewCmd.RegisterFlagCompletionFunc("name", cobra.NoFileCompletions)
 	backupsNewCmd.RegisterFlagCompletionFunc("password", cobra.NoFileCompletions)
@@ -99,6 +106,7 @@ func init() {
 	backupsNewCmd.RegisterFlagCompletionFunc("addons", cobra.NoFileCompletions)
 	backupsNewCmd.RegisterFlagCompletionFunc("folders", cobra.NoFileCompletions)
 	backupsNewCmd.RegisterFlagCompletionFunc("location", backupsLocationsCompletions)
+	backupsNewCmd.RegisterFlagCompletionFunc("homeassistant-exclude-database", boolCompletions)
 
 	backupsCmd.AddCommand(backupsNewCmd)
 }
