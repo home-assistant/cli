@@ -35,7 +35,7 @@ var rootCmd = &cobra.Command{
 The Home Assistant CLI is a small and simple command line utility that allows
 you to control and configure different aspects of Home Assistant`,
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		// set loglevel if posible
+		// set loglevel if possible
 		logrusLevel, err := log.ParseLevel(viper.GetString("log-level"))
 
 		if err == nil {

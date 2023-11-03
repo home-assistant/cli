@@ -68,7 +68,7 @@ func URLHelper(section, command string) (string, error) {
 	return res, nil
 }
 
-// GetJSONRequest returns a request prepared for default JSON resposes
+// GetJSONRequest returns a request prepared for default JSON responses
 func GetJSONRequestTimeout(timeout time.Duration) *resty.Request {
 	request := GetRequestTimeout(timeout).
 		SetResult(Response{}).
