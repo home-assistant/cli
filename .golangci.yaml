@@ -3,3 +3,4 @@ linters:
     - errcheck
   enable:
     - dupword
+    - gofmt
