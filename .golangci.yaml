@@ -4,3 +4,5 @@ linters:
   enable:
     - dupword
     - gofmt
+issues:
+  fix: true
