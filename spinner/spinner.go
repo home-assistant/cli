@@ -1,7 +1,7 @@
 // Originally created by Brian Downs
 // https://github.com/briandowns/spinner
 //
-// Stripped down and modified to work better for the Hass.io
+// Stripped down and modified to work better for Home Assistant CLI
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import (
 type Spinner struct {
 	Delay      time.Duration // Delay is the speed of the indicator
 	chars      []string      // chars holds the chosen character set
-	Prefix     string        // Prefix is the text preppended to the indicator
+	Prefix     string        // Prefix is the text prepended to the indicator
 	Suffix     string        // Suffix is the text appended to the indicator
 	FinalMSG   string        // string displayed after Stop() is called
 	lastOutput string        // last character(set) written
@@ -69,7 +69,7 @@ type Options struct {
 	HideCursor bool
 }
 
-// WithFinalMSG adds the given string ot the spinner
+// WithFinalMSG adds the given string to the spinner
 // as the final message to be written
 func WithFinalMSG(finalMsg string) Option {
 	return func(s *Spinner) {
