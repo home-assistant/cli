@@ -1,0 +1,8 @@
+linters:
+  disable:
+    - errcheck
+  enable:
+    - dupword
+    - gofmt
+issues:
+  fix: true

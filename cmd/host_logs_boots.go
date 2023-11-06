@@ -13,7 +13,7 @@ var hostLogsBootsCmd = &cobra.Command{
 	Aliases: []string{"list-boots", "lb"},
 	Short:   "Show all boot IDs by offset",
 	Long: `
-Show all values that can be used with with the boot arg to find logs.
+Show all values that can be used with the boot arg to find logs.
 `,
 	Example: `
   ha host logs boots

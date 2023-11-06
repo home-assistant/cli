@@ -13,7 +13,7 @@ var hostLogsIdentifiersCmd = &cobra.Command{
 	Aliases: []string{"ids", "list-identifiers", "li"},
 	Short:   "Show all syslog identifiers",
 	Long: `
-Show all values that can be used with with the identifier arg to find logs.
+Show all values that can be used with the identifier arg to find logs.
 `,
 	Example: `
   ha host logs identifiers
