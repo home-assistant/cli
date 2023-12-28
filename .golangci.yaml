@@ -7,6 +7,7 @@ linters:
     - gofmt
     - gosec
     - nolintlint
+    - perfsprint
 issues:
   fix: true
   max-issues-per-linter: 0
