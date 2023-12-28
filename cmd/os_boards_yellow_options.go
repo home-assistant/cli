@@ -35,7 +35,7 @@ Assistant is running on. A host reboot is required for changes to take effect.`,
 		} {
 			data, err := cmd.Flags().GetBool(value)
 			if err == nil && cmd.Flags().Changed(value) {
-				options[strings.Replace(value, "-", "_", -1)] = data
+				options[strings.ReplaceAll(value, "-", "_")] = data
 			}
 		}
 

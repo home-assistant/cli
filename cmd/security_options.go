@@ -37,7 +37,7 @@ Home Assistant Security backend.
 		} {
 			data, err := cmd.Flags().GetBool(value)
 			if err == nil && cmd.Flags().Changed(value) {
-				options[strings.Replace(value, "-", "_", -1)] = data
+				options[strings.ReplaceAll(value, "-", "_")] = data
 			}
 		}
 

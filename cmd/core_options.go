@@ -37,10 +37,11 @@ instance running on your Home Assistant system.`,
 		} {
 			val, err := cmd.Flags().GetString(value)
 			if err == nil && cmd.Flags().Changed(value) {
+				k := strings.ReplaceAll(value, "-", "_")
 				if val == "" {
-					options[strings.Replace(value, "-", "_", -1)] = nil
+					options[k] = nil
 				} else {
-					options[strings.Replace(value, "-", "_", -1)] = val
+					options[k] = val
 				}
 			}
 		}
@@ -58,7 +59,7 @@ instance running on your Home Assistant system.`,
 		} {
 			val, err := cmd.Flags().GetBool(value)
 			if err == nil && cmd.Flags().Changed(value) {
-				options[strings.Replace(value, "-", "_", -1)] = val
+				options[strings.ReplaceAll(value, "-", "_")] = val
 			}
 		}
 

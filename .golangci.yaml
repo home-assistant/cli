@@ -3,6 +3,7 @@ linters:
     - errcheck
   enable:
     - dupword
+    - gocritic
     - gofmt
     - gosec
     - nolintlint
