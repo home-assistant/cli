@@ -9,3 +9,7 @@ linters:
     - nolintlint
 issues:
   fix: true
+  max-issues-per-linter: 0
+  max-same-issues: 0
+output:
+  uniq-by-line: false
