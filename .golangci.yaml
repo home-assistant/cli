@@ -8,6 +8,7 @@ linters:
     - gosec
     - nolintlint
     - perfsprint
+    - prealloc
 issues:
   fix: true
   max-issues-per-linter: 0
