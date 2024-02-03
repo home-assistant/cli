@@ -20,7 +20,7 @@ Add and configure a new mount in Supervisor.
 	Example: `
   ha mounts add my_share --usage media --type cifs --server server.local --share media
 `,
-	ValidArgsFunction: cobra.NoFileCompletions,
+	ValidArgsFunction: mountsCompletions,
 	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log.WithField("args", args).Debug("mounts add")

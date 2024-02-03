@@ -42,7 +42,9 @@ func addMountFlags(cmd *cobra.Command) {
 	cmd.Flags().StringP("password", "p", "", "Password to use for authentication (cifs mounts only)")
 	cmd.Flags().StringP("version", "v", "", "Version to use for the mount (cifs mounts only)")
 	cmd.Flags().StringP("path", "a", "", "Path to mount (nfs mounts only)")
+	cmd.Flags().BoolP("read-only", "ro", false, "Is mount read-only (not available for backup mounts)")
 
+	cmd.Flags().Lookup("read-only").NoOptDefVal = "true"
 	cmd.RegisterFlagCompletionFunc("type", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		return []string{"cifs", "nfs"}, cobra.ShellCompDirectiveNoFileComp
 	})
@@ -78,6 +80,11 @@ func mountFlagsToOptions(cmd *cobra.Command, options map[string]interface{}) {
 	val, err := cmd.Flags().GetInt("port")
 	if val > 0 && err == nil && cmd.Flags().Changed("port") {
 		options["port"] = val
+	}
+
+	roVal, roErr := cmd.Flags().GetBool("read-only")
+	if roErr == nil && cmd.Flags().Changed("read-only") {
+		options["read_only"] = roVal
 	}
 }
 
