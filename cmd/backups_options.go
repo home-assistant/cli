@@ -30,7 +30,7 @@ This command allows you to set configuration options for backup manager.`,
 
 		daysUntilStale, err := cmd.Flags().GetInt("days-until-stale")
 		if daysUntilStale != 0 && err == nil && cmd.Flags().Changed("days-until-stale") {
-			options["days-until-stale"] = daysUntilStale
+			options["days_until_stale"] = daysUntilStale
 		}
 
 		resp, err := helper.GenericJSONPost(section, command, options)
