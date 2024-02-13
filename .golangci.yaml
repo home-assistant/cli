@@ -3,6 +3,15 @@ linters:
     - errcheck
   enable:
     - dupword
+    - gocritic
     - gofmt
+    - gosec
+    - nolintlint
+    - perfsprint
+    - prealloc
 issues:
   fix: true
+  max-issues-per-linter: 0
+  max-same-issues: 0
+output:
+  uniq-by-line: false

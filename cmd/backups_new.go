@@ -44,7 +44,7 @@ backup.`,
 		addons, err := cmd.Flags().GetStringArray("addons")
 		log.WithField("addons", addons).Debug("addons")
 
-		if len(addons) >= 0 && err == nil && cmd.Flags().Changed("addons") {
+		if len(addons) != 0 && err == nil && cmd.Flags().Changed("addons") {
 			options["addons"] = addons
 			command = "new/partial"
 		}
@@ -52,7 +52,7 @@ backup.`,
 		folders, err := cmd.Flags().GetStringArray("folders")
 		log.WithField("folders", folders).Debug("folders")
 
-		if len(folders) >= 0 && err == nil && cmd.Flags().Changed("folders") {
+		if len(folders) != 0 && err == nil && cmd.Flags().Changed("folders") {
 			options["folders"] = folders
 			command = "new/partial"
 		}

@@ -124,10 +124,10 @@ func ShowJSONResponse(resp *resty.Response) (success bool) {
 		// when we are returning raw JSON, all handling is for the consumer of the JSON
 		success = true
 		body := resp.RawBody()
-		defer body.Close()
 		if b, err := io.ReadAll(body); err == nil {
 			fmt.Print(string(b))
 		}
+		_ = body.Close()
 		return
 	}
 	var data *Response
@@ -136,7 +136,8 @@ func ShowJSONResponse(resp *resty.Response) (success bool) {
 	} else {
 		data = resp.Error().(*Response)
 	}
-	if data.Result == "ok" {
+	switch data.Result {
+	case "ok":
 		success = true
 		if len(data.Data) == 0 {
 			fmt.Println("Command completed successfully.")
@@ -152,9 +153,9 @@ func ShowJSONResponse(resp *resty.Response) (success bool) {
 			}
 			fmt.Print(string(d))
 		}
-	} else if data.Result == "error" {
+	case "error":
 		fmt.Printf("Error: %s\n", data.Message)
-	} else {
+	default:
 		d, err := yaml.Marshal(data)
 		if err != nil {
 			log.Fatalf("error: %v", err)

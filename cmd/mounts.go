@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"strings"
 
 	helper "github.com/home-assistant/cli/client"
@@ -24,14 +23,6 @@ func init() {
 	rootCmd.AddCommand(mountsCmd)
 }
 
-func portCompletions(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
-	vals := make([]string, 1, 65535)
-	for i := 0; i <= 100; i++ {
-		vals = append(vals, fmt.Sprint(i))
-	}
-	return vals, cobra.ShellCompDirectiveNoFileComp
-}
-
 func addMountFlags(cmd *cobra.Command) {
 	cmd.Flags().StringP("type", "t", "cifs", "Type of mount")
 	cmd.Flags().StringP("usage", "u", "media", "Usage of mount within Home Assistant")
@@ -50,7 +41,7 @@ func addMountFlags(cmd *cobra.Command) {
 		return []string{"backup", "media", "share"}, cobra.ShellCompDirectiveNoFileComp
 	})
 	cmd.RegisterFlagCompletionFunc("server", cobra.NoFileCompletions)
-	cmd.RegisterFlagCompletionFunc("port", portCompletions)
+	cmd.RegisterFlagCompletionFunc("port", cobra.NoFileCompletions)
 	cmd.RegisterFlagCompletionFunc("share", cobra.NoFileCompletions)
 	cmd.RegisterFlagCompletionFunc("username", cobra.NoFileCompletions)
 	cmd.RegisterFlagCompletionFunc("password", cobra.NoFileCompletions)
