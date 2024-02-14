@@ -72,7 +72,7 @@ backup.`,
 
 		ExcludeDB, err := cmd.Flags().GetBool("homeassistant-exclude-database")
 		if err == nil && cmd.Flags().Changed("homeassistant-exclude-database") {
-			options["homeassistant-exclude-database"] = ExcludeDB
+			options["homeassistant_exclude_database"] = ExcludeDB
 		}
 
 		ProgressSpinner.Start()
