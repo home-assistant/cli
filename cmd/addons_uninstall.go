@@ -43,6 +43,14 @@ This command allows you to uninstall a Home Assistant add-on.
 			"slug": slug,
 		})
 
+		var options map[string]interface{}
+
+		removeConfig, _ := cmd.Flags().GetBool("remove-config")
+		if removeConfig {
+			options = map[string]interface{}{"remove_config": removeConfig}
+			request.SetBody(options)
+		}
+
 		resp, err := request.Post(url)
 
 		// returns 200 OK or 400, everything else is wrong
@@ -66,6 +74,9 @@ This command allows you to uninstall a Home Assistant add-on.
 }
 
 func init() {
+	addonsUninstallCmd.Flags().Bool("remove-config", false, "Delete addon's config folder (if used)")
+	addonsUninstallCmd.Flags().Lookup("remove-config").NoOptDefVal = "true"
+	addonsUninstallCmd.RegisterFlagCompletionFunc("remove-config", boolCompletions)
 
 	addonsCmd.AddCommand(addonsUninstallCmd)
 }
