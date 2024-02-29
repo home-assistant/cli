@@ -1,10 +1,12 @@
 package client
 
 import (
+	"bufio"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/url"
+	"os"
 	"path"
 	"time"
 
@@ -186,4 +188,33 @@ func StreamTextResponse(resp *resty.Response) (success bool) {
 		}
 	}
 	return
+}
+
+func AskForConfirmation(prompt string, tries int) bool {
+	reader := bufio.NewReader(os.Stdin)
+	if tries <= 0 {
+		tries = 2
+	}
+
+	for ; tries > 0; tries-- {
+		fmt.Printf("%s [enter YES to confirm] ", prompt)
+
+		res, err := reader.ReadString('\n')
+		if err != nil {
+			log.Fatalf("error: %v", err)
+			continue
+		}
+
+		// Require YES or yes explicitly to confirm
+		res = strings.ToLower(strings.TrimSpace(res))
+		if res == "yes" {
+			return true
+		}
+
+		// If user enters no or n then stop. Else retry since they entered something unknown
+		if res[0] == 'n' {
+			return false
+		}
+	}
+	return false
 }
