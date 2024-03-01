@@ -37,7 +37,7 @@ It is currently not possible to upgrade/downgrade to a specific version.
 		}
 
 		ProgressSpinner.Start()
-		request := helper.GetJSONRequest()
+		request := helper.GetJSONRequestTimeout(helper.ContainerDownloadTimeout)
 		ProgressSpinner.Stop()
 
 		slug := args[0]
