@@ -212,7 +212,7 @@ func AskForConfirmation(prompt string, tries int) bool {
 		}
 
 		// If user enters no or n then stop. Else retry since they entered something unknown
-		if res[0] == 'n' {
+		if len(res) > 0 && res[0] == 'n' {
 			return false
 		}
 	}

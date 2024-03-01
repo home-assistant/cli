@@ -48,6 +48,8 @@ Are you sure you want to proceed?`, 0) {
 			} else {
 				ExitWithError = !helper.ShowJSONResponse(resp)
 			}
+		} else {
+			fmt.Println("Aborted.")
 		}
 	},
 }
