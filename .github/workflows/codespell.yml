@@ -10,7 +10,7 @@ jobs:
   codespell:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.1
+      - uses: actions/checkout@v4.1.2
       - uses: codespell-project/actions-codespell@v2.0
         with:
           skip: ./.git,./go.sum
