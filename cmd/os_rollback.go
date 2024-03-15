@@ -49,10 +49,12 @@ with the previous version of OS installed.
 				break
 			}
 		}
+		if target == "" {
+			ExitWithError = true
+			return
+		}
 
-		options := make(map[string]interface{})
-		options = map[string]interface{}{"boot_slot": target}
-
+		options := map[string]interface{}{"boot_slot": target}
 		resp, err := helper.GenericJSONPost(section, command, options)
 		if err != nil {
 			fmt.Println(err)

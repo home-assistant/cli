@@ -29,8 +29,7 @@ an OS update without making more changes to the system.
 		command := "boot-slot"
 
 		bootSlot := args[0]
-		options := make(map[string]interface{})
-		options = map[string]interface{}{"boot_slot": bootSlot}
+		options := map[string]interface{}{"boot_slot": bootSlot}
 
 		resp, err := helper.GenericJSONPost(section, command, options)
 		if err != nil {
