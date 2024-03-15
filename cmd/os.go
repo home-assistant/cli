@@ -56,10 +56,13 @@ func osBootSlotCompletions(cmd *cobra.Command, args []string, toComplete string)
 		return nil, cobra.ShellCompDirectiveNoFileComp
 	}
 
-	var ret []string
 	bootSlots, _ := osGetBootSlots()
-	for bootSlot := range bootSlots {
-		ret = append(ret, bootSlot)
+	if bootSlots != nil {
+		ret := make([]string, 0, len(bootSlots))
+		for bootSlot := range bootSlots {
+			ret = append(ret, bootSlot)
+		}
+		return ret, cobra.ShellCompDirectiveNoFileComp
 	}
-	return ret, cobra.ShellCompDirectiveNoFileComp
+	return nil, cobra.ShellCompDirectiveNoFileComp
 }
