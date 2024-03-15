@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"os"
+	"strings"
 
 	helper "github.com/home-assistant/cli/client"
 
@@ -58,9 +59,28 @@ func osBootSlotCompletions(cmd *cobra.Command, args []string, toComplete string)
 
 	bootSlots, _ := osGetBootSlots()
 	if bootSlots != nil {
-		ret := make([]string, 0, len(bootSlots))
-		for bootSlot := range bootSlots {
+		var ret []string
+		for bootSlot, v := range bootSlots {
+			info, ok := v.(map[string]interface{})
+			if !ok {
+				continue
+			}
+			if state, ok := info["state"].(string); !ok || state == "active" {
+				continue
+			}
+
 			ret = append(ret, bootSlot)
+			var details []string
+			if version, ok := info["version"].(string); ok && version != "" {
+				details = append(details, version)
+			}
+			if status, ok := info["status"].(string); ok && status != "" {
+				details = append(details, status)
+			}
+
+			if len(details) > 0 {
+				ret[len(ret)-1] += "\t" + strings.Join(details, ", ")
+			}
 		}
 		return ret, cobra.ShellCompDirectiveNoFileComp
 	}
