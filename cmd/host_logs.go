@@ -49,8 +49,14 @@ across services and boots.
 			return
 		}
 
+		accept := "text/plain"
+		verbose, _ := cmd.Flags().GetBool("verbose")
+		if verbose {
+			accept = "text/x-log"
+		}
+
 		/* Disable timeouts to allow following forever */
-		request := helper.GetRequestTimeout(0).SetHeader("Accept", "text/plain").SetDoNotParseResponse(true)
+		request := helper.GetRequestTimeout(0).SetHeader("Accept", accept).SetDoNotParseResponse(true)
 
 		lines, _ := cmd.Flags().GetInt32("lines")
 		if lines > 0 {
@@ -85,7 +91,9 @@ func init() {
 	hostLogsCmd.Flags().Int32P("lines", "n", 0, "Number of log entries to show")
 	hostLogsCmd.Flags().StringP("identifier", "t", "", "Show entries with the specified syslog identifier")
 	hostLogsCmd.Flags().StringP("boot", "b", "", "Logs of particular boot ID")
+	hostLogsCmd.Flags().BoolP("verbose", "v", false, "Return logs in verbose format")
 	hostLogsCmd.Flags().Lookup("follow").NoOptDefVal = "true"
+	hostLogsCmd.Flags().Lookup("verbose").NoOptDefVal = "true"
 
 	hostCmd.AddCommand(hostLogsCmd)
 }
