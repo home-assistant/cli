@@ -25,6 +25,16 @@ running on your Home Assistant system.`,
 		section := "audio"
 		command := "logs"
 
+		boot, _ := cmd.Flags().GetString("boot")
+		if len(boot) > 0 {
+			command += "/boots/{boot}"
+		}
+
+		follow, _ := cmd.Flags().GetBool("follow")
+		if follow {
+			command += "/follow"
+		}
+
 		url, err := helper.URLHelper(section, command)
 		if err != nil {
 			fmt.Printf("Error: %v", err)
@@ -32,18 +42,43 @@ running on your Home Assistant system.`,
 			return
 		}
 
-		request := helper.GetRequest()
-		resp, err := request.SetHeader("Accept", "text/plain").Get(url)
+		accept := "text/plain"
+		verbose, _ := cmd.Flags().GetBool("verbose")
+		if verbose {
+			accept = "text/x-log"
+		}
+
+		/* Disable timeouts to allow following forever */
+		request := helper.GetRequestTimeout(0).SetHeader("Accept", accept).SetDoNotParseResponse(true)
+
+		lines, _ := cmd.Flags().GetInt32("lines")
+		if lines > 0 {
+			rangeHeader := fmt.Sprintf("entries=:%d:", -(lines - 1))
+			log.WithField("value", rangeHeader).Debug("Range header")
+			request.SetHeader("Range", rangeHeader)
+		}
+
+		request.SetPathParam("boot", boot)
+
+		resp, err := request.Get(url)
 
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true
-		} else {
-			fmt.Println(resp.String())
+			return
 		}
+
+		ExitWithError = !helper.StreamTextResponse(resp)
 	},
 }
 
 func init() {
+	audioLogsCmd.Flags().BoolP("follow", "f", false, "Continuously print new log entries")
+	audioLogsCmd.Flags().Int32P("lines", "n", 0, "Number of log entries to show")
+	audioLogsCmd.Flags().StringP("boot", "b", "", "Logs of particular boot ID")
+	audioLogsCmd.Flags().BoolP("verbose", "v", false, "Return logs in verbose format")
+	audioLogsCmd.Flags().Lookup("follow").NoOptDefVal = "true"
+	audioLogsCmd.Flags().Lookup("verbose").NoOptDefVal = "true"
+
 	audioCmd.AddCommand(audioLogsCmd)
 }
