@@ -3,7 +3,6 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"strings"
 
 	resty "github.com/go-resty/resty/v2"
 	helper "github.com/home-assistant/cli/client"
@@ -88,12 +87,12 @@ func init() {
 	networkUpdateCmd.Flags().StringArray("ipv4-address", []string{}, "IPv4 address for the interface in the 192.168.1.5/24")
 	networkUpdateCmd.Flags().String("ipv4-gateway", "", "The IPv4 gateway the interface should use")
 	networkUpdateCmd.Flags().String("ipv4-method", "", "Method on IPv4: static|auto|disabled")
-	networkUpdateCmd.Flags().StringArray("ipv4-nameservers", []string{}, "Upstream DNS servers to use for IPv4.")
+	networkUpdateCmd.Flags().StringArray("ipv4-nameserver", []string{}, "IPv4 address of upstream DNS servers. Use multiple times for multiple servers.")
 
 	networkUpdateCmd.Flags().StringArray("ipv6-address", []string{}, "IPv6 address for the interface in the 2001:0db8:85a3:0000:0000:8a2e:0370:7334/64")
 	networkUpdateCmd.Flags().String("ipv6-gateway", "", "The IPv6 gateway the interface should use")
 	networkUpdateCmd.Flags().String("ipv6-method", "", "Method on IPv6: static|auto|disabled")
-	networkUpdateCmd.Flags().StringArray("ipv6-nameservers", []string{}, "Upstream DNS servers to use for IPv6.")
+	networkUpdateCmd.Flags().StringArray("ipv6-nameserver", []string{}, "IPv6 address for upstream DNS servers. Use multiple times for multiple servers.")
 
 	networkUpdateCmd.Flags().String("wifi-mode", "", "Wifi mode: infrastructure, adhoc, mesh or ap")
 	networkUpdateCmd.Flags().String("wifi-ssid", "", "SSID for wifi connection")
@@ -126,49 +125,57 @@ func init() {
 	networkCmd.AddCommand(networkUpdateCmd)
 }
 
+type NetworkArg struct {
+	Arg     string
+	ApiKey  string
+	IsArray bool
+}
+
+func parseNetworkArgs(cmd *cobra.Command, args []NetworkArg) map[string]interface{} {
+	networkConfig := make(map[string]interface{})
+	for _, arg := range args {
+		var val interface{}
+		var err error
+		var changed bool
+
+		if arg.IsArray {
+			val, err = cmd.Flags().GetStringArray(arg.Arg)
+			changed = len(val.([]string)) > 0
+		} else {
+			val, err = cmd.Flags().GetString(arg.Arg)
+			changed = val.(string) != ""
+		}
+
+		if err == nil && changed && cmd.Flags().Changed(arg.Arg) {
+			networkConfig[arg.ApiKey] = val
+		}
+	}
+	return networkConfig
+}
+
 func helperIpConfig(version string, cmd *cobra.Command, options map[string]interface{}) {
-	ipConfig := make(map[string]interface{})
-
-	for _, value := range []string{
-		version + "-gateway",
-		version + "-method",
-	} {
-		val, err := cmd.Flags().GetString(value)
-		if val != "" && err == nil && cmd.Flags().Changed(value) {
-			ipConfig[strings.Split(value, "-")[1]] = val
-		}
+	args := []NetworkArg{
+		{Arg: version + "-gateway", ApiKey: "gateway"},
+		{Arg: version + "-method", ApiKey: "method"},
+		{Arg: version + "-address", ApiKey: "address", IsArray: true},
+		{Arg: version + "-nameserver", ApiKey: "nameservers", IsArray: true},
 	}
 
-	for _, value := range []string{
-		version + "-address",
-		version + "-nameservers",
-	} {
-		val, err := cmd.Flags().GetStringArray(value)
-		if len(val) >= 1 && err == nil && cmd.Flags().Changed(value) {
-			ipConfig[strings.Split(value, "-")[1]] = val
-		}
-	}
-
+	ipConfig := parseNetworkArgs(cmd, args)
 	if len(ipConfig) > 0 {
 		options[version] = ipConfig
 	}
 }
 
 func helperWifiConfig(cmd *cobra.Command, options map[string]interface{}) {
-	wifiConfig := make(map[string]interface{})
-
-	for _, value := range []string{
-		"wifi-mode",
-		"wifi-ssid",
-		"wifi-auth",
-		"wifi-psk",
-	} {
-		val, err := cmd.Flags().GetString(value)
-		if val != "" && err == nil && cmd.Flags().Changed(value) {
-			wifiConfig[strings.Split(value, "-")[1]] = val
-		}
+	args := []NetworkArg{
+		{Arg: "wifi-mode", ApiKey: "mode"},
+		{Arg: "wifi-ssid", ApiKey: "ssid"},
+		{Arg: "wifi-auth", ApiKey: "auth"},
+		{Arg: "wifi-psk", ApiKey: "psk"},
 	}
 
+	wifiConfig := parseNetworkArgs(cmd, args)
 	if len(wifiConfig) > 0 {
 		options["wifi"] = wifiConfig
 	}
