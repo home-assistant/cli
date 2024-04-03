@@ -59,7 +59,7 @@ func osBootSlotCompletions(cmd *cobra.Command, args []string, toComplete string)
 
 	bootSlots, _ := osGetBootSlots()
 	if bootSlots != nil {
-		var ret []string
+		ret := make([]string, 2)
 		for bootSlot, v := range bootSlots {
 			info, ok := v.(map[string]interface{})
 			if !ok {
@@ -69,7 +69,8 @@ func osBootSlotCompletions(cmd *cobra.Command, args []string, toComplete string)
 				continue
 			}
 
-			ret = append(ret, bootSlot)
+			ret[0] = "other"
+			ret[1] = bootSlot
 			var details []string
 			if version, ok := info["version"].(string); ok && version != "" {
 				details = append(details, version)
@@ -79,10 +80,12 @@ func osBootSlotCompletions(cmd *cobra.Command, args []string, toComplete string)
 			}
 
 			if len(details) > 0 {
-				ret[len(ret)-1] += "\t" + strings.Join(details, ", ")
+				detailsStr := "\t" + strings.Join(details, ", ")
+				ret[0] += detailsStr
+				ret[1] += detailsStr
 			}
+			return ret, cobra.ShellCompDirectiveNoFileComp
 		}
-		return ret, cobra.ShellCompDirectiveNoFileComp
 	}
 	return nil, cobra.ShellCompDirectiveNoFileComp
 }
