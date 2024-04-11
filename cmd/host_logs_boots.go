@@ -6,6 +6,7 @@ import (
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
+	"strings"
 )
 
 var hostLogsBootsCmd = &cobra.Command{
@@ -38,4 +39,32 @@ Show all values that can be used with the boot arg to find logs.
 
 func init() {
 	hostLogsCmd.AddCommand(hostLogsBootsCmd)
+}
+
+func bootCompletions(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+	if len(args) != 0 {
+		return nil, cobra.ShellCompDirectiveNoFileComp
+	}
+	resp, err := helper.GenericJSONGet("host/logs/boots", "")
+	if err != nil || !resp.IsSuccess() {
+		return nil, cobra.ShellCompDirectiveNoFileComp
+	}
+
+	var ret []string
+	data := resp.Result().(*helper.Response)
+	if data.Result == "ok" && data.Data["boots"] != nil {
+		if boots, ok := data.Data["boots"].(map[string]interface{}); ok {
+			for bootID, bootName := range boots {
+				s := bootName.(string)
+				if toComplete == "" || strings.HasPrefix(s, toComplete) {
+					ret = append(ret, s)
+				}
+				if toComplete == "" || strings.HasPrefix(bootID, toComplete) {
+					ret = append(ret, bootID)
+				}
+			}
+		}
+	}
+
+	return ret, cobra.ShellCompDirectiveNoFileComp
 }

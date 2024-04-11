@@ -166,6 +166,11 @@ func addLogsFlags(cmd *cobra.Command) {
 	cmd.Flags().BoolP("verbose", "v", false, "Return logs in verbose format")
 	cmd.Flags().Lookup("follow").NoOptDefVal = "true"
 	cmd.Flags().Lookup("verbose").NoOptDefVal = "true"
+
+	cmd.RegisterFlagCompletionFunc("follow", boolCompletions)
+	cmd.RegisterFlagCompletionFunc("verbose", boolCompletions)
+	cmd.RegisterFlagCompletionFunc("lines", cobra.NoFileCompletions)
+	cmd.RegisterFlagCompletionFunc("boot", bootCompletions)
 }
 
 func processLogsFlags(section string, cmd *cobra.Command) (*resty.Request, error) {
