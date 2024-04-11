@@ -170,7 +170,7 @@ func addLogsFlags(cmd *cobra.Command) {
 	cmd.RegisterFlagCompletionFunc("follow", boolCompletions)
 	cmd.RegisterFlagCompletionFunc("verbose", boolCompletions)
 	cmd.RegisterFlagCompletionFunc("lines", cobra.NoFileCompletions)
-	cmd.RegisterFlagCompletionFunc("boot", bootCompletions)
+	cmd.RegisterFlagCompletionFunc("boot", hostBootCompletions)
 }
 
 func processLogsFlags(section string, cmd *cobra.Command) (*resty.Request, error) {
