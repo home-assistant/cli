@@ -25,56 +25,22 @@ across services and boots.
 		log.WithField("args", args).Debug("host logs")
 
 		section := "host"
-		command := "logs"
+
+		request, err := processLogsFlags(section, cmd)
+
+		if err != nil {
+			fmt.Printf("Error: %v", err)
+			ExitWithError = true
+			return
+		}
 
 		identifier, _ := cmd.Flags().GetString("identifier")
-		boot, _ := cmd.Flags().GetString("boot")
-		if len(boot) > 0 {
-			command += "/boots/{boot}"
-		}
 		if len(identifier) > 0 {
-			command += "/identifiers/{identifier}"
+			request.URL += "/identifiers/{identifier}"
 		}
-
-		follow, _ := cmd.Flags().GetBool("follow")
-		if follow {
-			command += "/follow"
-		}
-
-		url, err := helper.URLHelper(section, command)
-
-		if err != nil {
-			fmt.Printf("Error: %v", err)
-			ExitWithError = true
-			return
-		}
-
-		accept := "text/plain"
-		verbose, _ := cmd.Flags().GetBool("verbose")
-		if verbose {
-			accept = "text/x-log"
-		}
-
-		/* Disable timeouts to allow following forever */
-		request := helper.GetRequestTimeout(0).SetHeader("Accept", accept).SetDoNotParseResponse(true)
-
-		lines, _ := cmd.Flags().GetInt32("lines")
-		if lines > 0 {
-			rangeHeader := fmt.Sprintf("entries=:%d:", -(lines - 1))
-			log.WithField("value", rangeHeader).Debug("Range header")
-			request.SetHeader("Range", rangeHeader)
-		}
-
-		if err != nil {
-			fmt.Printf("Error: %v", err)
-			ExitWithError = true
-			return
-		}
-
 		request.SetPathParam("identifier", identifier)
-		request.SetPathParam("boot", boot)
 
-		resp, err := request.Get(url)
+		resp, err := request.Send()
 
 		if err != nil {
 			fmt.Println(err)
@@ -87,13 +53,9 @@ across services and boots.
 }
 
 func init() {
-	hostLogsCmd.Flags().BoolP("follow", "f", false, "Continuously print new log entries")
-	hostLogsCmd.Flags().Int32P("lines", "n", 0, "Number of log entries to show")
+	addLogsFlags(hostLogsCmd)
+
 	hostLogsCmd.Flags().StringP("identifier", "t", "", "Show entries with the specified syslog identifier")
-	hostLogsCmd.Flags().StringP("boot", "b", "", "Logs of particular boot ID")
-	hostLogsCmd.Flags().BoolP("verbose", "v", false, "Return logs in verbose format")
-	hostLogsCmd.Flags().Lookup("follow").NoOptDefVal = "true"
-	hostLogsCmd.Flags().Lookup("verbose").NoOptDefVal = "true"
 
 	hostCmd.AddCommand(hostLogsCmd)
 }

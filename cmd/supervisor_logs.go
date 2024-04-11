@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -23,43 +22,16 @@ Supervisor running on your Home Assistant system.`,
 		log.WithField("args", args).Debug("supervisor logs")
 
 		section := "supervisor"
-		command := "logs"
 
-		boot, _ := cmd.Flags().GetString("boot")
-		if len(boot) > 0 {
-			command += "/boots/{boot}"
-		}
+		request, err := processLogsFlags(section, cmd)
 
-		follow, _ := cmd.Flags().GetBool("follow")
-		if follow {
-			command += "/follow"
-		}
-
-		url, err := helper.URLHelper(section, command)
 		if err != nil {
 			fmt.Printf("Error: %v", err)
+			ExitWithError = true
 			return
 		}
 
-		accept := "text/plain"
-		verbose, _ := cmd.Flags().GetBool("verbose")
-		if verbose {
-			accept = "text/x-log"
-		}
-
-		/* Disable timeouts to allow following forever */
-		request := helper.GetRequestTimeout(0).SetHeader("Accept", accept).SetDoNotParseResponse(true)
-
-		lines, _ := cmd.Flags().GetInt32("lines")
-		if lines > 0 {
-			rangeHeader := fmt.Sprintf("entries=:%d:", -(lines - 1))
-			log.WithField("value", rangeHeader).Debug("Range header")
-			request.SetHeader("Range", rangeHeader)
-		}
-
-		request.SetPathParam("boot", boot)
-
-		resp, err := request.Get(url)
+		resp, err := request.Send()
 
 		if err != nil {
 			fmt.Println(err)
@@ -72,12 +44,7 @@ Supervisor running on your Home Assistant system.`,
 }
 
 func init() {
-	supervisorLogsCmd.Flags().BoolP("follow", "f", false, "Continuously print new log entries")
-	supervisorLogsCmd.Flags().Int32P("lines", "n", 0, "Number of log entries to show")
-	supervisorLogsCmd.Flags().StringP("boot", "b", "", "Logs of particular boot ID")
-	supervisorLogsCmd.Flags().BoolP("verbose", "v", false, "Return logs in verbose format")
-	supervisorLogsCmd.Flags().Lookup("follow").NoOptDefVal = "true"
-	supervisorLogsCmd.Flags().Lookup("verbose").NoOptDefVal = "true"
+	addLogsFlags(supervisorLogsCmd)
 
 	supervisorCmd.AddCommand(supervisorLogsCmd)
 }
