@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -23,26 +22,29 @@ Supervisor running on your Home Assistant system.`,
 		log.WithField("args", args).Debug("supervisor logs")
 
 		section := "supervisor"
-		command := "logs"
 
-		url, err := helper.URLHelper(section, command)
+		request, err := processLogsFlags(section, cmd)
+
 		if err != nil {
 			fmt.Printf("Error: %v", err)
+			ExitWithError = true
 			return
 		}
 
-		request := helper.GetRequest()
-		resp, err := request.SetHeader("Accept", "text/plain").Get(url)
+		resp, err := request.Send()
 
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true
-		} else {
-			fmt.Println(resp.String())
+			return
 		}
+
+		ExitWithError = !helper.StreamTextResponse(resp)
 	},
 }
 
 func init() {
+	addLogsFlags(supervisorLogsCmd)
+
 	supervisorCmd.AddCommand(supervisorLogsCmd)
 }

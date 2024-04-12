@@ -1,6 +1,10 @@
 package cmd
 
 import (
+	"fmt"
+	"github.com/go-resty/resty/v2"
+	"github.com/home-assistant/cli/client"
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -20,4 +24,58 @@ system, but also provides option to change the hostname of the system.`,
 
 func init() {
 	rootCmd.AddCommand(hostCmd)
+}
+
+func addLogsFlags(cmd *cobra.Command) {
+	cmd.Flags().BoolP("follow", "f", false, "Continuously print new log entries")
+	cmd.Flags().Uint32P("lines", "n", 0, "Number of log entries to show")
+	cmd.Flags().StringP("boot", "b", "", "Logs of particular boot ID")
+	cmd.Flags().BoolP("verbose", "v", false, "Return logs in verbose format")
+	cmd.Flags().Lookup("follow").NoOptDefVal = "true"
+	cmd.Flags().Lookup("verbose").NoOptDefVal = "true"
+
+	cmd.RegisterFlagCompletionFunc("follow", boolCompletions)
+	cmd.RegisterFlagCompletionFunc("verbose", boolCompletions)
+	cmd.RegisterFlagCompletionFunc("lines", cobra.NoFileCompletions)
+	cmd.RegisterFlagCompletionFunc("boot", hostBootCompletions)
+}
+
+func processLogsFlags(section string, cmd *cobra.Command) (*resty.Request, error) {
+	command := "logs"
+
+	boot, _ := cmd.Flags().GetString("boot")
+	if len(boot) > 0 {
+		command += "/boots/{boot}"
+	}
+
+	follow, _ := cmd.Flags().GetBool("follow")
+	if follow {
+		command += "/follow"
+	}
+
+	URL, err := client.URLHelper(section, command)
+	if err != nil {
+		return nil, err
+	}
+
+	accept := "text/plain"
+	verbose, _ := cmd.Flags().GetBool("verbose")
+	if verbose {
+		accept = "text/x-log"
+	}
+
+	/* Disable timeouts to allow following forever */
+	request := client.GetRequestTimeout(0).SetHeader("Accept", accept).SetDoNotParseResponse(true)
+
+	lines, _ := cmd.Flags().GetInt32("lines")
+	if lines > 0 {
+		rangeHeader := fmt.Sprintf("entries=:%d:", -(lines - 1))
+		log.WithField("value", rangeHeader).Debug("Range header")
+		request.SetHeader("Range", rangeHeader)
+	}
+
+	request.SetPathParam("boot", boot)
+	request.URL = URL
+
+	return request, nil
 }

@@ -23,27 +23,29 @@ running on your Home Assistant system.`,
 		log.WithField("args", args).Debug("audio logs")
 
 		section := "audio"
-		command := "logs"
 
-		url, err := helper.URLHelper(section, command)
+		request, err := processLogsFlags(section, cmd)
+
 		if err != nil {
 			fmt.Printf("Error: %v", err)
 			ExitWithError = true
 			return
 		}
 
-		request := helper.GetRequest()
-		resp, err := request.SetHeader("Accept", "text/plain").Get(url)
+		resp, err := request.Send()
 
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true
-		} else {
-			fmt.Println(resp.String())
+			return
 		}
+
+		ExitWithError = !helper.StreamTextResponse(resp)
 	},
 }
 
 func init() {
+	addLogsFlags(audioLogsCmd)
+
 	audioCmd.AddCommand(audioLogsCmd)
 }
