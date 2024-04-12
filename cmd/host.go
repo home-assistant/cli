@@ -28,7 +28,7 @@ func init() {
 
 func addLogsFlags(cmd *cobra.Command) {
 	cmd.Flags().BoolP("follow", "f", false, "Continuously print new log entries")
-	cmd.Flags().Int32P("lines", "n", 0, "Number of log entries to show")
+	cmd.Flags().Uint32P("lines", "n", 0, "Number of log entries to show")
 	cmd.Flags().StringP("boot", "b", "", "Logs of particular boot ID")
 	cmd.Flags().BoolP("verbose", "v", false, "Return logs in verbose format")
 	cmd.Flags().Lookup("follow").NoOptDefVal = "true"
