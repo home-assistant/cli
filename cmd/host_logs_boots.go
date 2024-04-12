@@ -57,10 +57,7 @@ func hostBootCompletions(cmd *cobra.Command, args []string, toComplete string) (
 			for bootID, bootName := range boots {
 				s := bootName.(string)
 				if toComplete == "" || strings.HasPrefix(s, toComplete) {
-					ret = append(ret, s)
-				}
-				if toComplete == "" || strings.HasPrefix(bootID, toComplete) {
-					ret = append(ret, bootID)
+					ret = append(ret, s+"\tboot offset "+bootID)
 				}
 			}
 		}
