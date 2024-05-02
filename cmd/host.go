@@ -67,9 +67,9 @@ func processLogsFlags(section string, cmd *cobra.Command) (*resty.Request, error
 	/* Disable timeouts to allow following forever */
 	request := client.GetRequestTimeout(0).SetHeader("Accept", accept).SetDoNotParseResponse(true)
 
-	lines, _ := cmd.Flags().GetInt32("lines")
+	lines, _ := cmd.Flags().GetUint32("lines")
 	if lines > 0 {
-		rangeHeader := fmt.Sprintf("entries=:%d:", -(lines - 1))
+		rangeHeader := fmt.Sprintf("entries=:%d:", -(int(lines) - 1))
 		log.WithField("value", rangeHeader).Debug("Range header")
 		request.SetHeader("Range", rangeHeader)
 	}
