@@ -24,9 +24,17 @@ Restart the Home Assistant Core instance running on your system`,
 		section := "core"
 		command := "restart"
 
+		options := make(map[string]interface{})
+
+		safeMode, err := cmd.Flags().GetBool("safe-mode")
+		if err == nil && safeMode {
+			options["safe_mode"] = safeMode
+		}
+
 		ProgressSpinner.Start()
-		resp, err := helper.GenericJSONPostTimeout(section, command, nil, helper.ContainerOperationTimeout)
+		resp, err := helper.GenericJSONPostTimeout(section, command, options, helper.ContainerOperationTimeout)
 		ProgressSpinner.Stop()
+
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true
@@ -37,5 +45,9 @@ Restart the Home Assistant Core instance running on your system`,
 }
 
 func init() {
+	coreRestartCmd.Flags().BoolP("safe-mode", "s", false, "Restart Home Assistant in safe mode")
+	coreRestartCmd.Flags().Lookup("safe-mode").NoOptDefVal = "true"
+	coreRestartCmd.RegisterFlagCompletionFunc("safe-mode", boolCompletions)
+
 	coreCmd.AddCommand(coreRestartCmd)
 }
