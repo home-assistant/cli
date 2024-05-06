@@ -24,33 +24,22 @@ Restart the Home Assistant Core instance running on your system`,
 		section := "core"
 		command := "restart"
 
-		url, err := helper.URLHelper(section, command)
-		if err != nil {
-			fmt.Println(err)
-			ExitWithError = true
-			return
-		}
-
-		request := helper.GetRequestTimeout(helper.ContainerOperationTimeout)
+		options := make(map[string]interface{})
 
 		safeMode, err := cmd.Flags().GetBool("safe-mode")
 		if err == nil && safeMode {
-			options := make(map[string]interface{})
 			options["safe_mode"] = safeMode
-			request.SetBody(options)
 		}
 
 		ProgressSpinner.Start()
-		resp, err := request.Post(url)
+		resp, err := helper.GenericJSONPostTimeout(section, command, options, helper.ContainerOperationTimeout)
 		ProgressSpinner.Stop()
 
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true
-		} else if resp.StatusCode() != 200 && resp.StatusCode() != 400 {
-			err = fmt.Errorf("Unexpected server response. Status code: %d", resp.StatusCode())
-			log.Error(err)
-			ExitWithError = true
+		} else {
+			ExitWithError = !helper.ShowJSONResponse(resp)
 		}
 	},
 }
