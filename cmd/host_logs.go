@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"strings"
 
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
@@ -36,7 +37,12 @@ across services and boots.
 
 		identifier, _ := cmd.Flags().GetString("identifier")
 		if len(identifier) > 0 {
-			request.URL += "/identifiers/{identifier}"
+			if strings.HasSuffix(request.URL, "/follow") {
+				// We can safely do this because "/follow" will be always at the end
+				request.URL = strings.Replace(request.URL, "/follow", "/identifiers/{identifier}/follow", 1)
+			} else {
+				request.URL += "/identifiers/{identifier}"
+			}
 		}
 		request.SetPathParam("identifier", identifier)
 
