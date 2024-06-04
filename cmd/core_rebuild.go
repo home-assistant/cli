@@ -26,8 +26,15 @@ Don't worry, this does not delete your config.`,
 		section := "core"
 		command := "rebuild"
 
+		options := make(map[string]interface{})
+
+		safeMode, err := cmd.Flags().GetBool("safe-mode")
+		if err == nil && safeMode {
+			options["safe_mode"] = safeMode
+		}
+
 		ProgressSpinner.Start()
-		resp, err := helper.GenericJSONPostTimeout(section, command, nil, helper.ContainerOperationTimeout)
+		resp, err := helper.GenericJSONPostTimeout(section, command, options, helper.ContainerOperationTimeout)
 		ProgressSpinner.Stop()
 		if err != nil {
 			fmt.Println(err)
@@ -39,5 +46,9 @@ Don't worry, this does not delete your config.`,
 }
 
 func init() {
+	coreRebuildCmd.Flags().BoolP("safe-mode", "s", false, "Rebuild Home Assistant in safe mode")
+	coreRebuildCmd.Flags().Lookup("safe-mode").NoOptDefVal = "true"
+	coreRebuildCmd.RegisterFlagCompletionFunc("safe-mode", boolCompletions)
+
 	coreCmd.AddCommand(coreRebuildCmd)
 }
