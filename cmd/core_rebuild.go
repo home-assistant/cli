@@ -32,6 +32,10 @@ Don't worry, this does not delete your config.`,
 		if err == nil && safeMode {
 			options["safe_mode"] = safeMode
 		}
+		force, err := cmd.Flags().GetBool("force")
+		if err == nil && force {
+			options["force"] = force
+		}
 
 		ProgressSpinner.Start()
 		resp, err := helper.GenericJSONPostTimeout(section, command, options, helper.ContainerOperationTimeout)
@@ -47,8 +51,11 @@ Don't worry, this does not delete your config.`,
 
 func init() {
 	coreRebuildCmd.Flags().BoolP("safe-mode", "s", false, "Rebuild Home Assistant in safe mode")
+	coreRebuildCmd.Flags().BoolP("force", "f", false, "Force rebuild during an offline db migration")
 	coreRebuildCmd.Flags().Lookup("safe-mode").NoOptDefVal = "true"
+	coreRebuildCmd.Flags().Lookup("force").NoOptDefVal = "true"
 	coreRebuildCmd.RegisterFlagCompletionFunc("safe-mode", boolCompletions)
+	coreRebuildCmd.RegisterFlagCompletionFunc("force", boolCompletions)
 
 	coreCmd.AddCommand(coreRebuildCmd)
 }

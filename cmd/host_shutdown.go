@@ -25,7 +25,14 @@ WARNING: This is turning off the computer/device.`,
 		section := "host"
 		command := "shutdown"
 
-		resp, err := helper.GenericJSONPost(section, command, nil)
+		options := make(map[string]interface{})
+
+		force, err := cmd.Flags().GetBool("force")
+		if err == nil && force {
+			options["force"] = force
+		}
+
+		resp, err := helper.GenericJSONPost(section, command, options)
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true
@@ -36,5 +43,8 @@ WARNING: This is turning off the computer/device.`,
 }
 
 func init() {
+	hostShutdownCmd.Flags().BoolP("force", "f", false, "Force shutdown during an offline db migration")
+	hostShutdownCmd.Flags().Lookup("force").NoOptDefVal = "true"
+	hostShutdownCmd.RegisterFlagCompletionFunc("force", boolCompletions)
 	hostCmd.AddCommand(hostShutdownCmd)
 }

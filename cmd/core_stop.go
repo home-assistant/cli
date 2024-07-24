@@ -25,8 +25,15 @@ your system.`,
 		section := "core"
 		command := "stop"
 
+		options := make(map[string]interface{})
+
+		force, err := cmd.Flags().GetBool("force")
+		if err == nil && force {
+			options["force"] = force
+		}
+
 		ProgressSpinner.Start()
-		resp, err := helper.GenericJSONPostTimeout(section, command, nil, helper.ContainerOperationTimeout)
+		resp, err := helper.GenericJSONPostTimeout(section, command, options, helper.ContainerOperationTimeout)
 		ProgressSpinner.Stop()
 		if err != nil {
 			fmt.Println(err)
@@ -38,5 +45,8 @@ your system.`,
 }
 
 func init() {
+	coreStopCmd.Flags().BoolP("force", "f", false, "Force stop during an offline db migration")
+	coreStopCmd.Flags().Lookup("force").NoOptDefVal = "true"
+	coreStopCmd.RegisterFlagCompletionFunc("force", boolCompletions)
 	coreCmd.AddCommand(coreStopCmd)
 }

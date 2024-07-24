@@ -24,7 +24,14 @@ Reboot the machine that your Home Assistant is running on.`,
 		section := "host"
 		command := "reboot"
 
-		resp, err := helper.GenericJSONPost(section, command, nil)
+		options := make(map[string]interface{})
+
+		force, err := cmd.Flags().GetBool("force")
+		if err == nil && force {
+			options["force"] = force
+		}
+
+		resp, err := helper.GenericJSONPost(section, command, options)
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true
@@ -35,5 +42,8 @@ Reboot the machine that your Home Assistant is running on.`,
 }
 
 func init() {
+	hostRebootCmd.Flags().BoolP("force", "f", false, "Force reboot during an offline db migration")
+	hostRebootCmd.Flags().Lookup("force").NoOptDefVal = "true"
+	hostRebootCmd.RegisterFlagCompletionFunc("force", boolCompletions)
 	hostCmd.AddCommand(hostRebootCmd)
 }
