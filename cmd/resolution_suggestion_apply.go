@@ -1,10 +1,9 @@
 package cmd
 
 import (
-	"errors"
 	"fmt"
 
-	resty "github.com/go-resty/resty/v2"
+	"github.com/home-assistant/cli/client"
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -42,17 +41,7 @@ This command allow to apply an suggestion reported by the System.`,
 		})
 
 		resp, err := request.Post(url)
-
-		// returns 200 OK or 400, everything else is wrong
-		if err == nil {
-			if resp.StatusCode() != 200 && resp.StatusCode() != 400 {
-				err = errors.New("Unexpected server response")
-				log.Error(err)
-			} else if !resty.IsJSONType(resp.Header().Get("Content-Type")) {
-				err = errors.New("API did not return a JSON response")
-				log.Error(err)
-			}
-		}
+		resp, err = client.GenericJSONErrorHandling(resp, err)
 
 		if err != nil {
 			fmt.Println(err)
