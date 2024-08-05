@@ -30,6 +30,10 @@ Restart the Home Assistant Core instance running on your system`,
 		if err == nil && safeMode {
 			options["safe_mode"] = safeMode
 		}
+		force, err := cmd.Flags().GetBool("force")
+		if err == nil && force {
+			options["force"] = force
+		}
 
 		ProgressSpinner.Start()
 		resp, err := helper.GenericJSONPostTimeout(section, command, options, helper.ContainerOperationTimeout)
@@ -46,8 +50,11 @@ Restart the Home Assistant Core instance running on your system`,
 
 func init() {
 	coreRestartCmd.Flags().BoolP("safe-mode", "s", false, "Restart Home Assistant in safe mode")
+	coreRestartCmd.Flags().BoolP("force", "f", false, "Force restart during an offline db migration")
 	coreRestartCmd.Flags().Lookup("safe-mode").NoOptDefVal = "true"
+	coreRestartCmd.Flags().Lookup("force").NoOptDefVal = "true"
 	coreRestartCmd.RegisterFlagCompletionFunc("safe-mode", boolCompletions)
+	coreRestartCmd.RegisterFlagCompletionFunc("force", boolCompletions)
 
 	coreCmd.AddCommand(coreRestartCmd)
 }
