@@ -14,11 +14,16 @@ var RawJSON = false
 
 func GenericJSONErrorHandling(resp *resty.Response, err error) (*resty.Response, error) {
 	if err == nil {
-		if resp.StatusCode() != 200 && resp.StatusCode() != 400 && resp.StatusCode() != 503 {
+		switch resp.StatusCode() {
+		case 200, 400, 403, 503:
+			break
+		default:
 			err = fmt.Errorf("Unexpected server response. Status code: %d", resp.StatusCode())
 			log.Error(err)
 			return nil, err
-		} else if !resty.IsJSONType(resp.Header().Get("Content-Type")) {
+		}
+
+		if !resty.IsJSONType(resp.Header().Get("Content-Type")) {
 			err = errors.New("API did not return a JSON response")
 			log.Error(err)
 			return nil, err
