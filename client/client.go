@@ -1,7 +1,6 @@
 package client
 
 import (
-	"errors"
 	"fmt"
 	"time"
 
@@ -24,7 +23,7 @@ func GenericJSONErrorHandling(resp *resty.Response, err error) (*resty.Response,
 		}
 
 		if !resty.IsJSONType(resp.Header().Get("Content-Type")) {
-			err = errors.New("API did not return a JSON response")
+			err = fmt.Errorf("API did not return a JSON response. Status code %d", resp.StatusCode())
 			log.Error(err)
 			return nil, err
 		}
