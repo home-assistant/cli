@@ -25,7 +25,7 @@ jobs:
           - {"name": "ha_aarch64", "args": "GOARCH=arm64"}
     steps:
     - name: Checkout the repository
-      uses: actions/checkout@v4.2.1
+      uses: actions/checkout@v4.2.2
 
     - name: Setup go ${{ env.GOLANG_VERSION }}
       uses: actions/setup-go@v5.0.2
