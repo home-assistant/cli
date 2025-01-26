@@ -87,6 +87,8 @@ func init() {
 	networkUpdateCmd.Flags().String("wifi-ssid", "", "SSID for wifi connection")
 	networkUpdateCmd.Flags().String("wifi-auth", "", "Used authentication: open, wep, wpa-psk")
 	networkUpdateCmd.Flags().String("wifi-psk", "", "Shared authentication key for wep or wpa")
+	networkUpdateCmd.Flags().String("wifi-band", "", "Wifi band required for mode 'ap': a for 5GHz, bg for 2.4GHz")
+	networkUpdateCmd.Flags().Int("wifi-channel", 0, "Wifi channel required for mode 'ap'")
 
 	networkUpdateCmd.Flags().BoolP("disabled", "e", false, "Disable interface")
 
@@ -108,6 +110,10 @@ func init() {
 		return []string{"open", "wep", "wpa-psk"}, cobra.ShellCompDirectiveNoFileComp
 	})
 	networkUpdateCmd.RegisterFlagCompletionFunc("wifi-psk", cobra.NoFileCompletions)
+	networkUpdateCmd.RegisterFlagCompletionFunc("wifi-band", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		return []string{"a", "bg"}, cobra.ShellCompDirectiveNoFileComp
+	})
+	networkUpdateCmd.RegisterFlagCompletionFunc("wifi-channel", cobra.NoFileCompletions)
 
 	networkUpdateCmd.RegisterFlagCompletionFunc("disabled", boolCompletions)
 
@@ -162,6 +168,8 @@ func helperWifiConfig(cmd *cobra.Command, options map[string]interface{}) {
 		{Arg: "wifi-ssid", ApiKey: "ssid"},
 		{Arg: "wifi-auth", ApiKey: "auth"},
 		{Arg: "wifi-psk", ApiKey: "psk"},
+		{Arg: "wifi-band", ApiKey: "band"},
+		{Arg: "wifi-channel", ApiKey: "channel"},
 	}
 
 	wifiConfig := parseNetworkArgs(cmd, args)
