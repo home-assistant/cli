@@ -61,13 +61,16 @@ backup.`,
 			options["compressed"] = false
 		}
 
-		location, err := cmd.Flags().GetString("location")
-		if err == nil && cmd.Flags().Changed("location") {
-			if location == "" {
-				options["location"] = nil
-			} else {
-				options["location"] = location
-			}
+		location, err := cmd.Flags().GetStringArray("location")
+		log.WithField("location", location).Debug("location")
+		if len(location) > 0 && err == nil && cmd.Flags().Changed(("location")) {
+			options["location"] = location
+		}
+
+		filename, err := cmd.Flags().GetString("filename")
+		log.WithField("filename", filename).Debug("filename")
+		if filename != "" && err == nil && cmd.Flags().Changed("filename") {
+			options["filename"] = filename
 		}
 
 		ExcludeDB, err := cmd.Flags().GetBool("homeassistant-exclude-database")
@@ -93,20 +96,22 @@ func init() {
 	backupsNewCmd.Flags().Bool("uncompressed", false, "Use Uncompressed archives")
 	backupsNewCmd.Flags().StringArrayP("addons", "a", []string{}, "addons to backup, triggers a partial backup")
 	backupsNewCmd.Flags().StringArrayP("folders", "f", []string{}, "folders to backup, triggers a partial backup")
-	backupsNewCmd.Flags().StringP("location", "l", "", "where to put backup file (backup mount or local)")
+	backupsNewCmd.Flags().StringArrayP("location", "l", []string{}, "where to put backup file (backup mount or local), use multiple times for multiple locations.")
 	backupsNewCmd.Flags().Bool("homeassistant-exclude-database", false, "Exclude the Home Assistant database file from backup")
+	backupsNewCmd.Flags().String("filename", "", "name to use for backup file")
 
 	backupsNewCmd.Flags().Lookup("uncompressed").NoOptDefVal = "false"
-	backupsNewCmd.Flags().Lookup("location").NoOptDefVal = ""
+	backupsNewCmd.Flags().Lookup("location").NoOptDefVal = ".local"
 	backupsNewCmd.Flags().Lookup("homeassistant-exclude-database").NoOptDefVal = "false"
 
 	backupsNewCmd.RegisterFlagCompletionFunc("name", cobra.NoFileCompletions)
 	backupsNewCmd.RegisterFlagCompletionFunc("password", cobra.NoFileCompletions)
 	backupsNewCmd.RegisterFlagCompletionFunc("uncompressed", boolCompletions)
-	backupsNewCmd.RegisterFlagCompletionFunc("addons", cobra.NoFileCompletions)
-	backupsNewCmd.RegisterFlagCompletionFunc("folders", cobra.NoFileCompletions)
+	backupsNewCmd.RegisterFlagCompletionFunc("addons", backupsAddonsCompletions)
+	backupsNewCmd.RegisterFlagCompletionFunc("folders", backupsFoldersCompletions)
 	backupsNewCmd.RegisterFlagCompletionFunc("location", backupsLocationsCompletions)
 	backupsNewCmd.RegisterFlagCompletionFunc("homeassistant-exclude-database", boolCompletions)
+	backupsNewCmd.RegisterFlagCompletionFunc("filename", cobra.NoFileCompletions)
 
 	backupsCmd.AddCommand(backupsNewCmd)
 }

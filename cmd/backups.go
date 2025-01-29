@@ -100,7 +100,7 @@ func backupsLocationsCompletions(cmd *cobra.Command, args []string, toComplete s
 		return nil, cobra.ShellCompDirectiveNoFileComp
 	}
 	var ret []string
-	ret = append(ret, "\tLocal storage, /backups")
+	ret = append(ret, ".local\tLocal storage, /backups")
 	data := resp.Result().(*helper.Response)
 	if data.Result == "ok" && data.Data["mounts"] != nil {
 		if mounts, ok := data.Data["mounts"].([]interface{}); ok {
@@ -137,4 +137,20 @@ func backupsLocationsCompletions(cmd *cobra.Command, args []string, toComplete s
 		}
 	}
 	return ret, cobra.ShellCompDirectiveNoFileComp
+}
+
+func backupsAddonsCompletions(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+	if len(args) != 0 {
+		return nil, cobra.ShellCompDirectiveNoFileComp
+	}
+	ret, directive := addonsCompletions(cmd, args, toComplete)
+	ret = append(ret, "ALL\tAll currently installed addons")
+	return ret, directive
+}
+
+func backupsFoldersCompletions(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+	if len(args) != 0 {
+		return nil, cobra.ShellCompDirectiveNoFileComp
+	}
+	return []string{"addons", "media", "share", "ssl"}, cobra.ShellCompDirectiveNoFileComp
 }

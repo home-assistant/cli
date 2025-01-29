@@ -34,12 +34,23 @@ clean backups from disk.`,
 		}
 
 		request := helper.GetJSONRequest()
+		options := make(map[string]interface{})
 
 		slug := args[0]
-
 		request.SetPathParams(map[string]string{
 			"slug": slug,
 		})
+
+		location, err := cmd.Flags().GetStringArray("location")
+		log.WithField("location", location).Debug("location")
+		if len(location) > 0 && err == nil && cmd.Flags().Changed(("location")) {
+			options["location"] = location
+		}
+
+		if len(options) > 0 {
+			log.WithField("options", options).Debug("Request body")
+			request.SetBody(options)
+		}
 
 		resp, err := request.Delete(url)
 		resp, err = client.GenericJSONErrorHandling(resp, err)
@@ -54,6 +65,9 @@ clean backups from disk.`,
 }
 
 func init() {
+	backupsRemoveCmd.Flags().StringArrayP("location", "l", []string{}, "location(s) to remove backup from (instead of all), use multiple times for multiple locations.")
+	backupsRemoveCmd.Flags().Lookup("location").NoOptDefVal = ".local"
+	backupsRemoveCmd.RegisterFlagCompletionFunc("location", backupsLocationsCompletions)
 
 	backupsCmd.AddCommand(backupsRemoveCmd)
 }

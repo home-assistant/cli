@@ -14,7 +14,7 @@ var RawJSON = false
 func GenericJSONErrorHandling(resp *resty.Response, err error) (*resty.Response, error) {
 	if err == nil {
 		switch resp.StatusCode() {
-		case 200, 400, 403, 503:
+		case 200, 400, 403, 404, 503:
 			break
 		default:
 			err = fmt.Errorf("Unexpected server response. Status code: %d", resp.StatusCode())
