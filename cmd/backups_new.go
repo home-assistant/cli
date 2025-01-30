@@ -63,7 +63,7 @@ backup.`,
 
 		location, err := cmd.Flags().GetStringArray("location")
 		log.WithField("location", location).Debug("location")
-		if len(location) > 0 && err == nil && cmd.Flags().Changed(("location")) {
+		if len(location) > 0 && err == nil && cmd.Flags().Changed("location") {
 			options["location"] = location
 		}
 

@@ -10,6 +10,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var backupsFolders = []string{"addons", "media", "share", "ssl"}
+
 var backupsCmd = &cobra.Command{
 	Use:     "backups",
 	Aliases: []string{"backup", "back", "backups", "bk", "snapshots", "snapshot", "snap", "shot", "sn"},
@@ -152,5 +154,5 @@ func backupsFoldersCompletions(cmd *cobra.Command, args []string, toComplete str
 	if len(args) != 0 {
 		return nil, cobra.ShellCompDirectiveNoFileComp
 	}
-	return []string{"addons", "media", "share", "ssl"}, cobra.ShellCompDirectiveNoFileComp
+	return backupsFolders, cobra.ShellCompDirectiveNoFileComp
 }
