@@ -64,6 +64,11 @@ take Home Assistant backup on your system.`,
 			command = "restore/partial"
 		}
 
+		location, err := cmd.Flags().GetString("location")
+		if err == nil && cmd.Flags().Changed("location") {
+			options["location"] = location
+		}
+
 		url, err := helper.URLHelper(section, command)
 		if err != nil {
 			fmt.Println(err)
@@ -96,9 +101,15 @@ func init() {
 	backupsRestoreCmd.Flags().BoolP("homeassistant", "", true, "Restore homeassistant (default true), triggers a partial backup when set to false")
 	backupsRestoreCmd.Flags().StringArrayP("addons", "a", []string{}, "addons to restore, triggers a partial backup")
 	backupsRestoreCmd.Flags().StringArrayP("folders", "f", []string{}, "folders to restore, triggers a partial backup")
+	backupsRestoreCmd.Flags().StringP("location", "l", "", "where to put backup file (backup mount or local)")
+
+	backupsRestoreCmd.Flags().Lookup("location").NoOptDefVal = ".local"
+
 	backupsRestoreCmd.RegisterFlagCompletionFunc("password", cobra.NoFileCompletions)
 	backupsRestoreCmd.RegisterFlagCompletionFunc("homeassistant", boolCompletions)
 	backupsRestoreCmd.RegisterFlagCompletionFunc("addons", cobra.NoFileCompletions)
-	backupsRestoreCmd.RegisterFlagCompletionFunc("folders", cobra.NoFileCompletions)
+	backupsRestoreCmd.RegisterFlagCompletionFunc("folders", backupsFoldersCompletions)
+	backupsRestoreCmd.RegisterFlagCompletionFunc("location", backupsLocationsCompletions)
+
 	backupsCmd.AddCommand(backupsRestoreCmd)
 }
