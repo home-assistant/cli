@@ -77,7 +77,7 @@ var bannerCmd = &cobra.Command{
 		}
 
 		if !nowait {
-			for i := 0; i < 60; i++ {
+			for i := range 60 {
 				// We could use ping here, but Supervisor loads networking data asynchronously.
 				// Networking info are very useful, so wait until networking data have been
 				// loaded...

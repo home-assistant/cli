@@ -102,7 +102,7 @@ func (s *Spinner) Start() {
 
 	go func() {
 		for {
-			for i := 0; i < len(s.chars); i++ {
+			for i := range s.chars {
 				select {
 				case <-s.stopChan:
 					return
