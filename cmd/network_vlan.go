@@ -35,7 +35,7 @@ This function works only on an ethernet interface!
 			return
 		}
 
-		options := make(map[string]interface{})
+		options := make(map[string]any)
 
 		request := helper.GetJSONRequest()
 

@@ -27,7 +27,7 @@ running Home Assistant DNS server.
 		section := "dns"
 		command := "options"
 
-		options := make(map[string]interface{})
+		options := make(map[string]any)
 
 		servers, err := cmd.Flags().GetStringArray("servers")
 		log.WithField("servers", servers).Debug("servers")

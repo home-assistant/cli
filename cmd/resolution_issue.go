@@ -31,10 +31,10 @@ func resolutionIssueCompletions(cmd *cobra.Command, args []string, toComplete st
 	var ret []string
 	data := resp.Result().(*helper.Response)
 	if data.Result == "ok" && data.Data["issues"] != nil {
-		if issues, ok := data.Data["issues"].([]interface{}); ok {
+		if issues, ok := data.Data["issues"].([]any); ok {
 			for _, issue := range issues {
-				var m map[string]interface{}
-				if m, ok = issue.(map[string]interface{}); !ok {
+				var m map[string]any
+				if m, ok = issue.(map[string]any); !ok {
 					continue
 				}
 				var s string

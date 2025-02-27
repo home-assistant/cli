@@ -31,7 +31,7 @@ data partition to a new harddisk. The system reboots afterwards!
 
 		section := "os"
 		command := "datadisk/move"
-		options := make(map[string]interface{})
+		options := make(map[string]any)
 
 		options["device"] = args[0]
 

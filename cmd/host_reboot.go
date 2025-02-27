@@ -24,7 +24,7 @@ Reboot the machine that your Home Assistant is running on.`,
 		section := "host"
 		command := "reboot"
 
-		options := make(map[string]interface{})
+		options := make(map[string]any)
 
 		force, err := cmd.Flags().GetBool("force")
 		if err == nil && force {

@@ -25,7 +25,7 @@ This command allows you to set the audio profile on a audio card.`,
 		section := "audio"
 		command := "profile"
 
-		options := make(map[string]interface{})
+		options := make(map[string]any)
 
 		name, err := cmd.Flags().GetString("name")
 		if name != "" && err == nil && cmd.Flags().Changed("name") {

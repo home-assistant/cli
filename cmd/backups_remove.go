@@ -34,7 +34,7 @@ clean backups from disk.`,
 		}
 
 		request := helper.GetJSONRequest()
-		options := make(map[string]interface{})
+		options := make(map[string]any)
 
 		slug := args[0]
 		request.SetPathParams(map[string]string{

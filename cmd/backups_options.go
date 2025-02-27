@@ -26,7 +26,7 @@ This command allows you to set configuration options for backup manager.`,
 		section := "backups"
 		command := "options"
 
-		options := make(map[string]interface{})
+		options := make(map[string]any)
 
 		daysUntilStale, err := cmd.Flags().GetInt("days-until-stale")
 		if daysUntilStale != 0 && err == nil && cmd.Flags().Changed("days-until-stale") {

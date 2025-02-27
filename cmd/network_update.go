@@ -34,7 +34,7 @@ Update network interface settings of a specific adapter.
 			return
 		}
 
-		options := make(map[string]interface{})
+		options := make(map[string]any)
 
 		request := helper.GetJSONRequest()
 
@@ -120,10 +120,10 @@ type NetworkArg struct {
 	IsArray bool
 }
 
-func parseNetworkArgs(cmd *cobra.Command, args []NetworkArg) map[string]interface{} {
-	networkConfig := make(map[string]interface{})
+func parseNetworkArgs(cmd *cobra.Command, args []NetworkArg) map[string]any {
+	networkConfig := make(map[string]any)
 	for _, arg := range args {
-		var val interface{}
+		var val any
 		var err error
 		var changed bool
 
@@ -142,7 +142,7 @@ func parseNetworkArgs(cmd *cobra.Command, args []NetworkArg) map[string]interfac
 	return networkConfig
 }
 
-func helperIpConfig(version string, cmd *cobra.Command, options map[string]interface{}) {
+func helperIpConfig(version string, cmd *cobra.Command, options map[string]any) {
 	args := []NetworkArg{
 		{Arg: version + "-gateway", ApiKey: "gateway"},
 		{Arg: version + "-method", ApiKey: "method"},
@@ -156,7 +156,7 @@ func helperIpConfig(version string, cmd *cobra.Command, options map[string]inter
 	}
 }
 
-func helperWifiConfig(cmd *cobra.Command, options map[string]interface{}) {
+func helperWifiConfig(cmd *cobra.Command, options map[string]any) {
 	args := []NetworkArg{
 		{Arg: "wifi-mode", ApiKey: "mode"},
 		{Arg: "wifi-ssid", ApiKey: "ssid"},

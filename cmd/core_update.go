@@ -26,7 +26,7 @@ running on your system to the latest version or the version specified.`,
 		section := "core"
 		command := "update"
 
-		options := make(map[string]interface{})
+		options := make(map[string]any)
 
 		version, _ := cmd.Flags().GetString("version")
 		if version != "" {

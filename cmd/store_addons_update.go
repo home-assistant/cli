@@ -45,7 +45,7 @@ It is currently not possible to upgrade/downgrade to a specific version.
 			"slug": slug,
 		})
 
-		options := make(map[string]interface{})
+		options := make(map[string]any)
 
 		backup, _ := cmd.Flags().GetBool("backup")
 		if cmd.Flags().Changed("backup") {

@@ -28,7 +28,7 @@ Change value for options of mount manager in Supervisor.
 		section := "mounts"
 		command := "options"
 
-		options := make(map[string]interface{})
+		options := make(map[string]any)
 
 		backupMount, err := cmd.Flags().GetString("default-backup-mount")
 		if err == nil && cmd.Flags().Changed("default-backup-mount") {

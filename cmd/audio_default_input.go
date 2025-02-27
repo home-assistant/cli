@@ -26,7 +26,7 @@ Home Assistant Audio on your Home Assistant system.`,
 		section := "audio"
 		command := "default/input"
 
-		options := make(map[string]interface{})
+		options := make(map[string]any)
 
 		name, err := cmd.Flags().GetString("name")
 		if name != "" && err == nil && cmd.Flags().Changed("name") {

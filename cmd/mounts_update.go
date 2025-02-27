@@ -37,7 +37,7 @@ Update or change the configuration of an existing mount in Supervisor.
 		request := helper.GetJSONRequest()
 
 		name := args[0]
-		options := make(map[string]interface{})
+		options := make(map[string]any)
 
 		request.SetPathParams(map[string]string{
 			"name": name,

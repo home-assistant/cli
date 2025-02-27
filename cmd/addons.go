@@ -54,10 +54,10 @@ func addonsCompletions(cmd *cobra.Command, args []string, toComplete string) ([]
 	var ret []string
 	data := resp.Result().(*helper.Response)
 	if data.Result == "ok" && data.Data["addons"] != nil {
-		if addons, ok := data.Data["addons"].([]interface{}); ok {
+		if addons, ok := data.Data["addons"].([]any); ok {
 			for _, addon := range addons {
-				var m map[string]interface{}
-				if m, ok = addon.(map[string]interface{}); !ok {
+				var m map[string]any
+				if m, ok = addon.(map[string]any); !ok {
 					continue
 				}
 				var s, t string

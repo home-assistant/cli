@@ -25,7 +25,7 @@ const haBanner = `
 Welcome to the Home Assistant command line.
 `
 
-func supervisorGet(section string, command string) (outdata *(map[string]interface{}), err error) {
+func supervisorGet(section string, command string) (outdata *(map[string]any), err error) {
 	resp, err := helper.GenericJSONGet(section, command)
 	if err != nil {
 		return nil, err
@@ -47,7 +47,7 @@ func supervisorGet(section string, command string) (outdata *(map[string]interfa
 	return outdata, nil
 }
 
-func getAddresses(addresses []interface{}) string {
+func getAddresses(addresses []any) string {
 	addresses_str := make([]string, len(addresses))
 	for i, v := range addresses {
 		addresses_str[i] = fmt.Sprint(v)
@@ -85,7 +85,7 @@ var bannerCmd = &cobra.Command{
 				if err == nil && netinfo != nil {
 
 					netifaces, exist := (*netinfo)["interfaces"]
-					if exist && len(netifaces.([]interface{})) > 0 {
+					if exist && len(netifaces.([]any)) > 0 {
 						break
 					}
 				}
@@ -110,21 +110,21 @@ var bannerCmd = &cobra.Command{
 		// Print network address information
 		netifaces, exist := (*netinfo)["interfaces"]
 		if exist {
-			for _, netiface := range netifaces.([]interface{}) {
-				nf := netiface.(map[string]interface{})
+			for _, netiface := range netifaces.([]any) {
+				nf := netiface.(map[string]any)
 				title_ipv4 := fmt.Sprintf("IPv4 addresses for %s:", nf["interface"])
 				title_ipv6 := fmt.Sprintf("IPv6 addresses for %s:", nf["interface"])
 
 				if nf["ipv4"] == nil {
 					fmt.Printf("  %-25s (no address)\n", title_ipv4)
 				} else {
-					ipv4 := nf["ipv4"].(map[string]interface{})
-					fmt.Printf("  %-25s %s\n", title_ipv4, getAddresses(ipv4["address"].([]interface{})))
+					ipv4 := nf["ipv4"].(map[string]any)
+					fmt.Printf("  %-25s %s\n", title_ipv4, getAddresses(ipv4["address"].([]any)))
 				}
 
 				if nf["ipv6"] != nil {
-					ipv6 := nf["ipv6"].(map[string]interface{})
-					ipv6_addresses := ipv6["address"].([]interface{})
+					ipv6 := nf["ipv6"].(map[string]any)
+					ipv6_addresses := ipv6["address"].([]any)
 					if len(ipv6_addresses) > 0 {
 						fmt.Printf("  %-25s %s\n", title_ipv6, getAddresses(ipv6_addresses))
 					}

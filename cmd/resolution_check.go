@@ -31,10 +31,10 @@ func resolutionCheckCompletions(cmd *cobra.Command, args []string, toComplete st
 	var ret []string
 	data := resp.Result().(*helper.Response)
 	if data.Result == "ok" && data.Data["checks"] != nil {
-		if checks, ok := data.Data["checks"].([]interface{}); ok {
+		if checks, ok := data.Data["checks"].([]any); ok {
 			for _, check := range checks {
-				var m map[string]interface{}
-				if m, ok = check.(map[string]interface{}); !ok {
+				var m map[string]any
+				if m, ok = check.(map[string]any); !ok {
 					continue
 				}
 				var s string

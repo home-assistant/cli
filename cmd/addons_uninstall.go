@@ -42,11 +42,11 @@ This command allows you to uninstall a Home Assistant add-on.
 			"slug": slug,
 		})
 
-		var options map[string]interface{}
+		var options map[string]any
 
 		removeConfig, _ := cmd.Flags().GetBool("remove-config")
 		if removeConfig {
-			options = map[string]interface{}{"remove_config": removeConfig}
+			options = map[string]any{"remove_config": removeConfig}
 			request.SetBody(options)
 		}
 
