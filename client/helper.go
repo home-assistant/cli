@@ -28,9 +28,9 @@ var client *resty.Client
 
 // Response is the default JSON response from the Home Assistant Supervisor
 type Response struct {
-	Result  string                 `json:"result"`
-	Message string                 `json:"message,omitempty"`
-	Data    map[string]interface{} `json:"data,omitempty"`
+	Result  string         `json:"result"`
+	Message string         `json:"message,omitempty"`
+	Data    map[string]any `json:"data,omitempty"`
 }
 
 // URLHelper returns a URL built from the arguments

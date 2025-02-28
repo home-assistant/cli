@@ -32,10 +32,10 @@ func resolutionSuggestionCompletions(cmd *cobra.Command, args []string, toComple
 	var ret []string
 	data := resp.Result().(*helper.Response)
 	if data.Result == "ok" && data.Data["suggestions"] != nil {
-		if suggestions, ok := data.Data["suggestions"].([]interface{}); ok {
+		if suggestions, ok := data.Data["suggestions"].([]any); ok {
 			for _, suggestion := range suggestions {
-				var m map[string]interface{}
-				if m, ok = suggestion.(map[string]interface{}); !ok {
+				var m map[string]any
+				if m, ok = suggestion.(map[string]any); !ok {
 					continue
 				}
 				var s string

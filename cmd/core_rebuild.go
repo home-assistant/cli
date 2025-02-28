@@ -26,7 +26,7 @@ Don't worry, this does not delete your config.`,
 		section := "core"
 		command := "rebuild"
 
-		options := make(map[string]interface{})
+		options := make(map[string]any)
 
 		safeMode, err := cmd.Flags().GetBool("safe-mode")
 		if err == nil && safeMode {

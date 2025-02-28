@@ -25,11 +25,11 @@ your Home Assistant is running on.`,
 		section := "host"
 		command := "options"
 
-		var options map[string]interface{}
+		var options map[string]any
 
 		hostname, _ := cmd.Flags().GetString("hostname")
 		if hostname != "" {
-			options = map[string]interface{}{"hostname": hostname}
+			options = map[string]any{"hostname": hostname}
 		}
 
 		resp, err := helper.GenericJSONPost(section, command, options)

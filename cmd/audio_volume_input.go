@@ -31,7 +31,7 @@ input channel or application on your Home Assistant system.`,
 		section := "audio"
 		command := "volume/input"
 
-		options := make(map[string]interface{})
+		options := make(map[string]any)
 
 		volume, err := cmd.Flags().GetInt("volume")
 		if volume != 0 && err == nil && cmd.Flags().Changed("volume") {

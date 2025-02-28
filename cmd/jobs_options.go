@@ -27,7 +27,7 @@ Home Assistant Job Manager.
 		section := "jobs"
 		command := "options"
 
-		options := make(map[string]interface{})
+		options := make(map[string]any)
 
 		conditions, err := cmd.Flags().GetStringArray("ignore-conditions")
 		if len(conditions) >= 1 && err == nil {

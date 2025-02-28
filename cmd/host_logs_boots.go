@@ -53,7 +53,7 @@ func hostBootCompletions(cmd *cobra.Command, args []string, toComplete string) (
 	var ret []string
 	data := resp.Result().(*helper.Response)
 	if data.Result == "ok" && data.Data["boots"] != nil {
-		if boots, ok := data.Data["boots"].(map[string]interface{}); ok {
+		if boots, ok := data.Data["boots"].(map[string]any); ok {
 			for bootID, bootName := range boots {
 				s := bootName.(string)
 				if toComplete == "" || strings.HasPrefix(s, toComplete) {

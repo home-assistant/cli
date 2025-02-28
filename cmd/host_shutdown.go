@@ -25,7 +25,7 @@ WARNING: This is turning off the computer/device.`,
 		section := "host"
 		command := "shutdown"
 
-		options := make(map[string]interface{})
+		options := make(map[string]any)
 
 		force, err := cmd.Flags().GetBool("force")
 		if err == nil && force {

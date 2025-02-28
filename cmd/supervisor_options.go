@@ -26,7 +26,7 @@ Supervisor running on your Home Assistant system.`,
 		section := "supervisor"
 		command := "options"
 
-		options := make(map[string]interface{})
+		options := make(map[string]any)
 
 		for _, value := range []string{
 			"hostname",

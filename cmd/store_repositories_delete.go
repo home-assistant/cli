@@ -69,10 +69,10 @@ func storeRepositoriesDeleteCompletions(cmd *cobra.Command, args []string, toCom
 	var ret []string
 	data := resp.Result().(*helper.Response)
 	if data.Result == "ok" && data.Data["repositories"] != nil {
-		if repos, ok := data.Data["repositories"].([]interface{}); ok {
+		if repos, ok := data.Data["repositories"].([]any); ok {
 			for _, repo := range repos {
-				var m map[string]interface{}
-				if m, ok = repo.(map[string]interface{}); !ok {
+				var m map[string]any
+				if m, ok = repo.(map[string]any); !ok {
 					continue
 				}
 				var s string

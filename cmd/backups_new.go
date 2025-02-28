@@ -29,7 +29,7 @@ backup.`,
 		section := "backups"
 		command := "new/full"
 
-		options := make(map[string]interface{})
+		options := make(map[string]any)
 
 		name, err := cmd.Flags().GetString("name")
 		if name != "" && err == nil && cmd.Flags().Changed("name") {

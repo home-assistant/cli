@@ -31,7 +31,7 @@ func GenericJSONErrorHandling(resp *resty.Response, err error) (*resty.Response,
 	return resp, err
 }
 
-func genericJSONMethod(get bool, section, command string, body map[string]interface{}, timeout time.Duration) (*resty.Response, error) {
+func genericJSONMethod(get bool, section, command string, body map[string]any, timeout time.Duration) (*resty.Response, error) {
 	url, err := URLHelper(section, command)
 	if err != nil {
 		return nil, err
@@ -63,10 +63,10 @@ func GenericJSONGetTimeout(section, command string, timeout time.Duration) (*res
 }
 
 // GenericJSONPost is a helper for generic empty post request
-func GenericJSONPost(section, command string, body map[string]interface{}) (*resty.Response, error) {
+func GenericJSONPost(section, command string, body map[string]any) (*resty.Response, error) {
 	return genericJSONMethod(false, section, command, body, DefaultTimeout)
 }
 
-func GenericJSONPostTimeout(section, command string, body map[string]interface{}, timeout time.Duration) (*resty.Response, error) {
+func GenericJSONPostTimeout(section, command string, body map[string]any, timeout time.Duration) (*resty.Response, error) {
 	return genericJSONMethod(false, section, command, body, timeout)
 }

@@ -28,7 +28,7 @@ Home Assistant Security backend.
 		section := "security"
 		command := "options"
 
-		options := make(map[string]interface{})
+		options := make(map[string]any)
 
 		for _, value := range []string{
 			"pwned",

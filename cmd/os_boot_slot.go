@@ -42,7 +42,7 @@ an OS update without making more changes to the system.
 			}
 
 			for name, v := range bootSlots {
-				info, ok := v.(map[string]interface{})
+				info, ok := v.(map[string]any)
 				if !ok {
 					continue
 				}
@@ -57,7 +57,7 @@ an OS update without making more changes to the system.
 			}
 		}
 
-		options := map[string]interface{}{"boot_slot": bootSlot}
+		options := map[string]any{"boot_slot": bootSlot}
 		resp, err := helper.GenericJSONPost(section, command, options)
 		if err != nil {
 			fmt.Println(err)

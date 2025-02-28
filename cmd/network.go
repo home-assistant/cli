@@ -39,10 +39,10 @@ func networkInterfaceCompletions(cmd *cobra.Command, args []string, toComplete s
 	var ret []string
 	data := resp.Result().(*helper.Response)
 	if data.Result == "ok" && data.Data["interfaces"] != nil {
-		if ifaces, ok := data.Data["interfaces"].([]interface{}); ok {
+		if ifaces, ok := data.Data["interfaces"].([]any); ok {
 			for _, iface := range ifaces {
-				var m map[string]interface{}
-				if m, ok = iface.(map[string]interface{}); !ok {
+				var m map[string]any
+				if m, ok = iface.(map[string]any); !ok {
 					continue
 				}
 				var s string

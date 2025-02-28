@@ -27,7 +27,7 @@ instance running on your Home Assistant system.`,
 		section := "core"
 		command := "options"
 
-		options := make(map[string]interface{})
+		options := make(map[string]any)
 
 		for _, value := range []string{
 			"image",

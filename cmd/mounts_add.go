@@ -37,7 +37,7 @@ Add and configure a new mount in Supervisor.
 		request := helper.GetJSONRequest()
 
 		name := args[0]
-		options := make(map[string]interface{})
+		options := make(map[string]any)
 
 		options["name"] = name
 		mountFlagsToOptions(cmd, options)

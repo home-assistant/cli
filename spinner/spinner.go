@@ -21,6 +21,7 @@ package spinner
 import (
 	"fmt"
 	"io"
+	"strings"
 	"sync"
 	"time"
 	"unicode/utf8"
@@ -102,7 +103,7 @@ func (s *Spinner) Start() {
 
 	go func() {
 		for {
-			for i := 0; i < len(s.chars); i++ {
+			for i := range s.chars {
 				select {
 				case <-s.stopChan:
 					return
@@ -164,11 +165,7 @@ func (s *Spinner) UpdateCharSet(cs []string) {
 // Caller must already hold s.lock.
 func (s *Spinner) erase() {
 	n := utf8.RuneCountInString(s.lastOutput)
-	clearString := "\r"
-	for i := 0; i < n; i++ {
-		clearString += " "
-	}
-	clearString += "\r"
+	clearString := "\r" + strings.Repeat(" ", n) + "\r"
 	fmt.Fprint(s.Writer, clearString)
 	s.lastOutput = ""
 }

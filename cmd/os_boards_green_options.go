@@ -26,7 +26,7 @@ Assistant is running on.`,
 		section := "os"
 		command := "boards/green"
 
-		options := make(map[string]interface{})
+		options := make(map[string]any)
 
 		for _, value := range []string{
 			"activity-led",

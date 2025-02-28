@@ -24,7 +24,7 @@ Restart the Home Assistant Core instance running on your system`,
 		section := "core"
 		command := "restart"
 
-		options := make(map[string]interface{})
+		options := make(map[string]any)
 
 		safeMode, err := cmd.Flags().GetBool("safe-mode")
 		if err == nil && safeMode {

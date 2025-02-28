@@ -24,7 +24,7 @@ This command allows to apply options to an specific check managed by the system.
 
 		section := "resolution"
 		command := "check/{check}/options"
-		options := make(map[string]interface{})
+		options := make(map[string]any)
 
 		url, err := helper.URLHelper(section, command)
 		if err != nil {

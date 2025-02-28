@@ -26,7 +26,7 @@ Assistant is running on. A host reboot is required for changes to take effect.`,
 		section := "os"
 		command := "boards/yellow"
 
-		options := make(map[string]interface{})
+		options := make(map[string]any)
 
 		for _, value := range []string{
 			"disk-led",

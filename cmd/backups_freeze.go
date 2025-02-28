@@ -25,7 +25,7 @@ or snapshot taken by external software. Caller should call thaw when done.`,
 		section := "backups"
 		command := "freeze"
 
-		options := make(map[string]interface{})
+		options := make(map[string]any)
 
 		timeout, err := cmd.Flags().GetInt("timeout")
 		if timeout != 0 && err == nil && cmd.Flags().Changed("timeout") {

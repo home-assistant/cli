@@ -25,7 +25,7 @@ your system.`,
 		section := "core"
 		command := "stop"
 
-		options := make(map[string]interface{})
+		options := make(map[string]any)
 
 		force, err := cmd.Flags().GetBool("force")
 		if err == nil && force {

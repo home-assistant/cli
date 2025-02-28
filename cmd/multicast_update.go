@@ -27,11 +27,11 @@ Multicast server, to the latest version or the version specified.
 		section := "multicast"
 		command := "update"
 
-		var options map[string]interface{}
+		var options map[string]any
 
 		version, _ := cmd.Flags().GetString("version")
 		if version != "" {
-			options = map[string]interface{}{"version": version}
+			options = map[string]any{"version": version}
 		}
 
 		ProgressSpinner.Start()

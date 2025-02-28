@@ -51,7 +51,7 @@ func addMountFlags(cmd *cobra.Command) {
 	cmd.RegisterFlagCompletionFunc("path", cobra.NoFileCompletions)
 }
 
-func mountFlagsToOptions(cmd *cobra.Command, options map[string]interface{}) {
+func mountFlagsToOptions(cmd *cobra.Command, options map[string]any) {
 	for _, value := range []string{
 		"type",
 		"usage",
@@ -90,10 +90,10 @@ func mountsCompletions(cmd *cobra.Command, args []string, toComplete string) ([]
 	var ret []string
 	data := resp.Result().(*helper.Response)
 	if data.Result == "ok" && data.Data["mounts"] != nil {
-		if mounts, ok := data.Data["mounts"].([]interface{}); ok {
+		if mounts, ok := data.Data["mounts"].([]any); ok {
 			for _, mount := range mounts {
-				var m map[string]interface{}
-				if m, ok = mount.(map[string]interface{}); !ok {
+				var m map[string]any
+				if m, ok = mount.(map[string]any); !ok {
 					continue
 				}
 				var s string

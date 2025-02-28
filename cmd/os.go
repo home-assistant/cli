@@ -36,7 +36,7 @@ func init() {
 	rootCmd.AddCommand(osCmd)
 }
 
-func osGetBootSlots() (map[string]interface{}, error) {
+func osGetBootSlots() (map[string]any, error) {
 	resp, err := helper.GenericJSONGet("os", "info")
 	if err != nil || !resp.IsSuccess() {
 		return nil, err
@@ -44,7 +44,7 @@ func osGetBootSlots() (map[string]interface{}, error) {
 
 	data := resp.Result().(*helper.Response)
 	if data.Result == "ok" && data.Data["boot_slots"] != nil {
-		if bootSlots, ok := data.Data["boot_slots"].(map[string]interface{}); ok {
+		if bootSlots, ok := data.Data["boot_slots"].(map[string]any); ok {
 			return bootSlots, nil
 		}
 	}
@@ -61,7 +61,7 @@ func osBootSlotCompletions(cmd *cobra.Command, args []string, toComplete string)
 	if bootSlots != nil {
 		ret := make([]string, 2)
 		for bootSlot, v := range bootSlots {
-			info, ok := v.(map[string]interface{})
+			info, ok := v.(map[string]any)
 			if !ok {
 				continue
 			}

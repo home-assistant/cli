@@ -29,7 +29,7 @@ take Home Assistant backup on your system.`,
 
 		request := helper.GetJSONRequestTimeout(helper.BackupTimeout)
 
-		options := make(map[string]interface{})
+		options := make(map[string]any)
 
 		slug := args[0]
 
