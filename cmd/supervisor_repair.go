@@ -28,7 +28,7 @@ the Home Assistant Supervisor will try to resolve these.
 		command := "repair"
 
 		ProgressSpinner.Start()
-		resp, err := helper.GenericJSONPostTimeout(section, command, nil, helper.ContainerOperationTimeout)
+		resp, err := helper.GenericJSONPostTimeout(section, command, nil, helper.ContainerDownloadTimeout)
 		ProgressSpinner.Stop()
 		if err != nil {
 			fmt.Println(err)
