@@ -42,7 +42,7 @@ func supervisorGet(section string, command string) (outdata *(map[string]any), e
 			outdata = &(data.Data)
 		}
 	} else {
-		return nil, fmt.Errorf("Error returned from Supervisor: %s", data.Message)
+		return nil, fmt.Errorf("error returned from Supervisor: %s", data.Message)
 	}
 	return outdata, nil
 }

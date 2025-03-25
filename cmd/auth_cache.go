@@ -3,7 +3,6 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/home-assistant/cli/client"
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -37,7 +36,7 @@ This command allows you to reset the internal password cache of a Home Assistant
 		request := helper.GetJSONRequest()
 
 		resp, err := request.Delete(url)
-		resp, err = client.GenericJSONErrorHandling(resp, err)
+		resp, err = helper.GenericJSONErrorHandling(resp, err)
 
 		if err != nil {
 			fmt.Println(err)

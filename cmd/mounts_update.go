@@ -3,7 +3,6 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/home-assistant/cli/client"
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -50,7 +49,7 @@ Update or change the configuration of an existing mount in Supervisor.
 		}
 
 		resp, err := request.Put(url)
-		resp, err = client.GenericJSONErrorHandling(resp, err)
+		resp, err = helper.GenericJSONErrorHandling(resp, err)
 
 		if err != nil {
 			fmt.Println(err)
