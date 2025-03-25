@@ -3,7 +3,6 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/home-assistant/cli/client"
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -85,7 +84,7 @@ take Home Assistant backup on your system.`,
 		resp, err := request.Post(url)
 		ProgressSpinner.Stop()
 
-		resp, err = client.GenericJSONErrorHandling(resp, err)
+		resp, err = helper.GenericJSONErrorHandling(resp, err)
 
 		if err != nil {
 			fmt.Println(err)

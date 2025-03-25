@@ -3,7 +3,6 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/home-assistant/cli/client"
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -43,7 +42,7 @@ This command allows you to manually start a stopped Home Assistant add-on
 		})
 
 		resp, err := request.Post(url)
-		resp, err = client.GenericJSONErrorHandling(resp, err)
+		resp, err = helper.GenericJSONErrorHandling(resp, err)
 
 		if err != nil {
 			fmt.Println(err)

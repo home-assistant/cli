@@ -3,7 +3,6 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/home-assistant/cli/client"
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -59,7 +58,7 @@ It is currently not possible to upgrade/downgrade to a specific version.
 		}
 
 		resp, err := request.Post(url)
-		resp, err = client.GenericJSONErrorHandling(resp, err)
+		resp, err = helper.GenericJSONErrorHandling(resp, err)
 
 		if err != nil {
 			fmt.Println(err)

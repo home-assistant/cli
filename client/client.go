@@ -17,7 +17,7 @@ func GenericJSONErrorHandling(resp *resty.Response, err error) (*resty.Response,
 		case 200, 400, 403, 404, 503:
 			break
 		default:
-			err = fmt.Errorf("Unexpected server response. Status code: %d", resp.StatusCode())
+			err = fmt.Errorf("unexpected server response. Status code: %d", resp.StatusCode())
 			log.Error(err)
 			return nil, err
 		}
