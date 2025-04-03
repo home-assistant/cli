@@ -32,7 +32,7 @@ WARNING: This is turning off the computer/device.`,
 			options["force"] = force
 		}
 
-		resp, err := helper.GenericJSONPost(section, command, options)
+		resp, err := helper.GenericJSONPostTimeout(section, command, options, helper.RebootTimeout)
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true
