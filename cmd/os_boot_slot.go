@@ -58,7 +58,7 @@ an OS update without making more changes to the system.
 		}
 
 		options := map[string]any{"boot_slot": bootSlot}
-		resp, err := helper.GenericJSONPost(section, command, options)
+		resp, err := helper.GenericJSONPostTimeout(section, command, options, helper.RebootTimeout)
 		if err != nil {
 			fmt.Println(err)
 			ExitWithError = true
