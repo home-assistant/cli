@@ -74,7 +74,7 @@ func init() {
 
 	networkUpdateCmd.Flags().StringArray("ipv4-address", []string{}, "IPv4 address for the interface in the 192.168.1.5/24")
 	networkUpdateCmd.Flags().String("ipv4-gateway", "", "The IPv4 gateway the interface should use")
-	networkUpdateCmd.Flags().String("ipv4-method", "", "Method on IPv4: static|auto|disabled")
+	networkUpdateCmd.Flags().String("ipv4-method", "", "Method on IPv4: static|auto|disabled|shared")
 	networkUpdateCmd.Flags().StringArray("ipv4-nameserver", []string{}, "IPv4 address of upstream DNS servers. Use multiple times for multiple servers.")
 
 	networkUpdateCmd.Flags().StringArray("ipv6-address", []string{}, "IPv6 address for the interface in the 2001:0db8:85a3:0000:0000:8a2e:0370:7334/64")
@@ -86,6 +86,8 @@ func init() {
 	networkUpdateCmd.Flags().String("wifi-ssid", "", "SSID for wifi connection")
 	networkUpdateCmd.Flags().String("wifi-auth", "", "Used authentication: open, wep, wpa-psk")
 	networkUpdateCmd.Flags().String("wifi-psk", "", "Shared authentication key for wep or wpa")
+	networkUpdateCmd.Flags().String("wifi-band", "", "Wifi band required for mode 'ap': a for 5GHz, bg for 2.4GHz")
+	networkUpdateCmd.Flags().Int("wifi-channel", 0, "Wifi channel required for mode 'ap'")
 
 	networkUpdateCmd.Flags().BoolP("disabled", "e", false, "Disable interface")
 
@@ -107,6 +109,10 @@ func init() {
 		return []string{"open", "wep", "wpa-psk"}, cobra.ShellCompDirectiveNoFileComp
 	})
 	networkUpdateCmd.RegisterFlagCompletionFunc("wifi-psk", cobra.NoFileCompletions)
+	networkUpdateCmd.RegisterFlagCompletionFunc("wifi-band", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		return []string{"a", "bg"}, cobra.ShellCompDirectiveNoFileComp
+	})
+	networkUpdateCmd.RegisterFlagCompletionFunc("wifi-channel", cobra.NoFileCompletions)
 
 	networkUpdateCmd.RegisterFlagCompletionFunc("disabled", boolCompletions)
 
@@ -130,7 +136,7 @@ func parseNetworkArgs(cmd *cobra.Command, args []NetworkArg) map[string]any {
 			val, err = cmd.Flags().GetStringArray(arg.Arg)
 			changed = len(val.([]string)) > 0
 		} else {
-			val, err = cmd.Flags().GetString(arg.Arg)
+			val = cmd.Flags().Lookup(arg.Arg).Value.String()
 			changed = val.(string) != ""
 		}
 
@@ -161,6 +167,8 @@ func helperWifiConfig(cmd *cobra.Command, options map[string]any) {
 		{Arg: "wifi-ssid", ApiKey: "ssid"},
 		{Arg: "wifi-auth", ApiKey: "auth"},
 		{Arg: "wifi-psk", ApiKey: "psk"},
+		{Arg: "wifi-band", ApiKey: "band"},
+		{Arg: "wifi-channel", ApiKey: "channel"},
 	}
 
 	wifiConfig := parseNetworkArgs(cmd, args)

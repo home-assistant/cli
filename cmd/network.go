@@ -25,7 +25,7 @@ func init() {
 }
 
 func ipMethodCompletions(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
-	return []string{"static", "auto", "disabled"}, cobra.ShellCompDirectiveNoFileComp
+	return []string{"static", "auto", "disabled", "shared"}, cobra.ShellCompDirectiveNoFileComp
 }
 
 func networkInterfaceCompletions(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
