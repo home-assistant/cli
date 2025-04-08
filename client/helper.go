@@ -4,10 +4,14 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
+	"golang.org/x/term"
 	"io"
 	"net/url"
 	"os"
+	"os/signal"
 	"path"
+	"strconv"
+	"syscall"
 	"time"
 
 	yaml "github.com/ghodss/yaml"
@@ -218,4 +222,77 @@ func AskForConfirmation(prompt string, tries int) bool {
 		}
 	}
 	return false
+}
+
+func ReadInteger(prompt string, tries int, min int, max int) (bool, int) {
+	reader := bufio.NewReader(os.Stdin)
+	if tries <= 0 {
+		tries = 2
+	}
+
+	for ; tries > 0; tries-- {
+		fmt.Printf("%s [%d-%d]: ", prompt, min, max)
+
+		res, err := reader.ReadString('\n')
+		if err != nil {
+			log.Fatalf("error: %v", err)
+			continue
+		}
+
+		res = strings.TrimSpace(res)
+		if len(res) == 0 {
+			continue
+		}
+
+		val, err := strconv.Atoi(res)
+		if err != nil || val < min || val > max {
+			fmt.Printf("Invalid value. Must be between %d and %d.\n", min, max)
+			continue
+		}
+		return true, val
+	}
+
+	return false, -1
+}
+
+func ReadPassword(repeat bool) (string, error) {
+	initialState, err := term.GetState(syscall.Stdin)
+	if err != nil {
+		return "", err
+	}
+
+	// Make sure terminal is restored on termination
+	signalChan := make(chan os.Signal, 1)
+	signal.Notify(signalChan, syscall.SIGINT, syscall.SIGTERM)
+	go func() {
+		<-signalChan
+		err := term.Restore(syscall.Stdin, initialState)
+		if err != nil {
+			fmt.Println("Failed to restore terminal state!")
+			panic(err)
+		}
+		os.Exit(1)
+	}()
+
+	fmt.Print("Password: ")
+	password, err := term.ReadPassword(syscall.Stdin)
+	fmt.Println()
+	if err != nil {
+		return "", err
+	}
+
+	if repeat {
+		fmt.Print("Password (again): ")
+		password2, err := term.ReadPassword(int(os.Stdin.Fd()))
+		fmt.Println()
+		if err != nil {
+			return "", err
+		}
+
+		if string(password) != string(password2) {
+			return "", errors.New("passwords do not match")
+		}
+	}
+
+	return string(password), nil
 }
