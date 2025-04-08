@@ -3,6 +3,7 @@ package client
 import (
 	"bufio"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"golang.org/x/term"
 	"io"
@@ -283,7 +284,7 @@ func ReadPassword(repeat bool) (string, error) {
 
 	if repeat {
 		fmt.Print("Password (again): ")
-		password2, err := term.ReadPassword(int(os.Stdin.Fd()))
+		password2, err := term.ReadPassword(syscall.Stdin)
 		fmt.Println()
 		if err != nil {
 			return "", err
