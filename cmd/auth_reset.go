@@ -109,6 +109,12 @@ only work on some locations. For example, the Operating System CLI.
 					return
 				}
 
+				if len(users) == 0 {
+					cmd.PrintErrln("No users configured.")
+					ExitWithError = true
+					return
+				}
+
 				fmt.Println("List of users:")
 				listUsers(users)
 
