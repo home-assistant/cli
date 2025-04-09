@@ -120,7 +120,7 @@ only work on some locations. For example, the Operating System CLI.
 
 				idx, err := helper.ReadInteger("Select a user to reset the password for", 3, 1, len(users))
 				if err != nil {
-					fmt.Println("Aborted: ", err)
+					cmd.PrintErrln("Aborted:", err)
 					ExitWithError = true
 					return
 				}

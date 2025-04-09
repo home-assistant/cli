@@ -196,7 +196,7 @@ func StreamTextResponse(resp *resty.Response) (success bool) {
 	return
 }
 
-func AskForConfirmation(prompt string, tries int) bool {
+func AskForConfirmation(prompt string, tries int) (bool, error) {
 	reader := bufio.NewReader(os.Stdin)
 	if tries <= 0 {
 		tries = 2
@@ -207,22 +207,22 @@ func AskForConfirmation(prompt string, tries int) bool {
 
 		res, err := reader.ReadString('\n')
 		if err != nil {
-			log.Fatalf("error: %v", err)
-			continue
+			fmt.Println()
+			return false, err
 		}
 
 		// Require YES or yes explicitly to confirm
 		res = strings.ToLower(strings.TrimSpace(res))
 		if res == "yes" {
-			return true
+			return true, nil
 		}
 
 		// If user enters no or n then stop. Else retry since they entered something unknown
 		if len(res) > 0 && res[0] == 'n' {
-			return false
+			return false, nil
 		}
 	}
-	return false
+	return false, nil
 }
 
 func ReadInteger(prompt string, tries int, min int, max int) (int, error) {
@@ -236,8 +236,8 @@ func ReadInteger(prompt string, tries int, min int, max int) (int, error) {
 
 		res, err := reader.ReadString('\n')
 		if err != nil {
-			log.Fatalf("error: %v", err)
-			continue
+			fmt.Println()
+			return 0, err
 		}
 
 		res = strings.TrimSpace(res)

@@ -38,9 +38,17 @@ only work on some locations. For example, the Operating System CLI.
 		section := "os"
 		command := "datadisk/wipe"
 
-		if helper.AskForConfirmation(`
+		confirmed, err := helper.AskForConfirmation(`
 This will completely wipe the datadisk. This process is irreversible.
-Are you sure you want to proceed?`, 0) {
+Are you sure you want to proceed?`, 0)
+
+		if err != nil {
+			cmd.PrintErrln("Aborted:", err)
+			ExitWithError = true
+			return
+		}
+
+		if confirmed {
 			resp, err := helper.GenericJSONPost(section, command, nil)
 			if err != nil {
 				fmt.Println(err)
@@ -49,7 +57,8 @@ Are you sure you want to proceed?`, 0) {
 				ExitWithError = !helper.ShowJSONResponse(resp)
 			}
 		} else {
-			fmt.Println("Aborted.")
+			cmd.PrintErrln("Aborted.")
+			ExitWithError = true
 		}
 	},
 }
