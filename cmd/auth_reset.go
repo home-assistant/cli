@@ -8,6 +8,60 @@ import (
 	"github.com/spf13/cobra"
 )
 
+type User struct {
+	Username  string
+	Name      string
+	Owner     bool
+	Active    bool
+	LocalOnly bool
+}
+
+var MsgLimitedAccess = "For security reasons, this command works only from the operating system terminal."
+
+func getUsers() ([]User, error) {
+	resp, err := helper.GenericJSONGet("auth", "list")
+
+	if err != nil {
+		return nil, err
+	}
+
+	var data *helper.Response
+	var result []User
+
+	if resp.IsSuccess() {
+		data = resp.Result().(*helper.Response)
+
+		if data.Result != "ok" {
+			err := fmt.Errorf("error returned from Supervisor: %s", data.Message)
+			return nil, err
+		}
+
+		for _, user := range data.Data["users"].([]interface{}) {
+			user := user.(map[string]interface{})
+			result = append(result, User{
+				Username:  user["username"].(string),
+				Name:      user["name"].(string),
+				Owner:     user["is_owner"].(bool),
+				Active:    user["is_active"].(bool),
+				LocalOnly: user["local_only"].(bool),
+			})
+		}
+	} else {
+		data = resp.Error().(*helper.Response)
+		err := fmt.Errorf("error returned from Supervisor: %s", data.Message)
+		return nil, err
+	}
+
+	return result, nil
+}
+
+func listUsers(users []User) {
+	for i, user := range users {
+		fmt.Printf("- %d: %s (%s)\n", i+1, user.Username, user.Name)
+		fmt.Printf("     owner: %t, active: %t, local only: %t\n", user.Owner, user.Active, user.LocalOnly)
+	}
+}
+
 var authResetCmd = &cobra.Command{
 	Use:     "reset",
 	Aliases: []string{"rst", "change"},
@@ -19,6 +73,7 @@ only work on some locations. For example, the Operating System CLI.
 `,
 	Example: `
   ha authentication reset --username "JohnDoe" --password "123SuperSecret!"
+  ha authentication reset --interactive
 `,
 	ValidArgsFunction: cobra.NoFileCompletions,
 	Args:              cobra.NoArgs,
@@ -40,9 +95,49 @@ only work on some locations. For example, the Operating System CLI.
 			}
 		}
 
+		interactive, _ := cmd.Flags().GetBool("interactive")
+		if interactive {
+			// prompt for user if not given
+			if options["username"] != nil && options["username"] != "" {
+				fmt.Printf("Changing password for user '%s'\n", options["username"])
+			} else {
+				users, err := getUsers()
+				if err != nil {
+					cmd.PrintErrln(MsgLimitedAccess)
+					fmt.Println(err)
+					ExitWithError = true
+					return
+				}
+
+				fmt.Println("List of users:")
+				listUsers(users)
+
+				idx, err := helper.ReadInteger("Select a user to reset the password for", 3, 1, len(users))
+				if err != nil {
+					fmt.Println("Aborted: ", err)
+					ExitWithError = true
+					return
+				}
+
+				user := users[idx-1]
+				fmt.Printf("Changing password for user %d: %s (%s)\n", idx, user.Username, user.Name)
+				options["username"] = user.Username
+			}
+
+			// prompt for password
+			password, err := helper.ReadPassword(true)
+			if err != nil {
+				fmt.Printf("Failed to set password: %v\n", err)
+				ExitWithError = true
+				return
+			}
+			options["password"] = password
+		}
+
+		// change the password
 		resp, err := helper.GenericJSONPost(section, command, options)
 		if err != nil {
-			cmd.PrintErrln("this command is limited due to security reasons, and will only work on some locations. For example, the Operating System terminal.")
+			cmd.PrintErrln(MsgLimitedAccess)
 			fmt.Println(err)
 			ExitWithError = true
 		} else {
@@ -53,9 +148,10 @@ only work on some locations. For example, the Operating System CLI.
 
 func init() {
 	authResetCmd.Flags().String("username", "", "Username to reset the password for")
-	authResetCmd.Flags().String("password", "", "The new password to assign")
-	authResetCmd.MarkFlagRequired("username")
-	authResetCmd.MarkFlagRequired("password")
+	authResetCmd.Flags().String("password", "", "New password to assign. Ignored in interactive mode")
+	authResetCmd.Flags().Bool("interactive", false, "Use interactive prompt for entering username and/or password")
+	authResetCmd.MarkFlagsOneRequired("username", "interactive")
+	authResetCmd.MarkFlagsOneRequired("password", "interactive")
 	authResetCmd.RegisterFlagCompletionFunc("username", cobra.NoFileCompletions)
 	authResetCmd.RegisterFlagCompletionFunc("password", cobra.NoFileCompletions)
 	authCmd.AddCommand(authResetCmd)
