@@ -225,7 +225,7 @@ func AskForConfirmation(prompt string, tries int) bool {
 	return false
 }
 
-func ReadInteger(prompt string, tries int, min int, max int) (bool, int) {
+func ReadInteger(prompt string, tries int, min int, max int) (int, error) {
 	reader := bufio.NewReader(os.Stdin)
 	if tries <= 0 {
 		tries = 2
@@ -250,10 +250,10 @@ func ReadInteger(prompt string, tries int, min int, max int) (bool, int) {
 			fmt.Printf("Invalid value. Must be between %d and %d.\n", min, max)
 			continue
 		}
-		return true, val
+		return val, nil
 	}
 
-	return false, -1
+	return 0, errors.New("maximum tries exceeded")
 }
 
 func ReadPassword(repeat bool) (string, error) {

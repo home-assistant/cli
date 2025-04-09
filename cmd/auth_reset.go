@@ -111,16 +111,17 @@ only work on some locations. For example, the Operating System CLI.
 
 				fmt.Println("List of users:")
 				listUsers(users)
-				read, idx := helper.ReadInteger("Select a user to reset the password for", 3, 1, len(users))
-				if read {
-					user := users[idx-1]
-					fmt.Printf("Changing password for user %d: %s (%s)\n", idx, user.Username, user.Name)
-					options["username"] = user.Username
-				} else {
-					fmt.Println("Aborted.")
+
+				idx, err := helper.ReadInteger("Select a user to reset the password for", 3, 1, len(users))
+				if err != nil {
+					fmt.Println("Aborted: ", err)
 					ExitWithError = true
 					return
 				}
+
+				user := users[idx-1]
+				fmt.Printf("Changing password for user %d: %s (%s)\n", idx, user.Username, user.Name)
+				options["username"] = user.Username
 			}
 
 			// prompt for password
