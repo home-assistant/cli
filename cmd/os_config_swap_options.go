@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"strconv"
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -46,8 +47,17 @@ This command allows you to override how the Home Assistant OS uses swap.`,
 }
 
 func init() {
+	const maxSwappiness = 200
 	osConfigSwapOptionsCmd.Flags().String("swap-size", "", "Swap size in bytes with optional units (K/M/G)")
-	osConfigSwapOptionsCmd.Flags().Int("swappiness", 1, "Kernel swappiness value (0-200)")
+	osConfigSwapOptionsCmd.Flags().Int("swappiness", 1, fmt.Sprintf("Kernel swappiness value (0-%d)", maxSwappiness))
+	osConfigSwapOptionsCmd.RegisterFlagCompletionFunc("swap-size", cobra.NoFileCompletions)
+	osConfigSwapOptionsCmd.RegisterFlagCompletionFunc("swappiness", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		v := make([]string, maxSwappiness+1)
+		for i := range len(v) {
+			v[i] = strconv.Itoa(i)
+		}
+		return v, cobra.ShellCompDirectiveNoFileComp
+	})
 
 	osConfigSwapCmd.AddCommand(osConfigSwapOptionsCmd)
 }
