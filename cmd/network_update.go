@@ -80,6 +80,8 @@ func init() {
 	networkUpdateCmd.Flags().StringArray("ipv6-address", []string{}, "IPv6 address for the interface in the 2001:0db8:85a3:0000:0000:8a2e:0370:7334/64")
 	networkUpdateCmd.Flags().String("ipv6-gateway", "", "The IPv6 gateway the interface should use")
 	networkUpdateCmd.Flags().String("ipv6-method", "", "Method on IPv6: static|auto|disabled")
+	networkUpdateCmd.Flags().String("ipv6-addr-gen-mode", "", "IPv6 address generation mode: eui64|stable-privacy")
+	networkUpdateCmd.Flags().String("ipv6-privacy", "", "IPv6 privacy extensions: disabled|enabled-prefer-public|enabled")
 	networkUpdateCmd.Flags().StringArray("ipv6-nameserver", []string{}, "IPv6 address for upstream DNS servers. Use multiple times for multiple servers.")
 
 	networkUpdateCmd.Flags().String("wifi-mode", "", "Wifi mode: infrastructure, adhoc, mesh or ap")
@@ -97,6 +99,8 @@ func init() {
 	networkUpdateCmd.RegisterFlagCompletionFunc("ipv6-address", cobra.NoFileCompletions)
 	networkUpdateCmd.RegisterFlagCompletionFunc("ipv6-gateway", cobra.NoFileCompletions)
 	networkUpdateCmd.RegisterFlagCompletionFunc("ipv6-method", ipMethodCompletions)
+	networkUpdateCmd.RegisterFlagCompletionFunc("ipv6-addr-gen-mode", ipAddrGenModeCompletions)
+	networkUpdateCmd.RegisterFlagCompletionFunc("ipv6-privacy", ip6PrivacyCompletions)
 	networkUpdateCmd.RegisterFlagCompletionFunc("ipv6-nameservers", cobra.NoFileCompletions)
 
 	networkUpdateCmd.RegisterFlagCompletionFunc("wifi-mode", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -145,6 +149,8 @@ func helperIpConfig(version string, cmd *cobra.Command, options map[string]any) 
 	args := []NetworkArg{
 		{Arg: version + "-gateway", ApiKey: "gateway"},
 		{Arg: version + "-method", ApiKey: "method"},
+		{Arg: version + "-addr-gen-mode", ApiKey: "addr_gen_mode"},
+		{Arg: version + "-privacy", ApiKey: "ip6_privacy"},
 		{Arg: version + "-address", ApiKey: "address", IsArray: true},
 		{Arg: version + "-nameserver", ApiKey: "nameservers", IsArray: true},
 	}
