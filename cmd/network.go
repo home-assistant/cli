@@ -28,6 +28,14 @@ func ipMethodCompletions(cmd *cobra.Command, args []string, toComplete string) (
 	return []string{"static", "auto", "disabled"}, cobra.ShellCompDirectiveNoFileComp
 }
 
+func ipAddrGenModeCompletions(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+	return []string{"eui64", "stable-privacy", "default-or-eui64", "default"}, cobra.ShellCompDirectiveNoFileComp
+}
+
+func ip6PrivacyCompletions(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+	return []string{"disabled", "enabled-prefer-public", "enabled", "default"}, cobra.ShellCompDirectiveNoFileComp
+}
+
 func networkInterfaceCompletions(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 	if len(args) != 0 {
 		return nil, cobra.ShellCompDirectiveNoFileComp
