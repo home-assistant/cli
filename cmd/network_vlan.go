@@ -78,7 +78,7 @@ func init() {
 	networkVlanCmd.Flags().String("ipv6-gateway", "", "The IPv6 gateway the interface should use")
 	networkVlanCmd.Flags().String("ipv6-method", "", "Method on IPv6: static|auto|disabled")
 	networkVlanCmd.Flags().String("ipv6-addr-gen-mode", "", "IPv6 address generation mode: eui64|stable-privacy|default-or-eui64|default")
-	networkVlanCmd.Flags().String("ipv6-privacy", "", "IPv6 privacy extensions: disabled|enabled-prefer-public|enabled")
+	networkVlanCmd.Flags().String("ipv6-privacy", "", "IPv6 privacy extensions: disabled|enabled-prefer-public|enabled|default")
 	networkVlanCmd.Flags().StringArray("ipv6-nameserver", []string{}, "IPv6 address for upstream DNS servers. Use multiple times for multiple servers.")
 
 	networkVlanCmd.RegisterFlagCompletionFunc("ipv4-address", cobra.NoFileCompletions)

@@ -80,8 +80,8 @@ func init() {
 	networkUpdateCmd.Flags().StringArray("ipv6-address", []string{}, "IPv6 address for the interface in the 2001:0db8:85a3:0000:0000:8a2e:0370:7334/64")
 	networkUpdateCmd.Flags().String("ipv6-gateway", "", "The IPv6 gateway the interface should use")
 	networkUpdateCmd.Flags().String("ipv6-method", "", "Method on IPv6: static|auto|disabled")
-	networkUpdateCmd.Flags().String("ipv6-addr-gen-mode", "", "IPv6 address generation mode: eui64|stable-privacy")
-	networkUpdateCmd.Flags().String("ipv6-privacy", "", "IPv6 privacy extensions: disabled|enabled-prefer-public|enabled")
+	networkUpdateCmd.Flags().String("ipv6-addr-gen-mode", "", "IPv6 address generation mode: eui64|stable-privacy|default-or-eui64|default")
+	networkUpdateCmd.Flags().String("ipv6-privacy", "", "IPv6 privacy extensions: disabled|enabled-prefer-public|enabled|default")
 	networkUpdateCmd.Flags().StringArray("ipv6-nameserver", []string{}, "IPv6 address for upstream DNS servers. Use multiple times for multiple servers.")
 
 	networkUpdateCmd.Flags().String("wifi-mode", "", "Wifi mode: infrastructure, adhoc, mesh or ap")
