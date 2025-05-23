@@ -93,8 +93,8 @@ var bannerCmd = &cobra.Command{
 					fmt.Println("Waiting for Supervisor to start-up...")
 				}
 				time.Sleep(1 * time.Second)
-				fmt.Println("Supervisor is ready!\n\n")
 			}
+			fmt.Println("Supervisor is ready!\n\n")
 		}
 
 		fmt.Println("System Information:")
