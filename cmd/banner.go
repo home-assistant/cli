@@ -94,10 +94,11 @@ var bannerCmd = &cobra.Command{
 				}
 				time.Sleep(1 * time.Second)
 			}
-			fmt.Println("Supervisor is ready!\n\n")
+			fmt.Println("System is ready! Use browser or app to configure.")
+			fmt.Println()
 		}
 
-		fmt.Println("System Information:")
+		fmt.Println("System information:")
 		netinfo, err := supervisorGet("network", "info")
 		if err != nil {
 			fmt.Println(err)
