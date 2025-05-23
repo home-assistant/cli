@@ -22,7 +22,7 @@ const haBanner = `
 ███▄▄ ▀█  ▄███████   /_/   \_\___/___/_|___/\__\__,_|_| |_|\__|
 ▀█████▄   ███████▀
 
-Welcome to the Home Assistant command line.
+Welcome to the Home Assistant command line interface.
 `
 
 func supervisorGet(section string, command string) (outdata *(map[string]any), err error) {
@@ -42,7 +42,7 @@ func supervisorGet(section string, command string) (outdata *(map[string]any), e
 			outdata = &(data.Data)
 		}
 	} else {
-		return nil, fmt.Errorf("error returned from Supervisor: %s", data.Message)
+		return nil, fmt.Errorf("Error returned from Supervisor: %s", data.Message)
 	}
 	return outdata, nil
 }
@@ -90,13 +90,14 @@ var bannerCmd = &cobra.Command{
 					}
 				}
 				if i == 0 {
-					fmt.Println("Waiting for Supervisor to startup...")
+					fmt.Println("Waiting for Supervisor to start-up...")
 				}
 				time.Sleep(1 * time.Second)
+				fmt.Println("Supervisor is ready!\n\n")
 			}
 		}
 
-		fmt.Println("System information")
+		fmt.Println("System Information:")
 		netinfo, err := supervisorGet("network", "info")
 		if err != nil {
 			fmt.Println(err)
@@ -116,7 +117,7 @@ var bannerCmd = &cobra.Command{
 				title_ipv6 := fmt.Sprintf("IPv6 addresses for %s:", nf["interface"])
 
 				if nf["ipv4"] == nil {
-					fmt.Printf("  %-25s (no address)\n", title_ipv4)
+					fmt.Printf("  %-25s (No address)\n", title_ipv4)
 				} else {
 					ipv4 := nf["ipv4"].(map[string]any)
 					fmt.Printf("  %-25s %s\n", title_ipv4, getAddresses(ipv4["address"].([]any)))
@@ -131,7 +132,7 @@ var bannerCmd = &cobra.Command{
 				}
 			}
 		} else {
-			fmt.Printf("  (no networking information)")
+			fmt.Printf("  (No networking information)")
 		}
 		fmt.Println()
 
