@@ -22,7 +22,7 @@ const haBanner = `
 ███▄▄ ▀█  ▄███████   /_/   \_\___/___/_|___/\__\__,_|_| |_|\__|
 ▀█████▄   ███████▀
 
-Welcome to the Home Assistant command line.
+Welcome to the Home Assistant command line interface.
 `
 
 func supervisorGet(section string, command string) (outdata *(map[string]any), err error) {
@@ -90,13 +90,15 @@ var bannerCmd = &cobra.Command{
 					}
 				}
 				if i == 0 {
-					fmt.Println("Waiting for Supervisor to startup...")
+					fmt.Println("Waiting for Supervisor to start up...")
 				}
 				time.Sleep(1 * time.Second)
 			}
+			fmt.Println("System is ready! Use browser or app to configure.")
+			fmt.Println()
 		}
 
-		fmt.Println("System information")
+		fmt.Println("System information:")
 		netinfo, err := supervisorGet("network", "info")
 		if err != nil {
 			fmt.Println(err)
@@ -116,7 +118,7 @@ var bannerCmd = &cobra.Command{
 				title_ipv6 := fmt.Sprintf("IPv6 addresses for %s:", nf["interface"])
 
 				if nf["ipv4"] == nil {
-					fmt.Printf("  %-25s (no address)\n", title_ipv4)
+					fmt.Printf("  %-25s (No address)\n", title_ipv4)
 				} else {
 					ipv4 := nf["ipv4"].(map[string]any)
 					fmt.Printf("  %-25s %s\n", title_ipv4, getAddresses(ipv4["address"].([]any)))
@@ -131,7 +133,7 @@ var bannerCmd = &cobra.Command{
 				}
 			}
 		} else {
-			fmt.Printf("  (no networking information)")
+			fmt.Printf("  (No networking information)")
 		}
 		fmt.Println()
 
