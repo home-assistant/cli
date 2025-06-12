@@ -31,12 +31,13 @@ Supervisor running on your Home Assistant system.`,
 		for _, value := range []string{
 			"hostname",
 			"channel",
+			"detect-blocking-io",
 			"timezone",
 			"logging",
 		} {
 			val, err := cmd.Flags().GetString(value)
 			if val != "" && err == nil && cmd.Flags().Changed(value) {
-				options[value] = val
+				options[strings.ReplaceAll(value, "-", "_")] = val
 			}
 		}
 
@@ -79,6 +80,7 @@ Supervisor running on your Home Assistant system.`,
 func init() {
 	supervisorOptionsCmd.Flags().StringP("hostname", "", "", "Hostname to set")
 	supervisorOptionsCmd.Flags().StringP("channel", "c", "", "Channel to track (stable|beta|dev)")
+	supervisorOptionsCmd.Flags().StringP("detect-blocking-io", "", "", "Detect blocking IO (on|on-at-startup|off)")
 	supervisorOptionsCmd.Flags().StringP("timezone", "t", "", "Timezone")
 	supervisorOptionsCmd.Flags().StringP("logging", "l", "", "Logging: debug|info|warning|error|critical")
 	supervisorOptionsCmd.Flags().IntP("wait-boot", "w", 0, "Seconds to wait after boot")
@@ -96,6 +98,9 @@ func init() {
 	supervisorOptionsCmd.RegisterFlagCompletionFunc("hostname", cobra.NoFileCompletions)
 	supervisorOptionsCmd.RegisterFlagCompletionFunc("channel", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		return []string{"stable", "beta", "dev"}, cobra.ShellCompDirectiveNoFileComp
+	})
+	supervisorOptionsCmd.RegisterFlagCompletionFunc("detect-blocking-io", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		return []string{"on", "on-at-startup", "off"}, cobra.ShellCompDirectiveNoFileComp
 	})
 	supervisorOptionsCmd.RegisterFlagCompletionFunc("timezone", cobra.NoFileCompletions)
 	supervisorOptionsCmd.RegisterFlagCompletionFunc("logging", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
