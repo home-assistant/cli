@@ -18,7 +18,7 @@ var dockerOptionsCmd = &cobra.Command{
 This command allows you to set configuration options for on the host
 docker backend running on your Home Assistant system.`,
 	Example: `
-  ha docker options --enable-ipv6 true`,
+  ha docker options --enable-ipv6=true`,
 	ValidArgsFunction: cobra.NoFileCompletions,
 	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
