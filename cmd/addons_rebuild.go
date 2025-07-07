@@ -8,6 +8,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var addonsRebuildForce bool
+
 var addonsRebuildCmd = &cobra.Command{
 	Use:     "rebuild [slug]",
 	Aliases: []string{"rb", "reinstall"},
@@ -20,6 +22,7 @@ add-on.
 `,
 	Example: `
   ha addons rebuild local_my_addon
+  ha addons rebuild local_my_addon --force
 `,
 	ValidArgsFunction: addonsCompletions,
 	Args:              cobra.ExactArgs(1),
@@ -44,6 +47,12 @@ add-on.
 			"slug": slug,
 		})
 
+		if addonsRebuildForce {
+			request.SetBody(map[string]interface{}{
+				"force": true,
+			})
+		}
+
 		ProgressSpinner.Start()
 		resp, err := request.Post(url)
 		ProgressSpinner.Stop()
@@ -60,6 +69,6 @@ add-on.
 }
 
 func init() {
-
+	addonsRebuildCmd.Flags().BoolVar(&addonsRebuildForce, "force", false, "Force rebuild of the add-on even if pre-built images are provided")
 	addonsCmd.AddCommand(addonsRebuildCmd)
 }
