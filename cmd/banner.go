@@ -121,7 +121,12 @@ var bannerCmd = &cobra.Command{
 					fmt.Printf("  %-25s (No address)\n", title_ipv4)
 				} else {
 					ipv4 := nf["ipv4"].(map[string]any)
-					fmt.Printf("  %-25s %s\n", title_ipv4, getAddresses(ipv4["address"].([]any)))
+					ipv4_addresses := ipv4["address"].([]any)
+					if len(ipv4_addresses) > 0 {
+						fmt.Printf("  %-25s %s\n", title_ipv4, getAddresses(ipv4_addresses))
+					} else {
+						fmt.Printf("  %-25s (No address)\n", title_ipv4)
+					}
 				}
 
 				if nf["ipv6"] != nil {
