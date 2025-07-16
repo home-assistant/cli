@@ -43,6 +43,9 @@ docker backend running on your Home Assistant system.`,
 			fmt.Println(err)
 			ExitWithError = true
 		} else {
+			if cmd.Flags().Changed("enable-ipv6") {
+				fmt.Println("Note: System restart required to apply new IPv6 configuration.")
+			}
 			ExitWithError = !helper.ShowJSONResponse(resp)
 		}
 	},
