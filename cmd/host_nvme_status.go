@@ -49,7 +49,7 @@ var hostNvmeStatusCmd = &cobra.Command{
 	Use:   "status [device]",
 	Short: "Show NVMe status for a device",
 	Long: `
-Show NVMe status for a specific device or for the currrent datadisk (if using
+Show NVMe status for a specific device or for the current datadisk (if using
 Home Assistant Operating System and the current datadisk is an NVMe device).
 `,
 	Example: `
