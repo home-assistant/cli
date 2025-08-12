@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"strings"
 
 	helper "github.com/home-assistant/cli/client"
@@ -30,7 +29,7 @@ across services and boots.
 		request, err := processLogsFlags(section, cmd)
 
 		if err != nil {
-			fmt.Printf("Error: %v", err)
+			helper.PrintError(err)
 			ExitWithError = true
 			return
 		}

@@ -133,7 +133,7 @@ only work on some locations. For example, the Operating System CLI.
 			// prompt for password
 			password, err := helper.ReadPassword(true)
 			if err != nil {
-				fmt.Printf("Failed to set password: %v\n", err)
+				helper.PrintErrorString(fmt.Sprintf("Failed to set password: %v\n", err))
 				ExitWithError = true
 				return
 			}
