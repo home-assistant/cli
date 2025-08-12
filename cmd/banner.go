@@ -76,37 +76,42 @@ var bannerCmd = &cobra.Command{
 			ExitWithError = true
 		}
 
+		var netinfo *(map[string]any)
 		if !nowait {
-			for i := range 60 {
-				// We could use ping here, but Supervisor loads networking data asynchronously.
-				// Networking info are very useful, so wait until networking data have been
-				// loaded...
-				netinfo, err := supervisorGet("network", "info")
-				if err == nil && netinfo != nil {
+			var supervisorReady bool
 
+			for i := range 180 { // 3 minutes timeout
+				var err error
+				netinfo, err = supervisorGet("network", "info")
+				if err == nil && netinfo != nil {
 					netifaces, exist := (*netinfo)["interfaces"]
 					if exist && len(netifaces.([]any)) > 0 {
+						fmt.Println("Home Assistant Supervisor is running!")
+						supervisorReady = true
 						break
 					}
 				}
 				if i == 0 {
-					fmt.Println("Waiting for Supervisor to start up...")
+					fmt.Println("Waiting for Supervisor to start...")
 				}
 				time.Sleep(1 * time.Second)
 			}
-			fmt.Println("System is ready! Use browser or app to configure.")
-			fmt.Println()
+
+			if !supervisorReady {
+				fmt.Println("Supervisor is taking longer than expected to start. Use 'ha supervisor logs' to check logs.")
+				return
+			}
 		}
 
 		fmt.Println("System information:")
-		netinfo, err := supervisorGet("network", "info")
-		if err != nil {
-			fmt.Println(err)
-			ExitWithError = true
-			return
-		}
 		if netinfo == nil {
-			return
+			var err error
+			netinfo, err = supervisorGet("network", "info")
+			if err != nil {
+				fmt.Printf("  Network information unavailable: %s\n", err)
+				ExitWithError = true
+				return
+			}
 		}
 
 		// Print network address information
@@ -173,6 +178,8 @@ var bannerCmd = &cobra.Command{
 		fmt.Println()
 		fmt.Printf("  %-25s %s://%s.local:%d\n", "Home Assistant URL:", protocol, (*hostinfo)["hostname"], int(port))
 		fmt.Printf("  %-25s http://%s.local:%d\n", "Observer URL:", (*hostinfo)["hostname"], 4357)
+		fmt.Println("")
+		fmt.Println("System is ready! Use browser or app to configure.")
 	},
 }
 
