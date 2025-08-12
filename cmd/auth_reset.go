@@ -104,7 +104,7 @@ only work on some locations. For example, the Operating System CLI.
 				users, err := getUsers()
 				if err != nil {
 					cmd.PrintErrln(MsgLimitedAccess)
-					fmt.Println(err)
+					helper.PrintError(err)
 					ExitWithError = true
 					return
 				}
@@ -144,7 +144,7 @@ only work on some locations. For example, the Operating System CLI.
 		resp, err := helper.GenericJSONPost(section, command, options)
 		if err != nil {
 			cmd.PrintErrln(MsgLimitedAccess)
-			fmt.Println(err)
+			helper.PrintError(err)
 			ExitWithError = true
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)

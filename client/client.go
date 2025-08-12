@@ -12,22 +12,31 @@ import (
 var RawJSON = false
 
 func GenericJSONErrorHandling(resp *resty.Response, err error) (*resty.Response, error) {
-	if err == nil {
-		switch resp.StatusCode() {
-		case 200, 400, 403, 404, 503:
-			break
-		default:
-			err = fmt.Errorf("unexpected server response. Status code: %d", resp.StatusCode())
-			log.Error(err)
-			return nil, err
-		}
-
-		if !resty.IsJSONType(resp.Header().Get("Content-Type")) {
-			err = fmt.Errorf("API did not return a JSON response. Status code %d", resp.StatusCode())
-			log.Error(err)
-			return nil, err
-		}
+	if err != nil {
+		return resp, err
 	}
+
+	switch resp.StatusCode() {
+	case 200, 400, 404, 503:
+		// Success and errors that should have JSON responses
+		if !resty.IsJSONType(resp.Header().Get("Content-Type")) {
+			return nil, fmt.Errorf("API did not return a JSON response. Status code %d", resp.StatusCode())
+		}
+	case 401:
+		if !resty.IsJSONType(resp.Header().Get("Content-Type")) {
+			return nil, fmt.Errorf("unauthorized: missing or invalid API token")
+		}
+	case 403:
+		// Handle both JSON and plain text forbidden responses
+		if !resty.IsJSONType(resp.Header().Get("Content-Type")) {
+			return nil, fmt.Errorf("forbidden: insufficient permissions or invalid token")
+		}
+	case 502:
+		return nil, fmt.Errorf("bad gateway: core proxy or ingress service failure")
+	default:
+		return nil, fmt.Errorf("unexpected server response. Status code: %d", resp.StatusCode())
+	}
+
 	return resp, err
 }
 

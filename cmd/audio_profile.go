@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"fmt"
-
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -39,7 +37,7 @@ This command allows you to set the audio profile on a audio card.`,
 
 		resp, err := helper.GenericJSONPost(section, command, options)
 		if err != nil {
-			fmt.Println(err)
+			helper.PrintError(err)
 			ExitWithError = true
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)

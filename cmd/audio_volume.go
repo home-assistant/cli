@@ -1,9 +1,10 @@
 package cmd
 
 import (
+	"strconv"
+
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"strconv"
 )
 
 var audioVolumeCmd = &cobra.Command{

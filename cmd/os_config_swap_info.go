@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -25,7 +24,7 @@ This command allows you to see how swap is used by the Home Assistant OS.`,
 
 		resp, err := helper.GenericJSONGet(section, command)
 		if err != nil {
-			fmt.Println(err)
+			helper.PrintError(err)
 			ExitWithError = true
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)

@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"strings"
 
 	helper "github.com/home-assistant/cli/client"
@@ -29,7 +28,7 @@ information commands for add-ons.`,
 
 		resp, err := helper.GenericJSONGet(section, command)
 		if err != nil {
-			fmt.Println(err)
+			helper.PrintError(err)
 			ExitWithError = true
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)

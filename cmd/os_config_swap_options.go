@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"strconv"
+
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -38,7 +39,7 @@ This command allows you to override how the Home Assistant OS uses swap.`,
 
 		resp, err := helper.GenericJSONPost(section, command, options)
 		if err != nil {
-			fmt.Println(err)
+			helper.PrintError(err)
 			ExitWithError = true
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)

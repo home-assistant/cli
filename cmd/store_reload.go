@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"fmt"
-
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -34,7 +32,7 @@ an add-on is released, but not yet available as an upgrade in Home Assistant.
 		ProgressSpinner.Stop()
 
 		if err != nil {
-			fmt.Println(err)
+			helper.PrintError(err)
 			ExitWithError = true
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)

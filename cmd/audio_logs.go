@@ -35,7 +35,7 @@ running on your Home Assistant system.`,
 		resp, err := request.Send()
 
 		if err != nil {
-			fmt.Println(err)
+			helper.PrintError(err)
 			ExitWithError = true
 			return
 		}

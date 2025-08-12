@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"golang.org/x/term"
 	"io"
 	"net/url"
 	"os"
@@ -14,6 +13,8 @@ import (
 	"strconv"
 	"syscall"
 	"time"
+
+	"golang.org/x/term"
 
 	yaml "github.com/ghodss/yaml"
 	resty "github.com/go-resty/resty/v2"
@@ -296,4 +297,15 @@ func ReadPassword(repeat bool) (string, error) {
 	}
 
 	return string(password), nil
+}
+
+// PrintError prints an error message with "Error: " prefix for user-friendly output
+func PrintError(err error) {
+	if err != nil {
+		if term.IsTerminal(int(os.Stdout.Fd())) {
+			fmt.Fprintln(os.Stderr, "\033[1;31mError:\033[0m", err.Error())
+		} else {
+			fmt.Fprintln(os.Stderr, "Error:", err.Error())
+		}
+	}
 }

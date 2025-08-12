@@ -1,12 +1,11 @@
 package cmd
 
 import (
-	"fmt"
+	"strings"
 
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"strings"
 )
 
 var hostLogsBootsCmd = &cobra.Command{
@@ -29,7 +28,7 @@ Show all values that can be used with the boot arg to find logs.
 
 		resp, err := helper.GenericJSONGet(section, command)
 		if err != nil {
-			fmt.Println(err)
+			helper.PrintError(err)
 			ExitWithError = true
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)

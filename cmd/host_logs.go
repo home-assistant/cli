@@ -49,7 +49,7 @@ across services and boots.
 		resp, err := request.Send()
 
 		if err != nil {
-			fmt.Println(err)
+			helper.PrintError(err)
 			ExitWithError = true
 			return
 		}

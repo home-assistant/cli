@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"fmt"
-
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -28,7 +26,7 @@ Add and configure a new mount in Supervisor.
 
 		url, err := helper.URLHelper(section, command)
 		if err != nil {
-			fmt.Println(err)
+			helper.PrintError(err)
 			ExitWithError = true
 			return
 		}
@@ -50,7 +48,7 @@ Add and configure a new mount in Supervisor.
 		resp, err = helper.GenericJSONErrorHandling(resp, err)
 
 		if err != nil {
-			fmt.Println(err)
+			helper.PrintError(err)
 			ExitWithError = true
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)

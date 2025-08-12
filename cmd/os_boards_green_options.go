@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"strings"
 
 	helper "github.com/home-assistant/cli/client"
@@ -41,7 +40,7 @@ Assistant is running on.`,
 
 		resp, err := helper.GenericJSONPost(section, command, options)
 		if err != nil {
-			fmt.Println(err)
+			helper.PrintError(err)
 			ExitWithError = true
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)

@@ -40,7 +40,7 @@ docker backend running on your Home Assistant system.`,
 
 		resp, err := helper.GenericJSONPost(section, command, options)
 		if err != nil {
-			fmt.Println(err)
+			helper.PrintError(err)
 			ExitWithError = true
 		} else {
 			if cmd.Flags().Changed("enable-ipv6") {

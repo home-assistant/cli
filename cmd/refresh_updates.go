@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"fmt"
-
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -28,7 +26,7 @@ This command reloads information about add-on repositories and fetches new versi
 
 		resp, err := helper.GenericJSONPost(section, command, nil)
 		if err != nil {
-			fmt.Println(err)
+			helper.PrintError(err)
 			ExitWithError = true
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)
