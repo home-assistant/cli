@@ -76,86 +76,118 @@ var bannerCmd = &cobra.Command{
 			ExitWithError = true
 		}
 
+		var netinfo *(map[string]any)
 		if !nowait {
-			for i := range 60 {
+			fmt.Println("Waiting for Supervisor to start. Press any key to skip waiting...")
+
+			keyboardInterrupt, cancelKeyboard := helper.WaitForKeyboardInterrupt()
+			defer cancelKeyboard()                 // Ensure terminal is always restored
+			timeout := time.After(3 * time.Minute) // 3 minutes timeout
+			tick := time.Tick(1 * time.Second)
+
+			// Try immediately first, then wait for ticks
+			firstAttempt := make(chan time.Time, 1)
+			firstAttempt <- time.Now()
+
+			checkSupervisor := func() bool {
 				// We could use ping here, but Supervisor loads networking data asynchronously.
 				// Networking info are very useful, so wait until networking data have been
 				// loaded...
-				netinfo, err := supervisorGet("network", "info")
+				var err error
+				netinfo, err = supervisorGet("network", "info")
 				if err == nil && netinfo != nil {
-
 					netifaces, exist := (*netinfo)["interfaces"]
 					if exist && len(netifaces.([]any)) > 0 {
-						break
+						fmt.Println("Home Assistant Supervisor is running!")
+						cancelKeyboard() // Restore terminal before continuing
+						return true
 					}
 				}
-				if i == 0 {
-					fmt.Println("Waiting for Supervisor to start up...")
-				}
-				time.Sleep(1 * time.Second)
+				return false
 			}
-			fmt.Println("System is ready! Use browser or app to configure.")
-			fmt.Println()
+
+		waitLoop:
+			for {
+				select {
+				case <-keyboardInterrupt:
+					fmt.Println("Waiting interrupted by user.")
+					return
+				case <-timeout:
+					fmt.Println("Supervisor is taking longer than expected to start. Use 'supervisor logs' to check logs.")
+					return
+				case <-firstAttempt:
+					if checkSupervisor() {
+						break waitLoop
+					}
+				case <-tick:
+					if checkSupervisor() {
+						break waitLoop
+					}
+				}
+			}
 		}
 
 		fmt.Println("System information:")
-		netinfo, err := supervisorGet("network", "info")
-		if err != nil {
-			fmt.Println(err)
-			ExitWithError = true
-			return
-		}
+		// If we don't have netinfo from the wait loop (nowait mode), try to fetch it now
 		if netinfo == nil {
-			return
+			var err error
+			netinfo, err = supervisorGet("network", "info")
+			if err != nil {
+				fmt.Printf("  Network information unavailable: %s\n", err)
+				return
+			}
 		}
 
 		// Print network address information
-		netifaces, exist := (*netinfo)["interfaces"]
-		if exist {
-			for _, netiface := range netifaces.([]any) {
-				nf := netiface.(map[string]any)
-				title_ipv4 := fmt.Sprintf("IPv4 addresses for %s:", nf["interface"])
-				title_ipv6 := fmt.Sprintf("IPv6 addresses for %s:", nf["interface"])
+		if netinfo != nil {
+			netifaces, exist := (*netinfo)["interfaces"]
+			if exist {
+				for _, netiface := range netifaces.([]any) {
+					nf := netiface.(map[string]any)
+					title_ipv4 := fmt.Sprintf("IPv4 addresses for %s:", nf["interface"])
+					title_ipv6 := fmt.Sprintf("IPv6 addresses for %s:", nf["interface"])
 
-				if nf["ipv4"] == nil {
-					fmt.Printf("  %-25s (No address)\n", title_ipv4)
-				} else {
-					ipv4 := nf["ipv4"].(map[string]any)
-					ipv4_addresses := ipv4["address"].([]any)
-					if len(ipv4_addresses) > 0 {
-						fmt.Printf("  %-25s %s\n", title_ipv4, getAddresses(ipv4_addresses))
-					} else {
+					if nf["ipv4"] == nil {
 						fmt.Printf("  %-25s (No address)\n", title_ipv4)
+					} else {
+						ipv4 := nf["ipv4"].(map[string]any)
+						ipv4_addresses := ipv4["address"].([]any)
+						if len(ipv4_addresses) > 0 {
+							fmt.Printf("  %-25s %s\n", title_ipv4, getAddresses(ipv4_addresses))
+						} else {
+							fmt.Printf("  %-25s (No address)\n", title_ipv4)
+						}
 					}
-				}
 
-				if nf["ipv6"] != nil {
-					ipv6 := nf["ipv6"].(map[string]any)
-					ipv6_addresses := ipv6["address"].([]any)
-					if len(ipv6_addresses) > 0 {
-						fmt.Printf("  %-25s %s\n", title_ipv6, getAddresses(ipv6_addresses))
+					if nf["ipv6"] != nil {
+						ipv6 := nf["ipv6"].(map[string]any)
+						ipv6_addresses := ipv6["address"].([]any)
+						if len(ipv6_addresses) > 0 {
+							fmt.Printf("  %-25s %s\n", title_ipv6, getAddresses(ipv6_addresses))
+						}
 					}
 				}
+			} else {
+				fmt.Printf("  (No networking information)\n")
 			}
 		} else {
-			fmt.Printf("  (No networking information)")
+			fmt.Printf("  (Network information currently unavailable)\n")
 		}
 		fmt.Println()
 
 		// Print Host URL
 		hostinfo, err := supervisorGet("host", "info")
 		if err != nil {
-			fmt.Println(err)
-			ExitWithError = true
+			fmt.Printf("  Host information unavailable: %s\n", err)
 			return
 		}
 		if hostinfo == nil {
 			return
 		}
+
 		coreinfo, err := supervisorGet("core", "info")
 		if err != nil {
-			fmt.Println(err)
-			ExitWithError = true
+			fmt.Printf("  Core information unavailable: %s\n", err)
 			return
 		}
 		if coreinfo == nil {
@@ -163,16 +195,25 @@ var bannerCmd = &cobra.Command{
 		}
 
 		protocol := "http"
-		if (*coreinfo)["ssl"] == "true" {
+		if ssl, ok := (*coreinfo)["ssl"].(string); ok && ssl == "true" {
 			protocol = "https"
 		}
 
-		port, _ := (*coreinfo)["port"].(float64)
-		fmt.Printf("  %-25s %s\n", "OS Version:", (*hostinfo)["operating_system"])
-		fmt.Printf("  %-25s %s\n", "Home Assistant Core:", (*coreinfo)["version"])
+		if os_version, ok := (*hostinfo)["operating_system"].(string); ok {
+			fmt.Printf("  %-25s %s\n", "OS Version:", os_version)
+		}
+		if core_version, ok := (*coreinfo)["version"].(string); ok {
+			fmt.Printf("  %-25s %s\n", "Home Assistant Core:", core_version)
+		}
 		fmt.Println()
-		fmt.Printf("  %-25s %s://%s.local:%d\n", "Home Assistant URL:", protocol, (*hostinfo)["hostname"], int(port))
-		fmt.Printf("  %-25s http://%s.local:%d\n", "Observer URL:", (*hostinfo)["hostname"], 4357)
+
+		hostname, hostname_ok := (*hostinfo)["hostname"].(string)
+		port, port_ok := (*coreinfo)["port"].(float64)
+
+		if hostname_ok && port_ok {
+			fmt.Printf("  %-25s %s://%s.local:%d\n", "Home Assistant URL:", protocol, hostname, int(port))
+			fmt.Printf("  %-25s http://%s.local:%d\n", "Observer URL:", hostname, 4357)
+		}
 	},
 }
 

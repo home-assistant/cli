@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"golang.org/x/term"
 	"io"
 	"net/url"
 	"os"
@@ -14,6 +13,8 @@ import (
 	"strconv"
 	"syscall"
 	"time"
+
+	"golang.org/x/term"
 
 	yaml "github.com/ghodss/yaml"
 	resty "github.com/go-resty/resty/v2"
@@ -296,4 +297,69 @@ func ReadPassword(repeat bool) (string, error) {
 	}
 
 	return string(password), nil
+}
+
+func WaitForKeyboardInterrupt() (<-chan bool, func()) {
+	ch := make(chan bool, 1)
+	done := make(chan struct{})
+
+	var cleanup func()
+	var cancelled bool
+
+	go func() {
+		initialState, err := term.GetState(syscall.Stdin)
+		if err != nil {
+			return
+		}
+
+		// Set terminal to raw mode to capture individual keystrokes
+		term.MakeRaw(syscall.Stdin)
+
+		restoreTerminal := func() {
+			term.Restore(syscall.Stdin, initialState)
+			fmt.Print("\r") // Move to beginning of new line after restore
+		}
+
+		cleanup = restoreTerminal
+		defer func() {
+			if !cancelled {
+				restoreTerminal()
+			}
+		}()
+
+		// Handle signals to restore terminal state
+		signalChan := make(chan os.Signal, 1)
+		signal.Notify(signalChan, syscall.SIGINT, syscall.SIGTERM)
+		go func() {
+			<-signalChan
+			restoreTerminal()
+			os.Exit(1)
+		}()
+
+		// Wait for any key press or cancellation
+		buffer := make([]byte, 1)
+
+		// Use select to handle both key press and cancellation
+		go func() {
+			os.Stdin.Read(buffer)
+			select {
+			case ch <- true:
+			case <-done:
+			}
+		}()
+
+		<-done // Wait for cancellation
+	}()
+
+	cancel := func() {
+		if !cancelled {
+			cancelled = true
+			if cleanup != nil {
+				cleanup()
+			}
+			close(done)
+		}
+	}
+
+	return ch, cancel
 }
