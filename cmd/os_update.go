@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"fmt"
-
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -39,7 +37,7 @@ Operating System to the latest version or the version specified.
 		resp, err := helper.GenericJSONPostTimeout(section, command, options, helper.OsDownloadTimeout)
 		ProgressSpinner.Stop()
 		if err != nil {
-			fmt.Println(err)
+			helper.PrintError(err)
 			ExitWithError = true
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)

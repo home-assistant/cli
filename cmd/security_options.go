@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"strings"
 
 	helper "github.com/home-assistant/cli/client"
@@ -43,7 +42,7 @@ Home Assistant Security backend.
 
 		resp, err := helper.GenericJSONPost(section, command, options)
 		if err != nil {
-			fmt.Println(err)
+			helper.PrintError(err)
 			ExitWithError = true
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)

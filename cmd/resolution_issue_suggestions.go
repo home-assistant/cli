@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"fmt"
-
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -26,7 +24,7 @@ This command returns suggestions which resolve an issue when applied.`,
 
 		url, err := helper.URLHelper(section, command)
 		if err != nil {
-			fmt.Println(err)
+			helper.PrintError(err)
 			ExitWithError = true
 			return
 		}
@@ -43,7 +41,7 @@ This command returns suggestions which resolve an issue when applied.`,
 		resp, err = helper.GenericJSONErrorHandling(resp, err)
 
 		if err != nil {
-			fmt.Println(err)
+			helper.PrintError(err)
 			ExitWithError = true
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)

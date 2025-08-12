@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"fmt"
-
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -32,7 +30,7 @@ an OS update without making more changes to the system.
 		if bootSlot == "other" {
 			bootSlots, err := osGetBootSlots()
 			if err != nil {
-				fmt.Println(err)
+				helper.PrintError(err)
 				ExitWithError = true
 				return
 			}
@@ -60,7 +58,7 @@ an OS update without making more changes to the system.
 		options := map[string]any{"boot_slot": bootSlot}
 		resp, err := helper.GenericJSONPostTimeout(section, command, options, helper.RebootTimeout)
 		if err != nil {
-			fmt.Println(err)
+			helper.PrintError(err)
 			ExitWithError = true
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)

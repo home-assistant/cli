@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -26,7 +25,7 @@ Supervisor running on your Home Assistant system.`,
 		request, err := processLogsFlags(section, cmd)
 
 		if err != nil {
-			fmt.Printf("Error: %v", err)
+			helper.PrintError(err)
 			ExitWithError = true
 			return
 		}
@@ -34,7 +33,7 @@ Supervisor running on your Home Assistant system.`,
 		resp, err := request.Send()
 
 		if err != nil {
-			fmt.Println(err)
+			helper.PrintError(err)
 			ExitWithError = true
 			return
 		}

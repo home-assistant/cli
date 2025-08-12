@@ -30,7 +30,8 @@ ha addons changelog core_mosquitto`,
 		url, err := helper.URLHelper(section, command)
 
 		if err != nil {
-			fmt.Println(err)
+			helper.PrintError(err)
+			ExitWithError = true
 			return
 		}
 
@@ -51,7 +52,7 @@ ha addons changelog core_mosquitto`,
 		}
 
 		if err != nil {
-			fmt.Println(err)
+			helper.PrintError(err)
 			ExitWithError = true
 		} else {
 			fmt.Println(string(resp.Body()))

@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"strings"
 
 	helper "github.com/home-assistant/cli/client"
@@ -29,7 +28,7 @@ ha store delete 94cfad5a
 
 		url, err := helper.URLHelper(section, command)
 		if err != nil {
-			fmt.Println(err)
+			helper.PrintError(err)
 			ExitWithError = true
 			return
 		}
@@ -45,7 +44,7 @@ ha store delete 94cfad5a
 		resp, err = helper.GenericJSONErrorHandling(resp, err)
 
 		if err != nil {
-			fmt.Println(err)
+			helper.PrintError(err)
 			ExitWithError = true
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)

@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"golang.org/x/term"
 	"io"
 	"net/url"
 	"os"
@@ -14,6 +13,8 @@ import (
 	"strconv"
 	"syscall"
 	"time"
+
+	"golang.org/x/term"
 
 	yaml "github.com/ghodss/yaml"
 	resty "github.com/go-resty/resty/v2"
@@ -146,27 +147,30 @@ func ShowJSONResponse(resp *resty.Response) (success bool) {
 	}
 	switch data.Result {
 	case "ok":
-		success = true
 		if len(data.Data) == 0 {
 			fmt.Println("Command completed successfully.")
 		} else {
 			j, err := json.Marshal(data.Data)
 			if err != nil {
-				log.Fatalf("error: %v", err)
+				PrintError(err)
+				return
 			}
 
 			d, err := yaml.JSONToYAML(j)
 			if err != nil {
-				log.Fatalf("error: %v", err)
+				PrintError(err)
+				return
 			}
 			fmt.Print(string(d))
 		}
+		success = true
 	case "error":
-		fmt.Printf("Error: %s\n", data.Message)
+		PrintErrorString(data.Message)
 	default:
 		d, err := yaml.Marshal(data)
 		if err != nil {
-			log.Fatalf("error: %v", err)
+			PrintError(err)
+			return
 		}
 		fmt.Print(string(d))
 	}
@@ -296,4 +300,17 @@ func ReadPassword(repeat bool) (string, error) {
 	}
 
 	return string(password), nil
+}
+
+func PrintErrorString(err string) {
+	if term.IsTerminal(int(os.Stderr.Fd())) {
+		fmt.Fprintln(os.Stderr, "\033[1;31mError:\033[0m", err)
+	} else {
+		fmt.Fprintln(os.Stderr, "Error:", err)
+	}
+}
+
+// PrintError prints an error message with "Error: " prefix for user-friendly output
+func PrintError(err error) {
+	PrintErrorString(err.Error())
 }

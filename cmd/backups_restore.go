@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"fmt"
-
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -70,7 +68,7 @@ take Home Assistant backup on your system.`,
 
 		url, err := helper.URLHelper(section, command)
 		if err != nil {
-			fmt.Println(err)
+			helper.PrintError(err)
 			ExitWithError = true
 			return
 		}
@@ -87,7 +85,7 @@ take Home Assistant backup on your system.`,
 		resp, err = helper.GenericJSONErrorHandling(resp, err)
 
 		if err != nil {
-			fmt.Println(err)
+			helper.PrintError(err)
 			ExitWithError = true
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)

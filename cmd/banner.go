@@ -72,7 +72,7 @@ var bannerCmd = &cobra.Command{
 
 		nowait, err := cmd.Flags().GetBool("no-wait")
 		if err != nil {
-			fmt.Println(err)
+			helper.PrintError(err)
 			ExitWithError = true
 		}
 
@@ -150,7 +150,7 @@ var bannerCmd = &cobra.Command{
 		// Print Host URL
 		hostinfo, err := supervisorGet("host", "info")
 		if err != nil {
-			fmt.Println(err)
+			helper.PrintError(err)
 			ExitWithError = true
 			return
 		}
@@ -159,7 +159,7 @@ var bannerCmd = &cobra.Command{
 		}
 		coreinfo, err := supervisorGet("core", "info")
 		if err != nil {
-			fmt.Println(err)
+			helper.PrintError(err)
 			ExitWithError = true
 			return
 		}
