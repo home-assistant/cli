@@ -16,7 +16,7 @@ The CLI is communicating with the Supervisor using the Supervisor's HTTP REST AP
 - **Root files** - Configuration and documentation
 
 ## Key Technologies
-- **Language**: Go 1.23+ (toolchain 1.24.1)
+- **Language**: Go (use modern syntax)
 - **CLI Framework**: Cobra (github.com/spf13/cobra)
 - **HTTP Client**: Resty (github.com/go-resty/resty/v2)
 - **Configuration**: Viper (github.com/spf13/viper)
