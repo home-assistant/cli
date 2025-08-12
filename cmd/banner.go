@@ -178,6 +178,7 @@ var bannerCmd = &cobra.Command{
 		// Print Host URL
 		hostinfo, err := supervisorGet("host", "info")
 		if err != nil {
+			ExitWithError = true
 			fmt.Printf("  Host information unavailable: %s\n", err)
 			return
 		}
@@ -187,6 +188,7 @@ var bannerCmd = &cobra.Command{
 
 		coreinfo, err := supervisorGet("core", "info")
 		if err != nil {
+			ExitWithError = true
 			fmt.Printf("  Core information unavailable: %s\n", err)
 			return
 		}
