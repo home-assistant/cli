@@ -303,7 +303,7 @@ func ReadPassword(repeat bool) (string, error) {
 }
 
 func PrintErrorString(err string) {
-	if term.IsTerminal(int(os.Stdout.Fd())) {
+	if term.IsTerminal(int(os.Stderr.Fd())) {
 		fmt.Fprintln(os.Stderr, "\033[1;31mError:\033[0m", err)
 	} else {
 		fmt.Fprintln(os.Stderr, "Error:", err)
