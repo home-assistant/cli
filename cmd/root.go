@@ -7,7 +7,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/home-assistant/cli/client"
 	helper "github.com/home-assistant/cli/client"
 	"github.com/home-assistant/cli/spinner"
 	homedir "github.com/mitchellh/go-homedir"
@@ -44,7 +43,7 @@ you to control and configure different aspects of Home Assistant`,
 			log.SetLevel(logrusLevel)
 		}
 
-		client.RawJSON = viper.GetBool("raw-json")
+		helper.RawJSON = viper.GetBool("raw-json")
 
 		// Only shows spinner output when we have a TTY
 		if !noProgress && term.IsTerminal(int(os.Stdout.Fd())) {
