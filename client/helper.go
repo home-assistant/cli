@@ -147,27 +147,30 @@ func ShowJSONResponse(resp *resty.Response) (success bool) {
 	}
 	switch data.Result {
 	case "ok":
-		success = true
 		if len(data.Data) == 0 {
 			fmt.Println("Command completed successfully.")
 		} else {
 			j, err := json.Marshal(data.Data)
 			if err != nil {
-				log.Fatalf("error: %v", err)
+				PrintError(err)
+				return
 			}
 
 			d, err := yaml.JSONToYAML(j)
 			if err != nil {
-				log.Fatalf("error: %v", err)
+				PrintError(err)
+				return
 			}
 			fmt.Print(string(d))
 		}
+		success = true
 	case "error":
 		PrintErrorString(data.Message)
 	default:
 		d, err := yaml.Marshal(data)
 		if err != nil {
-			log.Fatalf("error: %v", err)
+			PrintError(err)
+			return
 		}
 		fmt.Print(string(d))
 	}

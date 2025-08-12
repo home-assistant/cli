@@ -1,12 +1,14 @@
 package cmd
 
 import (
+	"fmt"
 	"os"
 	"path"
 	"strings"
 	"time"
 
 	"github.com/home-assistant/cli/client"
+	helper "github.com/home-assistant/cli/client"
 	"github.com/home-assistant/cli/spinner"
 	homedir "github.com/mitchellh/go-homedir"
 	log "github.com/sirupsen/logrus"
@@ -69,7 +71,8 @@ you to control and configure different aspects of Home Assistant`,
 // Execute represents the entrypoint for when called without any subcommand
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
-		log.Fatalf("Error while executing rootCmd: %s", err)
+		helper.PrintError(err)
+		ExitWithError = true
 	}
 }
 
@@ -136,7 +139,8 @@ func initConfig() {
 		// Find home directory.
 		home, err := homedir.Dir()
 		if err != nil {
-			log.Fatalf("Error while finding home directory: %s", err)
+			helper.PrintErrorString(fmt.Sprintf("Error while finding home directory: %s", err))
+			os.Exit(1)
 		}
 
 		// Search config in home directory with name ".homeassistant" (without extension).
