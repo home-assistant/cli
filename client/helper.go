@@ -163,7 +163,7 @@ func ShowJSONResponse(resp *resty.Response) (success bool) {
 			fmt.Print(string(d))
 		}
 	case "error":
-		fmt.Printf("Error: %s\n", data.Message)
+		PrintErrorString(data.Message)
 	default:
 		d, err := yaml.Marshal(data)
 		if err != nil {
@@ -299,13 +299,15 @@ func ReadPassword(repeat bool) (string, error) {
 	return string(password), nil
 }
 
+func PrintErrorString(err string) {
+	if term.IsTerminal(int(os.Stdout.Fd())) {
+		fmt.Fprintln(os.Stderr, "\033[1;31mError:\033[0m", err)
+	} else {
+		fmt.Fprintln(os.Stderr, "Error:", err)
+	}
+}
+
 // PrintError prints an error message with "Error: " prefix for user-friendly output
 func PrintError(err error) {
-	if err != nil {
-		if term.IsTerminal(int(os.Stdout.Fd())) {
-			fmt.Fprintln(os.Stderr, "\033[1;31mError:\033[0m", err.Error())
-		} else {
-			fmt.Fprintln(os.Stderr, "Error:", err.Error())
-		}
-	}
+	PrintErrorString(err.Error())
 }
