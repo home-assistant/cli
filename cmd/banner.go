@@ -78,28 +78,52 @@ var bannerCmd = &cobra.Command{
 
 		var netinfo *(map[string]any)
 		if !nowait {
-			var supervisorReady bool
+			fmt.Println("Waiting for Supervisor to start. Press any key to skip waiting...")
 
-			for i := range 180 { // 3 minutes timeout
+			keyboardInterrupt, cancelKeyboard := helper.WaitForKeyboardInterrupt()
+			defer cancelKeyboard() // Ensure terminal is always restored
+			timeout := time.After(3 * time.Minute) // 3 minutes timeout
+			tick := time.Tick(1 * time.Second)
+
+			// Try immediately first, then wait for ticks
+			firstAttempt := make(chan time.Time, 1)
+			firstAttempt <- time.Now()
+
+			checkSupervisor := func() bool {
+				// We could use ping here, but Supervisor loads networking data asynchronously.
+				// Networking info are very useful, so wait until networking data have been
+				// loaded...
 				var err error
 				netinfo, err = supervisorGet("network", "info")
 				if err == nil && netinfo != nil {
 					netifaces, exist := (*netinfo)["interfaces"]
 					if exist && len(netifaces.([]any)) > 0 {
 						fmt.Println("Home Assistant Supervisor is running!")
-						supervisorReady = true
-						break
+						cancelKeyboard() // Restore terminal before continuing
+						return true
 					}
 				}
-				if i == 0 {
-					fmt.Println("Waiting for Supervisor to start...")
-				}
-				time.Sleep(1 * time.Second)
+				return false
 			}
 
-			if !supervisorReady {
-				fmt.Println("Supervisor is taking longer than expected to start. Use 'ha supervisor logs' to check logs.")
-				return
+		waitLoop:
+			for {
+				select {
+				case <-keyboardInterrupt:
+					fmt.Println("Waiting interrupted by user.")
+					return
+				case <-timeout:
+					fmt.Println("Supervisor is taking longer than expected to start. Use 'ha supervisor logs' to check logs.")
+					return
+				case <-firstAttempt:
+					if checkSupervisor() {
+						break waitLoop
+					}
+				case <-tick:
+					if checkSupervisor() {
+						break waitLoop
+					}
+				}
 			}
 		}
 
