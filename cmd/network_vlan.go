@@ -48,6 +48,9 @@ This function works only on an ethernet interface!
 		helperIpConfig("ipv4", cmd, options)
 		helperIpConfig("ipv6", cmd, options)
 
+		// mDNS / LLMNR
+		helperMdnsConfig(cmd, options)
+
 		if len(options) > 0 {
 			log.WithField("options", options).Debug("Request body")
 			request.SetBody(options)
@@ -79,6 +82,9 @@ func init() {
 	networkVlanCmd.Flags().String("ipv6-privacy", "", "IPv6 privacy extensions: disabled|enabled-prefer-public|enabled|default")
 	networkVlanCmd.Flags().StringArray("ipv6-nameserver", []string{}, "IPv6 address for upstream DNS servers. Use multiple times for multiple servers.")
 
+	networkVlanCmd.Flags().String("mdns", "", "mDNS mode: default|off|resolve|announce")
+	networkVlanCmd.Flags().String("llmnr", "", "LLMNR mode: default|off|resolve|announce")
+
 	networkVlanCmd.RegisterFlagCompletionFunc("ipv4-address", cobra.NoFileCompletions)
 	networkVlanCmd.RegisterFlagCompletionFunc("ipv4-gateway", cobra.NoFileCompletions)
 	networkVlanCmd.RegisterFlagCompletionFunc("ipv4-method", ipMethodCompletions)
@@ -90,6 +96,9 @@ func init() {
 	networkVlanCmd.RegisterFlagCompletionFunc("ipv6-addr-gen-mode", ipAddrGenModeCompletions)
 	networkVlanCmd.RegisterFlagCompletionFunc("ipv6-privacy", ip6PrivacyCompletions)
 	networkVlanCmd.RegisterFlagCompletionFunc("ipv6-nameserver", cobra.NoFileCompletions)
+
+	networkVlanCmd.RegisterFlagCompletionFunc("mdns", mdnsCompletions)
+	networkVlanCmd.RegisterFlagCompletionFunc("llmnr", mdnsCompletions)
 
 	networkCmd.AddCommand(networkVlanCmd)
 }

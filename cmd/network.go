@@ -36,6 +36,10 @@ func ip6PrivacyCompletions(cmd *cobra.Command, args []string, toComplete string)
 	return []string{"disabled", "enabled-prefer-public", "enabled", "default"}, cobra.ShellCompDirectiveNoFileComp
 }
 
+func mdnsCompletions(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+	return []string{"default", "off", "resolve", "announce"}, cobra.ShellCompDirectiveNoFileComp
+}
+
 func networkInterfaceCompletions(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 	if len(args) != 0 {
 		return nil, cobra.ShellCompDirectiveNoFileComp

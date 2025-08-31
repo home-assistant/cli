@@ -48,6 +48,9 @@ Update network interface settings of a specific adapter.
 		// Wifi
 		helperWifiConfig(cmd, options)
 
+		// mDNS / LLMNR
+		helperMdnsConfig(cmd, options)
+
 		disabled, err := cmd.Flags().GetBool("disabled")
 		if err == nil {
 			options["enabled"] = !disabled
@@ -89,6 +92,9 @@ func init() {
 
 	networkUpdateCmd.Flags().BoolP("disabled", "e", false, "Disable interface")
 
+	networkUpdateCmd.Flags().String("mdns", "", "mDNS mode: default|off|resolve|announce")
+	networkUpdateCmd.Flags().String("llmnr", "", "LLMNR mode: default|off|resolve|announce")
+
 	networkUpdateCmd.RegisterFlagCompletionFunc("ipv4-address", cobra.NoFileCompletions)
 	networkUpdateCmd.RegisterFlagCompletionFunc("ipv4-gateway", cobra.NoFileCompletions)
 	networkUpdateCmd.RegisterFlagCompletionFunc("ipv4-method", ipMethodCompletions)
@@ -111,6 +117,9 @@ func init() {
 	networkUpdateCmd.RegisterFlagCompletionFunc("wifi-psk", cobra.NoFileCompletions)
 
 	networkUpdateCmd.RegisterFlagCompletionFunc("disabled", boolCompletions)
+
+	networkUpdateCmd.RegisterFlagCompletionFunc("mdns", mdnsCompletions)
+	networkUpdateCmd.RegisterFlagCompletionFunc("llmnr", mdnsCompletions)
 
 	networkCmd.AddCommand(networkUpdateCmd)
 }
@@ -170,5 +179,17 @@ func helperWifiConfig(cmd *cobra.Command, options map[string]any) {
 	wifiConfig := parseNetworkArgs(cmd, args)
 	if len(wifiConfig) > 0 {
 		options["wifi"] = wifiConfig
+	}
+}
+
+func helperMdnsConfig(cmd *cobra.Command, options map[string]any) {
+	mdns, err := cmd.Flags().GetString("mdns")
+	if err == nil && mdns != "" {
+		options["mdns"] = mdns
+	}
+
+	llmnr, err := cmd.Flags().GetString("llmnr")
+	if err == nil && llmnr != "" {
+		options["llmnr"] = llmnr
 	}
 }
