@@ -18,7 +18,8 @@ var dockerOptionsCmd = &cobra.Command{
 This command allows you to set configuration options for on the host
 docker backend running on your Home Assistant system.`,
 	Example: `
-  ha docker options --enable-ipv6=true`,
+  ha docker options --enable-ipv6=true
+  ha docker options --mtu=1450`,
 	ValidArgsFunction: cobra.NoFileCompletions,
 	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
@@ -38,6 +39,21 @@ docker backend running on your Home Assistant system.`,
 			}
 		}
 
+		if cmd.Flags().Changed("mtu") {
+			mtu, err := cmd.Flags().GetInt("mtu")
+			if err == nil {
+				if mtu == 0 {
+					options["mtu"] = nil
+				} else if mtu < 68 || mtu > 65535 {
+					helper.PrintError(fmt.Errorf("MTU value must be between 68 and 65535, or 0 to reset"))
+					ExitWithError = true
+					return
+				} else {
+					options["mtu"] = mtu
+				}
+			}
+		}
+
 		resp, err := helper.GenericJSONPost(section, command, options)
 		if err != nil {
 			helper.PrintError(err)
@@ -46,6 +62,9 @@ docker backend running on your Home Assistant system.`,
 			if cmd.Flags().Changed("enable-ipv6") {
 				fmt.Println("Note: System restart required to apply new IPv6 configuration.")
 			}
+			if cmd.Flags().Changed("mtu") {
+				fmt.Println("Note: System restart required to apply new MTU configuration.")
+			}
 			ExitWithError = !helper.ShowJSONResponse(resp)
 		}
 	},
@@ -53,6 +72,7 @@ docker backend running on your Home Assistant system.`,
 
 func init() {
 	dockerOptionsCmd.Flags().BoolP("enable-ipv6", "", false, "Enable IPv6")
+	dockerOptionsCmd.Flags().IntP("mtu", "", 0, "Set Docker MTU (68-65535, 0 to reset)")
 	dockerOptionsCmd.Flags().SetNormalizeFunc(func(set *pflag.FlagSet, name string) pflag.NormalizedName {
 		return pflag.NormalizedName(strings.ReplaceAll(name, "_", "-"))
 	})
