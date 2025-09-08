@@ -1,6 +1,6 @@
 {
 	"name": "CLI Go",
-	"image": "mcr.microsoft.com/vscode/devcontainers/go:1.23",
+	"image": "mcr.microsoft.com/vscode/devcontainers/go:1.24",
 	"postCreateCommand": "go mod download",
 	"runArgs": [ "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined" ],
 	"settings": { 
