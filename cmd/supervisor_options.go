@@ -54,18 +54,6 @@ Supervisor running on your Home Assistant system.`,
 			}
 		}
 
-		waitboot, _ := cmd.Flags().GetInt("wait-boot")
-		if cmd.Flags().Changed("wait-boot") {
-			options["wait_boot"] = waitboot
-		}
-
-		repos, err := cmd.Flags().GetStringArray("repositories")
-		log.WithField("repositories", repos).Debug("repos")
-
-		if len(repos) >= 1 && err == nil {
-			options["addons_repositories"] = repos
-		}
-
 		resp, err := helper.GenericJSONPost(section, command, options)
 		if err != nil {
 			helper.PrintError(err)
@@ -82,12 +70,10 @@ func init() {
 	supervisorOptionsCmd.Flags().StringP("detect-blocking-io", "", "", "Detect blocking IO (on|on-at-startup|off)")
 	supervisorOptionsCmd.Flags().StringP("timezone", "t", "", "Timezone")
 	supervisorOptionsCmd.Flags().StringP("logging", "l", "", "Logging: debug|info|warning|error|critical")
-	supervisorOptionsCmd.Flags().IntP("wait-boot", "w", 0, "Seconds to wait after boot")
 	supervisorOptionsCmd.Flags().BoolP("debug", "", false, "Enable debug mode")
 	supervisorOptionsCmd.Flags().BoolP("debug-block", "", false, "Enable debug mode with blocking startup")
 	supervisorOptionsCmd.Flags().BoolP("diagnostics", "", false, "Enable diagnostics mode")
 	supervisorOptionsCmd.Flags().BoolP("auto-update", "", true, "Enable/disable supervisor auto update")
-	supervisorOptionsCmd.Flags().StringArrayP("repositories", "r", []string{}, "repositories to track, can be supplied multiple times")
 
 	supervisorOptionsCmd.Flags().Lookup("debug").NoOptDefVal = "false"
 	supervisorOptionsCmd.Flags().Lookup("debug-block").NoOptDefVal = "false"
@@ -105,11 +91,9 @@ func init() {
 	supervisorOptionsCmd.RegisterFlagCompletionFunc("logging", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		return []string{"debug", "info", "warning", "error", "critical"}, cobra.ShellCompDirectiveNoFileComp
 	})
-	supervisorOptionsCmd.RegisterFlagCompletionFunc("wait-boot", cobra.NoFileCompletions)
 	supervisorOptionsCmd.RegisterFlagCompletionFunc("debug", boolCompletions)
 	supervisorOptionsCmd.RegisterFlagCompletionFunc("debug-block", boolCompletions)
 	supervisorOptionsCmd.RegisterFlagCompletionFunc("diagnostics", boolCompletions)
-	supervisorOptionsCmd.RegisterFlagCompletionFunc("repositories", cobra.NoFileCompletions)
 
 	supervisorCmd.AddCommand(supervisorOptionsCmd)
 }
