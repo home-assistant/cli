@@ -44,8 +44,6 @@ Supervisor running on your Home Assistant system.`,
 			"debug",
 			"debug-block",
 			"diagnostics",
-			"content-trust",
-			"force-security",
 			"auto-update",
 		} {
 			data, err := cmd.Flags().GetBool(value)

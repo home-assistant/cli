@@ -31,7 +31,6 @@ Home Assistant Security backend.
 
 		for _, value := range []string{
 			"pwned",
-			"content-trust",
 			"force-security",
 		} {
 			data, err := cmd.Flags().GetBool(value)
@@ -52,15 +51,12 @@ Home Assistant Security backend.
 
 func init() {
 	securityOptionsCmd.Flags().BoolP("pwned", "", true, "Enable/Disable pwned check the backend")
-	securityOptionsCmd.Flags().BoolP("content-trust", "", true, "Enable/Disable content-trust on the backend")
 	securityOptionsCmd.Flags().BoolP("force-security", "", false, "Enable/Disable force-security on the backend")
 
 	securityOptionsCmd.Flags().Lookup("pwned").NoOptDefVal = "true"
-	securityOptionsCmd.Flags().Lookup("content-trust").NoOptDefVal = "true"
 	securityOptionsCmd.Flags().Lookup("force-security").NoOptDefVal = "false"
 
 	securityOptionsCmd.RegisterFlagCompletionFunc("pwned", boolCompletions)
-	securityOptionsCmd.RegisterFlagCompletionFunc("content-trust", boolCompletions)
 	securityOptionsCmd.RegisterFlagCompletionFunc("force-security", boolCompletions)
 
 	securityCmd.AddCommand(securityOptionsCmd)
