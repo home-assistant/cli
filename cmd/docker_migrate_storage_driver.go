@@ -41,8 +41,12 @@ to complete the migration.
 
 		confirmed, err := helper.AskForConfirmation(`
 This will schedule a Docker storage driver migration to "`+storageDriver+`".
-The migration will be applied on the next system reboot. It is strongly
-recommended to back up your data before and have at least 50% of free storage.
+Make sure to create a full Home Assistant backup before proceeding.
+
+Internet connectivity is required for re-download of all the container images
+and it is recommended to have at least 50% of free storage.
+
+Once confirmed, the migration will be applied on the next system reboot.
 Are you sure you want to proceed?`, 0)
 
 		if err != nil {
