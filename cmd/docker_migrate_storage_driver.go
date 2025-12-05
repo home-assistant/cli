@@ -24,7 +24,7 @@ to complete the migration.
 		if len(args) != 0 {
 			return nil, cobra.ShellCompDirectiveNoFileComp
 		}
-		return []string{"overlayfs", "overlay2"}, cobra.ShellCompDirectiveNoFileComp
+		return []string{"overlayfs"}, cobra.ShellCompDirectiveNoFileComp
 	},
 	Args: cobra.MaximumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
