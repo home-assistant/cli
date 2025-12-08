@@ -55,6 +55,7 @@ instance running on your Home Assistant system.`,
 			"ssl",
 			"watchdog",
 			"backups-exclude-database",
+			"duplicate-log-file",
 		} {
 			val, err := cmd.Flags().GetBool(value)
 			if err == nil && cmd.Flags().Changed(value) {
@@ -83,6 +84,8 @@ func init() {
 	coreOptionsCmd.Flags().String("audio-output", "", "Profile name for audio output")
 	coreOptionsCmd.Flags().Bool("backups-exclude-database", false, "Backups exclude Home Assistant database file by default")
 	coreOptionsCmd.Flags().Lookup("backups-exclude-database").NoOptDefVal = "false"
+	coreOptionsCmd.Flags().Bool("duplicate-log-file", false, "Duplicate logs to file alongside Systemd Journal")
+	coreOptionsCmd.Flags().Lookup("duplicate-log-file").NoOptDefVal = "false"
 	coreOptionsCmd.Flags().SetNormalizeFunc(func(set *pflag.FlagSet, name string) pflag.NormalizedName { // backwards compatibility
 		return pflag.NormalizedName(strings.ReplaceAll(name, "_", "-"))
 	})
@@ -95,5 +98,6 @@ func init() {
 	coreOptionsCmd.RegisterFlagCompletionFunc("audio-input", cobra.NoFileCompletions)
 	coreOptionsCmd.RegisterFlagCompletionFunc("audio-output", cobra.NoFileCompletions)
 	coreOptionsCmd.RegisterFlagCompletionFunc("backups-exclude-database", boolCompletions)
+	coreOptionsCmd.RegisterFlagCompletionFunc("duplicate-log-file", boolCompletions)
 	coreCmd.AddCommand(coreOptionsCmd)
 }
