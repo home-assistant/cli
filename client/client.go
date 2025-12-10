@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"time"
 
-	log "github.com/sirupsen/logrus"
 	resty "github.com/go-resty/resty/v2"
+	log "github.com/sirupsen/logrus"
 )
 
 // RawJSON controls if the client does json handling or outputs it raw
@@ -21,10 +21,14 @@ func GenericJSONErrorHandling(resp *resty.Response, err error) (*resty.Response,
 	// Handle known error codes as well as error codes which Supervisor returns without
 	// a (JSON) body.
 	switch resp.StatusCode() {
-	case http.StatusOK, http.StatusBadRequest, http.StatusNotFound, http.StatusServiceUnavailable:
+	case http.StatusOK, http.StatusBadRequest, http.StatusNotFound, http.StatusServiceUnavailable, http.StatusTooManyRequests:
 		// Success and these errors should have JSON responses
 		if !resty.IsJSONType(resp.Header().Get("Content-Type")) {
 			return nil, fmt.Errorf("unexpected non-JSON response (status: %d)", resp.StatusCode())
+		}
+	case http.StatusInternalServerError:
+		if !resty.IsJSONType(resp.Header().Get("Content-Type")) {
+			return nil, fmt.Errorf("unknown error occurred, check supervisor logs with 'ha supervisor logs")
 		}
 	case http.StatusUnauthorized:
 		if !resty.IsJSONType(resp.Header().Get("Content-Type")) {
