@@ -6,7 +6,7 @@ toolchain go1.24.1
 
 require (
 	github.com/ghodss/yaml v1.0.0
-	github.com/go-resty/resty/v2 v2.17.0
+	github.com/go-resty/resty/v2 v2.17.1
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.10.2
