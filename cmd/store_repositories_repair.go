@@ -6,23 +6,24 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var storeRepositoriesDeleteCmd = &cobra.Command{
-	Use:     "delete [slug]",
-	Aliases: []string{"del", "remove"},
-	Short:   "Delete repository from Home Assistant store",
+var storeRepositoriesRepairCmd = &cobra.Command{
+	Use:     "repair [slug]",
+	Aliases: []string{"repair", "reset"},
+	Short:   "Repair/reset repository from Home Assistant store",
 	Long: `
-Remove a repository of add-ons that isn't in use from the Home Assistant store.
+Repair/reset a repository of add-ons that is missing from store, showing
+incorrect information, or otherwise working incorrectly.
 `,
 	Example: `
-ha store delete 94cfad5a
+ha store repair 94cfad5a
 `,
 	ValidArgsFunction: storeRepositoriesCompletions,
 	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("store delete")
+		log.WithField("args", args).Debug("store repair")
 
 		section := "store"
-		command := "repositories/{slug}"
+		command := "repositories/{slug}/repair"
 
 		url, err := helper.URLHelper(section, command)
 		if err != nil {
@@ -51,5 +52,5 @@ ha store delete 94cfad5a
 }
 
 func init() {
-	storeCmd.AddCommand(storeRepositoriesDeleteCmd)
+	storeCmd.AddCommand(storeRepositoriesRepairCmd)
 }
