@@ -8,7 +8,7 @@ import (
 
 var storeRepositoriesRepairCmd = &cobra.Command{
 	Use:     "repair [slug]",
-	Aliases: []string{"repair", "reset"},
+	Aliases: []string{"reset"},
 	Short:   "Repair/reset repository from Home Assistant store",
 	Long: `
 Repair/reset a repository of add-ons that is missing from store, showing
@@ -39,7 +39,7 @@ ha store repair 94cfad5a
 			"slug": slug,
 		})
 
-		resp, err := request.Delete(url)
+		resp, err := request.Post(url)
 		resp, err = helper.GenericJSONErrorHandling(resp, err)
 
 		if err != nil {
