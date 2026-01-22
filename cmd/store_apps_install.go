@@ -6,23 +6,23 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var addonsInstalCmd = &cobra.Command{
+var storeAppsInstallCmd = &cobra.Command{
 	Use:     "install [slug]",
 	Aliases: []string{"i", "inst"},
-	Short:   "Installs a Home Assistant add-on",
+	Short:   "Installs a Home Assistant app",
 	Long: `
-This command allows you to install a Home Assistant add-on from the commandline.
+This command allows you to install a Home Assistant app from the commandline.
 `,
 	Example: `
-  ha addons install core_ssh
+  ha store apps install core_ssh
 `,
-	ValidArgsFunction: storeAddonCompletions,
+	ValidArgsFunction: storeAppCompletions,
 	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("addons install")
+		log.WithField("args", args).Debug("store apps install")
 
-		section := "addons"
-		command := "{slug}/install"
+		section := "store"
+		command := "addons/{slug}/install"
 
 		url, err := helper.URLHelper(section, command)
 		if err != nil {
@@ -56,5 +56,5 @@ This command allows you to install a Home Assistant add-on from the commandline.
 
 func init() {
 
-	addonsCmd.AddCommand(addonsInstalCmd)
+	storeAppsCmd.AddCommand(storeAppsInstallCmd)
 }

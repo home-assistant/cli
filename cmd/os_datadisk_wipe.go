@@ -11,7 +11,7 @@ var osDataDiskWipeCmd = &cobra.Command{
 	Aliases: []string{"wipe", "reset", "erase"},
 	Short:   "Wipe the Home Assistant Operating-System data partition",
 	Long: `
-This command will wipe all config/settings for addons, Home Assistant and the Operating
+This command will wipe all config/settings for apps, Home Assistant and the Operating
 System and any locally stored data in config, backups, media, etc. The machine will
 reboot during this.
 

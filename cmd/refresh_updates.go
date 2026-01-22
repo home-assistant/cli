@@ -11,7 +11,7 @@ var refreshUpdatesCmd = &cobra.Command{
 	Aliases: []string{"refresh", "refresh_updates"},
 	Short:   "Reload stores and version information",
 	Long: `
-This command reloads information about add-on repositories and fetches new version files.
+This command reloads information about app repositories and fetches new version files.
 	`,
 	Example: `
   ha refresh-updates

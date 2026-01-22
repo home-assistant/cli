@@ -6,20 +6,20 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var addonsUninstallCmd = &cobra.Command{
+var appsUninstallCmd = &cobra.Command{
 	Use:     "uninstall [slug]",
 	Aliases: []string{"remove", "delete", "del", "rem", "un", "uninst"},
-	Short:   "Uninstalls a Home Assistant add-on",
+	Short:   "Uninstalls a Home Assistant app",
 	Long: `
-This command allows you to uninstall a Home Assistant add-on.
+This command allows you to uninstall a Home Assistant app.
 `,
 	Example: `
-  ha addons uninstall core_ssh
+  ha apps uninstall core_ssh
 `,
-	ValidArgsFunction: addonsCompletions,
+	ValidArgsFunction: appsCompletions,
 	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("addons uninstall")
+		log.WithField("args", args).Debug("apps uninstall")
 
 		section := "addons"
 		command := "{slug}/uninstall"
@@ -60,9 +60,9 @@ This command allows you to uninstall a Home Assistant add-on.
 }
 
 func init() {
-	addonsUninstallCmd.Flags().Bool("remove-config", false, "Delete addon's config folder (if used)")
-	addonsUninstallCmd.Flags().Lookup("remove-config").NoOptDefVal = "true"
-	addonsUninstallCmd.RegisterFlagCompletionFunc("remove-config", boolCompletions)
+	appsUninstallCmd.Flags().Bool("remove-config", false, "Delete app's config folder (if used)")
+	appsUninstallCmd.Flags().Lookup("remove-config").NoOptDefVal = "true"
+	appsUninstallCmd.RegisterFlagCompletionFunc("remove-config", boolCompletions)
 
-	addonsCmd.AddCommand(addonsUninstallCmd)
+	appsCmd.AddCommand(appsUninstallCmd)
 }

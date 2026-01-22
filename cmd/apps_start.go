@@ -6,23 +6,23 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var storeAddonsInstalCmd = &cobra.Command{
-	Use:     "install [slug]",
-	Aliases: []string{"i", "inst"},
-	Short:   "Installs a Home Assistant add-on",
+var appsStartCmd = &cobra.Command{
+	Use:     "start [slug]",
+	Aliases: []string{"run", "st"},
+	Short:   "Manually start a stopped Home Assistant app",
 	Long: `
-This command allows you to install a Home Assistant add-on from the commandline.
+This command allows you to manually start a stopped Home Assistant app
 `,
 	Example: `
-  ha store addons install core_ssh
+  ha apps start core_ssh
 `,
-	ValidArgsFunction: storeAddonCompletions,
+	ValidArgsFunction: appsCompletions,
 	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("store addons install")
+		log.WithField("args", args).Debug("apps start")
 
-		section := "store"
-		command := "addons/{slug}/install"
+		section := "addons"
+		command := "{slug}/start"
 
 		url, err := helper.URLHelper(section, command)
 		if err != nil {
@@ -31,7 +31,7 @@ This command allows you to install a Home Assistant add-on from the commandline.
 			return
 		}
 
-		request := helper.GetJSONRequestTimeout(helper.ContainerDownloadTimeout)
+		request := helper.GetJSONRequest()
 
 		slug := args[0]
 
@@ -39,10 +39,7 @@ This command allows you to install a Home Assistant add-on from the commandline.
 			"slug": slug,
 		})
 
-		ProgressSpinner.Start()
 		resp, err := request.Post(url)
-		ProgressSpinner.Stop()
-
 		resp, err = helper.GenericJSONErrorHandling(resp, err)
 
 		if err != nil {
@@ -56,5 +53,5 @@ This command allows you to install a Home Assistant add-on from the commandline.
 
 func init() {
 
-	storeAddonsCmd.AddCommand(storeAddonsInstalCmd)
+	appsCmd.AddCommand(appsStartCmd)
 }

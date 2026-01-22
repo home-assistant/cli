@@ -6,40 +6,46 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var addonsRestartCmd = &cobra.Command{
-	Use:     "restart [slug]",
-	Aliases: []string{"reboot"},
-	Short:   "Restarts a Home Assistant add-on",
+var appsInfoCmd = &cobra.Command{
+	Use:     "info [slug]",
+	Aliases: []string{"in", "info"},
+	Short:   "Show information about available Home Assistant apps",
 	Long: `
-Restart a Home Assistant add-on
+This command can provide information on all available apps or, if a slug
+is provided, information about a specific app.
 `,
 	Example: `
-  ha addons restart core_ssh
+  ha apps info
+  ha apps info core_ssh
 `,
-	ValidArgsFunction: addonsCompletions,
-	Args:              cobra.ExactArgs(1),
+	ValidArgsFunction: appsCompletions,
+	Args:              cobra.MaximumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("addons restart")
+		log.WithField("args", args).Debug("apps info")
 
 		section := "addons"
-		command := "{slug}/restart"
+		command := "{slug}/info"
 
 		url, err := helper.URLHelper(section, command)
+
 		if err != nil {
 			helper.PrintError(err)
 			ExitWithError = true
 			return
 		}
 
-		request := helper.GetJSONRequestTimeout(helper.ContainerOperationTimeout)
+		request := helper.GetJSONRequest()
 
-		slug := args[0]
+		slug := "self"
+		if len(args) > 0 {
+			slug = args[0]
+		}
 
 		request.SetPathParams(map[string]string{
 			"slug": slug,
 		})
 
-		resp, err := request.Post(url)
+		resp, err := request.Get(url)
 		resp, err = helper.GenericJSONErrorHandling(resp, err)
 
 		if err != nil {
@@ -52,6 +58,5 @@ Restart a Home Assistant add-on
 }
 
 func init() {
-
-	addonsCmd.AddCommand(addonsRestartCmd)
+	appsCmd.AddCommand(appsInfoCmd)
 }

@@ -15,7 +15,7 @@ This command can be used to trigger the creation of a new Home Assistant
 backup.`,
 	Example: `
   ha backups new
-  ha backups new --addons core_ssh --addons core_mosquitto
+  ha backups new --apps core_ssh --apps core_mosquitto
   ha backups new --folders homeassistant
   ha backups new --uncompressed
 `,
@@ -39,11 +39,13 @@ backup.`,
 			options["password"] = password
 		}
 
-		addons, err := cmd.Flags().GetStringArray("addons")
-		log.WithField("addons", addons).Debug("addons")
+		apps, err := cmd.Flags().GetStringArray("apps")
+		addonsDeprecated, _ := cmd.Flags().GetStringArray("addons")
+		apps = append(apps, addonsDeprecated...)
+		log.WithField("apps", apps).Debug("apps")
 
-		if len(addons) != 0 && err == nil && cmd.Flags().Changed("addons") {
-			options["addons"] = addons
+		if len(apps) != 0 && err == nil && (cmd.Flags().Changed("apps") || cmd.Flags().Changed("addons")) {
+			options["addons"] = apps
 			command = "new/partial"
 		}
 
@@ -92,7 +94,10 @@ func init() {
 	backupsNewCmd.Flags().StringP("name", "", "", "Name of the backup")
 	backupsNewCmd.Flags().StringP("password", "", "", "Password")
 	backupsNewCmd.Flags().Bool("uncompressed", false, "Use Uncompressed archives")
-	backupsNewCmd.Flags().StringArrayP("addons", "a", []string{}, "addons to backup, triggers a partial backup")
+	backupsNewCmd.Flags().StringArrayP("apps", "a", []string{}, "apps to backup, triggers a partial backup")
+	backupsNewCmd.Flags().StringArray("addons", []string{}, "")
+	backupsNewCmd.Flags().MarkHidden("addons")
+	backupsNewCmd.Flags().MarkDeprecated("addons", "use --apps instead")
 	backupsNewCmd.Flags().StringArrayP("folders", "f", []string{}, "folders to backup, triggers a partial backup")
 	backupsNewCmd.Flags().StringArrayP("location", "l", []string{}, "where to put backup file (backup mount or local), use multiple times for multiple locations.")
 	backupsNewCmd.Flags().Bool("homeassistant-exclude-database", false, "Exclude the Home Assistant database file from backup")
@@ -105,7 +110,7 @@ func init() {
 	backupsNewCmd.RegisterFlagCompletionFunc("name", cobra.NoFileCompletions)
 	backupsNewCmd.RegisterFlagCompletionFunc("password", cobra.NoFileCompletions)
 	backupsNewCmd.RegisterFlagCompletionFunc("uncompressed", boolCompletions)
-	backupsNewCmd.RegisterFlagCompletionFunc("addons", backupsAddonsCompletions)
+	backupsNewCmd.RegisterFlagCompletionFunc("apps", backupsAppsCompletions)
 	backupsNewCmd.RegisterFlagCompletionFunc("folders", backupsFoldersCompletions)
 	backupsNewCmd.RegisterFlagCompletionFunc("location", backupsLocationsCompletions)
 	backupsNewCmd.RegisterFlagCompletionFunc("homeassistant-exclude-database", boolCompletions)

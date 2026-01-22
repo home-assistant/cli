@@ -9,12 +9,12 @@ import (
 var storeReloadCmd = &cobra.Command{
 	Use:     "reload",
 	Aliases: []string{"refresh", "re"},
-	Short:   "Reloads/Refreshes the Home Assistant add-on store",
+	Short:   "Reloads/Refreshes the Home Assistant app store",
 	Long: `
-This commands allows you to force a reload/refresh of the Home Assistant add-on
+This commands allows you to force a reload/refresh of the Home Assistant app
 store. Using this, you can force the download of the most recent version
-information of an add-on. This might be helpful when you know a new version of
-an add-on is released, but not yet available as an upgrade in Home Assistant.
+information of an app. This might be helpful when you know a new version of
+an app is released, but not yet available as an upgrade in Home Assistant.
 `,
 	Example: `
   ha store reload

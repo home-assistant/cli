@@ -11,7 +11,7 @@ var storeRepositoriesAddCmd = &cobra.Command{
 	Aliases: []string{"set", "new"},
 	Short:   "Add new repository to Home Assistant store",
 	Long: `
-Add new repository of add-ons to the Home Assistant store.
+Add new repository of apps to the Home Assistant store.
 `,
 	Example: `
 ha store add https://github.com/home-assistant/addons-example

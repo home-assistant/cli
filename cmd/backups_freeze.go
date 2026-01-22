@@ -11,7 +11,7 @@ var backupFreezeCmd = &cobra.Command{
 	Aliases: []string{"frz"},
 	Short:   "Freeze supervisor for external backup",
 	Long: `
-This command tells Supervisor to prepare Home Assistant and addons for a backup
+This command tells Supervisor to prepare Home Assistant and apps for a backup
 or snapshot taken by external software. Caller should call thaw when done.`,
 	Example: `
   ha backups freeze --timeout 300`,

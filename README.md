@@ -32,7 +32,7 @@ All options are also available as `SUPERVISOR_` prefixed environment variables l
 Available commands:
 
 ```text
-  addons         Install, update, remove and configure Home Assistant add-ons
+  apps           Install, update, remove and configure Home Assistant apps
   audio          Audio device handling.
   authentication Authentication for Home Assistant users.
   cli            Get information, update or configure the Home Assistant cli backend
@@ -59,19 +59,19 @@ available on the device terminal when using the Home Assistant Operating System.
 
 The CLI is automatically updated on those systems.
 
-Furthermore, the SSH add-on (available in the add-on store) provides
-access to this tool and several community add-ons provide it as well (e.g.,
-the Visual Studio Code add-on).
+Furthermore, the SSH app (available in the app store) provides
+access to this tool and several community apps provide it as well (e.g.,
+the Visual Studio Code app).
 
 ## Developing & contributing
 
 ### Prerequisites
 
 The CLI can interact remotely with the Home Assistant Supervisor using the
-`remote_api` add-on from the [developer add-ons repository](https://github.com/home-assistant/addons-development).
+`remote_api` app from the [developer app repository](https://github.com/home-assistant/addons-development).
 
-After installing and starting the add-on, a token is shown in the `remote_api`
-add-on log, which is needed for further development.
+After installing and starting the app, a token is shown in the `remote_api`
+app log, which is needed for further development.
 
 ### Get the source code
 
@@ -86,7 +86,7 @@ go run main.go info
 ```
 
 **Note**: Replace the `192.168.1.2` with the IP address of your Home Assistant
-instance running the `remote_api` add-on and use the token provided.
+instance running the `remote_api` app and use the token provided.
 
 ### Building
 

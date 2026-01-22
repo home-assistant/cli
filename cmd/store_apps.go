@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"os"
 	"strings"
 
 	helper "github.com/home-assistant/cli/client"
@@ -8,18 +9,26 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var storeAddonsCmd = &cobra.Command{
-	Use:     "addons",
-	Aliases: []string{"add-on", "addon", "add-ons"},
-	Short:   "Install and update Home Assistant add-ons",
+var storeAppsCmd = &cobra.Command{
+	Use:     "apps",
+	Aliases: []string{"app", "addons", "add-on", "addon", "add-ons"},
+	Short:   "Install and update Home Assistant apps",
 	Long: `
-The store command allows you to manage Home Assistant add-ons by exposing
+The store command allows you to manage Home Assistant apps by exposing
 commands for installing or update them.`,
 	Example: `
-  ha store addons install core_ssh
-  ha store addons update core_ssh`,
+  ha store apps install core_ssh
+  ha store apps update core_ssh`,
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		for idx, arg := range os.Args {
+			if idx != 0 && (arg == "addons" || arg == "addon" || arg == "add-on" || arg == "add-ons") {
+				cmd.PrintErrf("The use of '%s' is deprecated, please use 'apps' instead!\n", arg)
+			}
+		}
+		rootCmd.PersistentPreRun(cmd, args)
+	},
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("store")
+		log.WithField("args", args).Debug("store apps")
 
 		section := "store"
 		command := "addons"
@@ -35,10 +44,10 @@ commands for installing or update them.`,
 }
 
 func init() {
-	storeCmd.AddCommand(storeAddonsCmd)
+	storeCmd.AddCommand(storeAppsCmd)
 }
 
-func storeAddonCompletions(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+func storeAppCompletions(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 	if len(args) != 0 {
 		return nil, cobra.ShellCompDirectiveNoFileComp
 	}

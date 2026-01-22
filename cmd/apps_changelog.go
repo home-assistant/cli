@@ -9,20 +9,20 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var addonsChangelogCmd = &cobra.Command{
+var appsChangelogCmd = &cobra.Command{
 	Use:     "changelog [slug]",
 	Aliases: []string{"cl", "ch"},
-	Short:   "Show changelog of a Home Assistant add-on",
+	Short:   "Show changelog of a Home Assistant app",
 	Long: `
-This command shows the changelog of an add-on. It gives you what has been
+This command shows the changelog of an app. It gives you what has been
 changed in the latest version and tell you about possible breaking changes.`,
 	Example: `
-ha addons changelog core_ssh
-ha addons changelog core_mosquitto`,
-	ValidArgsFunction: addonsCompletions,
+ha apps changelog core_ssh
+ha apps changelog core_mosquitto`,
+	ValidArgsFunction: appsCompletions,
 	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("addons changelog")
+		log.WithField("args", args).Debug("apps changelog")
 
 		section := "addons"
 		command := "{slug}/changelog"
@@ -61,5 +61,5 @@ ha addons changelog core_mosquitto`,
 }
 
 func init() {
-	addonsCmd.AddCommand(addonsChangelogCmd)
+	appsCmd.AddCommand(appsChangelogCmd)
 }

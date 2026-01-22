@@ -6,34 +6,32 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var addonsStatsCmd = &cobra.Command{
-	Use:     "stats [slug]",
-	Aliases: []string{"status", "stat"},
-	Short:   "Provides system usage stats of a Home Assistant add-on",
+var appsRestartCmd = &cobra.Command{
+	Use:     "restart [slug]",
+	Aliases: []string{"reboot"},
+	Short:   "Restarts a Home Assistant app",
 	Long: `
-Provides insight into the system usage stats of an add-on. It shows you
-how much CPU, memory, disk & network resources it uses.
+Restart a Home Assistant app
 `,
 	Example: `
-  ha addons stats core_ssh
+  ha apps restart core_ssh
 `,
-	ValidArgsFunction: addonsCompletions,
+	ValidArgsFunction: appsCompletions,
 	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("addons stats")
+		log.WithField("args", args).Debug("apps restart")
 
 		section := "addons"
-		command := "{slug}/stats"
+		command := "{slug}/restart"
 
 		url, err := helper.URLHelper(section, command)
-
 		if err != nil {
 			helper.PrintError(err)
 			ExitWithError = true
 			return
 		}
 
-		request := helper.GetJSONRequest()
+		request := helper.GetJSONRequestTimeout(helper.ContainerOperationTimeout)
 
 		slug := args[0]
 
@@ -41,7 +39,7 @@ how much CPU, memory, disk & network resources it uses.
 			"slug": slug,
 		})
 
-		resp, err := request.Get(url)
+		resp, err := request.Post(url)
 		resp, err = helper.GenericJSONErrorHandling(resp, err)
 
 		if err != nil {
@@ -54,5 +52,6 @@ how much CPU, memory, disk & network resources it uses.
 }
 
 func init() {
-	addonsCmd.AddCommand(addonsStatsCmd)
+
+	appsCmd.AddCommand(appsRestartCmd)
 }
