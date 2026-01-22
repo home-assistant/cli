@@ -6,21 +6,21 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var addonsUpdateCmd = &cobra.Command{
+var appsUpdateCmd = &cobra.Command{
 	Use:     "update [slug]",
 	Aliases: []string{"upgrade", "up"},
-	Short:   "Upgrades a Home Assistant add-on to the latest version",
+	Short:   "Upgrades a Home Assistant app to the latest version",
 	Long: `
-This command can upgrade a Home Assistant add-on to its latest version.
+This command can upgrade a Home Assistant app to its latest version.
 It is currently not possible to upgrade/downgrade to a specific version.
 `,
 	Example: `
-  ha addons update core_ssh
+  ha apps update core_ssh
 `,
-	ValidArgsFunction: addonsCompletions,
+	ValidArgsFunction: appsCompletions,
 	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("addons update")
+		log.WithField("args", args).Debug("apps update")
 
 		section := "addons"
 		command := "{slug}/update"
@@ -68,7 +68,7 @@ It is currently not possible to upgrade/downgrade to a specific version.
 }
 
 func init() {
-	addonsUpdateCmd.Flags().Bool("backup", false, "Create partial backup before update")
-	addonsUpdateCmd.RegisterFlagCompletionFunc("backup", boolCompletions)
-	addonsCmd.AddCommand(addonsUpdateCmd)
+	appsUpdateCmd.Flags().Bool("backup", false, "Create partial backup before update")
+	appsUpdateCmd.RegisterFlagCompletionFunc("backup", boolCompletions)
+	appsCmd.AddCommand(appsUpdateCmd)
 }

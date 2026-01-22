@@ -11,7 +11,7 @@ var supervisorCmd = &cobra.Command{
 	Short:   "Monitor, control and configure the Home Assistant Supervisor",
 	Long: `
 The Home Assistant Supervisor is the heart of the Home Assistant system.
-It manages your Home Assistant Core, Operating System, and all the add-ons.
+It manages your Home Assistant Core, Operating System, and all the apps.
 It even manages itself! This series of command give you control over the
 Home Assistant Supervisor.`,
 	Example: `

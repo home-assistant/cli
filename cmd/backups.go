@@ -140,12 +140,12 @@ func backupsLocationsCompletions(cmd *cobra.Command, args []string, toComplete s
 	return ret, cobra.ShellCompDirectiveNoFileComp
 }
 
-func backupsAddonsCompletions(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+func backupsAppsCompletions(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 	if len(args) != 0 {
 		return nil, cobra.ShellCompDirectiveNoFileComp
 	}
-	ret, directive := addonsCompletions(cmd, args, toComplete)
-	ret = append(ret, "ALL\tAll currently installed addons")
+	ret, directive := appsCompletions(cmd, args, toComplete)
+	ret = append(ret, "ALL\tAll currently installed apps")
 	return ret, directive
 }
 

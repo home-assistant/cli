@@ -6,20 +6,20 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var addonsStopCmd = &cobra.Command{
+var appsStopCmd = &cobra.Command{
 	Use:     "stop [slug]",
 	Aliases: []string{"halt", "shutdown", "quit"},
-	Short:   "Manually stop a running Home Assistant add-on",
+	Short:   "Manually stop a running Home Assistant app",
 	Long: `
-This command allows you to manually start a stopped Home Assistant add-on
+This command allows you to manually start a stopped Home Assistant app
 `,
 	Example: `
-  ha addons stop core_ssh
+  ha apps stop core_ssh
 `,
-	ValidArgsFunction: addonsCompletions,
+	ValidArgsFunction: appsCompletions,
 	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("addons stop")
+		log.WithField("args", args).Debug("apps stop")
 
 		section := "addons"
 		command := "{slug}/stop"
@@ -53,5 +53,5 @@ This command allows you to manually start a stopped Home Assistant add-on
 
 func init() {
 
-	addonsCmd.AddCommand(addonsStopCmd)
+	appsCmd.AddCommand(appsStopCmd)
 }
