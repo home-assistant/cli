@@ -132,6 +132,7 @@ type NetworkArg struct {
 	Arg     string
 	ApiKey  string
 	IsArray bool
+	IsInt   bool
 }
 
 func parseNetworkArgs(cmd *cobra.Command, args []NetworkArg) map[string]any {
@@ -144,6 +145,9 @@ func parseNetworkArgs(cmd *cobra.Command, args []NetworkArg) map[string]any {
 		if arg.IsArray {
 			val, err = cmd.Flags().GetStringArray(arg.Arg)
 			changed = len(val.([]string)) > 0
+		} else if arg.IsInt {
+			val, err = cmd.Flags().GetInt(arg.Arg)
+			changed = true
 		} else {
 			val, err = cmd.Flags().GetString(arg.Arg)
 			changed = val.(string) != ""
@@ -164,7 +168,7 @@ func helperIpConfig(version string, cmd *cobra.Command, options map[string]any) 
 		{Arg: version + "-privacy", ApiKey: "ip6_privacy"},
 		{Arg: version + "-address", ApiKey: "address", IsArray: true},
 		{Arg: version + "-nameserver", ApiKey: "nameservers", IsArray: true},
-		{Arg: version + "-route-metric", ApiKey: "route_metric"},
+		{Arg: version + "-route-metric", ApiKey: "route_metric", IsInt: true},
 	}
 
 	ipConfig := parseNetworkArgs(cmd, args)
