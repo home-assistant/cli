@@ -142,12 +142,12 @@ func parseNetworkArgs(cmd *cobra.Command, args []NetworkArg) map[string]any {
 		var err error
 		var changed bool
 
-		if arg.IsArray {
-			val, err = cmd.Flags().GetStringArray(arg.Arg)
-			changed = len(val.([]string)) > 0
-		} else if arg.IsInt {
+		if arg.IsInt {
 			val, err = cmd.Flags().GetInt(arg.Arg)
 			changed = true
+		} else if arg.IsArray {
+			val, err = cmd.Flags().GetStringArray(arg.Arg)
+			changed = len(val.([]string)) > 0
 		} else {
 			val, err = cmd.Flags().GetString(arg.Arg)
 			changed = val.(string) != ""
