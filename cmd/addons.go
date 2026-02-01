@@ -10,12 +10,12 @@ import (
 
 var addonsCmd = &cobra.Command{
 	Use:     "addons",
-	Aliases: []string{"addon", "add-on", "add-ons", "ad"},
-	Short:   "Install, update, remove and configure Home Assistant add-ons",
+	Aliases: []string{"addon", "add-on", "add-ons", "ad", "app", "apps"},
+	Short:   "Install, update, remove and configure Home Assistant apps",
 	Long: `
-The addons command allows you to manage Home Assistant add-ons by exposing
+The addons command allows you to manage Home Assistant apps by exposing
 commands for installing, removing, configure and control them. It also provides
-information commands for add-ons.`,
+information commands for apps.`,
 	Example: `
   ha addons logs core_ssh
   ha addons install core_ssh
