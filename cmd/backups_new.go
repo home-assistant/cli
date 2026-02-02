@@ -44,7 +44,7 @@ backup.`,
 		apps = append(apps, addonsDeprecated...)
 		log.WithField("app", apps).Debug("app")
 
-		if len(apps) != 0 && err == nil && (cmd.Flags().Changed("apps") || cmd.Flags().Changed("addons")) {
+		if len(apps) != 0 && err == nil && (cmd.Flags().Changed("app") || cmd.Flags().Changed("addons")) {
 			options["addons"] = apps
 			command = "new/partial"
 		}
@@ -110,7 +110,7 @@ func init() {
 	backupsNewCmd.RegisterFlagCompletionFunc("name", cobra.NoFileCompletions)
 	backupsNewCmd.RegisterFlagCompletionFunc("password", cobra.NoFileCompletions)
 	backupsNewCmd.RegisterFlagCompletionFunc("uncompressed", boolCompletions)
-	backupsNewCmd.RegisterFlagCompletionFunc("apps", backupsAppsCompletions)
+	backupsNewCmd.RegisterFlagCompletionFunc("app", backupsAppsCompletions)
 	backupsNewCmd.RegisterFlagCompletionFunc("folders", backupsFoldersCompletions)
 	backupsNewCmd.RegisterFlagCompletionFunc("location", backupsLocationsCompletions)
 	backupsNewCmd.RegisterFlagCompletionFunc("homeassistant-exclude-database", boolCompletions)

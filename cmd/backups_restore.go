@@ -109,7 +109,7 @@ func init() {
 
 	backupsRestoreCmd.RegisterFlagCompletionFunc("password", cobra.NoFileCompletions)
 	backupsRestoreCmd.RegisterFlagCompletionFunc("homeassistant", boolCompletions)
-	backupsRestoreCmd.RegisterFlagCompletionFunc("apps", backupsAppsCompletions)
+	backupsRestoreCmd.RegisterFlagCompletionFunc("app", backupsAppsCompletions)
 	backupsRestoreCmd.RegisterFlagCompletionFunc("folders", backupsFoldersCompletions)
 	backupsRestoreCmd.RegisterFlagCompletionFunc("location", backupsLocationsCompletions)
 
