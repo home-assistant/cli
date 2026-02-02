@@ -3,7 +3,7 @@
 ## Project Overview
 This is the official Home Assistant CLI tool written in Go, providing command-line
 interface to interact with the Home Assistant Supervisor. The CLI enables users to
-manage add-ons, control the core system, handle audio/network settings, manage
+manage apps, control the core system, handle audio/network settings, manage
 backups, and perform various system operations.
 
 The CLI is communicating with the Supervisor using the Supervisor's HTTP REST API.
@@ -24,7 +24,7 @@ The CLI is communicating with the Supervisor using the Supervisor's HTTP REST AP
 
 ## Available Commands
 The CLI provides the following main command categories:
-- `addons` - Install, update, remove and configure Home Assistant add-ons
+- `apps` - Install, update, remove and configure Home Assistant apps
 - `audio` - Audio plug-in management
 - `authentication` - Authentication for Home Assistant users
 - `cli` - CLI plug-in management
@@ -78,4 +78,4 @@ The CLI provides the following main command categories:
 6. Create Pull Request
 
 This CLI is designed to work with Home Assistant Supervisor API and is commonly used in
-Home Assistant Operating System environments, SSH add-ons, and development setups.
+Home Assistant Operating System environments, SSH apps, and development setups.

@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"os"
 	"strings"
 
 	helper "github.com/home-assistant/cli/client"
@@ -8,20 +9,28 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var addonsCmd = &cobra.Command{
-	Use:     "addons",
-	Aliases: []string{"addon", "add-on", "add-ons", "ad"},
-	Short:   "Install, update, remove and configure Home Assistant add-ons",
+var appsCmd = &cobra.Command{
+	Use:     "apps",
+	Aliases: []string{"app", "addons", "addon", "add-on", "add-ons", "ad"},
+	Short:   "Install, update, remove and configure Home Assistant apps",
 	Long: `
-The addons command allows you to manage Home Assistant add-ons by exposing
+The apps command allows you to manage Home Assistant apps by exposing
 commands for installing, removing, configure and control them. It also provides
-information commands for add-ons.`,
+information commands for apps.`,
 	Example: `
-  ha addons logs core_ssh
-  ha addons install core_ssh
-  ha addons start core_ssh`,
+  ha apps logs core_ssh
+  ha apps install core_ssh
+  ha apps start core_ssh`,
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		for idx, arg := range os.Args {
+			if idx != 0 && (arg == "addons" || arg == "addon" || arg == "add-on" || arg == "add-ons" || arg == "ad") {
+				cmd.PrintErrf("The use of '%s' is deprecated, please use 'apps' instead!\n", arg)
+			}
+		}
+		rootCmd.PersistentPreRun(cmd, args)
+	},
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("addons")
+		log.WithField("args", args).Debug("apps")
 
 		section := "addons"
 		command := ""
@@ -37,12 +46,12 @@ information commands for add-ons.`,
 }
 
 func init() {
-	log.Debug("Init addons")
+	log.Debug("Init apps")
 
-	rootCmd.AddCommand(addonsCmd)
+	rootCmd.AddCommand(appsCmd)
 }
 
-func addonsCompletions(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+func appsCompletions(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 	if len(args) != 0 {
 		return nil, cobra.ShellCompDirectiveNoFileComp
 	}

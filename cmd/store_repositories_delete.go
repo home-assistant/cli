@@ -11,7 +11,7 @@ var storeRepositoriesDeleteCmd = &cobra.Command{
 	Aliases: []string{"del", "remove"},
 	Short:   "Delete repository from Home Assistant store",
 	Long: `
-Remove a repository of add-ons that isn't in use from the Home Assistant store.
+Remove a repository of apps that isn't in use from the Home Assistant store.
 `,
 	Example: `
 ha store delete 94cfad5a

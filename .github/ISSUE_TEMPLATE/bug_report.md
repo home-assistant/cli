@@ -9,7 +9,7 @@ A clear and concise description of what the bug is.
 
 ## Debug information
 
-1. SSH Addon type
+1. SSH App type
 
 - [ ] Community
 - [ ] Core
@@ -18,8 +18,8 @@ A clear and concise description of what the bug is.
 2. Version of the CLI
 
 CLI Version: 
-Add-on: 
-Add-on version: 
+App:
+App version:
 
 3. Version of Home Assistant Core & the Home Assistant Supervisor
 

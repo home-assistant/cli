@@ -6,25 +6,24 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var addonsInfoCmd = &cobra.Command{
-	Use:     "info [slug]",
-	Aliases: []string{"in", "info"},
-	Short:   "Show information about available Home Assistant add-ons",
+var appsStatsCmd = &cobra.Command{
+	Use:     "stats [slug]",
+	Aliases: []string{"status", "stat"},
+	Short:   "Provides system usage stats of a Home Assistant app",
 	Long: `
-This command can provide information on all available add-ons or, if a slug
-is provided, information about a specific add-on.
+Provides insight into the system usage stats of an app. It shows you
+how much CPU, memory, disk & network resources it uses.
 `,
 	Example: `
-  ha addons info
-  ha addons info core_ssh
+  ha apps stats core_ssh
 `,
-	ValidArgsFunction: addonsCompletions,
-	Args:              cobra.MaximumNArgs(1),
+	ValidArgsFunction: appsCompletions,
+	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("addons info")
+		log.WithField("args", args).Debug("apps stats")
 
 		section := "addons"
-		command := "{slug}/info"
+		command := "{slug}/stats"
 
 		url, err := helper.URLHelper(section, command)
 
@@ -36,10 +35,7 @@ is provided, information about a specific add-on.
 
 		request := helper.GetJSONRequest()
 
-		slug := "self"
-		if len(args) > 0 {
-			slug = args[0]
-		}
+		slug := args[0]
 
 		request.SetPathParams(map[string]string{
 			"slug": slug,
@@ -58,5 +54,5 @@ is provided, information about a specific add-on.
 }
 
 func init() {
-	addonsCmd.AddCommand(addonsInfoCmd)
+	appsCmd.AddCommand(appsStatsCmd)
 }

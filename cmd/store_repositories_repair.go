@@ -11,8 +11,8 @@ var storeRepositoriesRepairCmd = &cobra.Command{
 	Aliases: []string{"reset"},
 	Short:   "Repair/reset repository from Home Assistant store",
 	Long: `
-Repair/reset a repository of add-ons that is missing from store, showing
-incorrect information, or otherwise working incorrectly.
+Repair/reset a repository of apps that is missing from the store,
+showing incorrect information, or otherwise working incorrectly.
 `,
 	Example: `
 ha store repair 94cfad5a
