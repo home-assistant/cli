@@ -97,13 +97,13 @@ take Home Assistant backup on your system.`,
 
 func init() {
 	backupsRestoreCmd.Flags().StringP("password", "", "", "Password")
-	backupsRestoreCmd.Flags().BoolP("homeassistant", "", true, "Restore homeassistant (default true), triggers a partial backup when set to false")
-	backupsRestoreCmd.Flags().StringArrayP("app", "a", []string{}, "App to restore, triggers a partial restore. Use multiple times for multiple apps.")
+	backupsRestoreCmd.Flags().BoolP("homeassistant", "", true, "Restore homeassistant (default true), performs a partial restore when set to false")
+	backupsRestoreCmd.Flags().StringArrayP("app", "a", []string{}, "App to restore, performs a partial restore. Use multiple times for multiple apps.")
 	backupsRestoreCmd.Flags().StringArray("addons", []string{}, "")
 	backupsRestoreCmd.Flags().MarkHidden("addons")
 	backupsRestoreCmd.Flags().MarkDeprecated("addons", "use --app instead")
-	backupsRestoreCmd.Flags().StringArrayP("folders", "f", []string{}, "folders to restore, triggers a partial backup")
-	backupsRestoreCmd.Flags().StringP("location", "l", "", "where to put backup file (backup mount or local)")
+	backupsRestoreCmd.Flags().StringArrayP("folders", "f", []string{}, "Folders to restore, performs a partial restore")
+	backupsRestoreCmd.Flags().StringP("location", "l", "", "Where to put the backup file (backup mount or local)")
 
 	backupsRestoreCmd.Flags().Lookup("location").NoOptDefVal = ".local"
 

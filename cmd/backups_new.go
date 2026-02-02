@@ -93,15 +93,15 @@ backup.`,
 func init() {
 	backupsNewCmd.Flags().StringP("name", "", "", "Name of the backup")
 	backupsNewCmd.Flags().StringP("password", "", "", "Password")
-	backupsNewCmd.Flags().Bool("uncompressed", false, "Use Uncompressed archives")
+	backupsNewCmd.Flags().Bool("uncompressed", false, "Use uncompressed archives")
 	backupsNewCmd.Flags().StringArrayP("app", "a", []string{}, "App to backup, triggers a partial backup. Use multiple times for multiple apps.")
 	backupsNewCmd.Flags().StringArray("addons", []string{}, "")
 	backupsNewCmd.Flags().MarkHidden("addons")
 	backupsNewCmd.Flags().MarkDeprecated("addons", "use --app instead")
-	backupsNewCmd.Flags().StringArrayP("folders", "f", []string{}, "folders to backup, triggers a partial backup")
-	backupsNewCmd.Flags().StringArrayP("location", "l", []string{}, "where to put backup file (backup mount or local), use multiple times for multiple locations.")
+	backupsNewCmd.Flags().StringArrayP("folders", "f", []string{}, "Folders to backup, triggers a partial backup")
+	backupsNewCmd.Flags().StringArrayP("location", "l", []string{}, "Where to put backup file (backup mount or local). Use multiple times for multiple locations.")
 	backupsNewCmd.Flags().Bool("homeassistant-exclude-database", false, "Exclude the Home Assistant database file from backup")
-	backupsNewCmd.Flags().String("filename", "", "name to use for backup file")
+	backupsNewCmd.Flags().String("filename", "", "Name to use for the backup file")
 
 	backupsNewCmd.Flags().Lookup("uncompressed").NoOptDefVal = "false"
 	backupsNewCmd.Flags().Lookup("location").NoOptDefVal = ".local"
