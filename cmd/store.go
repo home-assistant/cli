@@ -14,8 +14,8 @@ var storeCmd = &cobra.Command{
 	Short:   "Install and update Home Assistant apps and manage stores",
 	Long: `
 The store command allows you to manage Home Assistant apps by exposing
-commands for installing or update them. It also provides functionality
-for managing stores that provide later apps.`,
+commands for installing or updating them. It also provides functionality
+for managing stores that provide additional apps.`,
 	Example: `
   ha store apps install core_ssh
   ha store add https://github.com/home-assistant/addons-example

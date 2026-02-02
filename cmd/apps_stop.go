@@ -11,7 +11,7 @@ var appsStopCmd = &cobra.Command{
 	Aliases: []string{"halt", "shutdown", "quit"},
 	Short:   "Manually stop a running Home Assistant app",
 	Long: `
-This command allows you to manually start a stopped Home Assistant app
+This command allows you to manually stop a Home Assistant app
 `,
 	Example: `
   ha apps stop core_ssh
