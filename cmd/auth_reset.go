@@ -36,8 +36,8 @@ func getUsers() ([]User, error) {
 			return nil, err
 		}
 
-		for _, user := range data.Data["users"].([]interface{}) {
-			user := user.(map[string]interface{})
+		for _, user := range data.Data["users"].([]any) {
+			user := user.(map[string]any)
 			result = append(result, User{
 				Username:  user["username"].(string),
 				Name:      user["name"].(string),
