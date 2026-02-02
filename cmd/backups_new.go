@@ -15,7 +15,7 @@ This command can be used to trigger the creation of a new Home Assistant
 backup.`,
 	Example: `
   ha backups new
-  ha backups new --apps core_ssh --apps core_mosquitto
+  ha backups new --app core_ssh --app core_mosquitto
   ha backups new --folders homeassistant
   ha backups new --uncompressed
 `,
@@ -39,10 +39,10 @@ backup.`,
 			options["password"] = password
 		}
 
-		apps, err := cmd.Flags().GetStringArray("apps")
+		apps, err := cmd.Flags().GetStringArray("app")
 		addonsDeprecated, _ := cmd.Flags().GetStringArray("addons")
 		apps = append(apps, addonsDeprecated...)
-		log.WithField("apps", apps).Debug("apps")
+		log.WithField("app", apps).Debug("app")
 
 		if len(apps) != 0 && err == nil && (cmd.Flags().Changed("apps") || cmd.Flags().Changed("addons")) {
 			options["addons"] = apps
@@ -94,10 +94,10 @@ func init() {
 	backupsNewCmd.Flags().StringP("name", "", "", "Name of the backup")
 	backupsNewCmd.Flags().StringP("password", "", "", "Password")
 	backupsNewCmd.Flags().Bool("uncompressed", false, "Use Uncompressed archives")
-	backupsNewCmd.Flags().StringArrayP("apps", "a", []string{}, "apps to backup, triggers a partial backup")
+	backupsNewCmd.Flags().StringArrayP("app", "a", []string{}, "App to backup, triggers a partial backup. Use multiple times for multiple apps.")
 	backupsNewCmd.Flags().StringArray("addons", []string{}, "")
 	backupsNewCmd.Flags().MarkHidden("addons")
-	backupsNewCmd.Flags().MarkDeprecated("addons", "use --apps instead")
+	backupsNewCmd.Flags().MarkDeprecated("addons", "use --app instead")
 	backupsNewCmd.Flags().StringArrayP("folders", "f", []string{}, "folders to backup, triggers a partial backup")
 	backupsNewCmd.Flags().StringArrayP("location", "l", []string{}, "where to put backup file (backup mount or local), use multiple times for multiple locations.")
 	backupsNewCmd.Flags().Bool("homeassistant-exclude-database", false, "Exclude the Home Assistant database file from backup")

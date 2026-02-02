@@ -14,7 +14,7 @@ When something goes wrong, this command allows you to restore a previously
 take Home Assistant backup on your system.`,
 	Example: `
   ha backups restore c1a07617
-  ha backups restore c1a07617 --apps core_ssh --apps core_mosquitto
+  ha backups restore c1a07617 --app core_ssh --app core_mosquitto
   ha backups restore c1a07617 --folders homeassistant`,
 	ValidArgsFunction: backupsCompletions,
 	Args:              cobra.ExactArgs(1),
@@ -45,10 +45,10 @@ take Home Assistant backup on your system.`,
 			command = "restore/partial"
 		}
 
-		apps, err := cmd.Flags().GetStringArray("apps")
+		apps, err := cmd.Flags().GetStringArray("app")
 		addonsDeprecated, _ := cmd.Flags().GetStringArray("addons")
 		apps = append(apps, addonsDeprecated...)
-		log.WithField("apps", apps).Debug("apps")
+		log.WithField("app", apps).Debug("app")
 
 		if len(apps) > 0 && err == nil {
 			options["addons"] = apps
@@ -98,10 +98,10 @@ take Home Assistant backup on your system.`,
 func init() {
 	backupsRestoreCmd.Flags().StringP("password", "", "", "Password")
 	backupsRestoreCmd.Flags().BoolP("homeassistant", "", true, "Restore homeassistant (default true), triggers a partial backup when set to false")
-	backupsRestoreCmd.Flags().StringArrayP("apps", "a", []string{}, "apps to restore, triggers a partial backup")
+	backupsRestoreCmd.Flags().StringArrayP("app", "a", []string{}, "App to restore, triggers a partial restore. Use multiple times for multiple apps.")
 	backupsRestoreCmd.Flags().StringArray("addons", []string{}, "")
 	backupsRestoreCmd.Flags().MarkHidden("addons")
-	backupsRestoreCmd.Flags().MarkDeprecated("addons", "use --apps instead")
+	backupsRestoreCmd.Flags().MarkDeprecated("addons", "use --app instead")
 	backupsRestoreCmd.Flags().StringArrayP("folders", "f", []string{}, "folders to restore, triggers a partial backup")
 	backupsRestoreCmd.Flags().StringP("location", "l", "", "where to put backup file (backup mount or local)")
 
