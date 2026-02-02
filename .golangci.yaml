@@ -4,6 +4,7 @@ linters:
     - dupword
     - gocritic
     - gosec
+    - modernize
     - nolintlint
     - perfsprint
     - prealloc

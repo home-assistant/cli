@@ -45,7 +45,7 @@ of apps. This command allows you to trigger a rebuild of a locally built app.
 		})
 
 		if appsRebuildForce {
-			request.SetBody(map[string]interface{}{
+			request.SetBody(map[string]any{
 				"force": true,
 			})
 		}
