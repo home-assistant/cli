@@ -1,10 +1,10 @@
 package cmd
 
 import (
+	"log/slog"
 	"strings"
 
 	helper "github.com/home-assistant/cli/client"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -22,7 +22,7 @@ Home Assistant Security backend.
 	ValidArgsFunction: cobra.NoFileCompletions,
 	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("security options")
+		slog.Debug("security options", "args", args)
 
 		section := "security"
 		command := "options"

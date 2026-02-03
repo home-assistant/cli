@@ -1,10 +1,10 @@
 package cmd
 
 import (
+	"log/slog"
 	"strings"
 
 	helper "github.com/home-assistant/cli/client"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -21,7 +21,7 @@ Show all values that can be used with the boot arg to find logs.
 	ValidArgsFunction: cobra.NoFileCompletions,
 	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("host logs boots")
+		slog.Debug("host logs boots", "args", args)
 
 		section := "host"
 		command := "logs/boots"

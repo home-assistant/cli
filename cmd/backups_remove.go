@@ -1,8 +1,9 @@
 package cmd
 
 import (
+	"log/slog"
+
 	helper "github.com/home-assistant/cli/client"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -18,7 +19,7 @@ clean backups from disk.`,
 	ValidArgsFunction: backupsCompletions,
 	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("backups remove")
+		slog.Debug("backups remove", "args", args)
 
 		section := "backups"
 		command := "{slug}"
@@ -39,13 +40,13 @@ clean backups from disk.`,
 		})
 
 		location, err := cmd.Flags().GetStringArray("location")
-		log.WithField("location", location).Debug("location")
+		slog.Debug("location", "location", location)
 		if len(location) > 0 && err == nil && cmd.Flags().Changed(("location")) {
 			options["location"] = location
 		}
 
 		if len(options) > 0 {
-			log.WithField("options", options).Debug("Request body")
+			slog.Debug("Request body", "options", options)
 			request.SetBody(options)
 		}
 

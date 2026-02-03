@@ -1,8 +1,9 @@
 package cmd
 
 import (
+	"log/slog"
+
 	helper "github.com/home-assistant/cli/client"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -19,7 +20,7 @@ take Home Assistant backup on your system.`,
 	ValidArgsFunction: backupsCompletions,
 	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("backups restore")
+		slog.Debug("backups restore", "args", args)
 
 		section := "backups/{slug}"
 		command := "restore/full"
@@ -48,7 +49,7 @@ take Home Assistant backup on your system.`,
 		apps, err := cmd.Flags().GetStringArray("app")
 		addonsDeprecated, _ := cmd.Flags().GetStringArray("addons")
 		apps = append(apps, addonsDeprecated...)
-		log.WithField("app", apps).Debug("app")
+		slog.Debug("apps", "apps", apps)
 
 		if len(apps) > 0 && err == nil {
 			options["addons"] = apps
@@ -56,7 +57,7 @@ take Home Assistant backup on your system.`,
 		}
 
 		folders, err := cmd.Flags().GetStringArray("folders")
-		log.WithField("folders", folders).Debug("folders")
+		slog.Debug("folders", "folders", folders)
 
 		if len(folders) > 0 && err == nil {
 			options["folders"] = folders
@@ -76,7 +77,7 @@ take Home Assistant backup on your system.`,
 		}
 
 		if len(options) > 0 {
-			log.WithField("options", options).Debug("Request body")
+			slog.Debug("Request body", "options", options)
 			request.SetBody(options)
 		}
 

@@ -1,8 +1,9 @@
 package cmd
 
 import (
+	"log/slog"
+
 	helper "github.com/home-assistant/cli/client"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -28,7 +29,7 @@ to complete the migration.
 	},
 	Args: cobra.MaximumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("docker migrate-storage-driver")
+		slog.Debug("docker migrate-storage-driver", "args", args)
 
 		section := "docker"
 		command := "migrate-storage-driver"

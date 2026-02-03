@@ -2,10 +2,10 @@ package cmd
 
 import (
 	"fmt"
+	"log/slog"
 
 	"github.com/go-resty/resty/v2"
 	"github.com/home-assistant/cli/client"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -71,7 +71,7 @@ func processLogsFlags(section string, cmd *cobra.Command) (*resty.Request, error
 	lines, _ := cmd.Flags().GetUint32("lines")
 	if lines > 0 {
 		rangeHeader := fmt.Sprintf("entries=:%d:", -(int(lines) - 1))
-		log.WithField("value", rangeHeader).Debug("Range header")
+		slog.Debug("Range header", "value", rangeHeader)
 		request.SetHeader("Range", rangeHeader)
 	}
 

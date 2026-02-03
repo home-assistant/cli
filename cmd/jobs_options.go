@@ -1,8 +1,9 @@
 package cmd
 
 import (
+	"log/slog"
+
 	helper "github.com/home-assistant/cli/client"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -20,7 +21,7 @@ Home Assistant Job Manager.
 	ValidArgsFunction: cobra.NoFileCompletions,
 	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("jobs options")
+		slog.Debug("jobs options", "args", args)
 
 		section := "jobs"
 		command := "options"

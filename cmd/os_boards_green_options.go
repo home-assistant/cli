@@ -1,10 +1,10 @@
 package cmd
 
 import (
+	"log/slog"
 	"strings"
 
 	helper "github.com/home-assistant/cli/client"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -20,7 +20,7 @@ Assistant is running on.`,
 	ValidArgsFunction: cobra.NoFileCompletions,
 	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("os boards green options")
+		slog.Debug("os boards green options", "args", args)
 
 		section := "os"
 		command := "boards/green"

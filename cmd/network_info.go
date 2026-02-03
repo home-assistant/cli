@@ -1,8 +1,9 @@
 package cmd
 
 import (
+	"log/slog"
+
 	helper "github.com/home-assistant/cli/client"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -20,7 +21,7 @@ Shows information about the host network and interfaces or only from a specific 
 	ValidArgsFunction: networkInterfaceCompletions,
 	Args:              cobra.MaximumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("network info")
+		slog.Debug("network info", "args", args)
 
 		section := "network"
 		command := "info"

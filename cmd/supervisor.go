@@ -1,7 +1,8 @@
 package cmd
 
 import (
-	log "github.com/sirupsen/logrus"
+	"log/slog"
+
 	"github.com/spf13/cobra"
 )
 
@@ -21,6 +22,6 @@ Home Assistant Supervisor.`,
 }
 
 func init() {
-	log.Debug("Init supervisor")
+	slog.Debug("Init supervisor")
 	rootCmd.AddCommand(supervisorCmd)
 }

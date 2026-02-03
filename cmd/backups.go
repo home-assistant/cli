@@ -1,11 +1,11 @@
 package cmd
 
 import (
+	"log/slog"
 	"os"
 	"strings"
 
 	helper "github.com/home-assistant/cli/client"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -30,7 +30,7 @@ restore, and delete using this command.`,
 		rootCmd.PersistentPreRun(cmd, args)
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("backups")
+		slog.Debug("backups", "args", args)
 
 		section := "backups"
 		command := "info"
@@ -46,7 +46,7 @@ restore, and delete using this command.`,
 }
 
 func init() {
-	log.Debug("Init backups")
+	slog.Debug("Init backups")
 	// add cmd to root command
 	rootCmd.AddCommand(backupsCmd)
 }

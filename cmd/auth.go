@@ -1,7 +1,8 @@
 package cmd
 
 import (
-	log "github.com/sirupsen/logrus"
+	"log/slog"
+
 	"github.com/spf13/cobra"
 )
 
@@ -18,7 +19,7 @@ The authentication command allows you to manage Home Assistant user accounts.
 }
 
 func init() {
-	log.Debug("Init authentication")
+	slog.Debug("Init authentication")
 
 	rootCmd.AddCommand(authCmd)
 }

@@ -1,7 +1,8 @@
 package cmd
 
 import (
-	log "github.com/sirupsen/logrus"
+	"log/slog"
+
 	"github.com/spf13/cobra"
 )
 
@@ -19,7 +20,7 @@ Set the default input/output audio device of your Home Assistant system.
 }
 
 func init() {
-	log.Debug("Init audio default")
+	slog.Debug("Init audio default")
 
 	audioCmd.AddCommand(audioDefaultCmd)
 }
