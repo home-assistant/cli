@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 
@@ -45,7 +46,7 @@ docker backend running on your Home Assistant system.`,
 				if mtu == 0 {
 					options["mtu"] = nil
 				} else if mtu < 68 || mtu > 65535 {
-					helper.PrintError(fmt.Errorf("MTU value must be between 68 and 65535, or 0 to reset"))
+					helper.PrintError(errors.New("MTU value must be between 68 and 65535, or 0 to reset"))
 					ExitWithError = true
 					return
 				} else {
