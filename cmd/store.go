@@ -1,10 +1,11 @@
 package cmd
 
 import (
+	"log/slog"
+
 	"strings"
 
 	helper "github.com/home-assistant/cli/client"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -22,7 +23,7 @@ for managing stores that provide additional apps.`,
   ha store delete 94cfad5a
   ha store reload`,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("store")
+		slog.Debug("store", "args", args)
 
 		section := "store"
 		command := ""
@@ -38,7 +39,7 @@ for managing stores that provide additional apps.`,
 }
 
 func init() {
-	log.Debug("Init store")
+	slog.Debug("Init store")
 
 	rootCmd.AddCommand(storeCmd)
 }

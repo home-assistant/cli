@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log/slog"
 	"net/url"
 	"os"
 	"os/signal"
@@ -18,7 +19,6 @@ import (
 
 	yaml "github.com/ghodss/yaml"
 	resty "github.com/go-resty/resty/v2"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 
 	"strings"
@@ -43,11 +43,7 @@ type Response struct {
 // URLHelper returns a URL built from the arguments
 func URLHelper(section, command string) (string, error) {
 	base := viper.GetString("endpoint")
-	log.WithFields(log.Fields{
-		"base":    base,
-		"section": section,
-		"command": command,
-	}).Debug("[GenerateURI]")
+	slog.Debug("[GenerateURI]", "base", base, "section", section, "command", command)
 
 	scheme := ""
 	if !strings.Contains(base, "://") {
@@ -69,11 +65,7 @@ func URLHelper(section, command string) (string, error) {
 	myurl.Path = path.Clean(myurl.Path)
 
 	res, _ := url.PathUnescape(myurl.String())
-	log.WithFields(log.Fields{
-		"uri":         uri,
-		"url":         myurl,
-		"url(string)": res,
-	}).Debug("[GenerateURI] Result")
+	slog.Debug("[GenerateURI] Result", "uri", uri, "url", myurl, "url(string)", res)
 	return res, nil
 }
 
@@ -108,15 +100,7 @@ func GetRequestTimeout(timeout time.Duration) *resty.Request {
 		// Registering Response Middleware
 		client.OnAfterResponse(func(c *resty.Client, resp *resty.Response) error {
 			// explore response object
-			log.WithFields(log.Fields{
-				"statuscode":  resp.StatusCode(),
-				"status":      resp.Status(),
-				"time":        resp.Time(),
-				"received-at": resp.ReceivedAt(),
-				"headers":     resp.Header(),
-				"request":     resp.Request.RawRequest,
-				"body":        resp,
-			}).Debug("Response")
+			slog.Debug("Response", "statuscode", resp.StatusCode(), "status", resp.Status(), "time", resp.Time(), "received-at", resp.ReceivedAt(), "headers", resp.Header(), "request", resp.Request.RawRequest, "body", resp)
 
 			return nil // if its success otherwise return error
 		})

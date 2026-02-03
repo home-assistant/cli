@@ -2,10 +2,10 @@ package cmd
 
 import (
 	"fmt"
+	"log/slog"
 	"strconv"
 
 	helper "github.com/home-assistant/cli/client"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -20,7 +20,7 @@ This command allows you to override how the Home Assistant OS uses swap.`,
 	ValidArgsFunction: cobra.NoFileCompletions,
 	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("os config swap options")
+		slog.Debug("os config swap options", "args", args)
 
 		section := "os"
 		command := "config/swap"

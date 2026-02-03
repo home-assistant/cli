@@ -1,8 +1,9 @@
 package cmd
 
 import (
+	"log/slog"
+
 	helper "github.com/home-assistant/cli/client"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -19,7 +20,7 @@ This command allows you to manually stop a Home Assistant app
 	ValidArgsFunction: appsCompletions,
 	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("apps stop")
+		slog.Debug("apps stop", "args", args)
 
 		section := "addons"
 		command := "{slug}/stop"

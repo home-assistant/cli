@@ -2,10 +2,10 @@ package cmd
 
 import (
 	"fmt"
+	"log/slog"
 	"strings"
 
 	helper "github.com/home-assistant/cli/client"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 )
@@ -23,7 +23,7 @@ docker backend running on your Home Assistant system.`,
 	ValidArgsFunction: cobra.NoFileCompletions,
 	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("docker options")
+		slog.Debug("docker options", "args", args)
 
 		section := "docker"
 		command := "options"

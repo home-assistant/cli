@@ -1,8 +1,9 @@
 package cmd
 
 import (
+	"log/slog"
+
 	helper "github.com/home-assistant/cli/client"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -21,7 +22,7 @@ an OS update without making more changes to the system.
 	ValidArgsFunction: osBootSlotCompletions,
 	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("os boot-slot")
+		slog.Debug("os boot-slot", "args", args)
 
 		section := "os"
 		command := "boot-slot"

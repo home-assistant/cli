@@ -1,8 +1,9 @@
 package cmd
 
 import (
+	"log/slog"
+
 	helper "github.com/home-assistant/cli/client"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -17,7 +18,7 @@ Restart the Supervisor internal, this can solve healthy issues.`,
 	ValidArgsFunction: cobra.NoFileCompletions,
 	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("supervisor restart")
+		slog.Debug("supervisor restart", "args", args)
 
 		section := "supervisor"
 		command := "restart"

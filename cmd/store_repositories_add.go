@@ -1,8 +1,9 @@
 package cmd
 
 import (
+	"log/slog"
+
 	helper "github.com/home-assistant/cli/client"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -19,7 +20,7 @@ ha store add https://github.com/home-assistant/addons-example
 	ValidArgsFunction: cobra.NoFileCompletions,
 	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("store add")
+		slog.Debug("store add", "args", args)
 
 		section := "store"
 		command := "repositories"
@@ -39,7 +40,7 @@ ha store add https://github.com/home-assistant/addons-example
 		options["repository"] = repository
 
 		if len(options) > 0 {
-			log.WithField("options", options).Debug("Request body")
+			slog.Debug("Request body", "options", options)
 			request.SetBody(options)
 		}
 

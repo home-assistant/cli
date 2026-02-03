@@ -1,8 +1,9 @@
 package cmd
 
 import (
+	"log/slog"
+
 	helper "github.com/home-assistant/cli/client"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -17,7 +18,7 @@ This command returns suggestions which resolve an issue when applied.`,
 	ValidArgsFunction: resolutionIssueCompletions,
 	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("issue suggestions")
+		slog.Debug("issue suggestions", "args", args)
 
 		section := "resolution"
 		command := "issue/{issue}/suggestions"

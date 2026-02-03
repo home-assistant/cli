@@ -1,7 +1,8 @@
 package cmd
 
 import (
-	log "github.com/sirupsen/logrus"
+	"log/slog"
+
 	"github.com/spf13/cobra"
 )
 
@@ -19,7 +20,7 @@ audio devices and serial ports.`,
 }
 
 func init() {
-	log.Debug("Init hardware")
+	slog.Debug("Init hardware")
 
 	// add cmd to root command
 	rootCmd.AddCommand(hardwareCmd)
