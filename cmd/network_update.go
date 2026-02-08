@@ -91,6 +91,7 @@ func init() {
 	networkUpdateCmd.Flags().String("wifi-ssid", "", "SSID for wifi connection")
 	networkUpdateCmd.Flags().String("wifi-auth", "", "Used authentication: open, wep, wpa-psk")
 	networkUpdateCmd.Flags().String("wifi-psk", "", "Shared authentication key for wep or wpa")
+	networkUpdateCmd.Flags().Int("wifi-powersave", -1, "WiFi powersave mode: 0=default, 1=ignore, 2=disable, 3=enable")
 
 	networkUpdateCmd.Flags().BoolP("disabled", "e", false, "Disable interface")
 
@@ -119,6 +120,9 @@ func init() {
 		return []string{"open", "wep", "wpa-psk"}, cobra.ShellCompDirectiveNoFileComp
 	})
 	networkUpdateCmd.RegisterFlagCompletionFunc("wifi-psk", cobra.NoFileCompletions)
+	networkUpdateCmd.RegisterFlagCompletionFunc("wifi-powersave", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		return []string{"0\tdefault", "1\tignore", "2\tdisable", "3\tenable"}, cobra.ShellCompDirectiveNoFileComp
+	})
 
 	networkUpdateCmd.RegisterFlagCompletionFunc("disabled", boolCompletions)
 
@@ -184,6 +188,7 @@ func helperWifiConfig(cmd *cobra.Command, options map[string]any) {
 		{Arg: "wifi-ssid", ApiKey: "ssid"},
 		{Arg: "wifi-auth", ApiKey: "auth"},
 		{Arg: "wifi-psk", ApiKey: "psk"},
+		{Arg: "wifi-powersave", ApiKey: "powersave", IsInt: true},
 	}
 
 	wifiConfig := parseNetworkArgs(cmd, args)
