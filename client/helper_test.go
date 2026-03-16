@@ -24,6 +24,8 @@ var urlTests = []struct {
 	{"supervisor", "section/../othersection", "", "http://supervisor/othersection"},
 	{"supervisor/api/", "section", "command", "http://supervisor/api/section/command"},
 	{"supervisor/api/", "section", "{slug}/command", "http://supervisor/api/section/{slug}/command"},
+	{"supervisor", "core/api/services/automation", "reload", "http://supervisor/core/api/services/automation/reload"},
+	{"supervisor", "core/api/services/homeassistant", "reload_all", "http://supervisor/core/api/services/homeassistant/reload_all"},
 }
 
 func TestURLHelper(t *testing.T) {
