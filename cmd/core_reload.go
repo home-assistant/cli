@@ -3,11 +3,16 @@ package cmd
 import (
 	"fmt"
 	"net/http"
+	"regexp"
 
 	helper "github.com/home-assistant/cli/client"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
+
+// componentNamePattern restricts component to safe values: letters, numbers, underscore, hyphen only.
+// Rejects path separators (/ \), traversal tokens (. ..), and other unsafe characters.
+var componentNamePattern = regexp.MustCompile(`^[A-Za-z0-9_-]+$`)
 
 var coreReloadCmd = &cobra.Command{
 	Use:     "reload",
@@ -32,6 +37,12 @@ Without --component, reloads the core configuration.`,
 
 		var section, command string
 		if component != "" {
+			if !componentNamePattern.MatchString(component) {
+				helper.PrintErrorString(fmt.Sprintf(
+					"invalid component %q: must contain only letters, numbers, underscores, and hyphens", component))
+				ExitWithError = true
+				return
+			}
 			section = "core/api/services/" + component
 			command = "reload"
 		} else {
