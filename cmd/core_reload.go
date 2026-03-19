@@ -65,7 +65,7 @@ Without --component, reloads the core configuration.`,
 		}
 
 		if resp.StatusCode() != http.StatusOK {
-			if component != "" && resp.StatusCode() == http.StatusBadRequest {
+			if component != "" && resp.StatusCode() >= http.StatusBadRequest && resp.StatusCode() < http.StatusInternalServerError {
 				helper.PrintErrorString(fmt.Sprintf(
 					"component %q not found or does not support reload", component))
 			} else {
