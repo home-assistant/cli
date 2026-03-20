@@ -165,7 +165,7 @@ func helperIpConfig(version string, cmd *cobra.Command, options map[string]any) 
 	args := []NetworkArg{
 		{Arg: version + "-gateway", ApiKey: "gateway"},
 		{Arg: version + "-method", ApiKey: "method"},
-		{Arg: version + "-addr-gen-mode", ApiKey: "addr_gen_mode"},
+		{Arg: version + "-addr-gen-mode", ApiKey: "addr_gen_mode"}, // #nosec G101 -- not a credential, ApiKey is a field name for the network config API
 		{Arg: version + "-privacy", ApiKey: "ip6_privacy"},
 		{Arg: version + "-address", ApiKey: "address", IsArray: true},
 		{Arg: version + "-nameserver", ApiKey: "nameservers", IsArray: true},
