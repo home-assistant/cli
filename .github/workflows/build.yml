@@ -18,10 +18,7 @@ jobs:
     strategy:
       matrix:
         variant:
-          - {"name": "ha_i386", "args": "GOARCH=386"}
           - {"name": "ha_amd64", "args": "GOARCH=amd64"}
-          - {"name": "ha_armhf", "args": "GOARM=6 GOARCH=arm"}
-          - {"name": "ha_armv7", "args": "GOARM=7 GOARCH=arm"}
           - {"name": "ha_aarch64", "args": "GOARCH=arm64"}
     steps:
     - name: Checkout the repository
