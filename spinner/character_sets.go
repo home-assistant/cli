@@ -26,7 +26,7 @@ var CharSets = map[int][]string{
 }
 
 func init() {
-	for i := rune(0); i < 12; i++ {
+	for i := range rune(12) {
 		CharSets[37] = append(CharSets[37], string([]rune{clockOneOClock + i}))
 		CharSets[38] = append(CharSets[38], string([]rune{clockOneOClock + i}), string([]rune{clockOneThirty + i}))
 	}

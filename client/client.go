@@ -1,12 +1,13 @@
 package client
 
 import (
+	"errors"
 	"fmt"
+	"log/slog"
 	"net/http"
 	"time"
 
 	resty "github.com/go-resty/resty/v2"
-	log "github.com/sirupsen/logrus"
 )
 
 // RawJSON controls if the client does json handling or outputs it raw
@@ -28,19 +29,19 @@ func GenericJSONErrorHandling(resp *resty.Response, err error) (*resty.Response,
 		}
 	case http.StatusInternalServerError:
 		if !resty.IsJSONType(resp.Header().Get("Content-Type")) {
-			return nil, fmt.Errorf("unknown error occurred, check supervisor logs with 'ha supervisor logs'")
+			return nil, errors.New("unknown error occurred, check supervisor logs with 'ha supervisor logs'")
 		}
 	case http.StatusUnauthorized:
 		if !resty.IsJSONType(resp.Header().Get("Content-Type")) {
-			return nil, fmt.Errorf("unauthorized: missing or invalid API token")
+			return nil, errors.New("unauthorized: missing or invalid API token")
 		}
 	case http.StatusForbidden:
 		// Handle both JSON and plain text forbidden responses
 		if !resty.IsJSONType(resp.Header().Get("Content-Type")) {
-			return nil, fmt.Errorf("forbidden: insufficient permissions or invalid token")
+			return nil, errors.New("forbidden: insufficient permissions or invalid token")
 		}
 	case http.StatusBadGateway:
-		return nil, fmt.Errorf("bad gateway: core proxy or ingress service failure")
+		return nil, errors.New("bad gateway: core proxy or ingress service failure")
 	default:
 		return nil, fmt.Errorf("unexpected server response (status: %d)", resp.StatusCode())
 	}
@@ -61,7 +62,7 @@ func genericJSONMethod(get bool, section, command string, body map[string]any, t
 		resp, err = request.Get(url)
 	} else {
 		if len(body) > 0 {
-			log.WithField("body", body).Debug("Request body")
+			slog.Debug("Request body", "body", body)
 			request.SetBody(body)
 		}
 		resp, err = request.Post(url)

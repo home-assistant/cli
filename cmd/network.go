@@ -1,8 +1,9 @@
 package cmd
 
 import (
+	"log/slog"
+
 	helper "github.com/home-assistant/cli/client"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -20,7 +21,7 @@ system network IP address, set connection options or join a Wi-Fi network.`,
 }
 
 func init() {
-	log.Debug("Init network")
+	slog.Debug("Init network")
 	rootCmd.AddCommand(networkCmd)
 }
 

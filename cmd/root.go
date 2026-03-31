@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"log/slog"
 	"os"
 	"path"
 	"strings"
@@ -10,7 +11,6 @@ import (
 	helper "github.com/home-assistant/cli/client"
 	"github.com/home-assistant/cli/spinner"
 	homedir "github.com/mitchellh/go-homedir"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"golang.org/x/term"
@@ -37,10 +37,9 @@ The Home Assistant CLI is a small and simple command line utility that allows
 you to control and configure different aspects of Home Assistant`,
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		// set loglevel if possible
-		logrusLevel, err := log.ParseLevel(viper.GetString("log-level"))
-
-		if err == nil {
-			log.SetLevel(logrusLevel)
+		var level slog.Level
+		if level.UnmarshalText([]byte(viper.GetString("log-level"))) == nil {
+			slog.SetLogLoggerLevel(level)
 		}
 
 		helper.RawJSON = viper.GetBool("raw-json")
@@ -51,14 +50,14 @@ you to control and configure different aspects of Home Assistant`,
 			ProgressSpinner.Writer = os.Stderr
 		}
 
-		log.WithFields(log.Fields{
-			"apiToken":   viper.GetString("api-token"),
-			"cfgFile":    viper.GetString("config"),
-			"endpoint":   viper.GetString("endpoint"),
-			"logLevel":   viper.GetString("log-level"),
-			"noProgress": viper.GetBool("no-progress"),
-			"rawJSON":    viper.GetBool("raw-json"),
-		}).Debugln("Debug flags")
+		slog.Debug("Debug flags",
+			"apiToken", viper.GetString("api-token"),
+			"cfgFile", viper.GetString("config"),
+			"endpoint", viper.GetString("endpoint"),
+			"logLevel", viper.GetString("log-level"),
+			"noProgress", viper.GetBool("no-progress"),
+			"rawJSON", viper.GetBool("raw-json"),
+		)
 	},
 	PersistentPostRun: func(cmd *cobra.Command, args []string) {
 		if ProgressSpinner.Active() {
@@ -81,18 +80,19 @@ func init() {
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "Optional config file (default is $HOME/.homeassistant.yaml)")
 	rootCmd.PersistentFlags().StringVar(&endPoint, "endpoint", "", "Endpoint for Home Assistant Supervisor (default is 'supervisor')")
-	rootCmd.PersistentFlags().StringVar(&logLevel, "log-level", "", "Log level (defaults to Warn)")
+	rootCmd.PersistentFlags().StringVar(&logLevel, "log-level", "", "Log level (defaults to "+slog.LevelWarn.String()+")")
 	rootCmd.PersistentFlags().StringVar(&apiToken, "api-token", "", "Home Assistant Supervisor API token")
 	rootCmd.PersistentFlags().BoolVar(&rawJSON, "raw-json", false, "Output raw JSON from the API")
 	rootCmd.PersistentFlags().BoolVar(&noProgress, "no-progress", false, "Disable the progress spinner")
 
 	rootCmd.RegisterFlagCompletionFunc("endpoint", cobra.NoFileCompletions)
 	rootCmd.RegisterFlagCompletionFunc("log-level", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
-		vals := make([]string, 0, len(log.AllLevels))
-		for _, lvl := range log.AllLevels {
-			vals = append(vals, lvl.String())
-		}
-		return vals, cobra.ShellCompDirectiveNoFileComp
+		return []string{
+			slog.LevelDebug.String(),
+			slog.LevelInfo.String(),
+			slog.LevelWarn.String(),
+			slog.LevelError.String(),
+		}, cobra.ShellCompDirectiveNoFileComp
 	})
 	rootCmd.RegisterFlagCompletionFunc("api-token", cobra.NoFileCompletions)
 	rootCmd.RegisterFlagCompletionFunc("raw-json", boolCompletions)
@@ -125,10 +125,9 @@ func initConfig() {
 	viper.BindEnv("api-token", "SUPERVISOR_TOKEN")
 
 	// set loglevel if possible
-	logLevel, err := log.ParseLevel(viper.GetString("log-level"))
-
-	if err == nil {
-		log.SetLevel(logLevel)
+	var level slog.Level
+	if level.UnmarshalText([]byte(viper.GetString("log-level"))) == nil {
+		slog.SetLogLoggerLevel(level)
 	}
 
 	if cfgFile != "" {
@@ -144,15 +143,15 @@ func initConfig() {
 
 		// Search config in home directory with name ".homeassistant" (without extension).
 		viper.AddConfigPath(home)
-		log.WithField("homedir", home).Debug("Adding homedir to searchpath")
+		slog.Debug("Adding homedir to searchpath", "homedir", home)
 		viper.SetConfigName(".homeassistant")
 	}
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
-		log.WithField("configfile", viper.ConfigFileUsed()).Info("Using configfile")
+		slog.Info("Using configfile", "configfile", viper.ConfigFileUsed())
 	} else {
-		log.Info("No configfile found")
+		slog.Info("No configfile found")
 	}
 }
 

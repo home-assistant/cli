@@ -1,15 +1,15 @@
 package main
 
 import (
+	"log/slog"
 	"os"
 
 	"github.com/home-assistant/cli/cmd"
-	log "github.com/sirupsen/logrus"
 )
 
 func main() {
 	// Only log the warning severity or above.
-	log.SetLevel(log.WarnLevel)
+	slog.SetLogLoggerLevel(slog.LevelWarn)
 	defer func() {
 		if cmd.ExitWithError {
 			os.Exit(1)

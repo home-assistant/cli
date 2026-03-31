@@ -20,7 +20,7 @@ The CLI is communicating with the Supervisor using the Supervisor's HTTP REST AP
 - **CLI Framework**: Cobra (github.com/spf13/cobra)
 - **HTTP Client**: Resty (github.com/go-resty/resty/v2)
 - **Configuration**: Viper (github.com/spf13/viper)
-- **Logging**: Logrus (github.com/sirupsen/logrus)
+- **Logging**: Go stdlib log/slog
 
 ## Available Commands
 The CLI provides the following main command categories:
@@ -62,7 +62,7 @@ The CLI provides the following main command categories:
 - Uses Cobra for command structure and flag parsing
 - Resty for HTTP API calls to Home Assistant Supervisor
 - Viper for configuration management
-- Logrus for structured logging
+- Go stdlib log/slog for structured logging
 - Custom spinner implementation for progress indication
 
 ## Testing

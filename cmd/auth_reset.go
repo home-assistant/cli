@@ -2,9 +2,9 @@ package cmd
 
 import (
 	"fmt"
+	"log/slog"
 
 	helper "github.com/home-assistant/cli/client"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -36,8 +36,8 @@ func getUsers() ([]User, error) {
 			return nil, err
 		}
 
-		for _, user := range data.Data["users"].([]interface{}) {
-			user := user.(map[string]interface{})
+		for _, user := range data.Data["users"].([]any) {
+			user := user.(map[string]any)
 			result = append(result, User{
 				Username:  user["username"].(string),
 				Name:      user["name"].(string),
@@ -78,7 +78,7 @@ only work on some locations. For example, the Operating System CLI.
 	ValidArgsFunction: cobra.NoFileCompletions,
 	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("auth reset")
+		slog.Debug("auth reset", "args", args)
 
 		section := "auth"
 		command := "reset"

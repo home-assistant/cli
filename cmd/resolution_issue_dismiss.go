@@ -1,8 +1,9 @@
 package cmd
 
 import (
+	"log/slog"
+
 	helper "github.com/home-assistant/cli/client"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -17,7 +18,7 @@ This command allows dismissing issues reported by the system.`,
 	ValidArgsFunction: resolutionIssueCompletions,
 	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("issue dismiss")
+		slog.Debug("issue dismiss", "args", args)
 
 		section := "resolution"
 		command := "issue/{issue}"

@@ -1,8 +1,9 @@
 package cmd
 
 import (
+	"log/slog"
+
 	helper "github.com/home-assistant/cli/client"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -20,7 +21,7 @@ This function works only on a wireless interface!
 	ValidArgsFunction: networkInterfaceCompletions,
 	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("network scan")
+		slog.Debug("network scan", "args", args)
 
 		section := "network"
 		command := "interface/{interface}/accesspoints"

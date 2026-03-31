@@ -1,8 +1,9 @@
 package cmd
 
 import (
+	"log/slog"
+
 	helper "github.com/home-assistant/cli/client"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -17,7 +18,7 @@ This command allows to apply options to an specific check managed by the system.
 	ValidArgsFunction: resolutionCheckCompletions,
 	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("check options")
+		slog.Debug("check options", "args", args)
 
 		section := "resolution"
 		command := "check/{check}/options"
@@ -44,7 +45,7 @@ This command allows to apply options to an specific check managed by the system.
 		}
 
 		if len(options) > 0 {
-			log.WithField("options", options).Debug("Request body")
+			slog.Debug("Request body", "options", options)
 			request.SetBody(options)
 		}
 		resp, err := request.Post(url)

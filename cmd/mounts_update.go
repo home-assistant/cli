@@ -1,8 +1,9 @@
 package cmd
 
 import (
+	"log/slog"
+
 	helper "github.com/home-assistant/cli/client"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -19,7 +20,7 @@ Update or change the configuration of an existing mount in Supervisor.
 	ValidArgsFunction: mountsCompletions,
 	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("mounts update")
+		slog.Debug("mounts update", "args", args)
 
 		section := "mounts"
 		command := "{name}"
@@ -42,7 +43,7 @@ Update or change the configuration of an existing mount in Supervisor.
 		mountFlagsToOptions(cmd, options)
 
 		if len(options) > 0 {
-			log.WithField("options", options).Debug("Request body")
+			slog.Debug("Request body", "options", options)
 			request.SetBody(options)
 		}
 

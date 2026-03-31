@@ -1,8 +1,9 @@
 package cmd
 
 import (
+	"log/slog"
+
 	helper "github.com/home-assistant/cli/client"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -19,7 +20,7 @@ Update network interface settings of a specific adapter.
 	ValidArgsFunction: networkInterfaceCompletions,
 	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("network update")
+		slog.Debug("network update", "args", args)
 
 		section := "network"
 		command := "interface/{interface}/update"
@@ -56,7 +57,7 @@ Update network interface settings of a specific adapter.
 			options["enabled"] = !disabled
 		}
 
-		log.WithField("options", options).Debug("Request body")
+		slog.Debug("Request body", "options", options)
 		request.SetBody(options)
 
 		resp, err := request.Post(url)
@@ -130,7 +131,7 @@ func init() {
 
 type NetworkArg struct {
 	Arg     string
-	ApiKey  string
+	Field   string
 	IsArray bool
 	IsInt   bool
 }
@@ -155,7 +156,7 @@ func parseNetworkArgs(cmd *cobra.Command, args []NetworkArg) map[string]any {
 		}
 
 		if err == nil && changed && cmd.Flags().Changed(arg.Arg) {
-			networkConfig[arg.ApiKey] = val
+			networkConfig[arg.Field] = val
 		}
 	}
 	return networkConfig
@@ -163,13 +164,13 @@ func parseNetworkArgs(cmd *cobra.Command, args []NetworkArg) map[string]any {
 
 func helperIpConfig(version string, cmd *cobra.Command, options map[string]any) {
 	args := []NetworkArg{
-		{Arg: version + "-gateway", ApiKey: "gateway"},
-		{Arg: version + "-method", ApiKey: "method"},
-		{Arg: version + "-addr-gen-mode", ApiKey: "addr_gen_mode"},
-		{Arg: version + "-privacy", ApiKey: "ip6_privacy"},
-		{Arg: version + "-address", ApiKey: "address", IsArray: true},
-		{Arg: version + "-nameserver", ApiKey: "nameservers", IsArray: true},
-		{Arg: version + "-route-metric", ApiKey: "route_metric", IsInt: true},
+		{Arg: version + "-gateway", Field: "gateway"},
+		{Arg: version + "-method", Field: "method"},
+		{Arg: version + "-addr-gen-mode", Field: "addr_gen_mode"},
+		{Arg: version + "-privacy", Field: "ip6_privacy"},
+		{Arg: version + "-address", Field: "address", IsArray: true},
+		{Arg: version + "-nameserver", Field: "nameservers", IsArray: true},
+		{Arg: version + "-route-metric", Field: "route_metric", IsInt: true},
 	}
 
 	ipConfig := parseNetworkArgs(cmd, args)
@@ -180,10 +181,10 @@ func helperIpConfig(version string, cmd *cobra.Command, options map[string]any) 
 
 func helperWifiConfig(cmd *cobra.Command, options map[string]any) {
 	args := []NetworkArg{
-		{Arg: "wifi-mode", ApiKey: "mode"},
-		{Arg: "wifi-ssid", ApiKey: "ssid"},
-		{Arg: "wifi-auth", ApiKey: "auth"},
-		{Arg: "wifi-psk", ApiKey: "psk"},
+		{Arg: "wifi-mode", Field: "mode"},
+		{Arg: "wifi-ssid", Field: "ssid"},
+		{Arg: "wifi-auth", Field: "auth"},
+		{Arg: "wifi-psk", Field: "psk"},
 	}
 
 	wifiConfig := parseNetworkArgs(cmd, args)

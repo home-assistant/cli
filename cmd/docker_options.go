@@ -1,11 +1,12 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
+	"log/slog"
 	"strings"
 
 	helper "github.com/home-assistant/cli/client"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 )
@@ -23,7 +24,7 @@ docker backend running on your Home Assistant system.`,
 	ValidArgsFunction: cobra.NoFileCompletions,
 	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("docker options")
+		slog.Debug("docker options", "args", args)
 
 		section := "docker"
 		command := "options"
@@ -45,7 +46,7 @@ docker backend running on your Home Assistant system.`,
 				if mtu == 0 {
 					options["mtu"] = nil
 				} else if mtu < 68 || mtu > 65535 {
-					helper.PrintError(fmt.Errorf("MTU value must be between 68 and 65535, or 0 to reset"))
+					helper.PrintError(errors.New("MTU value must be between 68 and 65535, or 0 to reset"))
 					ExitWithError = true
 					return
 				} else {

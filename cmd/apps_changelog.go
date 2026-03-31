@@ -3,9 +3,9 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"log/slog"
 
 	helper "github.com/home-assistant/cli/client"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -22,7 +22,7 @@ ha apps changelog core_mosquitto`,
 	ValidArgsFunction: appsCompletions,
 	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("apps changelog")
+		slog.Debug("apps changelog", "args", args)
 
 		section := "addons"
 		command := "{slug}/changelog"
@@ -48,7 +48,7 @@ ha apps changelog core_mosquitto`,
 		// returns 200 OK or 400, everything else is wrong
 		if err == nil && resp.StatusCode() != 200 && resp.StatusCode() != 400 {
 			err = errors.New("unexpected server response")
-			log.Error(err)
+			slog.Error("unexpected server response", "status", resp.StatusCode())
 		}
 
 		if err != nil {
