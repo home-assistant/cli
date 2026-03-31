@@ -1,9 +1,9 @@
 package cmd
 
 import (
+	"log/slog"
 	"strconv"
 
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -23,7 +23,7 @@ Control the volume of your audio devices.
 }
 
 func init() {
-	log.Debug("Init audio volume")
+	slog.Debug("Init audio volume")
 
 	audioCmd.AddCommand(audioVolumeCmd)
 }

@@ -1,11 +1,11 @@
 package cmd
 
 import (
+	"log/slog"
 	"os"
 	"strings"
 
 	helper "github.com/home-assistant/cli/client"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -28,7 +28,7 @@ commands for installing or update them.`,
 		rootCmd.PersistentPreRun(cmd, args)
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("store apps")
+		slog.Debug("store apps", "args", args)
 
 		section := "store"
 		command := "addons"

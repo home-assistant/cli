@@ -1,8 +1,9 @@
 package cmd
 
 import (
+	"log/slog"
+
 	helper "github.com/home-assistant/cli/client"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -20,7 +21,7 @@ It is currently not possible to upgrade/downgrade to a specific version.
 	ValidArgsFunction: appsCompletions,
 	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("apps update")
+		slog.Debug("apps update", "args", args)
 
 		section := "addons"
 		command := "{slug}/update"
@@ -51,7 +52,7 @@ It is currently not possible to upgrade/downgrade to a specific version.
 		}
 
 		if len(options) > 0 {
-			log.WithField("options", options).Debug("Request body")
+			slog.Debug("Request body", "options", options)
 			request.SetBody(options)
 		}
 

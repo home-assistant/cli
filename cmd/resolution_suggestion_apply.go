@@ -1,8 +1,9 @@
 package cmd
 
 import (
+	"log/slog"
+
 	helper "github.com/home-assistant/cli/client"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -17,7 +18,7 @@ This command allow to apply an suggestion reported by the System.`,
 	ValidArgsFunction: resolutionSuggestionCompletions,
 	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("suggestion dismiss")
+		slog.Debug("suggestion apply", "args", args)
 
 		section := "resolution"
 		command := "suggestion/{suggestion}"

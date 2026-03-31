@@ -1,8 +1,9 @@
 package cmd
 
 import (
+	"log/slog"
+
 	helper "github.com/home-assistant/cli/client"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -20,7 +21,7 @@ running Home Assistant DNS server.
 	ValidArgsFunction: cobra.NoFileCompletions,
 	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("dns options")
+		slog.Debug("dns options", "args", args)
 
 		section := "dns"
 		command := "options"
@@ -28,7 +29,7 @@ running Home Assistant DNS server.
 		options := make(map[string]any)
 
 		servers, err := cmd.Flags().GetStringArray("servers")
-		log.WithField("servers", servers).Debug("servers")
+		slog.Debug("servers", "servers", servers)
 
 		if len(servers) >= 1 && err == nil {
 			options["servers"] = servers

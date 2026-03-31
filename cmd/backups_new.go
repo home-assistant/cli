@@ -1,8 +1,9 @@
 package cmd
 
 import (
+	"log/slog"
+
 	helper "github.com/home-assistant/cli/client"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -22,7 +23,7 @@ backup.`,
 	ValidArgsFunction: cobra.NoFileCompletions,
 	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("backups new")
+		slog.Debug("backups new", "args", args)
 
 		section := "backups"
 		command := "new/full"
@@ -42,7 +43,7 @@ backup.`,
 		apps, err := cmd.Flags().GetStringArray("app")
 		addonsDeprecated, _ := cmd.Flags().GetStringArray("addons")
 		apps = append(apps, addonsDeprecated...)
-		log.WithField("app", apps).Debug("app")
+		slog.Debug("apps", "apps", apps)
 
 		if len(apps) != 0 && err == nil && (cmd.Flags().Changed("app") || cmd.Flags().Changed("addons")) {
 			options["addons"] = apps
@@ -50,7 +51,7 @@ backup.`,
 		}
 
 		folders, err := cmd.Flags().GetStringArray("folders")
-		log.WithField("folders", folders).Debug("folders")
+		slog.Debug("folders", "folders", folders)
 
 		if len(folders) != 0 && err == nil && cmd.Flags().Changed("folders") {
 			options["folders"] = folders
@@ -62,13 +63,13 @@ backup.`,
 		}
 
 		location, err := cmd.Flags().GetStringArray("location")
-		log.WithField("location", location).Debug("location")
+		slog.Debug("location", "location", location)
 		if len(location) > 0 && err == nil && cmd.Flags().Changed("location") {
 			options["location"] = location
 		}
 
 		filename, err := cmd.Flags().GetString("filename")
-		log.WithField("filename", filename).Debug("filename")
+		slog.Debug("filename", "filename", filename)
 		if filename != "" && err == nil && cmd.Flags().Changed("filename") {
 			options["filename"] = filename
 		}

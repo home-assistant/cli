@@ -1,7 +1,8 @@
 package cmd
 
 import (
-	log "github.com/sirupsen/logrus"
+	"log/slog"
+
 	"github.com/spf13/cobra"
 )
 
@@ -18,7 +19,7 @@ Control audio devices.
 }
 
 func init() {
-	log.Debug("Init audio")
+	slog.Debug("Init audio")
 
 	rootCmd.AddCommand(audioCmd)
 }

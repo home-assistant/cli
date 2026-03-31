@@ -1,8 +1,9 @@
 package cmd
 
 import (
+	"log/slog"
+
 	helper "github.com/home-assistant/cli/client"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -21,7 +22,7 @@ is provided, information about a specific app.
 	ValidArgsFunction: appsCompletions,
 	Args:              cobra.MaximumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("apps info")
+		slog.Debug("apps info", "args", args)
 
 		section := "addons"
 		command := "{slug}/info"

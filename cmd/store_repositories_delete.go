@@ -1,8 +1,9 @@
 package cmd
 
 import (
+	"log/slog"
+
 	helper "github.com/home-assistant/cli/client"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -19,7 +20,7 @@ ha store delete 94cfad5a
 	ValidArgsFunction: storeRepositoriesCompletions,
 	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("store delete")
+		slog.Debug("store delete", "args", args)
 
 		section := "store"
 		command := "repositories/{slug}"

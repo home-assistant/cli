@@ -1,8 +1,9 @@
 package cmd
 
 import (
+	"log/slog"
+
 	helper "github.com/home-assistant/cli/client"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -19,7 +20,7 @@ Update network interface settings of a specific adapter.
 	ValidArgsFunction: networkInterfaceCompletions,
 	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("network update")
+		slog.Debug("network update", "args", args)
 
 		section := "network"
 		command := "interface/{interface}/update"
@@ -56,7 +57,7 @@ Update network interface settings of a specific adapter.
 			options["enabled"] = !disabled
 		}
 
-		log.WithField("options", options).Debug("Request body")
+		slog.Debug("Request body", "options", options)
 		request.SetBody(options)
 
 		resp, err := request.Post(url)

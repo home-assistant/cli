@@ -1,8 +1,9 @@
 package cmd
 
 import (
+	"log/slog"
+
 	helper "github.com/home-assistant/cli/client"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -20,7 +21,7 @@ This function works only on an ethernet interface!
 	ValidArgsFunction: networkInterfaceCompletions,
 	Args:              cobra.ExactArgs(2),
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("network vlan")
+		slog.Debug("network vlan", "args", args)
 
 		section := "network"
 		command := "interface/{interface}/vlan/{vlan}"
@@ -52,7 +53,7 @@ This function works only on an ethernet interface!
 		helperMdnsConfig(cmd, options)
 
 		if len(options) > 0 {
-			log.WithField("options", options).Debug("Request body")
+			slog.Debug("Request body", "options", options)
 			request.SetBody(options)
 		}
 

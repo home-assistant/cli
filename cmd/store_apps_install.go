@@ -1,8 +1,9 @@
 package cmd
 
 import (
+	"log/slog"
+
 	helper "github.com/home-assistant/cli/client"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -19,7 +20,7 @@ This command allows you to install a Home Assistant app from the commandline.
 	ValidArgsFunction: storeAppCompletions,
 	Args:              cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		log.WithField("args", args).Debug("store apps install")
+		slog.Debug("store apps install", "args", args)
 
 		section := "store"
 		command := "addons/{slug}/install"
