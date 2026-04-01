@@ -19,6 +19,9 @@ data partition to a new harddisk. The system reboots afterwards!
   ha os datadisk move /dev/sda
 `,
 	ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		if len(args) != 0 {
+			return nil, cobra.ShellCompDirectiveNoFileComp
+		}
 		if toComplete == "" {
 			return []string{"/dev/"}, cobra.ShellCompDirectiveNoSpace
 		}
