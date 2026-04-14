@@ -148,4 +148,3 @@ func featureFlagCompletions(cmd *cobra.Command, args []string, toComplete string
 	}
 	return ret, cobra.ShellCompDirectiveNoFileComp
 }
-
