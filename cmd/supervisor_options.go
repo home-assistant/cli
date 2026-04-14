@@ -1,7 +1,9 @@
 package cmd
 
 import (
+	"fmt"
 	"log/slog"
+	"strconv"
 	"strings"
 
 	helper "github.com/home-assistant/cli/client"
@@ -16,7 +18,8 @@ var supervisorOptionsCmd = &cobra.Command{
 This command allows you to set configuration options for on the Home Assistant
 Supervisor running on your Home Assistant system.`,
 	Example: `
-  ha supervisor options --channel beta`,
+  ha supervisor options --channel beta
+  ha supervisor options --feature-flag supervisor_v2_api=true`,
 	ValidArgsFunction: cobra.NoFileCompletions,
 	Args:              cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
@@ -52,6 +55,30 @@ Supervisor running on your Home Assistant system.`,
 			}
 		}
 
+		featureFlags, err := cmd.Flags().GetStringArray("feature-flag")
+		if err == nil && len(featureFlags) > 0 {
+			flagMap := make(map[string]bool)
+			for _, entry := range featureFlags {
+				parts := strings.SplitN(entry, "=", 2)
+				var name string
+				var val bool
+				if len(parts) == 1 {
+					name = parts[0]
+					val = true
+				} else {
+					name = parts[0]
+					val, err = strconv.ParseBool(parts[1])
+					if err != nil {
+						helper.PrintError(fmt.Errorf("invalid value for feature flag %q: %q, expected true or false", name, parts[1]))
+						ExitWithError = true
+						return
+					}
+				}
+				flagMap[name] = val
+			}
+			options["feature_flags"] = flagMap
+		}
+
 		resp, err := helper.GenericJSONPost(section, command, options)
 		if err != nil {
 			helper.PrintError(err)
@@ -72,6 +99,7 @@ func init() {
 	supervisorOptionsCmd.Flags().BoolP("debug-block", "", false, "Enable debug mode with blocking startup")
 	supervisorOptionsCmd.Flags().BoolP("diagnostics", "", false, "Enable diagnostics mode")
 	supervisorOptionsCmd.Flags().BoolP("auto-update", "", true, "Enable/disable supervisor auto update")
+	supervisorOptionsCmd.Flags().StringArrayP("feature-flag", "", []string{}, "Set a development feature flag (name=true|false). Use multiple times for multiple flags.")
 
 	supervisorOptionsCmd.Flags().Lookup("debug").NoOptDefVal = "false"
 	supervisorOptionsCmd.Flags().Lookup("debug-block").NoOptDefVal = "false"
@@ -92,6 +120,32 @@ func init() {
 	supervisorOptionsCmd.RegisterFlagCompletionFunc("debug", boolCompletions)
 	supervisorOptionsCmd.RegisterFlagCompletionFunc("debug-block", boolCompletions)
 	supervisorOptionsCmd.RegisterFlagCompletionFunc("diagnostics", boolCompletions)
+	supervisorOptionsCmd.RegisterFlagCompletionFunc("feature-flag", featureFlagCompletions)
 
 	supervisorCmd.AddCommand(supervisorOptionsCmd)
 }
+
+func featureFlagCompletions(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+	resp, err := helper.GenericJSONGet("supervisor", "info")
+	if err != nil || !resp.IsSuccess() {
+		return nil, cobra.ShellCompDirectiveNoFileComp
+	}
+	data := resp.Result().(*helper.Response)
+	if data.Result != "ok" || data.Data["feature_flags"] == nil {
+		return nil, cobra.ShellCompDirectiveNoFileComp
+	}
+	flags, ok := data.Data["feature_flags"].(map[string]any)
+	if !ok {
+		return nil, cobra.ShellCompDirectiveNoFileComp
+	}
+	var ret []string
+	for name, val := range flags {
+		current, ok := val.(bool)
+		if !ok {
+			continue
+		}
+		ret = append(ret, fmt.Sprintf("%s=%v\tcurrently %v", name, !current, current))
+	}
+	return ret, cobra.ShellCompDirectiveNoFileComp
+}
+
