@@ -60,13 +60,17 @@ Supervisor running on your Home Assistant system.`,
 			flagMap := make(map[string]bool)
 			for _, entry := range featureFlags {
 				parts := strings.SplitN(entry, "=", 2)
-				var name string
+				name := strings.TrimSpace(parts[0])
+				if name == "" {
+					helper.PrintError(fmt.Errorf("invalid feature flag %q: name must not be empty", entry))
+					ExitWithError = true
+					return
+				}
+
 				var val bool
 				if len(parts) == 1 {
-					name = parts[0]
 					val = true
 				} else {
-					name = parts[0]
 					val, err = strconv.ParseBool(parts[1])
 					if err != nil {
 						helper.PrintError(fmt.Errorf("invalid value for feature flag %q: %q, expected true or false", name, parts[1]))
