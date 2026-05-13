@@ -30,6 +30,7 @@ const ContainerDownloadTimeout = 1 * time.Hour
 const OsDownloadTimeout = 1 * time.Hour
 const BackupTimeout = 3 * time.Hour
 const RebootTimeout = 90 * time.Second
+const MountTimeout = 5 * time.Minute
 
 var client *resty.Client
 
