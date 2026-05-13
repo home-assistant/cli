@@ -33,7 +33,7 @@ the same configuration.
 			return
 		}
 
-		request := helper.GetJSONRequest()
+		request := helper.GetJSONRequestTimeout(helper.MountTimeout)
 
 		name := args[0]
 		request.SetPathParams(map[string]string{
