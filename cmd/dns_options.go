@@ -37,7 +37,7 @@ running Home Assistant DNS server.
 		}
 
 		searchDomains, err := cmd.Flags().GetStringArray("search-domains")
-		log.WithField("search-domains", searchDomains).Debug("search-domains")
+		slog.Debug("search-domains", "search-domains", searchDomains)
 
 		if cmd.Flags().Changed("search-domains") && err == nil {
 			options["search_domains"] = searchDomains
