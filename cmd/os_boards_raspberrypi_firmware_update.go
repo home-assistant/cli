@@ -72,12 +72,13 @@ and VL805 where present). A reboot is required for the new firmware to take effe
 
 		confirmed, err := helper.AskForConfirmation(prompt+" Continue?", 2)
 		if err != nil {
-			helper.PrintError(err)
+			cmd.PrintErrln("Aborted:", err)
 			ExitWithError = true
 			return
 		}
 		if !confirmed {
-			fmt.Println("Aborted.")
+			cmd.PrintErrln("Aborted.")
+			ExitWithError = true
 			return
 		}
 
