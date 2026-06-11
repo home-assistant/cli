@@ -114,6 +114,14 @@ func GetRequestTimeout(timeout time.Duration) *resty.Request {
 
 // ShowJSONResponse formats a JSON response for human readers
 func ShowJSONResponse(resp *resty.Response) (success bool) {
+	return ShowJSONResponseTransform(resp, nil)
+}
+
+// ShowJSONResponseTransform formats a JSON response for human readers, applying
+// transform to the data map of a successful response before rendering it. This
+// allows commands to humanize individual fields. In raw JSON mode the transform
+// is not applied, as the output is meant for machine consumption.
+func ShowJSONResponseTransform(resp *resty.Response, transform func(map[string]any)) (success bool) {
 	if RawJSON {
 		// when we are returning raw JSON, all handling is for the consumer of the JSON
 		success = true
@@ -135,6 +143,9 @@ func ShowJSONResponse(resp *resty.Response) (success bool) {
 		if len(data.Data) == 0 {
 			fmt.Println("Command completed successfully.")
 		} else {
+			if transform != nil {
+				transform(data.Data)
+			}
 			j, err := json.Marshal(data.Data)
 			if err != nil {
 				PrintError(err)
