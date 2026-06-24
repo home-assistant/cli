@@ -77,6 +77,8 @@ func init() {
 	dockerOptionsCmd.Flags().SetNormalizeFunc(func(set *pflag.FlagSet, name string) pflag.NormalizedName {
 		return pflag.NormalizedName(strings.ReplaceAll(name, "_", "-"))
 	})
+	dockerOptionsCmd.RegisterFlagCompletionFunc("enable-ipv6", boolCompletions)
+	dockerOptionsCmd.RegisterFlagCompletionFunc("mtu", cobra.NoFileCompletions)
 
 	dockerCmd.AddCommand(dockerOptionsCmd)
 }
