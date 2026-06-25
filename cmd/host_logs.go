@@ -57,10 +57,33 @@ across services and boots.
 	},
 }
 
+func hostLogsIdentifiersCompletions(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+	if len(args) != 0 {
+		return nil, cobra.ShellCompDirectiveNoFileComp
+	}
+	resp, err := helper.GenericJSONGet("host", "logs/identifiers")
+	if err != nil || !resp.IsSuccess() {
+		return nil, cobra.ShellCompDirectiveNoFileComp
+	}
+	var ret []string
+	data := resp.Result().(*helper.Response)
+	if data.Result == "ok" && data.Data["identifiers"] != nil {
+		if identifiers, ok := data.Data["identifiers"].([]any); ok {
+			for _, id := range identifiers {
+				if identifier, ok := id.(string); ok {
+					ret = append(ret, identifier)
+				}
+			}
+		}
+	}
+	return ret, cobra.ShellCompDirectiveNoFileComp
+}
+
 func init() {
 	addLogsFlags(hostLogsCmd)
 
 	hostLogsCmd.Flags().StringP("identifier", "t", "", "Show entries with the specified syslog identifier")
+	hostLogsCmd.RegisterFlagCompletionFunc("identifier", hostLogsIdentifiersCompletions)
 
 	hostCmd.AddCommand(hostLogsCmd)
 }

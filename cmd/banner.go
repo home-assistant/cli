@@ -186,4 +186,5 @@ var bannerCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(bannerCmd)
 	bannerCmd.Flags().Bool("no-wait", false, "Don't wait until Supervisor is started")
+	bannerCmd.RegisterFlagCompletionFunc("no-wait", boolCompletions)
 }

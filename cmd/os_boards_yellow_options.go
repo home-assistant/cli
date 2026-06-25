@@ -55,6 +55,9 @@ func init() {
 	osBoardsYellowOptionsCmd.Flags().Lookup("disk-led").NoOptDefVal = "true"
 	osBoardsYellowOptionsCmd.Flags().Lookup("heartbeat-led").NoOptDefVal = "true"
 	osBoardsYellowOptionsCmd.Flags().Lookup("power-led").NoOptDefVal = "true"
+	osBoardsYellowOptionsCmd.RegisterFlagCompletionFunc("disk-led", boolCompletions)
+	osBoardsYellowOptionsCmd.RegisterFlagCompletionFunc("heartbeat-led", boolCompletions)
+	osBoardsYellowOptionsCmd.RegisterFlagCompletionFunc("power-led", boolCompletions)
 
 	osBoardsYellowCmd.AddCommand(osBoardsYellowOptionsCmd)
 }

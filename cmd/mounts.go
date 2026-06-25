@@ -49,6 +49,7 @@ func addMountFlags(cmd *cobra.Command) {
 	cmd.RegisterFlagCompletionFunc("password", cobra.NoFileCompletions)
 	cmd.RegisterFlagCompletionFunc("version", cobra.NoFileCompletions)
 	cmd.RegisterFlagCompletionFunc("path", cobra.NoFileCompletions)
+	cmd.RegisterFlagCompletionFunc("read-only", boolCompletions)
 }
 
 func mountFlagsToOptions(cmd *cobra.Command, options map[string]any) {

@@ -55,6 +55,9 @@ func init() {
 	osBoardsGreenOptionsCmd.Flags().Lookup("activity-led").NoOptDefVal = "true"
 	osBoardsGreenOptionsCmd.Flags().Lookup("power-led").NoOptDefVal = "true"
 	osBoardsGreenOptionsCmd.Flags().Lookup("system-health-led").NoOptDefVal = "true"
+	osBoardsGreenOptionsCmd.RegisterFlagCompletionFunc("activity-led", boolCompletions)
+	osBoardsGreenOptionsCmd.RegisterFlagCompletionFunc("power-led", boolCompletions)
+	osBoardsGreenOptionsCmd.RegisterFlagCompletionFunc("system-health-led", boolCompletions)
 
 	osBoardsGreenCmd.AddCommand(osBoardsGreenOptionsCmd)
 }
