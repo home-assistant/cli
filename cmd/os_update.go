@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"log/slog"
 
 	helper "github.com/home-assistant/cli/client"
@@ -40,6 +41,8 @@ Operating System to the latest version or the version specified.
 		if err != nil {
 			helper.PrintError(err)
 			ExitWithError = true
+		} else if helper.ShowJSONResponse(resp) {
+			fmt.Println("\nOS update applied. Reboot the device using `ha host reboot` to finish the update.")
 		} else {
 			ExitWithError = !helper.ShowJSONResponse(resp)
 		}
