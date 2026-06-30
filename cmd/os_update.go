@@ -44,7 +44,7 @@ Operating System to the latest version or the version specified.
 		} else if helper.ShowJSONResponse(resp) {
 			fmt.Println("\nOS update applied. Reboot the device using `ha host reboot` to finish the update.")
 		} else {
-			ExitWithError = !helper.ShowJSONResponse(resp)
+			ExitWithError = true
 		}
 	},
 }
