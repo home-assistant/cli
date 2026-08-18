@@ -169,7 +169,7 @@ var bannerCmd = &cobra.Command{
 
 		protocol := "http"
 		defaultPort := 80
-		if (*coreinfo)["ssl"] == "true" {
+		if ssl, _ := (*coreinfo)["ssl"].(bool); ssl {
 			protocol = "https"
 			defaultPort = 443
 		}
