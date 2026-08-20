@@ -16,6 +16,7 @@ Update or change the configuration of an existing mount in Supervisor.
 `,
 	Example: `
   ha mounts update my_share --usage media --type cifs --server server.local --share media
+  ha mounts update media_disk --usage media --type disk --device /dev/sda1
 `,
 	ValidArgsFunction: mountsCompletions,
 	Args:              cobra.ExactArgs(1),
@@ -32,7 +33,7 @@ Update or change the configuration of an existing mount in Supervisor.
 			return
 		}
 
-		request := helper.GetJSONRequest()
+		request := helper.GetJSONRequestTimeout(helper.MountTimeout)
 
 		name := args[0]
 		options := make(map[string]any)
