@@ -14,7 +14,8 @@ Home Assistant is running on. It allows you to do things like use private OCI re
 	Example: `
   ha docker info
   ha docker options
-  ha docker registries`,
+  ha docker registries
+  ha docker reset-storage`,
 }
 
 func init() {
