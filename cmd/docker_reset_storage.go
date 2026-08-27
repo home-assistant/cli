@@ -15,6 +15,9 @@ This command wipes the complete Docker storage on the next reboot. All container
 images, including Supervisor, Home Assistant Core, plugins and apps, are deleted
 and downloaded again once the system is back up.
 
+Use it to recover from a corrupted or inconsistent Docker storage, for example
+when containers fail to start or images cannot be updated.
+
 Configuration and data of Home Assistant and apps are kept, they are stored
 outside of the Docker storage.
 
