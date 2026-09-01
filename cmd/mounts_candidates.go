@@ -14,8 +14,8 @@ var mountsCandidatesCmd = &cobra.Command{
 	Aliases: []string{"can", "cand"},
 	Short:   "Shows local disks which could be mounted",
 	Long: `
-Shows the local block devices Supervisor considers usable as a disk mount,
-along with details of the drive each one belongs to.
+Shows local block devices Supervisor can use as a disk mount, including
+the drive each one belongs to.
 `,
 	Example: `
   ha mounts candidates
@@ -38,9 +38,7 @@ along with details of the drive each one belongs to.
 	},
 }
 
-// mountsCandidatesDeviceCompletions offers the devices Supervisor reports as
-// mountable, offering nothing at all if it cannot ask: a host without UDisks2
-// returns an empty list, and a Supervisor predating the endpoint returns 404.
+// Completions for --device from Supervisor candidates. Empty or 404 yields none.
 func mountsCandidatesDeviceCompletions(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 	resp, err := helper.GenericJSONGet("mounts", "candidates")
 	if err != nil || !resp.IsSuccess() {
@@ -91,7 +89,7 @@ func mountCandidateDescription(candidate map[string]any) string {
 	return strings.Join(ds, ", ")
 }
 
-// humanizeMountSize uses decimal units, the way drive capacity is labelled.
+// Decimal units, matching how drive capacity is labelled.
 func humanizeMountSize(size float64) string {
 	units := []string{"B", "kB", "MB", "GB", "TB"}
 	i := 0

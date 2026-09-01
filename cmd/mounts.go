@@ -57,9 +57,8 @@ func addMountFlags(cmd *cobra.Command) {
 	cmd.RegisterFlagCompletionFunc("read-only", boolCompletions)
 }
 
-// mountFlagsToOptions copies only the flags the user set: Supervisor validates
-// the whole mount config, so passing an untouched flag along would rewrite the
-// mount's type or usage to the flag default.
+// Copy only flags the user set. Sending an untouched default would rewrite
+// type or usage on update.
 func mountFlagsToOptions(cmd *cobra.Command, options map[string]any) {
 	for _, value := range []string{
 		"type",
@@ -90,9 +89,7 @@ func mountFlagsToOptions(cmd *cobra.Command, options map[string]any) {
 	}
 }
 
-// mountFlagsToNewOptions is mountFlagsToOptions for creating a mount, where the
-// type and usage defaults are part of the new config rather than an unwanted
-// change to an existing mount.
+// Like mountFlagsToOptions, but include type/usage defaults for a new mount.
 func mountFlagsToNewOptions(cmd *cobra.Command, options map[string]any) {
 	mountFlagsToOptions(cmd, options)
 
