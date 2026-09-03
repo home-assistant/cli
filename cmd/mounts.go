@@ -33,11 +33,14 @@ func addMountFlags(cmd *cobra.Command) {
 	cmd.Flags().StringP("password", "p", "", "Password to use for authentication (cifs mounts only)")
 	cmd.Flags().StringP("version", "v", "", "Version to use for the mount (cifs mounts only)")
 	cmd.Flags().StringP("path", "a", "", "Path to mount (nfs mounts only)")
+	cmd.Flags().String("device", "", "Device to mount, e.g. /dev/sda1 (disk mounts only)")
+	cmd.Flags().String("uuid", "", "Filesystem UUID of the device to mount (disk mounts only)")
 	cmd.Flags().Bool("read-only", false, "Is mount read-only (not available for backup mounts)")
 
 	cmd.Flags().Lookup("read-only").NoOptDefVal = "true"
+	cmd.MarkFlagsMutuallyExclusive("device", "uuid")
 	cmd.RegisterFlagCompletionFunc("type", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
-		return []string{"cifs", "nfs"}, cobra.ShellCompDirectiveNoFileComp
+		return []string{"cifs", "nfs", "disk"}, cobra.ShellCompDirectiveNoFileComp
 	})
 	cmd.RegisterFlagCompletionFunc("usage", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		return []string{"backup", "media", "share"}, cobra.ShellCompDirectiveNoFileComp
@@ -49,9 +52,13 @@ func addMountFlags(cmd *cobra.Command) {
 	cmd.RegisterFlagCompletionFunc("password", cobra.NoFileCompletions)
 	cmd.RegisterFlagCompletionFunc("version", cobra.NoFileCompletions)
 	cmd.RegisterFlagCompletionFunc("path", cobra.NoFileCompletions)
+	cmd.RegisterFlagCompletionFunc("device", mountsCandidatesDeviceCompletions)
+	cmd.RegisterFlagCompletionFunc("uuid", cobra.NoFileCompletions)
 	cmd.RegisterFlagCompletionFunc("read-only", boolCompletions)
 }
 
+// Copy only flags the user set. Sending an untouched default would rewrite
+// type or usage on update.
 func mountFlagsToOptions(cmd *cobra.Command, options map[string]any) {
 	for _, value := range []string{
 		"type",
@@ -62,9 +69,11 @@ func mountFlagsToOptions(cmd *cobra.Command, options map[string]any) {
 		"username",
 		"password",
 		"version",
+		"device",
+		"uuid",
 	} {
 		val, err := cmd.Flags().GetString(value)
-		if val != "" && err == nil {
+		if val != "" && err == nil && cmd.Flags().Changed(value) {
 			options[value] = val
 		}
 	}
@@ -77,6 +86,20 @@ func mountFlagsToOptions(cmd *cobra.Command, options map[string]any) {
 	roVal, roErr := cmd.Flags().GetBool("read-only")
 	if roErr == nil && cmd.Flags().Changed("read-only") {
 		options["read_only"] = roVal
+	}
+}
+
+// Like mountFlagsToOptions, but include type/usage defaults for a new mount.
+func mountFlagsToNewOptions(cmd *cobra.Command, options map[string]any) {
+	mountFlagsToOptions(cmd, options)
+
+	for _, value := range []string{"type", "usage"} {
+		if _, ok := options[value]; ok {
+			continue
+		}
+		if val, err := cmd.Flags().GetString(value); err == nil && val != "" {
+			options[value] = val
+		}
 	}
 }
 
@@ -116,6 +139,12 @@ func mountsCompletions(cmd *cobra.Command, args []string, toComplete string) ([]
 					ds = append(ds, s)
 				}
 				if s, ok = m["path"].(string); ok && s != "" {
+					ds = append(ds, s)
+				}
+				if s, ok = m["uuid"].(string); ok && s != "" {
+					ds = append(ds, s)
+				}
+				if s, ok = m["filesystem"].(string); ok && s != "" {
 					ds = append(ds, s)
 				}
 				if len(ds) != 0 {
