@@ -59,14 +59,12 @@ docker backend running on your Home Assistant system.`,
 		if err != nil {
 			helper.PrintError(err)
 			ExitWithError = true
+		} else if helper.ShowJSONResponse(resp) {
+			if len(options) > 0 && !helper.RawJSON {
+				fmt.Println("\nDocker configuration saved. Reboot the device using `ha host reboot` to apply the changes.")
+			}
 		} else {
-			if cmd.Flags().Changed("enable-ipv6") {
-				fmt.Println("Note: System restart required to apply new IPv6 configuration.")
-			}
-			if cmd.Flags().Changed("mtu") {
-				fmt.Println("Note: System restart required to apply new MTU configuration.")
-			}
-			ExitWithError = !helper.ShowJSONResponse(resp)
+			ExitWithError = true
 		}
 	},
 }

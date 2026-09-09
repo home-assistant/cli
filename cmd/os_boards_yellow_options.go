@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"log/slog"
 	"strings"
 
@@ -42,8 +43,12 @@ Assistant is running on. A host reboot is required for changes to take effect.`,
 		if err != nil {
 			helper.PrintError(err)
 			ExitWithError = true
+		} else if helper.ShowJSONResponse(resp) {
+			if len(options) > 0 && !helper.RawJSON {
+				fmt.Println("\nYellow board settings saved. Reboot the device using `ha host reboot` to apply the changes.")
+			}
 		} else {
-			ExitWithError = !helper.ShowJSONResponse(resp)
+			ExitWithError = true
 		}
 	},
 }

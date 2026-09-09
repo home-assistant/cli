@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"log/slog"
 
 	helper "github.com/home-assistant/cli/client"
@@ -64,8 +65,12 @@ Are you sure you want to proceed?`, 0)
 			if err != nil {
 				helper.PrintError(err)
 				ExitWithError = true
+			} else if helper.ShowJSONResponse(resp) {
+				if !helper.RawJSON {
+					fmt.Println("\nDocker storage driver migration scheduled. Reboot the device using `ha host reboot` to apply the migration.")
+				}
 			} else {
-				ExitWithError = !helper.ShowJSONResponse(resp)
+				ExitWithError = true
 			}
 		} else {
 			cmd.PrintErrln("Aborted.")
