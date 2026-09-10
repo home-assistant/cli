@@ -73,6 +73,8 @@ var dashboardCmd = &cobra.Command{
 	Use:   "dashboard",
 	Short: "Launch interactive Home Assistant TUI dashboard",
 	Long:  "Launches an interactive, real-time terminal dashboard for Home Assistant Supervisor telemetry and status.",
+	ValidArgsFunction: cobra.NoFileCompletions,
+	Args:              cobra.NoArgs,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		state := &dashboardState{}
 		refreshReq := make(chan struct{}, 1)
