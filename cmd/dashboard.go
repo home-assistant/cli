@@ -83,20 +83,23 @@ var dashboardCmd = &cobra.Command{
 		refreshReq <- struct{}{}
 
 		go func() {
-			ticker := time.NewTicker(2 * time.Second)
+			ticker := time.NewTicker(1 * time.Second) // Saatin saniye saniye akması için 1sn
 			defer ticker.Stop()
 
 			for {
 				select {
-				case <-stopFetch:
-					return
-				case <-ticker.C:
-					fetchAndStoreDashboardData(state)
-				case <-refreshReq:
-					fetchAndStoreDashboardData(state)
+					case <-stopFetch:
+						return
+					case <-ticker.C:
+						fetchAndStoreDashboardData(state)
+						limoni.Wakeup() // <-- BURAYA: Render döngüsünü uyandırır
+					case <-refreshReq:
+						fetchAndStoreDashboardData(state)
+						limoni.Wakeup() // <-- BURAYA: Anında ekranı yeniler
 				}
 			}
 		}()
+
 
 		return limoni.Run(func(f *limoni.Frame, ev *limoni.Event) bool {
 			if ev != nil && ev.Type == limoni.EventKey {
@@ -130,8 +133,12 @@ func init() {
 func fetchAndStoreDashboardData(state *dashboardState) {
 	metrics, addons, logs, err := fetchDashboardData()
 	if err != nil {
-		// Mock fallback data for local testing/dev
-		metrics, addons, logs = mockDashboardData(err)
+		// Mock veriyi mevcut log durumunu koruyarak al
+		state.mu.RLock()
+		currentLogs := state.Logs
+		state.mu.RUnlock()
+
+		metrics, addons, logs = mockDashboardData(err, currentLogs)
 		state.setFromFetch(false, err, metrics, addons, logs)
 		return
 	}
@@ -143,9 +150,15 @@ func fetchDashboardData() (dashboardMetrics, []dashboardAddon, []string, error) 
 	return dashboardMetrics{}, nil, nil, fmt.Errorf("supervisor data source not yet wired")
 }
 
-func mockDashboardData(fetchErr error) (dashboardMetrics, []dashboardAddon, []string) {
-	now := time.Now().Format(time.RFC3339)
 
+var initialMockLogs = []string{
+	"2026-09-10T13:20:01Z [info] supervisor: development fallback mode enabled",
+	"2026-09-10T13:20:02Z [warn] api: unable to reach supervisor, using mocked telemetry",
+	"2026-09-10T13:20:05Z [info] core: Home Assistant healthy",
+	"2026-09-10T13:20:10Z [info] jobs: scheduler idle",
+}
+
+func mockDashboardData(fetchErr error, existingLogs []string) (dashboardMetrics, []dashboardAddon, []string) {
 	metrics := dashboardMetrics{
 		CPUPercent:    23.4,
 		MemoryPercent: 61.2,
@@ -158,16 +171,13 @@ func mockDashboardData(fetchErr error) (dashboardMetrics, []dashboardAddon, []st
 		{Name: "Samba share", Running: false},
 		{Name: "Node-RED", Running: false},
 	}
-	logs := []string{
-		now + " [info] supervisor: development fallback mode enabled",
-		now + " [warn] api: unable to reach supervisor, using mocked telemetry",
-		now + " [info] core: Home Assistant healthy",
-		now + " [info] jobs: scheduler idle",
+
+	// İlk açılışta hazır logları koy
+	if len(existingLogs) == 0 {
+		existingLogs = slices.Clone(initialMockLogs)
 	}
-	if fetchErr != nil {
-		logs = append(logs, now+" [error] fetch: "+fetchErr.Error())
-	}
-	return metrics, addons, logs
+
+	return metrics, addons, existingLogs
 }
 
 func renderDashboard(f *limoni.Frame, s dashboardState) {
