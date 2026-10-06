@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"strings"
 
 	helper "github.com/home-assistant/cli/client"
@@ -52,7 +53,7 @@ func addMountFlags(cmd *cobra.Command) {
 	cmd.RegisterFlagCompletionFunc("password", cobra.NoFileCompletions)
 	cmd.RegisterFlagCompletionFunc("version", cobra.NoFileCompletions)
 	cmd.RegisterFlagCompletionFunc("path", cobra.NoFileCompletions)
-	cmd.RegisterFlagCompletionFunc("device", mountsCandidatesDeviceCompletions)
+	cmd.RegisterFlagCompletionFunc("device", mountsDeviceCompletions)
 	cmd.RegisterFlagCompletionFunc("uuid", cobra.NoFileCompletions)
 	cmd.RegisterFlagCompletionFunc("read-only", boolCompletions)
 }
@@ -154,4 +155,81 @@ func mountsCompletions(cmd *cobra.Command, args []string, toComplete string) ([]
 		}
 	}
 	return ret, cobra.ShellCompDirectiveNoFileComp
+}
+
+// Completions for --device from the host disks. Empty or 404 yields none.
+func mountsDeviceCompletions(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+	resp, err := helper.GenericJSONGet("host", "disks")
+	if err != nil || !resp.IsSuccess() {
+		return nil, cobra.ShellCompDirectiveNoFileComp
+	}
+	var ret []string
+	data := resp.Result().(*helper.Response)
+	if data.Result == "ok" && data.Data["disks"] != nil {
+		if disks, ok := data.Data["disks"].([]any); ok {
+			for _, disk := range disks {
+				var d map[string]any
+				if d, ok = disk.(map[string]any); !ok {
+					continue
+				}
+				partitions, _ := d["partitions"].([]any)
+				for _, partition := range partitions {
+					var p map[string]any
+					if p, ok = partition.(map[string]any); !ok {
+						continue
+					}
+					if mountable, _ := p["mountable"].(bool); !mountable {
+						continue
+					}
+					var device string
+					if device, ok = p["device"].(string); !ok || device == "" {
+						continue
+					}
+					ret = append(ret, device)
+					if ds := mountDeviceDescription(d, p); ds != "" {
+						ret[len(ret)-1] += "\t" + ds
+					}
+				}
+			}
+		}
+	}
+	return ret, cobra.ShellCompDirectiveNoFileComp
+}
+
+func mountDeviceDescription(disk, partition map[string]any) string {
+	var ds []string
+	if s, ok := disk["name"].(string); ok && s != "" {
+		ds = append(ds, s)
+	} else {
+		var name []string
+		for _, key := range []string{"vendor", "model"} {
+			if s, ok := disk[key].(string); ok && s != "" {
+				name = append(name, s)
+			}
+		}
+		if len(name) != 0 {
+			ds = append(ds, strings.Join(name, " "))
+		}
+	}
+	if s, ok := partition["label"].(string); ok && s != "" {
+		ds = append(ds, s)
+	}
+	if size, ok := partition["size"].(float64); ok && size > 0 {
+		ds = append(ds, humanizeMountSize(size))
+	}
+	return strings.Join(ds, ", ")
+}
+
+// Decimal units, matching how drive capacity is labelled.
+func humanizeMountSize(size float64) string {
+	units := []string{"B", "kB", "MB", "GB", "TB"}
+	i := 0
+	for size >= 1000 && i < len(units)-1 {
+		size /= 1000
+		i++
+	}
+	if i == 0 {
+		return fmt.Sprintf("%.0f %s", size, units[i])
+	}
+	return fmt.Sprintf("%.1f %s", size, units[i])
 }
