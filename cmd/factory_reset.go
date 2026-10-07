@@ -6,7 +6,7 @@ import (
 
 var factoryResetCmd = &cobra.Command{
 	Use:   "factory-reset",
-	Short: "Reset Home Assistant to factory settings (alias for 'ha os datadisk wipe')",
+	Short: "Wipe all Home Assistant user data (alias for 'ha os datadisk wipe')",
 	Long:  osDataDiskWipeCmd.Long,
 	Example: `
   ha factory-reset
