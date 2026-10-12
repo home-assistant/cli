@@ -39,7 +39,6 @@ func addMountFlags(cmd *cobra.Command) {
 	cmd.Flags().Bool("read-only", false, "Is mount read-only (not available for backup mounts)")
 
 	cmd.Flags().Lookup("read-only").NoOptDefVal = "true"
-	cmd.MarkFlagsMutuallyExclusive("device", "uuid")
 	cmd.RegisterFlagCompletionFunc("type", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		return []string{"cifs", "nfs", "disk"}, cobra.ShellCompDirectiveNoFileComp
 	})
