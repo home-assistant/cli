@@ -13,6 +13,7 @@ var mountsUpdateCmd = &cobra.Command{
 	Short:   "Update configuration of a mount in Supervisor",
 	Long: `
 Update or change the configuration of an existing mount in Supervisor.
+The new configuration replaces the old one, so pass every option the mount needs.
 `,
 	Example: `
   ha mounts update my_share --usage media --type cifs --server server.local --share media
@@ -62,5 +63,9 @@ Update or change the configuration of an existing mount in Supervisor.
 
 func init() {
 	addMountFlags(mountsUpdateCmd)
+	for _, flag := range []string{"type", "usage"} {
+		mountsUpdateCmd.Flags().Lookup(flag).DefValue = ""
+		mountsUpdateCmd.MarkFlagRequired(flag)
+	}
 	mountsCmd.AddCommand(mountsUpdateCmd)
 }
