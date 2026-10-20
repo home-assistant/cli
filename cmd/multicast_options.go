@@ -34,7 +34,10 @@ running Home Assistant Multicast server.
 			options["enabled"] = enabled
 		}
 
-		resp, err := helper.GenericJSONPost(section, command, options)
+		ProgressSpinner.Start()
+		resp, err := helper.GenericJSONPostTimeout(section, command, options, helper.ContainerDownloadTimeout)
+		ProgressSpinner.Stop()
+
 		if err != nil {
 			helper.PrintError(err)
 			ExitWithError = true
