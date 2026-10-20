@@ -17,7 +17,7 @@ The new configuration replaces the old one, so pass every option the mount needs
 `,
 	Example: `
   ha mounts update my_share --usage media --type cifs --server server.local --share media
-  ha mounts update media_disk --usage media --type disk --device /dev/sda1
+  ha mounts update media_disk --usage media --type disk --device /dev/sda1 --read-only
 `,
 	ValidArgsFunction: mountsCompletions,
 	Args:              cobra.ExactArgs(1),
