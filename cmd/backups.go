@@ -131,6 +131,12 @@ func backupsLocationsCompletions(cmd *cobra.Command, args []string, toComplete s
 				if s, ok = m["path"].(string); ok && s != "" {
 					ds = append(ds, s)
 				}
+				if s, ok = m["uuid"].(string); ok && s != "" {
+					ds = append(ds, s)
+				}
+				if s, ok = m["filesystem"].(string); ok && s != "" {
+					ds = append(ds, s)
+				}
 				if len(ds) != 0 {
 					ret[len(ret)-1] += "\t" + strings.Join(ds, ", ")
 				}

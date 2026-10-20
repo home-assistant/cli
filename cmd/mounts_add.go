@@ -16,6 +16,7 @@ Add and configure a new mount in Supervisor.
 `,
 	Example: `
   ha mounts add my_share --usage media --type cifs --server server.local --share media
+  ha mounts add media_disk --usage media --type disk --device /dev/sda1
 `,
 	ValidArgsFunction: mountsCompletions,
 	Args:              cobra.ExactArgs(1),
@@ -32,13 +33,13 @@ Add and configure a new mount in Supervisor.
 			return
 		}
 
-		request := helper.GetJSONRequest()
+		request := helper.GetJSONRequestTimeout(helper.MountTimeout)
 
 		name := args[0]
 		options := make(map[string]any)
 
 		options["name"] = name
-		mountFlagsToOptions(cmd, options)
+		mountFlagsToNewOptions(cmd, options)
 
 		if len(options) > 0 {
 			slog.Debug("Request body", "options", options)
