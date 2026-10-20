@@ -13,7 +13,8 @@ The multicast command allows you to manage the internal Home Assistant Multicast
 backend by exposing commands to view, monitor, configure and control it.`,
 	Example: `
   ha multicast info
-  ha multicast update`,
+  ha multicast update
+  ha multicast options --enabled=false`,
 }
 
 func init() {
