@@ -42,7 +42,7 @@ you to control and configure different aspects of Home Assistant`,
 			slog.SetLogLoggerLevel(level)
 		}
 
-		helper.RawJSON = viper.GetBool("raw-json")
+		helper.RawJSON = viper.GetBool("raw-json") && cmd.Name() != cobra.ShellCompRequestCmd
 
 		// Only shows spinner output when we have a TTY
 		if !noProgress && term.IsTerminal(int(os.Stdout.Fd())) {
