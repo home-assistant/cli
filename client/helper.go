@@ -98,6 +98,8 @@ func GetRequestTimeout(timeout time.Duration) *resty.Request {
 		// timeout for our local only use case.
 		client.SetTimeout(timeout)
 
+		client.SetHeader("User-Agent", userAgent())
+
 		// Registering Response Middleware
 		client.OnAfterResponse(func(c *resty.Client, resp *resty.Response) error {
 			// explore response object
