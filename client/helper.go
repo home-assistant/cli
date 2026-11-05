@@ -98,6 +98,8 @@ func GetRequestTimeout(timeout time.Duration) *resty.Request {
 		// timeout for our local only use case.
 		client.SetTimeout(timeout)
 
+		client.SetHeader("User-Agent", userAgent())
+
 		// Registering Response Middleware
 		client.OnAfterResponse(func(c *resty.Client, resp *resty.Response) error {
 			// explore response object
@@ -107,9 +109,16 @@ func GetRequestTimeout(timeout time.Duration) *resty.Request {
 		})
 	}
 
-	return client.R().
+	request := client.R().
 		SetHeader("Accept", "application/json").
 		SetAuthToken(apiToken)
+
+	// Lets an app calling the CLI identify itself to Supervisor
+	if source := viper.GetString("hass-source"); source != "" {
+		request.SetHeader("X-Hass-Source", source)
+	}
+
+	return request
 }
 
 // ShowJSONResponse formats a JSON response for human readers
