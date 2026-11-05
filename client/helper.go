@@ -98,7 +98,10 @@ func GetRequestTimeout(timeout time.Duration) *resty.Request {
 		// timeout for our local only use case.
 		client.SetTimeout(timeout)
 
-		client.SetHeader("User-Agent", userAgent())
+		client.SetHeaders(map[string]string{
+			"User-Agent":    userAgent(),
+			"X-Hass-Source": hassSource,
+		})
 
 		// Registering Response Middleware
 		client.OnAfterResponse(func(c *resty.Client, resp *resty.Response) error {

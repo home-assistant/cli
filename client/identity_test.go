@@ -24,10 +24,11 @@ func TestUserAgent(t *testing.T) {
 	}
 }
 
-func TestUserAgentSent(t *testing.T) {
-	var got string
+func TestIdentityHeadersSent(t *testing.T) {
+	var gotUserAgent, gotSource string
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		got = r.Header.Get("User-Agent")
+		gotUserAgent = r.Header.Get("User-Agent")
+		gotSource = r.Header.Get("X-Hass-Source")
 		w.Header().Set("Content-Type", "application/json")
 		_, _ = w.Write([]byte(`{"result":"ok","data":{}}`))
 	}))
@@ -40,7 +41,10 @@ func TestUserAgentSent(t *testing.T) {
 	if _, err := GenericJSONGet("supervisor", "info"); err != nil {
 		t.Fatal(err)
 	}
-	if want := userAgent(); got != want {
-		t.Errorf("got %q, want %q", got, want)
+	if want := userAgent(); gotUserAgent != want {
+		t.Errorf("User-Agent: got %q, want %q", gotUserAgent, want)
+	}
+	if want := "HomeAssistantCLI"; gotSource != want {
+		t.Errorf("X-Hass-Source: got %q, want %q", gotSource, want)
 	}
 }
