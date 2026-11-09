@@ -72,6 +72,10 @@ func URLHelper(section, command string) (string, error) {
 			return "", errors.New("endpoint " + UnixSocketScheme + " is missing the socket path")
 		}
 		base = unixSocketBaseURL
+	} else if strings.HasPrefix(base, "unix:/") {
+		// A socket path missing a slash, would otherwise be sent over TCP to a
+		// host named "unix"
+		return "", fmt.Errorf("invalid endpoint %q, use %s/path/to/socket", base, UnixSocketScheme)
 	}
 
 	scheme := ""

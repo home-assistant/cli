@@ -20,6 +20,8 @@ var urlTests = []struct {
 }{
 	{"supervisor", "section", "command", "http://supervisor/section/command"},
 	{"supervisor:80", "section", "command", "http://supervisor:80/section/command"},
+	{"unix", "section", "command", "http://unix/section/command"},
+	{"unix:8080", "section", "command", "http://unix:8080/section/command"},
 	{"supervisor.example.org:8080", "section", "command", "http://supervisor.example.org:8080/section/command"},
 	{"https://supervisor", "section", "command", "https://supervisor/section/command"},
 	{"https://supervisor:8080", "section", "command", "https://supervisor:8080/section/command"},
@@ -45,10 +47,14 @@ func TestURLHelper(t *testing.T) {
 	}
 }
 
-func TestURLHelperUnixSocketWithoutPath(t *testing.T) {
-	viper.SetDefault("endpoint", "unix://")
-	if _, err := URLHelper("section", "command"); err == nil {
-		t.Error("expected an error for a unix:// endpoint without a path")
+func TestURLHelperInvalidUnixSocket(t *testing.T) {
+	for _, endpoint := range []string{"unix://", "unix:/run/x.sock"} {
+		t.Run(endpoint, func(t *testing.T) {
+			viper.SetDefault("endpoint", endpoint)
+			if _, err := URLHelper("section", "command"); err == nil {
+				t.Errorf("expected an error for endpoint %q", endpoint)
+			}
+		})
 	}
 }
 
