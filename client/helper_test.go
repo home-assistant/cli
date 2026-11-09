@@ -73,6 +73,7 @@ func TestGetRequest(t *testing.T) {
 				w.Header().Set("Content-Type", "application/json")
 				_, _ = w.Write([]byte(`{"result":"ok","data":{}}`))
 			}))
+			t.Cleanup(server.Close)
 
 			var endpoint string
 			if tt.overUnix {
@@ -87,13 +88,14 @@ func TestGetRequest(t *testing.T) {
 				if err != nil {
 					t.Fatal(err)
 				}
+				// Replace the TCP listener the unstarted server already opened
+				server.Listener.Close()
 				server.Listener = listener
 				endpoint = UnixSocketScheme + socket
 			} else {
 				endpoint = server.Listener.Addr().String()
 			}
 			server.Start()
-			t.Cleanup(server.Close)
 
 			viper.SetDefault("endpoint", endpoint)
 			viper.SetDefault("api-token", tt.token)
