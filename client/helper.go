@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"log/slog"
+	"net/http"
 	"net/url"
 	"os"
 	"os/signal"
@@ -32,7 +33,12 @@ const BackupTimeout = 3 * time.Hour
 const RebootTimeout = 90 * time.Second
 const MountTimeout = 5 * time.Minute
 
-var client *resty.Client
+// clients holds one client per timeout. resty v2 has no per-request
+// timeout, so a request needing a different timeout needs another client.
+var clients = map[time.Duration]*resty.Client{}
+
+// transport is shared by all clients so they reuse the same connections.
+var transport http.RoundTripper
 
 // Response is the default JSON response from the Home Assistant Supervisor
 type Response struct {
@@ -86,25 +92,40 @@ func GetJSONRequest() *resty.Request {
 	return GetJSONRequestTimeout(DefaultTimeout)
 }
 
+// newClient returns a resty.Client for the Supervisor API with the given
+// timeout.
+func newClient(timeout time.Duration) *resty.Client {
+	c := resty.New()
+
+	// Default is no timeout. This can lead to lockup the CLI
+	// in case the server does not respond. Set a somewhat low
+	// timeout for our local only use case.
+	c.SetTimeout(timeout)
+
+	if transport == nil {
+		transport = c.GetClient().Transport
+	}
+	c.SetTransport(transport)
+
+	// Registering Response Middleware
+	c.OnAfterResponse(func(c *resty.Client, resp *resty.Response) error {
+		// explore response object
+		slog.Debug("Response", "statuscode", resp.StatusCode(), "status", resp.Status(), "time", resp.Time(), "received-at", resp.ReceivedAt(), "headers", resp.Header(), "request", resp.Request.RawRequest, "body", resp)
+
+		return nil // if its success otherwise return error
+	})
+
+	return c
+}
+
 // GetRequest returns a resty.Request object prepared for an API call
 func GetRequestTimeout(timeout time.Duration) *resty.Request {
 	apiToken := viper.GetString("api-token")
 
-	if client == nil {
-		client = resty.New()
-
-		// Default is no timeout. This can lead to lockup the CLI
-		// in case the server does not respond. Set a somewhat low
-		// timeout for our local only use case.
-		client.SetTimeout(timeout)
-
-		// Registering Response Middleware
-		client.OnAfterResponse(func(c *resty.Client, resp *resty.Response) error {
-			// explore response object
-			slog.Debug("Response", "statuscode", resp.StatusCode(), "status", resp.Status(), "time", resp.Time(), "received-at", resp.ReceivedAt(), "headers", resp.Header(), "request", resp.Request.RawRequest, "body", resp)
-
-			return nil // if its success otherwise return error
-		})
+	client, ok := clients[timeout]
+	if !ok {
+		client = newClient(timeout)
+		clients[timeout] = client
 	}
 
 	return client.R().
