@@ -79,7 +79,7 @@ func init() {
 	cobra.OnInitialize(initConfig)
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "Optional config file (default is $HOME/.homeassistant.yaml)")
-	rootCmd.PersistentFlags().StringVar(&endPoint, "endpoint", "", "Endpoint for Home Assistant Supervisor (default is 'supervisor')")
+	rootCmd.PersistentFlags().StringVar(&endPoint, "endpoint", "", "Endpoint for Home Assistant Supervisor, use unix:///path for a Unix socket (default is $SUPERVISOR_SOCKET if set, else 'supervisor')")
 	rootCmd.PersistentFlags().StringVar(&logLevel, "log-level", "", "Log level (defaults to "+slog.LevelWarn.String()+")")
 	rootCmd.PersistentFlags().StringVar(&apiToken, "api-token", "", "Home Assistant Supervisor API token")
 	rootCmd.PersistentFlags().BoolVar(&rawJSON, "raw-json", false, "Output raw JSON from the API")
@@ -106,13 +106,22 @@ func init() {
 	viper.BindPFlag("raw-json", rootCmd.PersistentFlags().Lookup("raw-json"))
 	viper.BindPFlag("no-progress", rootCmd.PersistentFlags().Lookup("no-progress"))
 
-	viper.SetDefault("endpoint", "supervisor")
+	viper.SetDefault("endpoint", defaultEndpoint())
 	viper.SetDefault("log-level", "warn")
 	viper.SetDefault("api-token", "")
 
 	// Configure global spinner
 	ProgressSpinner.Suffix = " Processing..."
 	ProgressSpinner.FinalMSG = "Processing... Done.\n\n"
+}
+
+// defaultEndpoint returns the endpoint used when none is configured. Supervisor
+// gives apps a socket of their own in SUPERVISOR_SOCKET, prefer it over TCP.
+func defaultEndpoint() string {
+	if socket := os.Getenv("SUPERVISOR_SOCKET"); socket != "" {
+		return helper.UnixSocketScheme + socket
+	}
+	return "supervisor"
 }
 
 // initConfig reads in config file and ENV variables if set.
