@@ -2,11 +2,14 @@ package client
 
 import (
 	"bufio"
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
 	"log/slog"
+	"net"
+	"net/http"
 	"net/url"
 	"os"
 	"os/signal"
@@ -32,6 +35,14 @@ const BackupTimeout = 3 * time.Hour
 const RebootTimeout = 90 * time.Second
 const MountTimeout = 5 * time.Minute
 
+// UnixSocketScheme is the endpoint prefix selecting a Unix socket, e.g.
+// unix:///run/supervisor/api/supervisor.sock
+const UnixSocketScheme = "unix://"
+
+// unixSocketBaseURL is the base URL of requests sent over a Unix socket. The
+// host is only used for the Host header, the connection goes to the socket.
+const unixSocketBaseURL = "http://localhost"
+
 var client *resty.Client
 
 // Response is the default JSON response from the Home Assistant Supervisor
@@ -41,10 +52,31 @@ type Response struct {
 	Data    map[string]any `json:"data,omitempty"`
 }
 
+// socketPath returns the Unix socket path of a unix:// endpoint. ok is false
+// for any other endpoint.
+func socketPath(endpoint string) (path string, ok bool) {
+	path, ok = strings.CutPrefix(endpoint, UnixSocketScheme)
+	if !ok {
+		return "", false
+	}
+	return path, true
+}
+
 // URLHelper returns a URL built from the arguments
 func URLHelper(section, command string) (string, error) {
 	base := viper.GetString("endpoint")
 	slog.Debug("[GenerateURI]", "base", base, "section", section, "command", command)
+
+	if socket, ok := socketPath(base); ok {
+		if socket == "" {
+			return "", errors.New("endpoint " + UnixSocketScheme + " is missing the socket path")
+		}
+		base = unixSocketBaseURL
+	} else if strings.HasPrefix(base, "unix:/") {
+		// A socket path missing a slash, would otherwise be sent over TCP to a
+		// host named "unix"
+		return "", fmt.Errorf("invalid endpoint %q, use %s/path/to/socket", base, UnixSocketScheme)
+	}
 
 	scheme := ""
 	if !strings.Contains(base, "://") {
@@ -86,32 +118,57 @@ func GetJSONRequest() *resty.Request {
 	return GetJSONRequestTimeout(DefaultTimeout)
 }
 
+// newClient returns a resty.Client for the Supervisor API. When socket is not
+// empty, every connection goes to that Unix socket.
+func newClient(timeout time.Duration, socket string) *resty.Client {
+	c := resty.New()
+
+	// Default is no timeout. This can lead to lockup the CLI
+	// in case the server does not respond. Set a somewhat low
+	// timeout for our local only use case.
+	c.SetTimeout(timeout)
+
+	c.SetHeader("User-Agent", userAgent())
+
+	if socket != "" {
+		// Start from resty's default transport so connection pooling and
+		// timeouts match TCP, only the way connections are made changes
+		transport := c.GetClient().Transport.(*http.Transport).Clone()
+		// The socket is local, never route it through an HTTP proxy
+		transport.Proxy = nil
+		transport.DialContext = func(ctx context.Context, _, _ string) (net.Conn, error) {
+			var dialer net.Dialer
+			return dialer.DialContext(ctx, "unix", socket)
+		}
+		c.SetTransport(transport)
+	}
+
+	// Registering Response Middleware
+	c.OnAfterResponse(func(c *resty.Client, resp *resty.Response) error {
+		// explore response object
+		slog.Debug("Response", "statuscode", resp.StatusCode(), "status", resp.Status(), "time", resp.Time(), "received-at", resp.ReceivedAt(), "headers", resp.Header(), "request", resp.Request.RawRequest, "body", resp)
+
+		return nil // if its success otherwise return error
+	})
+
+	return c
+}
+
 // GetRequest returns a resty.Request object prepared for an API call
 func GetRequestTimeout(timeout time.Duration) *resty.Request {
-	apiToken := viper.GetString("api-token")
+	socket, overSocket := socketPath(viper.GetString("endpoint"))
 
 	if client == nil {
-		client = resty.New()
-
-		// Default is no timeout. This can lead to lockup the CLI
-		// in case the server does not respond. Set a somewhat low
-		// timeout for our local only use case.
-		client.SetTimeout(timeout)
-
-		client.SetHeader("User-Agent", userAgent())
-
-		// Registering Response Middleware
-		client.OnAfterResponse(func(c *resty.Client, resp *resty.Response) error {
-			// explore response object
-			slog.Debug("Response", "statuscode", resp.StatusCode(), "status", resp.Status(), "time", resp.Time(), "received-at", resp.ReceivedAt(), "headers", resp.Header(), "request", resp.Request.RawRequest, "body", resp)
-
-			return nil // if its success otherwise return error
-		})
+		client = newClient(timeout, socket)
 	}
 
 	request := client.R().
-		SetHeader("Accept", "application/json").
-		SetAuthToken(apiToken)
+		SetHeader("Accept", "application/json")
+
+	// Supervisor identifies the caller by the socket, no token needed
+	if !overSocket {
+		request.SetAuthToken(viper.GetString("api-token"))
+	}
 
 	// Lets an app calling the CLI identify itself to Supervisor
 	if source := viper.GetString("hass-source"); source != "" {
