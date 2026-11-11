@@ -72,7 +72,7 @@ The CLI provides the following main command categories:
 ## Contributing Guidelines
 1. Create feature branch
 2. Commit changes
-3. Rebase against master
+3. Rebase against main
 4. Run tests with `go test ./...`
 5. Format code with `gofmt -s`
 6. Create Pull Request

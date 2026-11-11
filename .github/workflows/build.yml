@@ -2,11 +2,11 @@ name: build
 
 on:
   push:
-    branches: ["master"]
+    branches: ["main"]
   release:
     types: ["published"]
   pull_request:
-    branches: ["master"]
+    branches: ["main"]
 
 env:
   GOLANG_VERSION: "1.26"
