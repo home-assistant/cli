@@ -21,7 +21,6 @@ import (
 	"golang.org/x/term"
 
 	yaml "github.com/ghodss/yaml"
-	resty "github.com/go-resty/resty/v2"
 	"github.com/spf13/viper"
 
 	"strings"
@@ -43,7 +42,9 @@ const UnixSocketScheme = "unix://"
 // host is only used for the Host header, the connection goes to the socket.
 const unixSocketBaseURL = "http://localhost"
 
-var client *resty.Client
+// client is shared by all requests so they reuse the same connections. The
+// timeout is not set here but on each request.
+var client *http.Client
 
 // Response is the default JSON response from the Home Assistant Supervisor
 type Response struct {
@@ -102,72 +103,62 @@ func URLHelper(section, command string) (string, error) {
 	return res, nil
 }
 
-// GetJSONRequest returns a request prepared for default JSON responses
-func GetJSONRequestTimeout(timeout time.Duration) *resty.Request {
-	request := GetRequestTimeout(timeout).
-		SetResult(Response{}).
-		SetError(Response{})
+// GetJSONRequestTimeout returns a request prepared for default JSON responses
+func GetJSONRequestTimeout(timeout time.Duration) *Request {
+	request := GetRequestTimeout(timeout)
 	if RawJSON {
-		request.
-			SetDoNotParseResponse(true)
+		// The body is passed through as-is, see ShowJSONResponseTransform
+		request.stream = true
+	} else {
+		request.parseJSON = true
 	}
 	return request
 }
 
-func GetJSONRequest() *resty.Request {
+func GetJSONRequest() *Request {
 	return GetJSONRequestTimeout(DefaultTimeout)
 }
 
-// newClient returns a resty.Client for the Supervisor API. When socket is not
+// newClient returns an http.Client for the Supervisor API. When socket is not
 // empty, every connection goes to that Unix socket.
-func newClient(timeout time.Duration, socket string) *resty.Client {
-	c := resty.New()
-
-	// Default is no timeout. This can lead to lockup the CLI
-	// in case the server does not respond. Set a somewhat low
-	// timeout for our local only use case.
-	c.SetTimeout(timeout)
-
-	c.SetHeader("User-Agent", userAgent())
+func newClient(socket string) *http.Client {
+	transport := http.DefaultTransport.(*http.Transport).Clone()
 
 	if socket != "" {
-		// Start from resty's default transport so connection pooling and
-		// timeouts match TCP, only the way connections are made changes
-		transport := c.GetClient().Transport.(*http.Transport).Clone()
+		// Start from the default transport so connection pooling and
+		// timeouts match TCP, only the way connections are made changes.
 		// The socket is local, never route it through an HTTP proxy
 		transport.Proxy = nil
 		transport.DialContext = func(ctx context.Context, _, _ string) (net.Conn, error) {
 			var dialer net.Dialer
 			return dialer.DialContext(ctx, "unix", socket)
 		}
-		c.SetTransport(transport)
 	}
 
-	// Registering Response Middleware
-	c.OnAfterResponse(func(c *resty.Client, resp *resty.Response) error {
-		// explore response object
-		slog.Debug("Response", "statuscode", resp.StatusCode(), "status", resp.Status(), "time", resp.Time(), "received-at", resp.ReceivedAt(), "headers", resp.Header(), "request", resp.Request.RawRequest, "body", resp)
-
-		return nil // if its success otherwise return error
-	})
-
-	return c
+	return &http.Client{Transport: transport}
 }
 
-// GetRequest returns a resty.Request object prepared for an API call
-func GetRequestTimeout(timeout time.Duration) *resty.Request {
+// GetRequestTimeout returns a Request object prepared for an API call. The
+// timeout applies to this request only, 0 disables it.
+func GetRequestTimeout(timeout time.Duration) *Request {
 	socket, overSocket := socketPath(viper.GetString("endpoint"))
 
 	if client == nil {
-		client = newClient(timeout, socket)
+		client = newClient(socket)
 	}
 
-	request := client.R().
-		SetHeader("Accept", "application/json")
+	request := &Request{
+		client:     client,
+		timeout:    timeout,
+		header:     http.Header{},
+		pathParams: map[string]string{},
+	}
+	request.SetHeader("Accept", "application/json")
+	request.SetHeader("User-Agent", userAgent())
 
 	// Supervisor identifies the caller by the socket, no token needed
-	if !overSocket {
-		request.SetAuthToken(viper.GetString("api-token"))
+	if token := viper.GetString("api-token"); !overSocket && token != "" {
+		request.SetHeader("Authorization", "Bearer "+token)
 	}
 
 	// Lets an app calling the CLI identify itself to Supervisor
@@ -179,7 +170,7 @@ func GetRequestTimeout(timeout time.Duration) *resty.Request {
 }
 
 // ShowJSONResponse formats a JSON response for human readers
-func ShowJSONResponse(resp *resty.Response) (success bool) {
+func ShowJSONResponse(resp *HTTPResponse) (success bool) {
 	return ShowJSONResponseTransform(resp, nil)
 }
 
@@ -188,7 +179,7 @@ func ShowJSONResponse(resp *resty.Response) (success bool) {
 // allows commands to humanize individual fields. In raw JSON mode the transform
 // is not applied, as the output is meant for machine consumption. Both modes
 // decide success the same way, from the "result" field of the response body.
-func ShowJSONResponseTransform(resp *resty.Response, transform func(map[string]any)) (success bool) {
+func ShowJSONResponseTransform(resp *HTTPResponse, transform func(map[string]any)) (success bool) {
 	if RawJSON {
 		// The client does not parse the response in raw JSON mode. The body is
 		// passed through to the consumer as-is, only its "result" field is
@@ -212,9 +203,9 @@ func ShowJSONResponseTransform(resp *resty.Response, transform func(map[string]a
 	}
 	var data *Response
 	if resp.IsSuccess() {
-		data = resp.Result().(*Response)
+		data = resp.Result()
 	} else {
-		data = resp.Error().(*Response)
+		data = resp.Error()
 	}
 	switch data.Result {
 	case "ok":
@@ -251,27 +242,19 @@ func ShowJSONResponseTransform(resp *resty.Response, transform func(map[string]a
 	return
 }
 
-func GetRequest() *resty.Request {
+func GetRequest() *Request {
 	return GetRequestTimeout(DefaultTimeout)
 }
 
 // Streams out a text response, like ones from /host/logs
-func StreamTextResponse(resp *resty.Response) (success bool) {
-	success = true
-	for {
-		p := make([]byte, 4096)
-		n, err := resp.RawBody().Read(p)
-		if err != nil && err != io.EOF {
-			fmt.Println(err)
-			success = false
-			break
-		}
-		fmt.Print(string(p[:n]))
-		if err == io.EOF {
-			break
-		}
+func StreamTextResponse(resp *HTTPResponse) (success bool) {
+	body := resp.RawBody()
+	defer body.Close()
+	if _, err := io.Copy(os.Stdout, body); err != nil {
+		fmt.Println(err)
+		return false
 	}
-	return
+	return true
 }
 
 func AskForConfirmation(prompt string, tries int) (bool, error) {

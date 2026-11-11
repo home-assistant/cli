@@ -29,7 +29,7 @@ func getUsers() ([]User, error) {
 	var result []User
 
 	if resp.IsSuccess() {
-		data = resp.Result().(*helper.Response)
+		data = resp.Result()
 
 		if data.Result != "ok" {
 			err := fmt.Errorf("error returned from Supervisor: %s", data.Message)
@@ -47,7 +47,7 @@ func getUsers() ([]User, error) {
 			})
 		}
 	} else {
-		data = resp.Error().(*helper.Response)
+		data = resp.Error()
 		err := fmt.Errorf("error returned from Supervisor: %s", data.Message)
 		return nil, err
 	}

@@ -134,7 +134,7 @@ func featureFlagCompletions(cmd *cobra.Command, args []string, toComplete string
 	if err != nil || !resp.IsSuccess() {
 		return nil, cobra.ShellCompDirectiveNoFileComp
 	}
-	data := resp.Result().(*helper.Response)
+	data := resp.Result()
 	if data.Result != "ok" || data.Data["feature_flags"] == nil {
 		return nil, cobra.ShellCompDirectiveNoFileComp
 	}

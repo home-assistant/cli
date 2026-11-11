@@ -33,9 +33,9 @@ func supervisorGet(section string, command string) (outdata *(map[string]any), e
 
 	var data *helper.Response
 	if resp.IsSuccess() {
-		data = resp.Result().(*helper.Response)
+		data = resp.Result()
 	} else {
-		data = resp.Error().(*helper.Response)
+		data = resp.Error()
 	}
 	if data.Result == "ok" {
 		if len(data.Data) > 0 {

@@ -56,7 +56,7 @@ func storeAppCompletions(cmd *cobra.Command, args []string, toComplete string) (
 		return nil, cobra.ShellCompDirectiveNoFileComp
 	}
 	var ret []string
-	data := resp.Result().(*helper.Response)
+	data := resp.Result()
 	if data.Result == "ok" && data.Data["addons"] != nil {
 		if addons, ok := data.Data["addons"].([]any); ok {
 			for _, addon := range addons {

@@ -66,7 +66,7 @@ func hostLogsIdentifiersCompletions(cmd *cobra.Command, args []string, toComplet
 		return nil, cobra.ShellCompDirectiveNoFileComp
 	}
 	var ret []string
-	data := resp.Result().(*helper.Response)
+	data := resp.Result()
 	if data.Result == "ok" && data.Data["identifiers"] != nil {
 		if identifiers, ok := data.Data["identifiers"].([]any); ok {
 			for _, id := range identifiers {

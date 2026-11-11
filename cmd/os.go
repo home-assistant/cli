@@ -42,7 +42,7 @@ func osGetBootSlots() (map[string]any, error) {
 		return nil, err
 	}
 
-	data := resp.Result().(*helper.Response)
+	data := resp.Result()
 	if data.Result == "ok" && data.Data["boot_slots"] != nil {
 		if bootSlots, ok := data.Data["boot_slots"].(map[string]any); ok {
 			return bootSlots, nil

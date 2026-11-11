@@ -6,14 +6,12 @@ import (
 	"log/slog"
 	"net/http"
 	"time"
-
-	resty "github.com/go-resty/resty/v2"
 )
 
 // RawJSON controls if the client does json handling or outputs it raw
 var RawJSON = false
 
-func GenericJSONErrorHandling(resp *resty.Response, err error) (*resty.Response, error) {
+func GenericJSONErrorHandling(resp *HTTPResponse, err error) (*HTTPResponse, error) {
 	if err != nil {
 		return resp, err
 	}
@@ -24,20 +22,20 @@ func GenericJSONErrorHandling(resp *resty.Response, err error) (*resty.Response,
 	switch resp.StatusCode() {
 	case http.StatusOK, http.StatusBadRequest, http.StatusNotFound, http.StatusServiceUnavailable, http.StatusTooManyRequests:
 		// Success and these errors should have JSON responses
-		if !resty.IsJSONType(resp.Header().Get("Content-Type")) {
+		if !IsJSONType(resp.Header().Get("Content-Type")) {
 			return nil, fmt.Errorf("unexpected non-JSON response (status: %d)", resp.StatusCode())
 		}
 	case http.StatusInternalServerError:
-		if !resty.IsJSONType(resp.Header().Get("Content-Type")) {
+		if !IsJSONType(resp.Header().Get("Content-Type")) {
 			return nil, errors.New("unknown error occurred, check supervisor logs with 'ha supervisor logs'")
 		}
 	case http.StatusUnauthorized:
-		if !resty.IsJSONType(resp.Header().Get("Content-Type")) {
+		if !IsJSONType(resp.Header().Get("Content-Type")) {
 			return nil, errors.New("unauthorized: missing or invalid API token")
 		}
 	case http.StatusForbidden:
 		// Handle both JSON and plain text forbidden responses
-		if !resty.IsJSONType(resp.Header().Get("Content-Type")) {
+		if !IsJSONType(resp.Header().Get("Content-Type")) {
 			return nil, errors.New("forbidden: insufficient permissions or invalid token")
 		}
 	case http.StatusBadGateway:
@@ -49,14 +47,14 @@ func GenericJSONErrorHandling(resp *resty.Response, err error) (*resty.Response,
 	return resp, err
 }
 
-func genericJSONMethod(get bool, section, command string, body map[string]any, timeout time.Duration) (*resty.Response, error) {
+func genericJSONMethod(get bool, section, command string, body map[string]any, timeout time.Duration) (*HTTPResponse, error) {
 	url, err := URLHelper(section, command)
 	if err != nil {
 		return nil, err
 	}
 
 	request := GetJSONRequestTimeout(timeout)
-	var resp *resty.Response
+	var resp *HTTPResponse
 
 	if get {
 		resp, err = request.Get(url)
@@ -72,19 +70,19 @@ func genericJSONMethod(get bool, section, command string, body map[string]any, t
 }
 
 // GenericJSONGet is a helper for generic empty post request
-func GenericJSONGet(section, command string) (*resty.Response, error) {
+func GenericJSONGet(section, command string) (*HTTPResponse, error) {
 	return genericJSONMethod(true, section, command, nil, DefaultTimeout)
 }
 
-func GenericJSONGetTimeout(section, command string, timeout time.Duration) (*resty.Response, error) {
+func GenericJSONGetTimeout(section, command string, timeout time.Duration) (*HTTPResponse, error) {
 	return genericJSONMethod(true, section, command, nil, timeout)
 }
 
 // GenericJSONPost is a helper for generic empty post request
-func GenericJSONPost(section, command string, body map[string]any) (*resty.Response, error) {
+func GenericJSONPost(section, command string, body map[string]any) (*HTTPResponse, error) {
 	return genericJSONMethod(false, section, command, body, DefaultTimeout)
 }
 
-func GenericJSONPostTimeout(section, command string, body map[string]any, timeout time.Duration) (*resty.Response, error) {
+func GenericJSONPostTimeout(section, command string, body map[string]any, timeout time.Duration) (*HTTPResponse, error) {
 	return genericJSONMethod(false, section, command, body, timeout)
 }

@@ -60,7 +60,7 @@ func backupsCompletions(cmd *cobra.Command, args []string, toComplete string) ([
 		return nil, cobra.ShellCompDirectiveNoFileComp
 	}
 	var ret []string
-	data := resp.Result().(*helper.Response)
+	data := resp.Result()
 	if data.Result == "ok" && data.Data["backups"] != nil {
 		if backups, ok := data.Data["backups"].([]any); ok {
 			for _, backup := range backups {
@@ -102,7 +102,7 @@ func backupsLocationsCompletions(cmd *cobra.Command, args []string, toComplete s
 	}
 	var ret []string
 	ret = append(ret, ".local\tLocal storage, /backups")
-	data := resp.Result().(*helper.Response)
+	data := resp.Result()
 	if data.Result == "ok" && data.Data["mounts"] != nil {
 		if mounts, ok := data.Data["mounts"].([]any); ok {
 			for _, mount := range mounts {

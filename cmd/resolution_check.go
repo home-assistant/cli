@@ -29,7 +29,7 @@ func resolutionCheckCompletions(cmd *cobra.Command, args []string, toComplete st
 		return nil, cobra.ShellCompDirectiveNoFileComp
 	}
 	var ret []string
-	data := resp.Result().(*helper.Response)
+	data := resp.Result()
 	if data.Result == "ok" && data.Data["checks"] != nil {
 		if checks, ok := data.Data["checks"].([]any); ok {
 			for _, check := range checks {
