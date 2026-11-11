@@ -123,12 +123,10 @@ func ShowJSONResponse(resp *resty.Response) (success bool) {
 // is not applied, as the output is meant for machine consumption. Both modes
 // decide success the same way, from the "result" field of the response body.
 func ShowJSONResponseTransform(resp *resty.Response, transform func(map[string]any)) (success bool) {
-	var data *Response
 	if RawJSON {
-		// The client does not parse the response in raw JSON mode, so the body
-		// is read and unmarshaled here. It is passed through to the consumer
-		// as-is, but the outcome is decided exactly like the human readable
-		// output below.
+		// The client does not parse the response in raw JSON mode. The body is
+		// passed through to the consumer as-is, only its "result" field is
+		// looked at to decide the outcome.
 		body := resp.RawBody()
 		b, err := io.ReadAll(body)
 		_ = body.Close()
@@ -137,53 +135,52 @@ func ShowJSONResponseTransform(resp *resty.Response, transform func(map[string]a
 			return
 		}
 		fmt.Print(string(b))
-		data = &Response{}
-		if err := json.Unmarshal(b, data); err != nil {
+		var result struct {
+			Result string `json:"result"`
+		}
+		if err := json.Unmarshal(b, &result); err != nil {
 			PrintError(err)
 			return
 		}
-	} else if resp.IsSuccess() {
+		return result.Result == "ok"
+	}
+	var data *Response
+	if resp.IsSuccess() {
 		data = resp.Result().(*Response)
 	} else {
 		data = resp.Error().(*Response)
 	}
 	switch data.Result {
 	case "ok":
-		if !RawJSON {
-			if len(data.Data) == 0 {
-				fmt.Println("Command completed successfully.")
-			} else {
-				if transform != nil {
-					transform(data.Data)
-				}
-				j, err := json.Marshal(data.Data)
-				if err != nil {
-					PrintError(err)
-					return
-				}
-
-				d, err := yaml.JSONToYAML(j)
-				if err != nil {
-					PrintError(err)
-					return
-				}
-				fmt.Print(string(d))
+		if len(data.Data) == 0 {
+			fmt.Println("Command completed successfully.")
+		} else {
+			if transform != nil {
+				transform(data.Data)
 			}
-		}
-		success = true
-	case "error":
-		if !RawJSON {
-			PrintErrorString(data.Message)
-		}
-	default:
-		if !RawJSON {
-			d, err := yaml.Marshal(data)
+			j, err := json.Marshal(data.Data)
+			if err != nil {
+				PrintError(err)
+				return
+			}
+
+			d, err := yaml.JSONToYAML(j)
 			if err != nil {
 				PrintError(err)
 				return
 			}
 			fmt.Print(string(d))
 		}
+		success = true
+	case "error":
+		PrintErrorString(data.Message)
+	default:
+		d, err := yaml.Marshal(data)
+		if err != nil {
+			PrintError(err)
+			return
+		}
+		fmt.Print(string(d))
 	}
 	return
 }
