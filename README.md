@@ -16,13 +16,14 @@ E.g.:
 #### Global
 
 ```text
-      --api-token string   Home Assistant Supervisor API token
-      --config string      Optional config file (default is $HOME/.homeassistant.yaml)
-      --endpoint string    Endpoint for Home Assistant Supervisor, use unix:///path for a Unix socket (default is $SUPERVISOR_SOCKET if set, else 'supervisor')
-  -h, --help               help for ha
-      --log-level string   Log level (defaults to Warn)
-      --no-progress        Disable the progress spinner
-      --raw-json           Output raw JSON from the API
+      --api-token string     Home Assistant Supervisor API token
+      --config string        Optional config file (default is $HOME/.homeassistant.yaml)
+      --endpoint string      Endpoint for Home Assistant Supervisor, use unix:///path for a Unix socket (default is $SUPERVISOR_SOCKET if set, else 'supervisor')
+      --hass-source string   Identify the caller to Supervisor in the X-Hass-Source header (not sent by default)
+  -h, --help                 help for ha
+      --log-level string     Log level (defaults to Warn)
+      --no-progress          Disable the progress spinner
+      --raw-json             Output raw JSON from the API
 ```
 
 All options are also available as `SUPERVISOR_` prefixed environment variables like `SUPERVISOR_LOG_LEVEL`
@@ -101,13 +102,13 @@ CGO_ENABLED=0 go build -ldflags="-s -w" -o "ha"
 ```
 
 For details how we build cross for different architectures,
-please see our [build action file](https://github.com/home-assistant/cli/blob/master/.github/workflows/build.yml).
+please see our [build action file](https://github.com/home-assistant/cli/blob/main/.github/workflows/build.yml).
 
 ### Contributing a change
 
 1. Create a feature branch on your fork/clone of the git repository.
 2. Commit your changes.
-3. Rebase your local changes against the `master` branch.
+3. Rebase your local changes against the `main` branch.
 4. Run test suite with the `go test ./...` command and confirm that it passes.
 5. Run `gofmt -s` to ensure your code is formatted properly.
 6. Create a new Pull Request.

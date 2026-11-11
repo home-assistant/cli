@@ -133,6 +133,8 @@ func newClient(timeout time.Duration, socket string) *resty.Client {
 	// timeout for our local only use case.
 	c.SetTimeout(timeout)
 
+	c.SetHeader("User-Agent", userAgent())
+
 	if transport == nil {
 		transport = c.GetClient().Transport
 		if socket != "" {
@@ -179,6 +181,11 @@ func GetRequestTimeout(timeout time.Duration) *resty.Request {
 		request.SetAuthToken(viper.GetString("api-token"))
 	}
 
+	// Lets an app calling the CLI identify itself to Supervisor
+	if source := viper.GetString("hass-source"); source != "" {
+		request.SetHeader("X-Hass-Source", source)
+	}
+
 	return request
 }
 
@@ -190,17 +197,29 @@ func ShowJSONResponse(resp *resty.Response) (success bool) {
 // ShowJSONResponseTransform formats a JSON response for human readers, applying
 // transform to the data map of a successful response before rendering it. This
 // allows commands to humanize individual fields. In raw JSON mode the transform
-// is not applied, as the output is meant for machine consumption.
+// is not applied, as the output is meant for machine consumption. Both modes
+// decide success the same way, from the "result" field of the response body.
 func ShowJSONResponseTransform(resp *resty.Response, transform func(map[string]any)) (success bool) {
 	if RawJSON {
-		// when we are returning raw JSON, all handling is for the consumer of the JSON
-		success = true
+		// The client does not parse the response in raw JSON mode. The body is
+		// passed through to the consumer as-is, only its "result" field is
+		// looked at to decide the outcome.
 		body := resp.RawBody()
-		if b, err := io.ReadAll(body); err == nil {
-			fmt.Print(string(b))
-		}
+		b, err := io.ReadAll(body)
 		_ = body.Close()
-		return
+		if err != nil {
+			PrintError(err)
+			return
+		}
+		fmt.Print(string(b))
+		var result struct {
+			Result string `json:"result"`
+		}
+		if err := json.Unmarshal(b, &result); err != nil {
+			PrintError(err)
+			return
+		}
+		return result.Result == "ok"
 	}
 	var data *Response
 	if resp.IsSuccess() {

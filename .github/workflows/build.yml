@@ -2,11 +2,11 @@ name: build
 
 on:
   push:
-    branches: ["master"]
+    branches: ["main"]
   release:
     types: ["published"]
   pull_request:
-    branches: ["master"]
+    branches: ["main"]
 
 env:
   GOLANG_VERSION: "1.26"
@@ -32,7 +32,11 @@ jobs:
         go-version: ${{ env.GOLANG_VERSION }}
 
     - name: Build ${{ matrix.variant.name }}
-      run: CGO_ENABLED=0 ${{ matrix.variant.args }} go build -ldflags="-s -w" -o "${{ matrix.variant.name }}"
+      env:
+        # Release builds carry the release version, others fall back to the
+        # version Go derives from the checkout
+        VERSION: ${{ github.event.release.tag_name }}
+      run: CGO_ENABLED=0 ${{ matrix.variant.args }} go build -ldflags="-s -w -X github.com/home-assistant/cli/client.Version=${VERSION}" -o "${{ matrix.variant.name }}"
 
     - name: Upload release asset
       if: github.event_name == 'release'
