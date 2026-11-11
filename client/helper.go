@@ -128,6 +128,8 @@ func newClient(timeout time.Duration, socket string) *resty.Client {
 	// timeout for our local only use case.
 	c.SetTimeout(timeout)
 
+	c.SetHeader("User-Agent", userAgent())
+
 	if socket != "" {
 		// Start from resty's default transport so connection pooling and
 		// timeouts match TCP, only the way connections are made changes
@@ -166,6 +168,11 @@ func GetRequestTimeout(timeout time.Duration) *resty.Request {
 	// Supervisor identifies the caller by the socket, no token needed
 	if !overSocket {
 		request.SetAuthToken(viper.GetString("api-token"))
+	}
+
+	// Lets an app calling the CLI identify itself to Supervisor
+	if source := viper.GetString("hass-source"); source != "" {
+		request.SetHeader("X-Hass-Source", source)
 	}
 
 	return request

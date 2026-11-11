@@ -20,6 +20,7 @@ var cfgFile string
 var endPoint string
 var logLevel string
 var apiToken string
+var hassSource string
 var rawJSON bool
 var noProgress bool
 
@@ -54,6 +55,7 @@ you to control and configure different aspects of Home Assistant`,
 			"apiToken", viper.GetString("api-token"),
 			"cfgFile", viper.GetString("config"),
 			"endpoint", viper.GetString("endpoint"),
+			"hassSource", viper.GetString("hass-source"),
 			"logLevel", viper.GetString("log-level"),
 			"noProgress", viper.GetBool("no-progress"),
 			"rawJSON", viper.GetBool("raw-json"),
@@ -82,6 +84,7 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&endPoint, "endpoint", "", "Endpoint for Home Assistant Supervisor, use unix:///path for a Unix socket (default is $SUPERVISOR_SOCKET if set, else 'supervisor')")
 	rootCmd.PersistentFlags().StringVar(&logLevel, "log-level", "", "Log level (defaults to "+slog.LevelWarn.String()+")")
 	rootCmd.PersistentFlags().StringVar(&apiToken, "api-token", "", "Home Assistant Supervisor API token")
+	rootCmd.PersistentFlags().StringVar(&hassSource, "hass-source", "", "Identify the caller to Supervisor in the X-Hass-Source header (not sent by default)")
 	rootCmd.PersistentFlags().BoolVar(&rawJSON, "raw-json", false, "Output raw JSON from the API")
 	rootCmd.PersistentFlags().BoolVar(&noProgress, "no-progress", false, "Disable the progress spinner")
 
@@ -95,6 +98,7 @@ func init() {
 		}, cobra.ShellCompDirectiveNoFileComp
 	})
 	rootCmd.RegisterFlagCompletionFunc("api-token", cobra.NoFileCompletions)
+	rootCmd.RegisterFlagCompletionFunc("hass-source", cobra.NoFileCompletions)
 	rootCmd.RegisterFlagCompletionFunc("raw-json", boolCompletions)
 	rootCmd.RegisterFlagCompletionFunc("no-progress", boolCompletions)
 	rootCmd.MarkPersistentFlagFilename("config", "yaml", "yml")
@@ -103,6 +107,7 @@ func init() {
 	viper.BindPFlag("endpoint", rootCmd.PersistentFlags().Lookup("endpoint"))
 	viper.BindPFlag("log-level", rootCmd.PersistentFlags().Lookup("log-level"))
 	viper.BindPFlag("api-token", rootCmd.PersistentFlags().Lookup("api-token"))
+	viper.BindPFlag("hass-source", rootCmd.PersistentFlags().Lookup("hass-source"))
 	viper.BindPFlag("raw-json", rootCmd.PersistentFlags().Lookup("raw-json"))
 	viper.BindPFlag("no-progress", rootCmd.PersistentFlags().Lookup("no-progress"))
 

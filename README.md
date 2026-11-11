@@ -16,13 +16,14 @@ E.g.:
 #### Global
 
 ```text
-      --api-token string   Home Assistant Supervisor API token
-      --config string      Optional config file (default is $HOME/.homeassistant.yaml)
-      --endpoint string    Endpoint for Home Assistant Supervisor, use unix:///path for a Unix socket (default is $SUPERVISOR_SOCKET if set, else 'supervisor')
-  -h, --help               help for ha
-      --log-level string   Log level (defaults to Warn)
-      --no-progress        Disable the progress spinner
-      --raw-json           Output raw JSON from the API
+      --api-token string     Home Assistant Supervisor API token
+      --config string        Optional config file (default is $HOME/.homeassistant.yaml)
+      --endpoint string      Endpoint for Home Assistant Supervisor, use unix:///path for a Unix socket (default is $SUPERVISOR_SOCKET if set, else 'supervisor')
+      --hass-source string   Identify the caller to Supervisor in the X-Hass-Source header (not sent by default)
+  -h, --help                 help for ha
+      --log-level string     Log level (defaults to Warn)
+      --no-progress          Disable the progress spinner
+      --raw-json             Output raw JSON from the API
 ```
 
 All options are also available as `SUPERVISOR_` prefixed environment variables like `SUPERVISOR_LOG_LEVEL`
