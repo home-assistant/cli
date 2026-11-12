@@ -11,8 +11,17 @@ import (
 	"testing"
 	"time"
 
-	"github.com/spf13/viper"
+	"github.com/home-assistant/cli/config"
 )
+
+func TestMain(m *testing.M) {
+	// The settings of the tests must not be overridden by the environment,
+	// e.g. when running inside an app container
+	for _, name := range []string{"SUPERVISOR_ENDPOINT", "SUPERVISOR_API_TOKEN", "SUPERVISOR_TOKEN", "SUPERVISOR_HASS_SOURCE"} {
+		os.Unsetenv(name)
+	}
+	os.Exit(m.Run())
+}
 
 var urlTests = []struct {
 	base    string
@@ -40,7 +49,7 @@ var urlTests = []struct {
 func TestURLHelper(t *testing.T) {
 	for _, tt := range urlTests {
 		t.Run(fmt.Sprintf("[%s][%s][%s]", tt.base, tt.section, tt.command), func(t *testing.T) {
-			viper.SetDefault("endpoint", tt.base)
+			config.SetDefault("endpoint", tt.base)
 			s, _ := URLHelper(tt.section, tt.command)
 			if s != tt.out {
 				t.Errorf("got %q, want %q", s, tt.out)
@@ -52,7 +61,7 @@ func TestURLHelper(t *testing.T) {
 func TestURLHelperInvalidUnixSocket(t *testing.T) {
 	for _, endpoint := range []string{"unix://", "unix:/run/x.sock"} {
 		t.Run(endpoint, func(t *testing.T) {
-			viper.SetDefault("endpoint", endpoint)
+			config.SetDefault("endpoint", endpoint)
 			if _, err := URLHelper("section", "command"); err == nil {
 				t.Errorf("expected an error for endpoint %q", endpoint)
 			}
@@ -105,8 +114,8 @@ func TestGetRequest(t *testing.T) {
 			}
 			server.Start()
 
-			viper.SetDefault("endpoint", endpoint)
-			viper.SetDefault("api-token", tt.token)
+			config.SetDefault("endpoint", endpoint)
+			config.SetDefault("api-token", tt.token)
 			client = nil
 			t.Cleanup(func() { client = nil })
 
@@ -140,7 +149,7 @@ func TestGetRequestTimeoutPerRequest(t *testing.T) {
 		_, _ = w.Write([]byte(`{"result":"ok","data":{}}`))
 	}))
 	t.Cleanup(server.Close)
-	viper.SetDefault("endpoint", server.Listener.Addr().String())
+	config.SetDefault("endpoint", server.Listener.Addr().String())
 	client = nil
 	t.Cleanup(func() { client = nil })
 
@@ -183,7 +192,7 @@ func TestRequest(t *testing.T) {
 		_, _ = io.WriteString(w, `{"result":"ok","data":{"key":"value"}}`)
 	}))
 	t.Cleanup(server.Close)
-	viper.SetDefault("endpoint", server.Listener.Addr().String())
+	config.SetDefault("endpoint", server.Listener.Addr().String())
 	client = nil
 	t.Cleanup(func() { client = nil })
 
@@ -269,7 +278,7 @@ func TestRequestTimeoutStreamedBody(t *testing.T) {
 		_, _ = io.WriteString(w, "late")
 	}))
 	t.Cleanup(server.Close)
-	viper.SetDefault("endpoint", server.Listener.Addr().String())
+	config.SetDefault("endpoint", server.Listener.Addr().String())
 	client = nil
 	t.Cleanup(func() { client = nil })
 
@@ -367,7 +376,7 @@ func TestShowJSONResponseRawJSON(t *testing.T) {
 
 			// The client is created for the configured endpoint, do not reuse
 			// one a previous test may have set up for a Unix socket
-			viper.SetDefault("endpoint", server.Listener.Addr().String())
+			config.SetDefault("endpoint", server.Listener.Addr().String())
 			client = nil
 			t.Cleanup(func() { client = nil })
 

@@ -1,18 +1,18 @@
 package cmd
 
 import (
-	"fmt"
+	"errors"
+	"io/fs"
 	"log/slog"
 	"os"
 	"path"
-	"strings"
+	"path/filepath"
 	"time"
 
 	helper "github.com/home-assistant/cli/client"
+	"github.com/home-assistant/cli/config"
 	"github.com/home-assistant/cli/spinner"
-	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 	"golang.org/x/term"
 )
 
@@ -39,11 +39,11 @@ you to control and configure different aspects of Home Assistant`,
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		// set loglevel if possible
 		var level slog.Level
-		if level.UnmarshalText([]byte(viper.GetString("log-level"))) == nil {
+		if level.UnmarshalText([]byte(config.GetString("log-level"))) == nil {
 			slog.SetLogLoggerLevel(level)
 		}
 
-		helper.RawJSON = viper.GetBool("raw-json") && cmd.Name() != cobra.ShellCompRequestCmd
+		helper.RawJSON = config.GetBool("raw-json") && cmd.Name() != cobra.ShellCompRequestCmd
 
 		// Only shows spinner output when we have a TTY
 		if !noProgress && term.IsTerminal(int(os.Stdout.Fd())) {
@@ -52,13 +52,13 @@ you to control and configure different aspects of Home Assistant`,
 		}
 
 		slog.Debug("Debug flags",
-			"apiToken", viper.GetString("api-token"),
-			"cfgFile", viper.GetString("config"),
-			"endpoint", viper.GetString("endpoint"),
-			"hassSource", viper.GetString("hass-source"),
-			"logLevel", viper.GetString("log-level"),
-			"noProgress", viper.GetBool("no-progress"),
-			"rawJSON", viper.GetBool("raw-json"),
+			"apiToken", config.GetString("api-token"),
+			"cfgFile", config.GetString("config"),
+			"endpoint", config.GetString("endpoint"),
+			"hassSource", config.GetString("hass-source"),
+			"logLevel", config.GetString("log-level"),
+			"noProgress", config.GetBool("no-progress"),
+			"rawJSON", config.GetBool("raw-json"),
 		)
 	},
 	PersistentPostRun: func(cmd *cobra.Command, args []string) {
@@ -103,17 +103,17 @@ func init() {
 	rootCmd.RegisterFlagCompletionFunc("no-progress", boolCompletions)
 	rootCmd.MarkPersistentFlagFilename("config", "yaml", "yml")
 
-	viper.BindPFlag("config", rootCmd.PersistentFlags().Lookup("config"))
-	viper.BindPFlag("endpoint", rootCmd.PersistentFlags().Lookup("endpoint"))
-	viper.BindPFlag("log-level", rootCmd.PersistentFlags().Lookup("log-level"))
-	viper.BindPFlag("api-token", rootCmd.PersistentFlags().Lookup("api-token"))
-	viper.BindPFlag("hass-source", rootCmd.PersistentFlags().Lookup("hass-source"))
-	viper.BindPFlag("raw-json", rootCmd.PersistentFlags().Lookup("raw-json"))
-	viper.BindPFlag("no-progress", rootCmd.PersistentFlags().Lookup("no-progress"))
+	config.BindFlag(rootCmd.PersistentFlags().Lookup("config"))
+	config.BindFlag(rootCmd.PersistentFlags().Lookup("endpoint"))
+	config.BindFlag(rootCmd.PersistentFlags().Lookup("log-level"))
+	config.BindFlag(rootCmd.PersistentFlags().Lookup("api-token"))
+	config.BindFlag(rootCmd.PersistentFlags().Lookup("hass-source"))
+	config.BindFlag(rootCmd.PersistentFlags().Lookup("raw-json"))
+	config.BindFlag(rootCmd.PersistentFlags().Lookup("no-progress"))
 
-	viper.SetDefault("endpoint", defaultEndpoint())
-	viper.SetDefault("log-level", "warn")
-	viper.SetDefault("api-token", "")
+	config.SetDefault("endpoint", defaultEndpoint())
+	config.SetDefault("log-level", "warn")
+	config.SetDefault("api-token", "")
 
 	// Configure global spinner
 	ProgressSpinner.Suffix = " Processing..."
@@ -131,42 +131,43 @@ func defaultEndpoint() string {
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
-	viper.SetEnvPrefix("SUPERVISOR")
-	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
-	viper.AutomaticEnv()
-
 	// bind to current API token ENV variable
-	viper.BindEnv("api-token", "SUPERVISOR_TOKEN")
+	config.BindEnv("api-token", "SUPERVISOR_TOKEN")
 
 	// set loglevel if possible
 	var level slog.Level
-	if level.UnmarshalText([]byte(viper.GetString("log-level"))) == nil {
+	if level.UnmarshalText([]byte(config.GetString("log-level"))) == nil {
 		slog.SetLogLoggerLevel(level)
 	}
 
-	if cfgFile != "" {
-		// Use config file from the flag.
-		viper.SetConfigFile(cfgFile)
-	} else {
-		// Find home directory.
-		home, err := homedir.Dir()
-		if err != nil {
-			helper.PrintErrorString(fmt.Sprintf("Error while finding home directory: %s", err))
-			os.Exit(1)
+	// Use config file from the flag, or search the home directory for
+	// ".homeassistant" with one of the supported extensions.
+	candidates := []string{cfgFile}
+	if cfgFile == "" {
+		candidates = nil
+		// Without a home directory, e.g. if $HOME is not set, there is no
+		// config file to look for
+		if home, err := os.UserHomeDir(); err == nil {
+			slog.Debug("Adding homedir to searchpath", "homedir", home)
+			for _, ext := range []string{"yaml", "yml", "json"} {
+				candidates = append(candidates, filepath.Join(home, ".homeassistant."+ext))
+			}
 		}
-
-		// Search config in home directory with name ".homeassistant" (without extension).
-		viper.AddConfigPath(home)
-		slog.Debug("Adding homedir to searchpath", "homedir", home)
-		viper.SetConfigName(".homeassistant")
 	}
 
 	// If a config file is found, read it in.
-	if err := viper.ReadInConfig(); err == nil {
-		slog.Info("Using configfile", "configfile", viper.ConfigFileUsed())
-	} else {
-		slog.Info("No configfile found")
+	for _, candidate := range candidates {
+		err := config.ReadFile(candidate)
+		if err == nil {
+			slog.Info("Using configfile", "configfile", candidate)
+			return
+		}
+		if !errors.Is(err, fs.ErrNotExist) {
+			slog.Info("Cannot read configfile", "configfile", candidate, "error", err)
+			return
+		}
 	}
+	slog.Info("No configfile found")
 }
 
 func boolCompletions(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {

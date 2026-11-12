@@ -19,7 +19,7 @@ The CLI is communicating with the Supervisor using the Supervisor's HTTP REST AP
 - **Language**: Go (use modern syntax)
 - **CLI Framework**: Cobra (github.com/spf13/cobra)
 - **HTTP Client**: Go stdlib net/http, wrapped by `client/request.go`
-- **Configuration**: Viper (github.com/spf13/viper)
+- **Configuration**: Own `config` package (flag > environment > config file > default)
 - **Logging**: Go stdlib log/slog
 
 ## Available Commands
@@ -61,7 +61,7 @@ The CLI provides the following main command categories:
 ## Architecture Notes
 - Uses Cobra for command structure and flag parsing
 - Go stdlib net/http for HTTP API calls to Home Assistant Supervisor
-- Viper for configuration management
+- `config` package for configuration management
 - Go stdlib log/slog for structured logging
 - Custom spinner implementation for progress indication
 
