@@ -20,7 +20,7 @@ import (
 
 	"golang.org/x/term"
 
-	"github.com/spf13/viper"
+	"github.com/home-assistant/cli/config"
 
 	"strings"
 )
@@ -64,7 +64,7 @@ func socketPath(endpoint string) (path string, ok bool) {
 
 // URLHelper returns a URL built from the arguments
 func URLHelper(section, command string) (string, error) {
-	base := viper.GetString("endpoint")
+	base := config.GetString("endpoint")
 	slog.Debug("[GenerateURI]", "base", base, "section", section, "command", command)
 
 	if socket, ok := socketPath(base); ok {
@@ -140,7 +140,7 @@ func newClient(socket string) *http.Client {
 // GetRequestTimeout returns a Request object prepared for an API call. The
 // timeout applies to this request only, 0 disables it.
 func GetRequestTimeout(timeout time.Duration) *Request {
-	socket, overSocket := socketPath(viper.GetString("endpoint"))
+	socket, overSocket := socketPath(config.GetString("endpoint"))
 
 	if client == nil {
 		client = newClient(socket)
@@ -156,12 +156,12 @@ func GetRequestTimeout(timeout time.Duration) *Request {
 	request.SetHeader("User-Agent", userAgent())
 
 	// Supervisor identifies the caller by the socket, no token needed
-	if token := viper.GetString("api-token"); !overSocket && token != "" {
+	if token := config.GetString("api-token"); !overSocket && token != "" {
 		request.SetHeader("Authorization", "Bearer "+token)
 	}
 
 	// Lets an app calling the CLI identify itself to Supervisor
-	if source := viper.GetString("hass-source"); source != "" {
+	if source := config.GetString("hass-source"); source != "" {
 		request.SetHeader("X-Hass-Source", source)
 	}
 

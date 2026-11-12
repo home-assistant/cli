@@ -5,7 +5,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/spf13/viper"
+	"github.com/home-assistant/cli/config"
 )
 
 func TestUserAgent(t *testing.T) {
@@ -44,9 +44,9 @@ func TestIdentityHeadersSent(t *testing.T) {
 			}))
 			t.Cleanup(server.Close)
 
-			viper.SetDefault("endpoint", server.Listener.Addr().String())
-			viper.SetDefault("hass-source", tt.hassSource)
-			t.Cleanup(func() { viper.SetDefault("hass-source", "") })
+			config.SetDefault("endpoint", server.Listener.Addr().String())
+			config.SetDefault("hass-source", tt.hassSource)
+			t.Cleanup(func() { config.SetDefault("hass-source", "") })
 			client = nil
 			t.Cleanup(func() { client = nil })
 
