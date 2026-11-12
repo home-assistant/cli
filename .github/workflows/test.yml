@@ -1,0 +1,29 @@
+name: test
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+env:
+  GOLANG_VERSION: "1.26"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Run tests
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout the repository
+      uses: actions/checkout@v7.0.1
+
+    - name: Setup go ${{ env.GOLANG_VERSION }}
+      uses: actions/setup-go@v7.0.0
+      with:
+        go-version: ${{ env.GOLANG_VERSION }}
+
+    - name: Run tests
+      run: go test -race ./...
