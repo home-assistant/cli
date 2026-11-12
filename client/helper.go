@@ -20,7 +20,6 @@ import (
 
 	"golang.org/x/term"
 
-	yaml "github.com/ghodss/yaml"
 	resty "github.com/go-resty/resty/v2"
 	"github.com/spf13/viper"
 
@@ -224,13 +223,7 @@ func ShowJSONResponseTransform(resp *resty.Response, transform func(map[string]a
 			if transform != nil {
 				transform(data.Data)
 			}
-			j, err := json.Marshal(data.Data)
-			if err != nil {
-				PrintError(err)
-				return
-			}
-
-			d, err := yaml.JSONToYAML(j)
+			d, err := toYAML(data.Data)
 			if err != nil {
 				PrintError(err)
 				return
@@ -241,7 +234,7 @@ func ShowJSONResponseTransform(resp *resty.Response, transform func(map[string]a
 	case "error":
 		PrintErrorString(data.Message)
 	default:
-		d, err := yaml.Marshal(data)
+		d, err := toYAML(data)
 		if err != nil {
 			PrintError(err)
 			return
