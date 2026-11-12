@@ -50,7 +50,7 @@ func hostBootCompletions(cmd *cobra.Command, args []string, toComplete string) (
 	}
 
 	var ret []string
-	data := resp.Result().(*helper.Response)
+	data := resp.Result()
 	if data.Result == "ok" && data.Data["boots"] != nil {
 		if boots, ok := data.Data["boots"].(map[string]any); ok {
 			for bootID, bootName := range boots {

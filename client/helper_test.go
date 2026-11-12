@@ -9,6 +9,7 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+	"time"
 
 	"github.com/spf13/viper"
 )
@@ -126,6 +127,188 @@ func TestGetRequest(t *testing.T) {
 				t.Errorf("Host: got %q, want %q", gotHost, "localhost")
 			}
 		})
+	}
+}
+
+func TestGetRequestTimeoutPerRequest(t *testing.T) {
+	const delay = 200 * time.Millisecond
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/slow" {
+			time.Sleep(delay)
+		}
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = w.Write([]byte(`{"result":"ok","data":{}}`))
+	}))
+	t.Cleanup(server.Close)
+	viper.SetDefault("endpoint", server.Listener.Addr().String())
+	client = nil
+	t.Cleanup(func() { client = nil })
+
+	url := server.URL
+
+	// A first request with a short timeout must not cap later ones
+	if _, err := GetRequestTimeout(delay / 4).Get(url + "/fast"); err != nil {
+		t.Fatal(err)
+	}
+	first := client
+	if _, err := GetRequestTimeout(10 * delay).Get(url + "/slow"); err != nil {
+		t.Errorf("longer timeout not applied: %v", err)
+	}
+	if _, err := GetRequestTimeout(delay / 4).Get(url + "/slow"); err == nil {
+		t.Error("shorter timeout not applied")
+	}
+	if _, err := GetRequestTimeout(0).Get(url + "/slow"); err != nil {
+		t.Errorf("timeout applied although disabled: %v", err)
+	}
+
+	if client != first {
+		t.Error("requests do not share one client")
+	}
+}
+
+func TestRequest(t *testing.T) {
+	var gotMethod, gotPath, gotContentType, gotBody string
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		gotMethod = r.Method
+		gotPath = r.URL.EscapedPath()
+		gotContentType = r.Header.Get("Content-Type")
+		b, _ := io.ReadAll(r.Body)
+		gotBody = string(b)
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		if r.Method == http.MethodDelete {
+			w.WriteHeader(http.StatusBadRequest)
+			_, _ = io.WriteString(w, `{"result":"error","message":"nope"}`)
+			return
+		}
+		_, _ = io.WriteString(w, `{"result":"ok","data":{"key":"value"}}`)
+	}))
+	t.Cleanup(server.Close)
+	viper.SetDefault("endpoint", server.Listener.Addr().String())
+	client = nil
+	t.Cleanup(func() { client = nil })
+
+	t.Run("post with body and path params", func(t *testing.T) {
+		resp, err := GetJSONRequest().
+			SetPathParams(map[string]string{"slug": "a/b c"}).
+			SetBody(map[string]any{"version": "1.0"}).
+			Post(server.URL + "/addons/{slug}/update")
+		if err != nil {
+			t.Fatal(err)
+		}
+		if gotMethod != http.MethodPost {
+			t.Errorf("method: got %q", gotMethod)
+		}
+		// The parameter is escaped, it cannot add path segments
+		if want := "/addons/a%2Fb%20c/update"; gotPath != want {
+			t.Errorf("path: got %q, want %q", gotPath, want)
+		}
+		if gotContentType != "application/json" {
+			t.Errorf("Content-Type: got %q", gotContentType)
+		}
+		if want := `{"version":"1.0"}`; gotBody != want {
+			t.Errorf("body: got %q, want %q", gotBody, want)
+		}
+		if !resp.IsSuccess() || resp.Result().Result != "ok" || resp.Result().Data["key"] != "value" {
+			t.Errorf("unexpected result %+v", resp.Result())
+		}
+	})
+
+	t.Run("get without body", func(t *testing.T) {
+		if _, err := GetJSONRequest().Get(server.URL + "/info"); err != nil {
+			t.Fatal(err)
+		}
+		if gotMethod != http.MethodGet || gotBody != "" || gotContentType != "" {
+			t.Errorf("got method %q, body %q, Content-Type %q", gotMethod, gotBody, gotContentType)
+		}
+	})
+
+	t.Run("error response", func(t *testing.T) {
+		resp, err := GetJSONRequest().Delete(server.URL + "/mounts/x")
+		if err != nil {
+			t.Fatal(err)
+		}
+		if resp.IsSuccess() || resp.StatusCode() != http.StatusBadRequest {
+			t.Errorf("unexpected status %d", resp.StatusCode())
+		}
+		if resp.Error().Result != "error" || resp.Error().Message != "nope" {
+			t.Errorf("unexpected error %+v", resp.Error())
+		}
+		if resp.Result().Result != "" {
+			t.Errorf("result set for an error response: %+v", resp.Result())
+		}
+	})
+
+	t.Run("stream", func(t *testing.T) {
+		request := GetRequestTimeout(0).SetDoNotParseResponse(true)
+		request.URL = server.URL + "/logs"
+		resp, err := request.Send()
+		if err != nil {
+			t.Fatal(err)
+		}
+		var success bool
+		output := captureStdout(t, func() {
+			success = StreamTextResponse(resp)
+		})
+		if want := `{"result":"ok","data":{"key":"value"}}`; !success || output != want {
+			t.Errorf("got success %v, output %q", success, output)
+		}
+	})
+}
+
+func TestRequestTimeoutStreamedBody(t *testing.T) {
+	const delay = 200 * time.Millisecond
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Send the headers right away, the body only after the delay
+		w.Header().Set("Content-Type", "text/plain")
+		w.WriteHeader(http.StatusOK)
+		w.(http.Flusher).Flush()
+		select {
+		case <-time.After(delay):
+		case <-r.Context().Done():
+		}
+		_, _ = io.WriteString(w, "late")
+	}))
+	t.Cleanup(server.Close)
+	viper.SetDefault("endpoint", server.Listener.Addr().String())
+	client = nil
+	t.Cleanup(func() { client = nil })
+
+	// The timeout also covers reading a body the caller streams
+	resp, err := GetRequestTimeout(delay / 4).SetDoNotParseResponse(true).Get(server.URL)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := io.ReadAll(resp.RawBody()); err == nil {
+		t.Error("timeout not applied while reading the body")
+	}
+	_ = resp.RawBody().Close()
+
+	resp, err = GetRequestTimeout(10 * delay).SetDoNotParseResponse(true).Get(server.URL)
+	if err != nil {
+		t.Fatal(err)
+	}
+	b, err := io.ReadAll(resp.RawBody())
+	_ = resp.RawBody().Close()
+	if err != nil || string(b) != "late" {
+		t.Errorf("got body %q, error %v", b, err)
+	}
+}
+
+func TestIsJSONType(t *testing.T) {
+	for contentType, want := range map[string]bool{
+		"application/json":                true,
+		"application/json; charset=utf-8": true,
+		"application/problem+json":        true,
+		"text/json":                       true,
+		"Application/JSON":                true,
+		"application/json; charset":       true,
+		"text/plain":                      false,
+		"text/html; charset=utf-8":        false,
+		"":                                false,
+	} {
+		if got := IsJSONType(contentType); got != want {
+			t.Errorf("IsJSONType(%q) = %v, want %v", contentType, got, want)
+		}
 	}
 }
 

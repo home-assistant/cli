@@ -30,7 +30,7 @@ func resolutionSuggestionCompletions(cmd *cobra.Command, args []string, toComple
 		return nil, cobra.ShellCompDirectiveNoFileComp
 	}
 	var ret []string
-	data := resp.Result().(*helper.Response)
+	data := resp.Result()
 	if data.Result == "ok" && data.Data["suggestions"] != nil {
 		if suggestions, ok := data.Data["suggestions"].([]any); ok {
 			for _, suggestion := range suggestions {

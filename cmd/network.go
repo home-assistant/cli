@@ -50,7 +50,7 @@ func networkInterfaceCompletions(cmd *cobra.Command, args []string, toComplete s
 		return nil, cobra.ShellCompDirectiveNoFileComp
 	}
 	var ret []string
-	data := resp.Result().(*helper.Response)
+	data := resp.Result()
 	if data.Result == "ok" && data.Data["interfaces"] != nil {
 		if ifaces, ok := data.Data["interfaces"].([]any); ok {
 			for _, iface := range ifaces {

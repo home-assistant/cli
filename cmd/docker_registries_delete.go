@@ -65,7 +65,7 @@ func dockerRegistriesDeleteCompletions(cmd *cobra.Command, args []string, toComp
 		return nil, cobra.ShellCompDirectiveNoFileComp
 	}
 	var ret []string
-	data := resp.Result().(*helper.Response)
+	data := resp.Result()
 	if data.Result == "ok" && data.Data["registries"] != nil {
 		if registries, ok := data.Data["registries"].(map[string]any); ok {
 			for k := range registries {

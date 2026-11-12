@@ -9,14 +9,13 @@ import (
 	"strings"
 	"time"
 
-	resty "github.com/go-resty/resty/v2"
 	helper "github.com/home-assistant/cli/client"
 	"github.com/spf13/cobra"
 )
 
 // getRPiFirmwareInfo fetches the Raspberry Pi firmware status. A 404 is turned
 // into a friendly error in case the API doesn't return it already.
-func getRPiFirmwareInfo() (*resty.Response, error) {
+func getRPiFirmwareInfo() (*helper.HTTPResponse, error) {
 	url, err := helper.URLHelper("os", "boards/raspberrypi/firmware")
 	if err != nil {
 		return nil, err
@@ -30,7 +29,7 @@ func getRPiFirmwareInfo() (*resty.Response, error) {
 	if resp.StatusCode() == http.StatusNotFound {
 		// Prefer the Supervisor's own message when it returns a JSON body,
 		// otherwise (e.g. a bare 404 from an older Supervisor) explain why.
-		if data, ok := resp.Error().(*helper.Response); ok && data.Message != "" {
+		if data := resp.Error(); data.Message != "" {
 			return nil, errors.New(data.Message)
 		}
 		return nil, errors.New("firmware information is not available on this system " +

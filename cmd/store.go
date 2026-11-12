@@ -53,7 +53,7 @@ func storeRepositoriesCompletions(cmd *cobra.Command, args []string, toComplete 
 		return nil, cobra.ShellCompDirectiveNoFileComp
 	}
 	var ret []string
-	data := resp.Result().(*helper.Response)
+	data := resp.Result()
 	if data.Result == "ok" && data.Data["repositories"] != nil {
 		if repos, ok := data.Data["repositories"].([]any); ok {
 			for _, repo := range repos {

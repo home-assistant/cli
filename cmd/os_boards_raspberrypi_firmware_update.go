@@ -36,7 +36,7 @@ and VL805 where present). A reboot is required for the new firmware to take effe
 			return
 		}
 
-		info := infoResp.Result().(*helper.Response)
+		info := infoResp.Result()
 
 		if blocked, _ := info.Data["update_blocked"].(bool); blocked {
 			msg := "firmware update is blocked"

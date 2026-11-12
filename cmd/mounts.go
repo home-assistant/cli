@@ -112,7 +112,7 @@ func mountsCompletions(cmd *cobra.Command, args []string, toComplete string) ([]
 		return nil, cobra.ShellCompDirectiveNoFileComp
 	}
 	var ret []string
-	data := resp.Result().(*helper.Response)
+	data := resp.Result()
 	if data.Result == "ok" && data.Data["mounts"] != nil {
 		if mounts, ok := data.Data["mounts"].([]any); ok {
 			for _, mount := range mounts {
@@ -163,7 +163,7 @@ func mountsDeviceCompletions(cmd *cobra.Command, args []string, toComplete strin
 		return nil, cobra.ShellCompDirectiveNoFileComp
 	}
 	var ret []string
-	data := resp.Result().(*helper.Response)
+	data := resp.Result()
 	if data.Result == "ok" && data.Data["disks"] != nil {
 		if disks, ok := data.Data["disks"].([]any); ok {
 			for _, disk := range disks {
