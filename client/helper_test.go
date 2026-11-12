@@ -255,12 +255,53 @@ func TestRequest(t *testing.T) {
 	})
 }
 
+func TestRequestTimeoutStreamedBody(t *testing.T) {
+	const delay = 200 * time.Millisecond
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Send the headers right away, the body only after the delay
+		w.Header().Set("Content-Type", "text/plain")
+		w.WriteHeader(http.StatusOK)
+		w.(http.Flusher).Flush()
+		select {
+		case <-time.After(delay):
+		case <-r.Context().Done():
+		}
+		_, _ = io.WriteString(w, "late")
+	}))
+	t.Cleanup(server.Close)
+	viper.SetDefault("endpoint", server.Listener.Addr().String())
+	client = nil
+	t.Cleanup(func() { client = nil })
+
+	// The timeout also covers reading a body the caller streams
+	resp, err := GetRequestTimeout(delay / 4).SetDoNotParseResponse(true).Get(server.URL)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := io.ReadAll(resp.RawBody()); err == nil {
+		t.Error("timeout not applied while reading the body")
+	}
+	_ = resp.RawBody().Close()
+
+	resp, err = GetRequestTimeout(10 * delay).SetDoNotParseResponse(true).Get(server.URL)
+	if err != nil {
+		t.Fatal(err)
+	}
+	b, err := io.ReadAll(resp.RawBody())
+	_ = resp.RawBody().Close()
+	if err != nil || string(b) != "late" {
+		t.Errorf("got body %q, error %v", b, err)
+	}
+}
+
 func TestIsJSONType(t *testing.T) {
 	for contentType, want := range map[string]bool{
 		"application/json":                true,
 		"application/json; charset=utf-8": true,
 		"application/problem+json":        true,
 		"text/json":                       true,
+		"Application/JSON":                true,
+		"application/json; charset":       true,
 		"text/plain":                      false,
 		"text/html; charset=utf-8":        false,
 		"":                                false,

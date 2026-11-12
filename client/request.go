@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"io"
 	"log/slog"
 	"mime"
@@ -237,8 +238,9 @@ func (r *HTTPResponse) Error() *Response {
 // IsJSONType reports if a Content-Type header value denotes JSON, e.g.
 // application/json or application/problem+json.
 func IsJSONType(contentType string) bool {
+	// A malformed parameter still yields the media type, only that matters
 	mediaType, _, err := mime.ParseMediaType(contentType)
-	if err != nil {
+	if err != nil && !errors.Is(err, mime.ErrInvalidMediaParameter) {
 		return false
 	}
 	kind, subtype, _ := strings.Cut(mediaType, "/")
