@@ -116,8 +116,6 @@ func TestGetRequest(t *testing.T) {
 
 			config.SetDefault("endpoint", endpoint)
 			config.SetDefault("api-token", tt.token)
-			client = nil
-			t.Cleanup(func() { client = nil })
 
 			resp, err := GenericJSONGet("supervisor", "info")
 			if err != nil {
@@ -150,8 +148,6 @@ func TestGetRequestTimeoutPerRequest(t *testing.T) {
 	}))
 	t.Cleanup(server.Close)
 	config.SetDefault("endpoint", server.Listener.Addr().String())
-	client = nil
-	t.Cleanup(func() { client = nil })
 
 	url := server.URL
 
@@ -159,7 +155,6 @@ func TestGetRequestTimeoutPerRequest(t *testing.T) {
 	if _, err := GetRequestTimeout(delay / 4).Get(url + "/fast"); err != nil {
 		t.Fatal(err)
 	}
-	first := client
 	if _, err := GetRequestTimeout(10 * delay).Get(url + "/slow"); err != nil {
 		t.Errorf("longer timeout not applied: %v", err)
 	}
@@ -168,10 +163,6 @@ func TestGetRequestTimeoutPerRequest(t *testing.T) {
 	}
 	if _, err := GetRequestTimeout(0).Get(url + "/slow"); err != nil {
 		t.Errorf("timeout applied although disabled: %v", err)
-	}
-
-	if client != first {
-		t.Error("requests do not share one client")
 	}
 }
 
@@ -193,8 +184,6 @@ func TestRequest(t *testing.T) {
 	}))
 	t.Cleanup(server.Close)
 	config.SetDefault("endpoint", server.Listener.Addr().String())
-	client = nil
-	t.Cleanup(func() { client = nil })
 
 	t.Run("post with body and path params", func(t *testing.T) {
 		resp, err := GetJSONRequest().
@@ -279,8 +268,6 @@ func TestRequestTimeoutStreamedBody(t *testing.T) {
 	}))
 	t.Cleanup(server.Close)
 	config.SetDefault("endpoint", server.Listener.Addr().String())
-	client = nil
-	t.Cleanup(func() { client = nil })
 
 	// The timeout also covers reading a body the caller streams
 	resp, err := GetRequestTimeout(delay / 4).SetDoNotParseResponse(true).Get(server.URL)
@@ -374,11 +361,7 @@ func TestShowJSONResponseRawJSON(t *testing.T) {
 			}))
 			defer server.Close()
 
-			// The client is created for the configured endpoint, do not reuse
-			// one a previous test may have set up for a Unix socket
 			config.SetDefault("endpoint", server.Listener.Addr().String())
-			client = nil
-			t.Cleanup(func() { client = nil })
 
 			resp, err := GetJSONRequest().Get(server.URL)
 			if err != nil {

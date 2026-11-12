@@ -2,13 +2,11 @@ package client
 
 import (
 	"bufio"
-	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
 	"log/slog"
-	"net"
 	"net/http"
 	"net/url"
 	"os"
@@ -40,10 +38,6 @@ const UnixSocketScheme = "unix://"
 // unixSocketBaseURL is the base URL of requests sent over a Unix socket. The
 // host is only used for the Host header, the connection goes to the socket.
 const unixSocketBaseURL = "http://localhost"
-
-// client is shared by all requests so they reuse the same connections. The
-// timeout is not set here but on each request.
-var client *http.Client
 
 // Response is the default JSON response from the Home Assistant Supervisor
 type Response struct {
@@ -118,36 +112,13 @@ func GetJSONRequest() *Request {
 	return GetJSONRequestTimeout(DefaultTimeout)
 }
 
-// newClient returns an http.Client for the Supervisor API. When socket is not
-// empty, every connection goes to that Unix socket.
-func newClient(socket string) *http.Client {
-	transport := http.DefaultTransport.(*http.Transport).Clone()
-
-	if socket != "" {
-		// Start from the default transport so connection pooling and
-		// timeouts match TCP, only the way connections are made changes.
-		// The socket is local, never route it through an HTTP proxy
-		transport.Proxy = nil
-		transport.DialContext = func(ctx context.Context, _, _ string) (net.Conn, error) {
-			var dialer net.Dialer
-			return dialer.DialContext(ctx, "unix", socket)
-		}
-	}
-
-	return &http.Client{Transport: transport}
-}
-
 // GetRequestTimeout returns a Request object prepared for an API call. The
 // timeout applies to this request only, 0 disables it.
 func GetRequestTimeout(timeout time.Duration) *Request {
 	socket, overSocket := socketPath(config.GetString("endpoint"))
 
-	if client == nil {
-		client = newClient(socket)
-	}
-
 	request := &Request{
-		client:     client,
+		socket:     socket,
 		timeout:    timeout,
 		header:     http.Header{},
 		pathParams: map[string]string{},

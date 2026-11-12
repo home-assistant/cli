@@ -47,8 +47,6 @@ func TestIdentityHeadersSent(t *testing.T) {
 			config.SetDefault("endpoint", server.Listener.Addr().String())
 			config.SetDefault("hass-source", tt.hassSource)
 			t.Cleanup(func() { config.SetDefault("hass-source", "") })
-			client = nil
-			t.Cleanup(func() { client = nil })
 
 			if _, err := GenericJSONGet("supervisor", "info"); err != nil {
 				t.Fatal(err)
