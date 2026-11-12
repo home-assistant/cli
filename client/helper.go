@@ -20,7 +20,6 @@ import (
 
 	"golang.org/x/term"
 
-	yaml "github.com/ghodss/yaml"
 	"github.com/spf13/viper"
 
 	"strings"
@@ -215,13 +214,7 @@ func ShowJSONResponseTransform(resp *HTTPResponse, transform func(map[string]any
 			if transform != nil {
 				transform(data.Data)
 			}
-			j, err := json.Marshal(data.Data)
-			if err != nil {
-				PrintError(err)
-				return
-			}
-
-			d, err := yaml.JSONToYAML(j)
+			d, err := toYAML(data.Data)
 			if err != nil {
 				PrintError(err)
 				return
@@ -232,7 +225,7 @@ func ShowJSONResponseTransform(resp *HTTPResponse, transform func(map[string]any
 	case "error":
 		PrintErrorString(data.Message)
 	default:
-		d, err := yaml.Marshal(data)
+		d, err := toYAML(data)
 		if err != nil {
 			PrintError(err)
 			return
