@@ -2,7 +2,6 @@ package client
 
 import (
 	"bytes"
-	"context"
 	"encoding/json"
 	"errors"
 	"io"
@@ -22,7 +21,7 @@ type Request struct {
 	// SetPathParam.
 	URL string
 
-	client     *http.Client
+	socket     string
 	timeout    time.Duration
 	header     http.Header
 	pathParams map[string]string
@@ -105,16 +104,8 @@ func (r *Request) execute(method, rawURL string) (*HTTPResponse, error) {
 		body = bytes.NewReader(b)
 	}
 
-	// The timeout covers the whole exchange, including reading the body. It
-	// is set per request, so each request gets the timeout it asked for.
-	ctx, cancel := context.Background(), context.CancelFunc(func() {})
-	if r.timeout > 0 {
-		ctx, cancel = context.WithTimeout(ctx, r.timeout)
-	}
-
-	req, err := http.NewRequestWithContext(ctx, method, rawURL, body)
+	req, err := http.NewRequest(method, rawURL, body)
 	if err != nil {
-		cancel()
 		return nil, err
 	}
 	req.Header = r.header.Clone()
@@ -122,24 +113,28 @@ func (r *Request) execute(method, rawURL string) (*HTTPResponse, error) {
 		req.Header.Set("Content-Type", "application/json")
 	}
 
+	// The timeout covers the whole exchange, including reading the body. It
+	// is set per request, so each request gets the timeout it asked for.
 	start := time.Now()
-	raw, err := r.client.Do(req)
+	var deadline time.Time
+	if r.timeout > 0 {
+		deadline = start.Add(r.timeout)
+	}
+
+	raw, err := roundTrip(req, r.socket, deadline)
 	if err != nil {
-		cancel()
-		return nil, err
+		// Same format as the errors of http.Client
+		return nil, &url.Error{Op: method[:1] + strings.ToLower(method[1:]), URL: rawURL, Err: err}
 	}
 
 	resp := &HTTPResponse{raw: raw, result: &Response{}, errResult: &Response{}}
 
 	if r.stream {
-		// The caller reads the body, keep the context alive until it is closed
-		raw.Body = &cancelOnClose{ReadCloser: raw.Body, cancel: cancel}
+		// The caller reads the body and closes it
 		slog.Debug("Response", "method", method, "url", rawURL, "status", raw.Status,
 			"time", time.Since(start), "headers", raw.Header)
 		return resp, nil
 	}
-	defer cancel()
-
 	resp.body, err = io.ReadAll(raw.Body)
 	_ = raw.Body.Close()
 	if err != nil {
@@ -164,18 +159,6 @@ func (r *Request) execute(method, rawURL string) (*HTTPResponse, error) {
 	}
 
 	return resp, nil
-}
-
-// cancelOnClose releases the request context once the body is closed.
-type cancelOnClose struct {
-	io.ReadCloser
-	cancel context.CancelFunc
-}
-
-func (c *cancelOnClose) Close() error {
-	err := c.ReadCloser.Close()
-	c.cancel()
-	return err
 }
 
 // HTTPResponse is the response to a Request.

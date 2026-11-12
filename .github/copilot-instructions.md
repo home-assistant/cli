@@ -18,7 +18,7 @@ The CLI is communicating with the Supervisor using the Supervisor's HTTP REST AP
 ## Key Technologies
 - **Language**: Go (use modern syntax)
 - **CLI Framework**: Cobra (github.com/spf13/cobra)
-- **HTTP Client**: Go stdlib net/http, wrapped by `client/request.go`
+- **HTTP Client**: Go stdlib net/http types, wrapped by `client/request.go`. Requests are written to the connection directly (`client/transport.go`) instead of using `http.Client`, which keeps TLS and HTTP/2 out of the binary
 - **Configuration**: Own `config` package (flag > environment > config file > default)
 - **Logging**: Go stdlib log/slog
 
@@ -60,7 +60,7 @@ The CLI provides the following main command categories:
 
 ## Architecture Notes
 - Uses Cobra for command structure and flag parsing
-- Go stdlib net/http for HTTP API calls to Home Assistant Supervisor
+- Go stdlib net/http for HTTP API calls to Home Assistant Supervisor, plain HTTP or Unix socket only (no HTTPS, proxies or redirects)
 - `config` package for configuration management
 - Go stdlib log/slog for structured logging
 - Custom spinner implementation for progress indication

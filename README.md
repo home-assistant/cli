@@ -28,6 +28,9 @@ E.g.:
 
 All options are also available as `SUPERVISOR_` prefixed environment variables like `SUPERVISOR_LOG_LEVEL`
 
+The endpoint is reached over plain HTTP or a Unix socket. HTTPS endpoints and
+HTTP proxies are not supported.
+
 Inside an app, Supervisor provides a Unix socket in `SUPERVISOR_SOCKET`. When it
 is set and no endpoint is configured, the CLI connects through that socket and
 sends no API token, since Supervisor identifies the app by its socket.
