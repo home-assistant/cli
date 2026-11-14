@@ -160,5 +160,6 @@ func init() {
 	authResetCmd.MarkFlagsOneRequired("password", "interactive")
 	authResetCmd.RegisterFlagCompletionFunc("username", cobra.NoFileCompletions)
 	authResetCmd.RegisterFlagCompletionFunc("password", cobra.NoFileCompletions)
+	authResetCmd.RegisterFlagCompletionFunc("interactive", boolCompletions)
 	authCmd.AddCommand(authResetCmd)
 }

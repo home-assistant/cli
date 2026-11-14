@@ -124,6 +124,7 @@ func init() {
 	supervisorOptionsCmd.RegisterFlagCompletionFunc("debug", boolCompletions)
 	supervisorOptionsCmd.RegisterFlagCompletionFunc("debug-block", boolCompletions)
 	supervisorOptionsCmd.RegisterFlagCompletionFunc("diagnostics", boolCompletions)
+	supervisorOptionsCmd.RegisterFlagCompletionFunc("auto-update", boolCompletions)
 	supervisorOptionsCmd.RegisterFlagCompletionFunc("feature-flag", featureFlagCompletions)
 
 	supervisorCmd.AddCommand(supervisorOptionsCmd)
