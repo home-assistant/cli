@@ -68,5 +68,6 @@ of apps. This command allows you to trigger a rebuild of a locally built app.
 
 func init() {
 	appsRebuildCmd.Flags().BoolVar(&appsRebuildForce, "force", false, "Force rebuild of the app even if pre-built images are provided")
+	appsRebuildCmd.RegisterFlagCompletionFunc("force", boolCompletions)
 	appsCmd.AddCommand(appsRebuildCmd)
 }
