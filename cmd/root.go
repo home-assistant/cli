@@ -27,6 +27,9 @@ var noProgress bool
 // ExitWithError is a hint for the called that we want a non-zero exit code
 var ExitWithError = false
 
+// ExitCode is the exit code of the CLI. Zero leaves the choice to ExitWithError.
+var ExitCode = 0
+
 // ProgressSpinner is a general spinner that can be used across the CLI
 var ProgressSpinner = spinner.New(spinner.CharSets[0], 125*time.Millisecond)
 
