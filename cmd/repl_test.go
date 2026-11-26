@@ -243,8 +243,8 @@ func TestReplLoop(t *testing.T) {
 		},
 		{
 			name:     "help mentions login",
-			input:    "help\rhelp core\rexit\r",
-			wantRuns: [][]string{{"help"}, {"help", "core"}},
+			input:    "help core\rhelp\rexit\r",
+			wantRuns: [][]string{{"help", "core"}, {"help"}},
 			wantOut:  "Use \"login\" to enter operating system shell",
 		},
 		{
@@ -331,7 +331,7 @@ func TestReplHistory(t *testing.T) {
 	for _, line := range []string{"core info", "", "  ", "host info", "host info", "core info"} {
 		h.Add(line)
 	}
-	var got []string
+	got := make([]string, 0, h.Len())
 	for i := range h.Len() {
 		got = append(got, h.At(i))
 	}

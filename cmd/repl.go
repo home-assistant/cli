@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"os/signal"
+	"slices"
 	"strconv"
 	"strings"
 
@@ -81,6 +82,11 @@ empty line resets the prompt to its initial state.`,
 			}
 		})
 
+		// The arguments of the command come from the user of the prompt
+		selfCommand := func(ctx context.Context, args []string) *exec.Cmd {
+			return exec.CommandContext(ctx, self, append(slices.Clip(globalArgs), args...)...) //nolint:gosec
+		}
+
 		noBanner, _ := cmd.Flags().GetBool("no-banner")
 
 		r := &repl{
@@ -88,7 +94,7 @@ empty line resets the prompt to its initial state.`,
 			out:    os.Stdout,
 			banner: !noBanner,
 			run: func(args []string) {
-				c := exec.Command(self, append(globalArgs[:len(globalArgs):len(globalArgs)], args...)...)
+				c := selfCommand(context.Background(), args)
 				c.Stdin, c.Stdout, c.Stderr = os.Stdin, os.Stdout, os.Stderr
 				err := c.Run()
 				var exitErr *exec.ExitError
@@ -105,7 +111,7 @@ empty line resets the prompt to its initial state.`,
 			},
 			complete: func(ctx context.Context, args []string) string {
 				args = append([]string{cobra.ShellCompRequestCmd}, args...)
-				out, _ := exec.CommandContext(ctx, self, append(globalArgs[:len(globalArgs):len(globalArgs)], args...)...).Output()
+				out, _ := selfCommand(ctx, args).Output()
 				return string(out)
 			},
 			raw: func() (func(), error) {
