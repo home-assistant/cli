@@ -38,6 +38,7 @@ The CLI provides the following main command categories:
 - `network` - Network configuration and management
 - `observer` - Observer plug-in management
 - `os` - Home Assistant OS specific operations
+- `repl` - Interactive prompt with completion, for use without a shell
 - `resolution` - Resolution center for issues and solutions
 - `backups` - Backup creation, restoration, and management
 - `supervisor` - Supervisor monitoring and control
